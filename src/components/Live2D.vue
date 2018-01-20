@@ -2,7 +2,7 @@
 
   #live2d(:class='curState', @click='animateRandom()')
     img.bg(src='static/images/live2d.png')
-    .eyes(:style='"transform: translate(" + mouseX * 1.5 + "px, " + mouseY * 1.5 + "px)"')
+    .eyes(:style='"transform: translate(" + mouseX * 2 + "%, " + mouseY * 2 + "%)"')
       .eye.left-eye
         .line1
         .line2
@@ -93,6 +93,7 @@
     top 2px
     width 56px
     height 56px
+    z-index 999
 
     .bg
       position absolute
@@ -158,7 +159,7 @@
 
       .line2
         left 25%
-        top 33%
+        top 35%
         width 56%
         height 13%
         transform-origin 100% 50%
@@ -173,6 +174,9 @@
         height 56%
 
     &.sleep
+      .eyes
+        transform none !important
+
       .line1
         left 24%
         width 56%
@@ -239,7 +243,7 @@
 
         .line2
           left 25%
-          top 33%
+          top 35%
           width 56%
           height 13%
           transform-origin 100% 50%
