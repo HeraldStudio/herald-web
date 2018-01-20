@@ -135,8 +135,8 @@
         top 36%
         width 25%
         height 25%
-        min-width 1.2px
-        min-height 1.2px
+        min-width 1.5px
+        min-height 1.5px
         border-radius 10000px
         -webkit-transition: .2s
         -moz-transition: .2s
