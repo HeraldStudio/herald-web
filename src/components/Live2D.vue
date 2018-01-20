@@ -145,6 +145,9 @@
         opacity 0
 
     &.wink
+      .eyes
+        transform none !important
+
       .line1
         left 25%
         top 40%
@@ -189,6 +192,9 @@
         opacity 1
 
     &.blink
+      .eyes
+        transform none !important
+
       .line1
         top 45%
         left 42%
