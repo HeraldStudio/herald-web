@@ -7,14 +7,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     <title>小猴偷米</title>
-    <script>
-      if (window.navigator.standalone) {
-        document.getElementById("app").className += " webapp"
-      }
-    </script>
   </head>
   <body onselectstart="return false">
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+  <script>
+    if (typeof window.navigator.standalone !== 'undefined') {
+      document.body.className += " webapp"
+    }
+  </script>
 </html>

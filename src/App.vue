@@ -7,7 +7,7 @@
         a
           li(@click='logout()' v-if='user.uuid')
             .zh 退出登录
-            .en LOGOUT
+            .en Sign out
         a
           li.lang(@click='toggleLanguage()')
             .zh en
@@ -200,11 +200,6 @@
       user-select: none
 
       @media screen and (max-width: 600px)
-        /*height 90px*/
-        /*display flex*/
-        /*flex-direction column*/
-        /*padding-bottom 0*/
-
         @supports (-webkit-backdrop-filter: blur(20px))
           background rgba(255, 255, 255, .8)
           -webkit-backdrop-filter: blur(20px)
@@ -302,10 +297,10 @@
     .header
       @media screen and (max-width: 600px)
         @supports (-webkit-backdrop-filter: blur(20px))
-          background -webkit-linear-gradient(top, #fff, rgba(255, 255, 255, .8))
-          background -moz-linear-gradient(top, #fff, rgba(255, 255, 255, .8))
-          background -ms-linear-gradient(top, #fff, rgba(255, 255, 255, .8))
-          background -o-linear-gradient(top, #fff, rgba(255, 255, 255, .8))
-          background linear-gradient(top, #fff, rgba(255, 255, 255, .8))
+          background -webkit-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
+          background -moz-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
+          background -ms-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
+          background -o-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
+          background linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
 
 </style>
