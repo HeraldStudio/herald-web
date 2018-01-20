@@ -207,6 +207,9 @@
         transition: .1s
 
     &.bad
+      .eyes
+        transform none !important
+
       .line1
         top 9%
         left 48%
@@ -222,6 +225,9 @@
         transform rotate(45deg)
 
     &.logo
+      .eyes
+        transform none !important
+
       .left-eye
         .line1
           left 25%
