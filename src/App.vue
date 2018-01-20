@@ -1,7 +1,8 @@
 <template lang='pug'>
   #app(:class='"lang-" + (english ? "en" : "zh")')
-    .header(:class='{ gradient: standalone }')
+    .header
       img.logo(src='static/images/logo.png')
+      live2d
       ul.nav
         a
           li(@click='logout()' v-if='user.uuid')
@@ -40,12 +41,15 @@
   import cookie from 'js-cookie'
   import qs from 'qs'
   import offline from 'offline-plugin/runtime'
+  import live2d from './components/Live2D.vue'
 
   export default {
     name: 'app',
+    components: {
+      live2d
+    },
     data() {
       return {
-        standalone: window.navigator.standalone,
         english: false,
         user: {
           cardnum: '',
@@ -206,14 +210,7 @@
           -webkit-backdrop-filter: blur(20px)
           border-bottom 1px solid rgba(0, 0, 0, .05)
 
-          &.gradient
-            background -webkit-linear-gradient(top, #fff, rgba(255, 255, 255, .8))
-            background -moz-linear-gradient(top, #fff, rgba(255, 255, 255, .8))
-            background -ms-linear-gradient(top, #fff, rgba(255, 255, 255, .8))
-            background -o-linear-gradient(top, #fff, rgba(255, 255, 255, .8))
-            background linear-gradient(top, #fff, rgba(255, 255, 255, .8))
-
-      .logo
+      img.logo
         width auto
         height 40px
         object-fit contain
@@ -300,5 +297,15 @@
           color #fff
           background #cc5e6f
           padding 5px 10px
+
+  .webapp
+    .header
+      @media screen and (max-width: 600px)
+        @supports (-webkit-backdrop-filter: blur(20px))
+          background -webkit-linear-gradient(top, #fff, rgba(255, 255, 255, .8))
+          background -moz-linear-gradient(top, #fff, rgba(255, 255, 255, .8))
+          background -ms-linear-gradient(top, #fff, rgba(255, 255, 255, .8))
+          background -o-linear-gradient(top, #fff, rgba(255, 255, 255, .8))
+          background linear-gradient(top, #fff, rgba(255, 255, 255, .8))
 
 </style>

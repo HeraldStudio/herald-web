@@ -6,8 +6,12 @@
     <link rel="apple-touch-icon" href="static/images/icon.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
-    <script defer src="//use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
     <title>小猴偷米</title>
+    <script>
+      if (window.navigator.standalone) {
+        document.getElementById("app").className += " webapp"
+      }
+    </script>
   </head>
   <body onselectstart="return false">
     <div id="app"></div>

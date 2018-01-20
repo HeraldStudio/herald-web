@@ -64,6 +64,7 @@
       display flex
       flex-direction column
       align-items flex-start
+      padding 20px 0
 
       @media screen and (max-width: 600px)
         flex-direction column
@@ -71,9 +72,9 @@
 
       .widget
         position relative
-        margin 40px 10px 10px
-        padding 20px 15px
-        box-shadow 0 5px 15px rgba(0, 0, 0, .05)
+        margin 18px 10px 10px
+        padding 20px 0
+        //box-shadow 0 0 15px rgba(0, 0, 0, .05)
         border 1px solid transparent
         width 380px
         box-sizing border-box
@@ -83,19 +84,12 @@
         -o-transition: .3s
         transition: .3s
 
-        &:hover
-          box-shadow 0 5px 35px rgba(0, 0, 0, .1)
-
-        &:active
-          box-shadow none
-          border 1px solid var(--divider-color)
-
         &.loading
           opacity .5
 
         @media screen and (max-width: 600px)
-          margin 40px 0 10px
-          padding 20px 10px
+          margin 18px 0 10px
+          padding 20px 0
           width auto
 
         .empty
@@ -104,6 +98,16 @@
           color #888
           font-size 14px
 
+        &::before
+          position absolute
+          display block
+          content ' '
+          left 0
+          top -15px
+          right 0
+          height 0
+          border-bottom 1px dashed #aaa
+
         >.title
           position absolute
           left 0
@@ -111,15 +115,21 @@
           height 30px
           line-height 30px
           vertical-align middle
-          background #555
           padding 0 10px
           text-align left
           font-size 14px
+          background #666
           color #fff
           margin-bottom 20px
           display flex
           flex-direction row
           align-items center
+          -webkit-transition: .3s
+          -moz-transition: .3s
+          -ms-transition: .3s
+          -o-transition: .3s
+          transition: .3s
+          border-right 10px solid #fff
 
           .reload
             width 16px

@@ -128,6 +128,8 @@
   .widget
     padding 0 !important
 
+    --curriculum-background-color #fafafa
+
     .week-picker
       display flex
       flex-direction row
@@ -137,6 +139,8 @@
       -moz-user-select: none
       -ms-user-select: none
       user-select: none
+      color #555
+      font-size 16px
 
       .prev-week, .next-week
         cursor pointer
@@ -149,10 +153,12 @@
         flex 1 1 0
         text-align center
         color #555
-        background #fafafa
+        background var(--curriculum-background-color)
         font-size 12px
         padding 5px
-        margin-right 1px
+
+        +.weekday
+          margin-left 1px
 
     .curriculum-list
       height 432px
@@ -163,6 +169,7 @@
       -ms-transition: .3s
       -o-transition: .3s
       transition: .3s
+      background var(--curriculum-background-color)
 
       &.empty
         height 70px
@@ -171,11 +178,12 @@
         position absolute
         overflow hidden
         box-sizing border-box
-        border-right 1px solid #fff
-        border-bottom 1px solid #fff
-        width 14.2857%
+        margin 0 -1px -1px 0
+        width 14%
         line-height 1.4em
-        background #f0f0f0
+        background #fff
+        border-top 2px solid var(--theme-color)
+        box-shadow 0 0 2px rgba(0, 0, 0, .05)
         display flex
         flex-direction column
         align-items center
@@ -191,8 +199,7 @@
           flex 0 1 auto
           overflow hidden
           font-weight bold
-          background var(--theme-color)
-          color #fff
+          color var(--theme-color)
           padding 2px
           width 100%
 
@@ -200,7 +207,6 @@
           padding 2px
           flex 0 0 0
           max-height 4.2em
-          border-bottom 2px solid var(--theme-color)
 
       .empty
         position absolute

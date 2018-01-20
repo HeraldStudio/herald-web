@@ -1,10 +1,6 @@
 <template lang="pug">
    
   .widget.swiper(v-show='swiper.length')
-    .title
-      .zh 编辑推荐
-      .en Trend
-      .reload(@click='reload()')
     swiper.swiper(:auto="5000", :loop="true", :speed="500", :dots="false", :watch-items="swiper")
       swiper-item.swiper-item(v-for='page in swiper')
         a(v-if='page.url', :href='page.url' target="_blank")
@@ -49,17 +45,23 @@
   @import "~vue-l-carousel/dist/main.css";
 
   .v-carousel-nav {
+    display: none;
     padding: 0 12px;
     font-size: 14px;
-    background: rgba(0, 0, 0, .6);
+    background: #fff;
+    color: #555;
   }
 
 </style>
 <style lang="stylus" scoped>
 
   .widget
-    padding 0 !important
+    margin-top -32px !important
+    padding 20px 0 !important
     position relative
+
+    &::before
+      display none !important
 
     &::after
       display block
@@ -69,7 +71,7 @@
 
     .swiper
       position absolute
-      top 0
+      top 20px
       left 0
       right 0
       bottom 0
