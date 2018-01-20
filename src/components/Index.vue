@@ -126,12 +126,12 @@
             height 18px
             margin-left 5px
             cursor pointer
-            background url('static/images/refresh.svg') no-repeat
             -webkit-transition: 1s
             -moz-transition: 1s
             -ms-transition: 1s
             -o-transition: 1s
             transition: 1s
+            display none
 
             &:active
               transform rotate(-360deg)
