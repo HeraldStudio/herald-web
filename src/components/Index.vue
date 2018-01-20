@@ -126,7 +126,7 @@
             height 18px
             margin-left 5px
             cursor pointer
-            background url('/static/images/refresh.svg') no-repeat
+            background url('static/images/refresh.svg') no-repeat
             -webkit-transition: 1s
             -moz-transition: 1s
             -ms-transition: 1s
