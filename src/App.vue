@@ -297,16 +297,11 @@
           background #cc5e6f
           padding 5px 10px
 
+    // iOS Webapp 顶栏样式
     &.webapp
       .header
         @media screen and (max-width: 600px)
           @supports (-webkit-backdrop-filter: blur(20px))
-            background -webkit-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
-            background -moz-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
-            background -ms-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
-            background -o-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
-            background linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
-            border-bottom none !important
-            box-shadow 0 0 10px rgba(0, 0, 0, .1) !important
+            box-shadow inset 0 30px 40px #fff
 
 </style>
