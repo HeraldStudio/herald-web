@@ -1,5 +1,5 @@
 <template lang='pug'>
-  #app(:class='"lang-" + (english ? "en" : "zh")')
+  #app(:class='{ webapp: webapp, "lang-en": english, "lang-zh": !english }')
     .header
       img.logo(src='static/images/logo.png')
       live2d
@@ -50,6 +50,7 @@
     },
     data() {
       return {
+        webapp: false,
         english: false,
         user: {
           cardnum: '',
@@ -60,6 +61,9 @@
       }
     },
     async created() {
+      if (window.navigator.standalone) {
+        this.webapp = true
+      }
       offline.install()
       logger.bindAjax()
       let user = cookie.getJSON('user')
@@ -293,14 +297,16 @@
           background #cc5e6f
           padding 5px 10px
 
-  .webapp
-    .header
-      @media screen and (max-width: 600px)
-        @supports (-webkit-backdrop-filter: blur(20px))
-          background -webkit-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
-          background -moz-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
-          background -ms-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
-          background -o-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
-          background linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
+    &.webapp
+      .header
+        @media screen and (max-width: 600px)
+          @supports (-webkit-backdrop-filter: blur(20px))
+            background -webkit-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
+            background -moz-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
+            background -ms-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
+            background -o-linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
+            background linear-gradient(top, #fff, rgba(255, 255, 255, .8)) !important
+            border-bottom none !important
+            box-shadow 0 0 10px rgba(0, 0, 0, .1) !important
 
 </style>

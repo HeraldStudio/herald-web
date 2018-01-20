@@ -4,10 +4,10 @@
       swiper
       card
       pe
-      curriculum
-      experiment
-    .widgets
       exam
+      curriculum
+    .widgets
+      experiment
       grade
       srtp
     .widgets
@@ -64,7 +64,7 @@
       display flex
       flex-direction column
       align-items flex-start
-      padding 20px 0
+      padding 0
 
       @media screen and (max-width: 600px)
         flex-direction column
@@ -72,9 +72,9 @@
 
       .widget
         position relative
-        margin 18px 10px 10px
-        padding 20px 0
-        //box-shadow 0 0 15px rgba(0, 0, 0, .05)
+        margin 40px 10px 10px
+        padding 20px 15px
+        box-shadow 0 0 15px rgba(0, 0, 0, .05)
         border 1px solid transparent
         width 380px
         box-sizing border-box
@@ -83,13 +83,18 @@
         -ms-transition: .3s
         -o-transition: .3s
         transition: .3s
+        border-top 1px dashed #aaa
+
+        @media screen and (min-width: 600px)
+          &:hover
+            border 1px solid var(--theme-color-light)
 
         &.loading
           opacity .5
 
         @media screen and (max-width: 600px)
-          margin 18px 0 10px
-          padding 20px 0
+          margin 40px 0 10px
+          padding 20px 15px
           width auto
 
         .empty
@@ -98,19 +103,9 @@
           color #888
           font-size 14px
 
-        &::before
-          position absolute
-          display block
-          content ' '
-          left 0
-          top -15px
-          right 0
-          height 0
-          border-bottom 1px dashed #aaa
-
         >.title
           position absolute
-          left 0
+          left -1px
           top -30px
           height 30px
           line-height 30px
@@ -118,7 +113,7 @@
           padding 0 10px
           text-align left
           font-size 14px
-          background #666
+          background #555
           color #fff
           margin-bottom 20px
           display flex
@@ -129,7 +124,6 @@
           -ms-transition: .3s
           -o-transition: .3s
           transition: .3s
-          border-right 10px solid #fff
 
           .reload
             width 16px

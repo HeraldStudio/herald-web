@@ -56,9 +56,10 @@
 <style lang="stylus" scoped>
 
   .widget
-    margin-top -32px !important
-    padding 20px 0 !important
+    margin-top 11px !important
+    padding 0 !important
     position relative
+    border none !important
 
     &::before
       display none !important
@@ -71,7 +72,7 @@
 
     .swiper
       position absolute
-      top 20px
+      top 0
       left 0
       right 0
       bottom 0
