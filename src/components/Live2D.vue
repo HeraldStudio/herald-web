@@ -135,6 +135,8 @@
         top 36%
         width 25%
         height 25%
+        min-width 1.2px
+        min-height 1.2px
         border-radius 10000px
         -webkit-transition: .2s
         -moz-transition: .2s
@@ -151,17 +153,17 @@
 
       .line1
         left 25%
-        top 40%
-        width 56%
-        height 13%
+        top 35%
+        width 54%
+        height 10%
         transform-origin 100% 50%
         transform rotate(30deg)
 
       .line2
         left 25%
         top 35%
-        width 56%
-        height 13%
+        width 54%
+        height 10%
         transform-origin 100% 50%
         transform rotate(-30deg)
         opacity 1
@@ -170,7 +172,7 @@
       .line1
         top 20%
         left 42%
-        width 14%
+        width 18%
         height 56%
 
     &.sleep
@@ -180,19 +182,19 @@
       .line1
         left 24%
         width 56%
-        height 14%
+        height 18%
 
     &.shiny
       .line1
         top 9%
         left 48%
-        width 13%
+        width 18%
         height 64%
 
       .line2
         left 24%
         width 64%
-        height 13%
+        height 18%
         opacity 1
 
     &.blink
@@ -202,7 +204,7 @@
       .line1
         top 45%
         left 42%
-        width 16%
+        width 18%
         height 0
         -webkit-transition: .1s
         -moz-transition: .1s
@@ -217,14 +219,14 @@
       .line1
         top 9%
         left 48%
-        width 13%
+        width 18%
         height 64%
         transform rotate(45deg)
 
       .line2
         left 24%
         width 64%
-        height 13%
+        height 18%
         opacity 1
         transform rotate(45deg)
 
@@ -237,7 +239,7 @@
           left 25%
           top 40%
           width 56%
-          height 13%
+          height 10%
           transform-origin 100% 50%
           transform rotate(30deg)
 
@@ -245,10 +247,15 @@
           left 25%
           top 35%
           width 56%
-          height 13%
+          height 10%
           transform-origin 100% 50%
           transform rotate(-30deg)
           opacity 1
+
+      .right-eye
+        .line1
+          width 20%
+          height 20%
 
 
 </style>
