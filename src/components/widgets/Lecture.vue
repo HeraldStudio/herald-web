@@ -8,22 +8,23 @@
     .empty(v-if='!lectures')
       .zh 加载中
       .en Loading...
-    ul.info-bar
-      li.info
-        .title
-          .zh 已听讲座次数
-          .en Lectures taken
-        .content {{ lectures.length }}
-      li.info
-        .title
-          .zh 剩余讲座次数
-          .en Remaining lecs.
-        .content {{ Math.max(0, 8 - lectures.length) }}
-    ul.detail-list
-      li(v-for='item in lectures')
-        .top
-          .left {{ item.date }}
-          .right {{ item.place }}
+    div(v-else)
+      ul.info-bar
+        li.info
+          .title
+            .zh 已听讲座次数
+            .en Lectures taken
+          .content {{ lectures.length }}
+        li.info
+          .title
+            .zh 剩余讲座次数
+            .en Remaining lecs.
+          .content {{ Math.max(0, 8 - lectures.length) }}
+      ul.detail-list
+        li(v-for='item in lectures')
+          .top
+            .left {{ item.date }}
+            .right {{ item.place }}
    
 </template>
 <script>
