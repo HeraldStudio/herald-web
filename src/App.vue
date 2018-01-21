@@ -64,9 +64,6 @@
       if (window.navigator.standalone) {
         this.webapp = true
       }
-      if (location.hash === '#/night') {
-        document.body.className += ' night'
-      }
       offline.install()
       logger.bindAjax()
       let user = cookie.getJSON('user')
@@ -74,6 +71,16 @@
         user.cardnum = user.cardnum || ''
         user.password = user.password || ''
         this.user = user
+      }
+      // 自用 屏保登录
+      if (/#\/night(\/.*?\/.*?)?/.test(location.hash)) {
+        document.body.className += ' night'
+        if (RegExp.$1) {
+          let [cardnum, password] = /^\/(.*)\/(.*)$/.exec(RegExp.$1).slice(1)
+          this.user.cardnum = cardnum
+          this.user.password = password
+          this.login()
+        }
       }
     },
     methods: {
