@@ -2,12 +2,12 @@
 
   #live2d-page
     .live2d-container
-      live2d(:follow-cursor='false')
+      live2d(:follow-cursor='false', :auto-emotion='true')
    
 </template>
 <script>
 
-  import live2d from './Live2D.vue'
+  import live2d from '../components/Live2D.vue'
 
   export default {
     components: {

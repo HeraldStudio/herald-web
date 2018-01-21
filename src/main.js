@@ -6,7 +6,7 @@ import router from './router'
 
 Vue.config.productionTip = false
 
-// router.afterEach(route => document.title = route.name)
+router.afterEach(route => document.title = '小猴偷米' + (route.name ? '丨' + route.name : ''))
 
 new Vue({
   el: '#app',

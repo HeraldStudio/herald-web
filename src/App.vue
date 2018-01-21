@@ -1,12 +1,17 @@
 <template lang='pug'>
   #app(:class='{ webapp: webapp, "lang-en": english, "lang-zh": !english }')
     .header
-      img.logo(src='static/images/logo.png')
-      .live2d-container
-        live2d
+      router-link(to='/')
+        img.logo(src='static/images/logo.png')
+        .live2d-container
+          live2d
       ul.nav
+        router-link(to='/search')
+          li
+            .zh 搜索
+            .en Search
         a
-          li(@click='logout()' v-if='user.uuid')
+          li(@click='logout()' v-if='isLogin')
             .zh 退出登录
             .en Sign out
         a
@@ -14,33 +19,13 @@
             .zh en
             .en zh
     .container
-      router-view(v-if='user.uuid || $route.path === "/screensaver"')
-      .login(v-else)
-        .title
-          .zh 统一身份认证
-          .en Identification
-        .field
-          input.zh(placeholder='一卡通号' v-model='user.cardnum')
-          input.en(placeholder='Student card number' v-model='user.cardnum')
-        .field
-          input.zh(type='password' placeholder='统一身份认证密码' v-model='user.password')
-          input.en(type='password' placeholder='Combined identification password' v-model='user.password', @submit='login()')
-        .error(v-if='error')
-          .zh 登录出现问题，请重试
-          .en Something wrong, please try again.
-        button(v-if='loading')
-          .zh 登录中…
-          .en Loading...
-        button(v-else, @click='login()')
-          .zh 登录
-          .en Sign in
+      router-view(@login="isLogin = true")
 </template>
 
 <script>
   import logger from './logger'
   import api from './api'
   import cookie from 'js-cookie'
-  import qs from 'qs'
   import offline from 'offline-plugin/runtime'
   import live2d from './components/Live2D.vue'
 
@@ -51,65 +36,31 @@
     },
     data() {
       return {
+        isLogin: false,
         webapp: false,
-        english: false,
-        user: {
-          cardnum: '',
-          password: ''
-        },
-        error: false,
-        loading: false
+        english: false
       }
     },
     async created() {
       if (window.navigator.standalone) {
         this.webapp = true
       }
+      this.isLogin = !!cookie.getJSON('user').uuid
       offline.install()
       logger.bindAjax()
-      let user = cookie.getJSON('user')
-      if (user && typeof user === 'object') {
-        user.cardnum = user.cardnum || ''
-        user.password = user.password || ''
-        this.user = user
-      }
 
-      if (location.hash === '#/night') {
-        document.body.className += ' night'
-      }
+      setInterval(() => {
+        this.isLogin = location.hash === '#/'
+      }, 500)
     },
     methods: {
       toggleLanguage() {
         this.english = !this.english
       },
-      async login() {
-        if (!/^2\d{8}$/.test(this.user.cardnum) || !this.user.password.trim()) {
-          this.error = true
-        }
-
-        this.loading = true
-        let res = await api.post('/uc/auth', {
-          appid: '9f9ce5c3605178daadc2d85ce9f8e064',
-          user: this.user.cardnum,
-          password: this.user.password
-        })
-        this.loading = false
-        if (res.status >= 400) {
-          this.error = true
-          this.user.password = ''
-        } else {
-          this.error = false
-          this.user.uuid = res.data
-          cookie.set('user', this.user, { expires: 365 })
-        }
-      },
       logout() {
-        this.user = {
-          cardnum: '',
-          password: ''
-        }
-        cookie.set('user', this.user, { expires: 365 })
-        cookie.set('curriculum', null, { expires: 365 })
+        cookie.set('user', this.user, {expires: 365})
+        cookie.set('curriculum', null, {expires: 365})
+        location.hash = '#/login'
       }
     }
   }
@@ -135,12 +86,6 @@
     html, body
       margin 0
       padding 0
-
-      &.night
-        background #000
-        color #ccc
-        --divider-color #333
-        --theme-color #6099b8
 
     p
       margin-top 0
@@ -170,10 +115,6 @@
       -o-transition .2s
       transition .2s
 
-    .night button
-      background #555
-      color #ccc
-
     button:active
       background #212121
 
@@ -182,10 +123,6 @@
       background #fafafa
       box-sizing border-box
 
-    .night input
-      background #212121
-      color #888
-
     input, input:focus
       -webkit-appearance none
       -moz-appearance none
@@ -193,9 +130,6 @@
 
     .lang-en .zh, .lang-zh .en
       display none
-
-    .night img
-      -webkit-filter brightness(0.8)
 
   #app
     padding 0
@@ -232,9 +166,6 @@
         width 56px
         height 56px
 
-      .night &
-        background #000
-
         img.logo
           -webkit-filter invert()
 
@@ -268,9 +199,6 @@
           padding 0 10px
           cursor pointer
 
-          .night &
-            color #888
-
           &.lang
             background var(--theme-color)
             color #fff
@@ -285,48 +213,6 @@
       margin 0 auto
       padding 70px 15px 10px
       overflow scroll
-
-      .login
-        width 400px
-        margin 150px auto
-        padding 60px 40px
-        box-sizing border-box
-        text-align center
-
-        display flex
-        flex-direction column
-        align-items flex-start
-
-        -webkit-user-select: none
-        -moz-user-select: none
-        -ms-user-select: none
-        user-select: none
-
-        @media screen and (max-width: 600px)
-          margin 80px auto
-          width auto
-
-        >*
-          margin-top 10px
-
-        .title
-          font-size 18px
-          color #fff
-          padding 5px 10px
-          background var(--theme-color)
-
-        input
-          width 260px
-
-        button
-          font-size 16px
-          padding 5px 10px
-
-        .error
-          font-size 14px
-          color #fff
-          background #cc5e6f
-          padding 5px 10px
 
     // iOS Webapp 顶栏样式
     &.webapp

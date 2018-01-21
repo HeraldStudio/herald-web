@@ -41,6 +41,10 @@
       followCursor: {
         type: Boolean,
         default: true
+      },
+      autoEmotion: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -54,6 +58,9 @@
     },
     created() {
       this.autoBlink()
+      if (this.autoEmotion) {
+        this.autoEmote()
+      }
       if (this.followCursor) {
         document.onmousemove = (ev) => {
           let el = document.getElementById('live2d')
@@ -66,7 +73,7 @@
       }
     },
     methods: {
-      async animate(name, time = 1000) {
+      async animate(name, time = 1500) {
         if (!this.animating) {
           this.animating = true
           this.curState = name
@@ -87,6 +94,12 @@
           await timeout(100)
           await this.animate('blink', 100)
           await timeout(Math.random() * 3000 + 5000)
+        }
+      },
+      async autoEmote() {
+        while (true) {
+          await this.animateRandom()
+          await timeout(Math.random() * 3000 + 10000)
         }
       }
     }
