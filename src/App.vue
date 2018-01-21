@@ -2,7 +2,8 @@
   #app(:class='{ webapp: webapp, "lang-en": english, "lang-zh": !english }')
     .header
       img.logo(src='static/images/logo.png')
-      live2d
+      .live2d-container
+        live2d
       ul.nav
         a
           li(@click='logout()' v-if='user.uuid')
@@ -73,14 +74,8 @@
         this.user = user
       }
 
-      if (/#\/night\/?((.*?)\/(.*?))?$/.test(location.hash)) { // 自用 屏保登录
+      if (location.hash === '#/night') {
         document.body.className += ' night'
-        let [cardnum, password] = [RegExp.$2, RegExp.$3]
-        if (!this.user.uuid && cardnum && password) {
-          this.user.cardnum = cardnum
-          this.user.password = password
-          await this.login()
-        }
       }
     },
     methods: {
@@ -229,6 +224,13 @@
       -moz-user-select: none
       -ms-user-select: none
       user-select: none
+
+      .live2d-container
+        position absolute
+        left 16px
+        top 2px
+        width 56px
+        height 56px
 
       .night &
         background #000

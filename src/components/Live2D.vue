@@ -37,6 +37,12 @@
   }
 
   export default {
+    props: {
+      followCursor: {
+        type: Boolean,
+        default: true
+      }
+    },
     data() {
       return {
         animating: false,
@@ -48,13 +54,15 @@
     },
     created() {
       this.autoBlink()
-      document.onmousemove = (ev) => {
-        let el = document.getElementById('live2d')
-        let x = ev.clientX - (getOffsetLeft(el) + el.clientWidth / 2)
-        let y = ev.clientY - (getOffsetTop(el) + el.clientHeight / 2)
-        let l = Math.max(Math.sqrt(x * x + y * y), 40)
-        this.mouseX = x / l
-        this.mouseY = y / l
+      if (this.followCursor) {
+        document.onmousemove = (ev) => {
+          let el = document.getElementById('live2d')
+          let x = ev.clientX - (getOffsetLeft(el) + el.clientWidth / 2)
+          let y = ev.clientY - (getOffsetTop(el) + el.clientHeight / 2)
+          let l = Math.max(Math.sqrt(x * x + y * y), 40)
+          this.mouseX = x / l
+          this.mouseY = y / l
+        }
       }
     },
     methods: {
@@ -89,11 +97,10 @@
 
   #live2d
     position absolute
-    left 16px
-    top 2px
-    width 56px
-    height 56px
-    z-index 999
+    left 0
+    right 0
+    top 0
+    bottom 0
 
     .bg
       position absolute

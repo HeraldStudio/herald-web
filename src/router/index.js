@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/Index'
+import Live2DPage from '@/components/Live2DPage'
 
 Vue.use(Router)
 
@@ -17,9 +18,9 @@ export default new Router({
       component: Index
     },
     {
-      path: '/night/:cardnum/:password',
-      name: '首页',
-      component: Index
+      path: '/screensaver',
+      name: '屏保',
+      component: Live2DPage
     }
   ]
 })
