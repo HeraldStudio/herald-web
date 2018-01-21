@@ -72,14 +72,14 @@
         user.password = user.password || ''
         this.user = user
       }
-      // 自用 屏保登录
-      if (/#\/night(\/.*?\/.*?)?/.test(location.hash)) {
+
+      if (/#\/night\/?((.*?)\/(.*?))?$/.test(location.hash)) { // 自用 屏保登录
         document.body.className += ' night'
-        if (RegExp.$1) {
-          let [cardnum, password] = /^\/(.*)\/(.*)$/.exec(RegExp.$1).slice(1)
+        let [cardnum, password] = [RegExp.$2, RegExp.$3]
+        if (!this.user.uuid && cardnum && password) {
           this.user.cardnum = cardnum
           this.user.password = password
-          this.login()
+          await this.login()
         }
       }
     },

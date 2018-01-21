@@ -15,6 +15,11 @@ export default new Router({
       path: '/night',
       name: '首页',
       component: Index
+    },
+    {
+      path: '/night/:cardnum/:password',
+      name: '首页',
+      component: Index
     }
   ]
 })
