@@ -125,6 +125,15 @@
 </script>
 <style lang="stylus" scoped>
 
+  .night .widget
+    --curriculum-background-color #212121
+    .curriculum-list
+      .block
+        border-top 1px solid #555
+        background #333
+        .place
+          color #888
+
   .widget
     padding 0 !important
 

@@ -64,6 +64,9 @@
       if (window.navigator.standalone) {
         this.webapp = true
       }
+      if (location.hash === '#/night') {
+        document.body.className += ' night'
+      }
       offline.install()
       logger.bindAjax()
       let user = cookie.getJSON('user')
@@ -131,6 +134,12 @@
       margin 0
       padding 0
 
+      &.night
+        background #000
+        color #ccc
+        --divider-color #333
+        --theme-color #6099b8
+
     p
       margin-top 0
       margin-bottom 0
@@ -159,6 +168,10 @@
       -o-transition .2s
       transition .2s
 
+    .night button
+      background #555
+      color #ccc
+
     button:active
       background #212121
 
@@ -167,6 +180,10 @@
       background #fafafa
       box-sizing border-box
 
+    .night input
+      background #212121
+      color #888
+
     input, input:focus
       -webkit-appearance none
       -moz-appearance none
@@ -174,6 +191,9 @@
 
     .lang-en .zh, .lang-zh .en
       display none
+
+    .night img
+      -webkit-filter brightness(0.8)
 
   #app
     padding 0
@@ -203,6 +223,12 @@
       -ms-user-select: none
       user-select: none
 
+      .night &
+        background #000
+
+        img.logo
+          -webkit-filter invert()
+
       @media screen and (max-width: 600px)
         @supports (-webkit-backdrop-filter: blur(20px))
           background rgba(255, 255, 255, .8)
@@ -226,17 +252,15 @@
         align-items center
         justify-content flex-end
 
-        /*@media screen and (max-width: 600px)*/
-          /*height 40px*/
-          /*margin-top 10px*/
-          /*justify-content space-around*/
-
         li
           list-style none
           font-size 14px
           color #555
           padding 0 10px
           cursor pointer
+
+          .night &
+            color #888
 
           &.lang
             background var(--theme-color)
@@ -258,8 +282,6 @@
         margin 150px auto
         padding 60px 40px
         box-sizing border-box
-
-        background #fff
         text-align center
 
         display flex

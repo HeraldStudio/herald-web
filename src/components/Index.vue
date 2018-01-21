@@ -5,8 +5,8 @@
       card
       pe
       exam
-      curriculum
     .widgets
+      curriculum
       experiment
       grade
       srtp
@@ -51,6 +51,14 @@
 
 <style lang="stylus">
 
+  .night .widgets .widget
+    background #212121 !important
+    border 1px solid transparent !important
+
+    .title
+      background #212121 !important
+      color #888 !important
+
   .columns
     display flex
     flex-direction row
@@ -74,7 +82,7 @@
         position relative
         margin 40px 10px 10px
         padding 20px 15px
-        box-shadow 0 0 15px rgba(0, 0, 0, .05)
+        box-shadow 0 3px 15px rgba(0, 0, 0, .07)
         border 1px solid transparent
         width 380px
         box-sizing border-box
@@ -83,7 +91,6 @@
         -ms-transition: .3s
         -o-transition: .3s
         transition: .3s
-        border-top 1px dashed #aaa
 
         @media screen and (min-width: 600px)
           &:hover

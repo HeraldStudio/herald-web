@@ -10,6 +10,11 @@ export default new Router({
       path: '/',
       name: '首页',
       component: Index
+    },
+    {
+      path: '/night',
+      name: '首页',
+      component: Index
     }
   ]
 })
