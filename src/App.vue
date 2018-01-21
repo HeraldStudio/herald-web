@@ -14,7 +14,7 @@
             .zh en
             .en zh
     .container
-      router-view(v-if='user.uuid')
+      router-view(v-if='user.uuid || $route.path === "/screensaver"')
       .login(v-else)
         .title
           .zh 统一身份认证
