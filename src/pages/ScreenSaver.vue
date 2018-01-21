@@ -35,6 +35,5 @@
       width 200px
       height 200px
       position relative
-      -webkit-filter brightness(0.6)
 
 </style>
