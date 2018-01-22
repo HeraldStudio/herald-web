@@ -61,8 +61,8 @@ export default {
 
     let dday = parseInt((date.getTime() - today.getTime()) / 1000 / 60 / 60 / 24)
     if (dday === 0) {
-      return ''
-    } // 省略今天
+      return '今天'
+    }
     if (dday === 1) {
       return '明天'
     }
