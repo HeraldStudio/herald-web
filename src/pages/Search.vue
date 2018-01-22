@@ -27,6 +27,7 @@
               span.text … {{ appear.left }}
               span.highlight {{ appear.keyword }}
               span.text {{ appear.right }} …
+          .href {{ row.href }}
       .result.next(v-if='result.rows.length < result.count', @click='loadMore()')
         .zh 加载更多
         .en Load more
@@ -196,5 +197,10 @@
 
                 .highlight
                   color var(--theme-color)
+
+            .href
+              font-size 14px
+              color #888
+              margin-top 10px
 
 </style>
