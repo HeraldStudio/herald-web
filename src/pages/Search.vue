@@ -9,9 +9,9 @@
         .summary
           .zh 已收录条目 {{ count }}
           .en Included entries {{ count }}
-      form.field
-        input(v-model='query')
-        button(type='submit', @click='search()', :class='{ error: error }')
+      .field
+        input(v-model='query', @keyup.enter='search()')
+        button(@click='search()', :class='{ error: error }')
           .zh 搜索
           .en Search
     .results(v-if='result.rows')
