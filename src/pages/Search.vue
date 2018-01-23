@@ -203,13 +203,16 @@
               font-weight bold
               white-space nowrap
               overflow hidden
+              word-break break-all
+              text-overflow ellipsis
 
             .href
-              flex 0 0 auto
+              flex 0 2 auto
               font-size 14px
               font-weight bold
               white-space nowrap
               overflow hidden
+              text-overflow ellipsis
               color #fff
               background var(--theme-color)
               padding 0 5px
