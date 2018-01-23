@@ -196,15 +196,19 @@
               flex-direction row
               align-items center
               margin-bottom 5px
+              overflow hidden
+              flex-wrap wrap
 
             .title
-              flex 0 0 auto
+              flex 0 1 auto
               font-size 18px
               font-weight bold
               white-space nowrap
               overflow hidden
               word-break break-all
               text-overflow ellipsis
+              margin-right 10px
+              padding 5px 0
 
             .href
               flex 0 1 auto
@@ -217,7 +221,6 @@
               background var(--theme-color)
               padding 0 5px
               word-break break-all
-              margin-left 10px
 
             .appears
               display flex
