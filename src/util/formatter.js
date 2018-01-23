@@ -17,7 +17,7 @@ export default {
       return Math.abs(dmin) + '分钟' + (dmin < 0 ? '前' : '后')
     }
     let dhr = Math.round(dmin / 60)
-    if (date.getDate() === now.getDate()) {
+    if (Math.abs(dhr) < 24 && date.getDate() === now.getDate()) {
       return Math.abs(dhr) + '小时' + (dhr < 0 ? '前' : '后')
     }
     return this.formatDateNatural(timestamp)

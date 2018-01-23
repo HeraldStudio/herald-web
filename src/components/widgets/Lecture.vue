@@ -50,7 +50,7 @@
           date.setHours(h)
           date.setMinutes(m)
           date.setSeconds(s)
-          k.date = formatter.formatTimeNatural(date)
+          k.date = formatter.formatDateNatural(date)
           return k
         })
       }
