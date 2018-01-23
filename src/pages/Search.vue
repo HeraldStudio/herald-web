@@ -198,7 +198,7 @@
               margin-bottom 5px
 
             .title
-              flex 0 1 auto
+              flex 0 0 auto
               font-size 18px
               font-weight bold
               white-space nowrap
@@ -207,7 +207,7 @@
               text-overflow ellipsis
 
             .href
-              flex 0 2 auto
+              flex 0 1 auto
               font-size 14px
               font-weight bold
               white-space nowrap
@@ -249,6 +249,7 @@
                   text-overflow ellipsis
                   display flex
                   flex-direction row
+                  font-size 14px
 
                 .left
                   flex 1 1 0
