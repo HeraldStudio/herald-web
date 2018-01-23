@@ -43,6 +43,7 @@
       return {
         count: '...',
         query: '',
+        searching: '',
         error: false,
         result: {},
         page: 0
@@ -57,11 +58,12 @@
           this.error = true
         } else {
           this.error = false
-          this.result = (await api.get('https://boss.myseu.cn/search/?q=' + this.query)).data
+          this.searching = this.query
+          this.result = (await api.get('https://boss.myseu.cn/search/?q=' + this.searching)).data
         }
       },
       async loadMore() {
-        let result = (await api.get('https://boss.myseu.cn/search/?q=' + this.query + '&page=' + (this.page + 1))).data
+        let result = (await api.get('https://boss.myseu.cn/search/?q=' + this.searching + '&page=' + (this.page + 1))).data
         this.result.rows = this.result.rows.concat(result.rows)
         this.page += 1
       }
@@ -202,5 +204,6 @@
               font-size 14px
               color #888
               margin-top 10px
+              word-break break-all
 
 </style>
