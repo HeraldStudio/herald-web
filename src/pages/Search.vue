@@ -20,14 +20,18 @@
         .en Found {{ result.count }} entries
       .result(v-for='row in result.rows')
         a(:href='row.href' target='_blank')
-          .title.zh {{ row.title || '无标题' }}
-          .title.en {{ row.title || 'No title' }}
+          .title-line
+            .title
+              .zh {{ row.title || '无标题' }}
+              .en {{ row.title || 'No title' }}
+            .href {{ row.href }}
           .appears
             .appear(v-for='appear in row.appears')
-              span.text … {{ appear.left }}
-              span.highlight {{ appear.keyword }}
-              span.text {{ appear.right }} …
-          .href {{ row.href }}
+              span.left
+                span.inner {{ appear.left }}
+              span.keyword {{ appear.keyword }}
+              span.right
+                span.inner {{ appear.right }} …
       .result.next(v-if='result.rows.length < result.count', @click='loadMore()')
         .zh 加载更多
         .en Load more
@@ -143,7 +147,7 @@
       width 100%
       max-width 800px
       margin 0 auto
-      padding 20px 0
+      padding 20px 10px
       align-items center
 
       .search-box
@@ -160,7 +164,6 @@
         flex-direction column
         align-items center
         text-align left
-        padding 0 20px
 
         .summary
           color #888
@@ -170,40 +173,91 @@
 
         .result
           width 100%
-          box-shadow 0 0 15px rgba(0, 0, 0, .05)
-          margin-bottom 15px
-          padding 0 20px
+          padding-bottom 10px
+          margin-bottom 10px
+          border-bottom 1px solid var(--divider-color)
 
           &.next
             text-align center
-            padding 20px
+            padding 20px 0
             color #888
+            border none
             cursor pointer
+
+            *
+              cursor pointer
 
           a
             display block
             padding 20px 0
 
+            .title-line
+              display flex
+              flex-direction row
+              align-items center
+              margin-bottom 5px
+
             .title
+              flex 0 1 auto
               font-size 18px
               font-weight bold
+              white-space nowrap
+              overflow hidden
+
+            .href
+              flex 0 0 auto
+              font-size 14px
+              font-weight bold
+              white-space nowrap
+              overflow hidden
+              color #fff
+              background var(--theme-color)
+              padding 0 5px
+              word-break break-all
+              margin-left 10px
 
             .appears
               display flex
               flex-direction column
+              position relative
+
+              &::before
+                content ''
+                position absolute
+                left 0
+                right 0
+                top 0
+                bottom 0
+                border-left 10px solid rgba(255, 255, 255, .8)
+                border-right 10px solid rgba(255, 255, 255, .8)
+                z-index 99
 
               .appear
                 margin-top 5px
                 font-size 14px
                 color #888
+                display flex
+                flex-direction row
+                justify-content center
 
-                .highlight
-                  color var(--theme-color)
+                .left, .right, .keyword
+                  overflow hidden
+                  white-space nowrap
+                  text-overflow ellipsis
+                  display flex
+                  flex-direction row
 
-            .href
-              font-size 14px
-              color #888
-              margin-top 10px
-              word-break break-all
+                .left
+                  flex 1 1 0
+                  flex-direction row-reverse
+                  text-align right
+
+                .right
+                  flex 5 5 0
+
+                .keyword
+                  flex 0 0 auto
+                  font-weight bold
+                  color #333
 
 </style>
