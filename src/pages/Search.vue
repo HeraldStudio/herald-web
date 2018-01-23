@@ -258,6 +258,7 @@
 
                 .right
                   flex 5 5 0
+                  text-align left
 
                 .keyword
                   flex 0 0 auto
