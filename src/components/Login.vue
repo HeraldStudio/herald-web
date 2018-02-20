@@ -23,15 +23,15 @@
 </template>
 <script>
 
-  import api from '../api'
-  import cookie from 'js-cookie'
+  import H from '../api'
 
   export default {
     data() {
       return {
         user: {
           cardnum: '',
-          password: ''
+          password: '',
+          platform: 'web'
         },
         error: false,
         loading: false
@@ -47,21 +47,14 @@
         }
 
         this.loading = true
-        let res = await api.post('/uc/auth', {
-          appid: '9f9ce5c3605178daadc2d85ce9f8e064',
-          user: this.user.cardnum,
-          password: this.user.password
-        })
-        this.loading = false
-        if (res.status >= 400) {
+        this.error = false
+        try {
+          await H.auth.post(this.user)
+        } catch (e) {
           this.error = true
           this.user.password = ''
-        } else {
-          this.error = false
-          this.user.uuid = res.data
-          cookie.set('user', this.user, {expires: 365})
-          location.href = '#/'
         }
+        this.loading = false
       }
     }
   }

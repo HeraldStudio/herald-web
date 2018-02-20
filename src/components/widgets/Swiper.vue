@@ -1,12 +1,12 @@
 <template lang="pug">
-   
+
   .widget.swiper(v-show='swiper.length')
     swiper.swiper(:auto="5000", :loop="true", :speed="500", :dots="false", :watch-items="swiper")
       swiper-item.swiper-item(v-for='page in swiper')
         a(v-if='page.url', :href='page.url' target="_blank")
           img(:src='page.imageurl' ondragstart="return false")
         img(v-else :src='page.imageurl' ondragstart="return false")
-   
+
 </template>
 <script>
 
@@ -34,11 +34,11 @@
           versionname: 'web',
           versioncode: '',
           schoolnum: ''
-        })).data.content.sliderviews
+        })).content.sliderviews
       }
     }
   }
-  
+
 </script>
 <style>
 

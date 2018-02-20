@@ -79,8 +79,8 @@
       async reload() {
         this.curDate = new Date().getTime()
         this.pe = (await api.post('/api/pe')).data
-        this.pc = (await api.post('/api/pc')).data.content
-        this.pedetail = (await api.post('/api/pedetail')).data.content.map(k => {
+        this.pc = (await api.post('/api/pc')).result
+        this.pedetail = (await api.post('/api/pedetail')).result.map(k => {
           let date = new Date()
           let [y, M, d] = k.sign_date.split('-').map(i => parseInt(i))
           let h = Math.floor(k.sign_time)

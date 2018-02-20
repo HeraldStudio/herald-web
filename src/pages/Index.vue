@@ -1,26 +1,27 @@
 <template lang=pug>
-  .columns
+  .columns(v-if='isLogin')
     .widgets
-      swiper
+      // swiper
       card
-      pe
+      curriculum
+      // pe
       exam
     .widgets
-      curriculum
       experiment
       grade
       srtp
+      lecture
     .widgets
       notice
-      lecture
+  login(v-else)
 </template>
 
 <script>
-  import api from '../api'
-  import cookie from 'js-cookie'
-  import swiper from '../components/widgets/Swiper.vue'
+  import H from '../api'
+  import login from '../components/Login.vue'
+  // import swiper from '../components/widgets/Swiper.vue'
   import card from '../components/widgets/Card.vue'
-  import pe from '../components/widgets/Pe.vue'
+  // import pe from '../components/widgets/Pe.vue'
   import exam from '../components/widgets/Exam.vue'
   import lecture from '../components/widgets/Lecture.vue'
   import curriculum from '../components/widgets/Curriculum.vue'
@@ -30,9 +31,11 @@
   import notice from '../components/widgets/Notice.vue'
 
   export default {
+    props: ['isLogin'],
     components: {
-      swiper,
-      card, pe, curriculum,
+      login,
+      // swiper,
+      card, /* pe, */ curriculum,
       exam, lecture, experiment, srtp, grade,
       notice
     },
@@ -42,9 +45,7 @@
       }
     },
     async created () {
-      if (!cookie.getJSON('user').uuid) {
-        location.href = '#/login'
-      }
+
     },
     methods: {
 

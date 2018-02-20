@@ -1,5 +1,5 @@
 <template lang="pug">
-   
+
   .widget.curriculum
     .title
       .zh 课程表
@@ -7,121 +7,88 @@
       .reload(@click='reload()')
     .week-picker
       .prev-week(@click='prevWeek()') <
-      .cur-week.zh 第 {{ curWeekIndex }} 周
-      .cur-week.en Week {{ curWeekIndex }}
+      .cur-week.zh 第 {{ displayWeek }} 周
+      .cur-week.en Week {{ displayWeek }}
       .next-week(@click='nextWeek()') >
     .week-header
       .weekday.zh(v-for='item in "一二三四五六日"') {{ item }}
       .weekday.en(v-for='item in ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]') {{ item }}
-    .curriculum-list(:class='{ empty: !curWeek.length }')
-      .block(v-for='item in curWeek',
-        :style="'left: ' + item.weekday / 7 * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 100 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 100 + '%'")
-        .name {{ item.name }}
-        .place {{ item.place }}
-      .empty(v-if='!curWeek.length') 暂无课程
-   
+    .curriculum-list(:class='{ empty: !displayClasses.length }')
+      .block(v-for='item in displayClasses' v-if='item.dayOfWeek'
+        :style="'left: ' + (item.dayOfWeek - 1) / 7 * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 100 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 100 + '%'")
+        .name {{ item.courseName }}
+        .place {{ item.location }}
+      .empty(v-if='!displayClasses.length') 暂无课程
+    ul.detail-list
+      li(v-for='item in displayClasses' v-if='!item.dayOfWeek')
+        .top
+          .left {{ item.courseName }}
+          .right {{ item.teacherName }}
+        .bottom
+          .left
+            .zh {{ item.beginWeek }}-{{ item.endWeek }}周
+            .en Weeks {{ item.beginWeek }}-{{ item.endWeek }}
+          .right(v-if='item.credit')
+            .zh {{ item.credit }} 学分
+            .en {{ item.credit }} Credits
+
 </template>
 <script>
 
-  import api from '../../api'
-  import formatter from "../../util/formatter";
-  import cookie from 'js-cookie'
+  import H from '../../api'
 
   export default {
     data() {
       return {
-        curriculum: null,
-        current: null
+        term: null,
+        curriculum: [],
+        displayWeek: 1,
+        currentWeek: 1,
+        currentDayOfWeek: 1
       }
     },
     created() {
-      this.current = new Date().getTime()
-      this.loadCache()
+      this.reload()
     },
     methods: {
-      async loadCache() {
-        this.curriculum = cookie.getJSON('curriculum') || null
-        if (!this.curriculum) {
-          await this.reload()
+      async reload() {
+        let { curriculum, term } = await H.api.curriculum()
+        this.curriculum = curriculum
+        this.term = term
+
+        if (term.startDate) {
+          let now = new Date()
+          this.currentWeek = Math.max(1, Math.ceil((now.getTime() - term.startDate) / (1000 * 60 * 60 * 24 * 7)))
+          this.currentDayOfWeek = (now.getDay() + 6) % 7 + 1
+          this.displayWeek = this.currentWeek
+        } else {
+          this.currentWeek = 1
+          this.currentDayOfWeek = 0
+          this.displayWeek = this.currentWeek
         }
       },
-      async reload() {
-        const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        let res = (await api.post('/api/curriculum')).data
-        let curriculum = res.content
-        let term = res.term
-        let sidebar = res.sidebar.map(k => {
-          let {lecturer, course, week, credit} = k
-          let teacher = lecturer
-          let name = course.trim()
-          let [beginWeek, endWeek] = week.match(/\d+/g)
-          return {teacher, name, beginWeek, endWeek, credit}
-        })
-
-        let [beginYear, endYear, semester] = term.split('-')
-        beginYear = '20' + beginYear
-        endYear = '20' + endYear
-        let semBeginYear = parseInt(semester) === 3 ? endYear : beginYear
-        let {month, day} = curriculum.startdate
-        let startDate = new Date(semBeginYear, month, day).getTime()
-
-        let courses = weekdays.map((k, i) => (curriculum[k] || []).map(j => {
-          let weekday = i
-          let [name, period, place] = j
-          name = name.trim()
-          let [beginWeek, endWeek, beginPeriod, endPeriod] = period.match(/\d+/g)
-          let flip = 'none'
-          if (/^\(单\)/.test(place)) {
-            flip = 'odd'
-          } else if (/^\(双\)/.test(place)) {
-            flip = 'even'
-          }
-          place = place.replace(/^\([单双]\)/, '')
-
-          let info = sidebar.filter(s => s.name === name && s.beginWeek === beginWeek && s.endWeek === endWeek)[0] || {}
-          let teacher = info.teacher || ''
-          let credit = info.credit || ''
-
-          j = {name, place, weekday, beginPeriod, endPeriod, beginWeek, endWeek, flip, teacher, credit}
-          return j
-        })).reduce((a, b) => a.concat(b), [])
-
-        this.curriculum = {courses, startDate}
-        cookie.set('curriculum', this.curriculum, { expires: 365 })
-      },
       prevWeek() {
-        if (this.curWeekIndex > 1) {
-          this.current -= 1000 * 60 * 60 * 24 * 7
+        if (this.displayWeek > 1) {
+          this.displayWeek -= 1
         }
       },
       nextWeek() {
-        this.current += 1000 * 60 * 60 * 24 * 7
+        if (this.displayWeek < this.term.maxWeek) {
+          this.displayWeek += 1
+        }
       }
     },
     computed: {
-      curWeekIndex() {
-        return Math.max(1, Math.ceil((this.current - this.curriculum.startDate) / (1000 * 60 * 60 * 24 * 7)))
-      },
-      curWeek() {
-        if (!this.curriculum) {
-          return []
-        }
-
-        let curWeek = this.curWeekIndex
-        return this.curriculum.courses.filter(k => {
-          let available = true
-          if (k.beginWeek > curWeek || k.endWeek < curWeek) {
-            available = false
-          }
-          if (k.flip === 'even' && curWeek % 2 === 1 || k.flip === 'odd' && curWeek % 2 === 0) {
-            available = false
-          }
-          return available
-        })
+      displayClasses() {
+        return this.curriculum.filter(k =>
+          k.beginWeek <= this.displayWeek &&
+          k.endWeek >= this.displayWeek &&
+          this.displayWeek % 2 !== ['odd', 'even'].indexOf(k.flip)
+        )
       }
     }
   }
-  
+
 </script>
 <style lang="stylus" scoped>
 
@@ -159,6 +126,10 @@
 
         +.weekday
           margin-left 1px
+
+    .detail-list
+      padding 20px 15px !important
+      box-sizing border-box
 
     .curriculum-list
       height 432px

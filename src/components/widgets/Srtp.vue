@@ -1,5 +1,5 @@
 <template lang="pug">
-   
+
   .widget.srtp
     .title
       .zh SRTP
@@ -14,25 +14,25 @@
           .title
             .zh SRTP学分
             .en SRTP points
-          .content {{ srtp[0].total }}
+          .content {{ srtp.info.points }}
         li.info
           .title
             .zh SRTP状态
             .en SRTP grade
-          .content {{ srtp[0].score }}
+          .content {{ srtp.info.grade }}
       ul.detail-list
-        li(v-for='k in srtp.slice(1)')
+        li(v-for='k in srtp.projects')
           .top
             .left {{ k.project }}
           .bottom
-            .left {{ k.credit + (k.proportion ? ' (' + k.proportion + ')' : '') }}
+            .left {{ k.credit + (k.proportion !== 1 ? ' (' + k.proportion * 100 + '%)' : '') }}
             .right {{ k.date + ' · ' + k.type }}
-   
+
 </template>
 <script>
 
-  import api from '../../api'
-  import formatter from "../../util/formatter";
+  import H from '../../api'
+  import formatter from '../../util/formatter'
 
   export default {
     data() {
@@ -45,9 +45,9 @@
     },
     methods: {
       async reload() {
-        this.srtp = (await api.post('/api/srtp')).data.content
+        this.srtp = await H.api.srtp()
       }
     }
   }
-  
+
 </script>

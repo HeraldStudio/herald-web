@@ -1,11 +1,11 @@
 <template lang="pug">
 
-  .widget.grade
+  .widget.gpa
     .title
       .zh 成绩
       .en GPA
       .reload(@click='reload()')
-    .empty(v-if='!grade')
+    .empty(v-if='!gpa')
       .zh 加载中
       .en Loading...
     div(v-else)
@@ -14,45 +14,46 @@
           .title
             .zh 当前绩点
             .en Current GPA
-          .content {{ grade[0].gpa || '未计算' }}
+          .content {{ gpa.gpa || '未计算' }}
         li.info
           .title
             .zh 首修绩点
             .en GPA without revamp
-          .content {{ grade[0]['gpa without revamp'] || '未计算' }}
-        li.info(v-if="grade[0]['calculate time']")
+          .content {{ gpa.gpaBeforeRetake || '未计算' }}
+        li.info(v-if="gpa.calculationTime")
           .title
             .zh 计算时间
             .en Calculation time
-            span {{ grade[0]['calculate time'] }}
+            span {{ formatTimeNatural(gpa.calculationTime) }}
       ul.detail-list
-        li(v-for='k in grade.slice(1)' v-if='k.semester == grade[1].semester')
+        li(v-for='k in gpa.detail' v-if='k.semester === gpa.detail[0].semester')
           .top
-            .left {{ k.name }}
+            .left {{ k.courseName }}
           .bottom
-            .left {{ k.semester + ' ' + k.type + ' ' + k.credit + '学分' }}
+            .left {{ k.semester + ' ' + k.courseType + ' ' + k.credit + '学分' }}
             .right {{ '成绩：' + k.score }}
 
 </template>
 <script>
 
-  import api from '../../api'
-  import formatter from "../../util/formatter";
+  import H from '../../api'
+  import formatter from '../../util/formatter'
 
   export default {
     data() {
       return {
-        grade: null
+        gpa: null
       }
     },
     created() {
       this.reload()
     },
     methods: {
+      ...formatter,
       async reload() {
-        this.grade = (await api.post('/api/gpa')).data.content
+        this.gpa = await H.api.gpa()
       }
     }
   }
-  
+
 </script>

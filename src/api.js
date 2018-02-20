@@ -1,24 +1,21 @@
-import axios from 'axios'
-import qs from 'qs'
-import cookie from 'js-cookie'
+import herald from 'herald-js'
 
-export default axios.create({
-  baseURL: 'https://www.heraldstudio.com/',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
+const H = herald({
+  onLogin () {
+    console.log('onLogin')
+    location.hash = '#/'
   },
-  transformRequest(req) {
-    if (typeof req === 'object') {
-      req = qs.stringify(req)
-    }
-    if (!/^uuid=|&uuid=/.test(req)) {
-      let user = cookie.getJSON('user')
-      if (typeof user === 'object' && user.uuid) {
-        req = 'uuid=' + user.uuid + (req ? '&' + req : '')
-      }
-    }
-    return req
+  onLogout () {
+    console.log('onLogout')
+    location.hash = '#/login'
   },
-  timeout: 15000,
-  validateStatus: () => true
+  onError (e) {
+    console.log('onError', H.isLogin, e)
+    if (e.code === 401 && H.isLogin) {
+      H.deauth()
+    }
+    return null // 返回 null 给调用者，vue 层要做 null 判断
+  }
 })
+
+export default H

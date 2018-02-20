@@ -6,10 +6,6 @@
         .live2d-container
           live2d
       ul.nav
-        router-link(to='/search')
-          li
-            .zh 搜索
-            .en Search
         a
           li(@click='logout()' v-if='isLogin')
             .zh 退出登录
@@ -19,13 +15,12 @@
             .zh en
             .en zh
     .container
-      router-view(@login="isLogin = true")
+      router-view(:is-login='isLogin')
 </template>
 
 <script>
   import logger from './logger'
-  import api from './api'
-  import cookie from 'js-cookie'
+  import H from './api'
   import offline from 'offline-plugin/runtime'
   import live2d from './components/Live2D.vue'
 
@@ -45,22 +40,22 @@
       if (window.navigator.standalone) {
         this.webapp = true
       }
-      this.isLogin = !!cookie.getJSON('user').uuid
       offline.install()
       logger.bindAjax()
 
-      setInterval(() => {
-        this.isLogin = location.hash === '#/'
-      }, 500)
+      let checkLogin = () => {
+        this.isLogin = H.isLogin
+        setTimeout(checkLogin, 500)
+      }
+
+      setTimeout(checkLogin, 100)
     },
     methods: {
       toggleLanguage() {
         this.english = !this.english
       },
       logout() {
-        cookie.set('user', this.user, {expires: 365})
-        cookie.set('curriculum', null, {expires: 365})
-        location.hash = '#/login'
+        H.deauth()
       }
     }
   }

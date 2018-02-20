@@ -1,5 +1,3 @@
-import api from './api'
-
 export class Log {
   format = ''
   objects = []
@@ -77,21 +75,13 @@ export default {
         return
       }
 
-      let prefix = new RegExp(api.defaults.baseURL + '(.*)$')
-
       let xhrOpen = XMLHttpRequest.prototype.open
       let xhrSend = XMLHttpRequest.prototype.send
-      new Log().blue('Base URL').cyan(api.defaults.baseURL).fire()
 
       function _resolveUrl (url) {
         const link = document.createElement('a')
         link.href = url
-        url = `${link.protocol}//${link.host}${link.pathname}${link.search}${link.hash}`
-        if (prefix.test(url)) {
-          return RegExp.$1
-        } else {
-          return url
-        }
+        return `${link.protocol}//${link.host}${link.pathname}${link.search}${link.hash}`
       }
 
       XMLHttpRequest.prototype.open = function (...args) {

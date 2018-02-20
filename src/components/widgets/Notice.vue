@@ -1,27 +1,28 @@
 <template lang="pug">
-   
+
   .widget.notice
     .title
       .zh 教务通知
       .en Notices
       .reload(@click='reload()')
     ul.detail-list
-      li(v-for='item in notices')
-        a(:href='item.href' target='_blank')
+      li(v-for='item in notices' :class='{ important: item.isImportant }')
+        a(:href='item.url' target='_blank')
           .top
             .left {{ item.title }}
           .bottom
-            .left.zh 发布于 {{ item.time }}
-            .left.en Published {{ item.time }}
+            .left.zh 发布于 {{ formatDateNatural(item.time) }}
+            .left.en Published at {{ formatDateNatural(item.time) }}
+            .right {{ item.category }}
     .empty(v-if='!notices.length')
       .zh 暂无通知
       .en Nothing here
-   
+
 </template>
 <script>
 
-  import api from '../../api'
-  import formatter from "../../util/formatter";
+  import H from '../../api'
+  import formatter from '../../util/formatter'
 
   export default {
     data() {
@@ -33,23 +34,16 @@
       this.reload()
     },
     methods: {
+      ...formatter,
       async reload() {
-        let now = new Date()
-        let notices = (await api.post('/api/jwc')).data.content
-        this.notices = Object.keys(notices)
-          .filter(k => k !== '最新动态')
-          .map(k => notices[k] || [])
-          .reduce((a, b) => a.concat(b), [])
-          .map(k => {
-            let [y, M, d] = k.date.split('-')
-            k.time = new Date(y, M - 1, d)
-            return k
-          }).filter(k => k.time > now - 1000 * 60 * 60 * 24 * 2).map(k => {
-            k.time = formatter.formatDateNatural(k.time)
-            return k
-          })
+        this.notices = await H.api.jwc()
       }
     }
   }
-  
+
 </script>
+<style>
+  .important .top .left {
+    font-weight: bold;
+  }
+</style>

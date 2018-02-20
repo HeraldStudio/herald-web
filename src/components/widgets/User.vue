@@ -28,7 +28,7 @@
     methods: {
       async reload() {
         let now = new Date()
-        this.exams = (await api.post('/api/exam')).data.content.map(k => {
+        this.exams = (await api.post('/api/exam')).result.map(k => {
           let [y, M, d, h, m] = k.time.split(/[- :(]/g)
           let date = new Date(y, M - 1, d)
           date.setHours(h)
