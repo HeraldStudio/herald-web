@@ -6,8 +6,8 @@
       .en Curriculum
       .reload(@click='reload()')
     .empty(v-if='!curriculum')
-      .zh 加载中
-      .en Loading...
+      .zh 加载课表需要时间，请耐心等待
+      .en Please wait...
     div(v-else)
       .week-picker
         .prev-week(@click='prevWeek()') <
@@ -133,6 +133,9 @@
 
         +.weekday
           margin-left 1px
+
+    .empty
+      padding 20px 15px !important
 
     .detail-list
       padding 20px 15px !important
