@@ -5,32 +5,39 @@
       .zh 课程表
       .en Curriculum
       .reload(@click='reload()')
-    .week-picker
-      .prev-week(@click='prevWeek()') <
-      .cur-week.zh 第 {{ displayWeek }} 周
-      .cur-week.en Week {{ displayWeek }}
-      .next-week(@click='nextWeek()') >
-    .week-header
-      .weekday.zh(v-for='item in "一二三四五六日"') {{ item }}
-      .weekday.en(v-for='item in ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]') {{ item }}
-    .curriculum-list(:class='{ empty: !displayClasses.length }')
-      .block(v-for='item in displayClasses' v-if='item.dayOfWeek'
-        :style="'left: ' + (item.dayOfWeek - 1) / 7 * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 100 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 100 + '%'")
-        .name {{ item.courseName }}
-        .place {{ item.location }}
-      .empty(v-if='!displayClasses.length') 暂无课程
-    ul.detail-list(v-if='displayClasses.length')
-      li(v-for='item in displayClasses' v-if='!item.dayOfWeek')
-        .top
-          .left {{ item.courseName }}
-          .right {{ item.teacherName }}
-        .bottom
-          .left
-            .zh {{ item.beginWeek }}-{{ item.endWeek }}周
-            .en Weeks {{ item.beginWeek }}-{{ item.endWeek }}
-          .right(v-if='item.credit')
-            .zh {{ item.credit }} 学分
-            .en {{ item.credit }} Credits
+    .empty(v-if='!curriculum')
+      .zh 加载中
+      .en Loading...
+    div(v-else)
+      .week-picker
+        .prev-week(@click='prevWeek()') <
+        .cur-week.zh 第 {{ displayWeek }} 周
+        .cur-week.en Week {{ displayWeek }}
+        .next-week(@click='nextWeek()') >
+      .week-header
+        .weekday.zh(v-for='item in "一二三四五六日"') {{ item }}
+        .weekday.en(v-for='item in ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]') {{ item }}
+      .curriculum-list(:class='{ empty: !displayClasses.length }')
+        .block(v-for='item in displayClasses' v-if='item.dayOfWeek'
+          :style="'left: ' + (item.dayOfWeek - 1) / 7 * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 100 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 100 + '%'")
+          .name {{ item.courseName }}
+          .place {{ item.location }}
+        .empty(v-if='!displayClasses.length') 暂无课程
+      ul.detail-list(v-if='displayClasses.find(k => !k.dayOfWeek)')
+        .hint
+          .zh 以下课程无法确定上课时间：
+          .en The course(s) below has no specific time:
+        li(v-for='item in displayClasses' v-if='!item.dayOfWeek')
+          .top
+            .left {{ item.courseName }}
+            .right {{ item.teacherName }}
+          .bottom
+            .left
+              .zh {{ item.beginWeek }}-{{ item.endWeek }}周
+              .en Weeks {{ item.beginWeek }}-{{ item.endWeek }}
+            .right(v-if='item.credit')
+              .zh {{ item.credit }} 学分
+              .en {{ item.credit }} Credits
 
 </template>
 <script>
@@ -41,7 +48,7 @@
     data() {
       return {
         term: null,
-        curriculum: [],
+        curriculum: null,
         displayWeek: 1,
         currentWeek: 1,
         currentDayOfWeek: 1
@@ -80,7 +87,7 @@
     },
     computed: {
       displayClasses() {
-        return this.curriculum.filter(k =>
+        return this.curriculum && this.curriculum.filter(k =>
           k.beginWeek <= this.displayWeek &&
           k.endWeek >= this.displayWeek &&
           this.displayWeek % 2 !== ['odd', 'even'].indexOf(k.flip)
@@ -130,6 +137,11 @@
     .detail-list
       padding 20px 15px !important
       box-sizing border-box
+
+      .hint
+        padding-left 10px
+        font-size 14px
+        color #888
 
     .curriculum-list
       height 432px

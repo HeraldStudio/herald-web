@@ -8,9 +8,9 @@
       exam
     .widgets
       experiment
-      grade
-      srtp
       lecture
+      srtp
+      grade
     .widgets
       notice
   login(v-else)
