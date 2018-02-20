@@ -19,7 +19,7 @@
         .name {{ item.courseName }}
         .place {{ item.location }}
       .empty(v-if='!displayClasses.length') 暂无课程
-    ul.detail-list
+    ul.detail-list(v-if='displayClasses.length')
       li(v-for='item in displayClasses' v-if='!item.dayOfWeek')
         .top
           .left {{ item.courseName }}

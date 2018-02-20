@@ -1,14 +1,8 @@
 import herald from 'herald-js'
 
 const H = herald({
-  onLogin () {
-    console.log('onLogin')
-    location.hash = '#/'
-  },
-  onLogout () {
-    console.log('onLogout')
-    location.hash = '#/login'
-  },
+  onLogin () {},
+  onLogout () {},
   onError (e) {
     console.log('onError', H.isLogin, e)
     if (e.code === 401 && H.isLogin) {
