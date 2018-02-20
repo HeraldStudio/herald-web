@@ -19,7 +19,7 @@
           .title
             .zh 首修绩点
             .en GPA without revamp
-          .content {{ gpa.gpaBeforeRetake || '未计算' }}
+          .content {{ gpa.gpaBeforeMakeup || '未计算' }}
         li.info(v-if="gpa.calculationTime")
           .title
             .zh 计算时间
