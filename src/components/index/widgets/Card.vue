@@ -36,8 +36,8 @@
 </template>
 <script>
 
-  import H from '../../api'
-  import formatter from '../../util/formatter'
+  import H from '@/api'
+  import formatter from '@/util/formatter'
 
   export default {
     data() {

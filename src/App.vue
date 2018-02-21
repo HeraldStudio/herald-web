@@ -6,6 +6,14 @@
         .live2d-container
           live2d
       ul.nav
+        router-link(to='/')
+          li
+            .zh 主站
+            .en Home
+        router-link(to='/admin' v-if='isAdmin')
+          li
+            .zh 管理中心
+            .en Control center
         a
           li(@click='logout()' v-if='isLogin')
             .zh 退出登录
@@ -32,6 +40,7 @@
     data() {
       return {
         isLogin: false,
+        isAdmin: false,
         webapp: false,
         english: false
       }
@@ -41,10 +50,29 @@
         this.webapp = true
       }
       offline.install()
-      // logger.bindAjax()
+      logger.bindAjax()
 
-      let checkLogin = () => {
+      let checkLogin = async () => {
+        if (!this.isLogin && H.isLogin) {
+          let adminObj = await H.admin()
+          let isAdmin = false
+          for (let k in adminObj) {
+            if (adminObj[k]) {
+              isAdmin = true
+              break
+            }
+          }
+          this.isAdmin = isAdmin
+          if (adminObj.super) {
+            location.href = '#/admin'
+          }
+        } else if (!H.isLogin) {
+          this.isAdmin = false
+        }
         this.isLogin = H.isLogin
+        if (!this.isAdmin && /^#\/admin/.test(location.hash)) {
+          location.href = '#/'
+        }
         setTimeout(checkLogin, 500)
       }
 

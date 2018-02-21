@@ -1,5 +1,5 @@
 <template lang="pug">
-   
+
   .widget.user
     .title
       .zh 用户
@@ -9,12 +9,12 @@
       .zh 加载中
       .en Loading...
     .
-   
+
 </template>
 <script>
 
-  import api from '../../api'
-  import formatter from "../../util/formatter";
+  import api from '@/api'
+  import formatter from "@/util/formatter";
 
   export default {
     data() {
@@ -44,5 +44,5 @@
       }
     }
   }
-  
+
 </script>

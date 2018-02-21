@@ -1,10 +1,9 @@
 import herald from 'herald-js'
 
 const H = herald({
-  onLogin () {},
-  onLogout () {},
+  onLogin (token) {},
+  onLogout (token) {},
   onError (e) {
-    console.log('onError', H.isLogin, e)
     if (e.code === 401 && H.isLogin) {
       H.deauth()
     }

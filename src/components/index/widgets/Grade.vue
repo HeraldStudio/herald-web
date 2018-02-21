@@ -29,15 +29,13 @@
         li(v-for='k in gpa.detail[0].courses')
           .top
             .left {{ k.courseName }}
-          .bottom
-            .left {{ k.courseType + ' ' + k.credit + '学分' }}
-            .right {{ '成绩：' + k.score }}
+            .right {{ k.score }} ({{ k.courseType + k.credit + '学分' }})
 
 </template>
 <script>
 
-  import H from '../../api'
-  import formatter from '../../util/formatter'
+  import H from '@/api'
+  import formatter from '@/util/formatter'
 
   export default {
     data() {

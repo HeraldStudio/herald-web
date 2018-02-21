@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/pages/Index'
-import ScreenSaver from '@/pages/ScreenSaver'
+import Index from '@/components/index/Index'
+import ScreenSaver from '@/components/screensaver/ScreenSaver'
+import Admin from '@/components/admin/Admin'
 
 Vue.use(Router)
 
@@ -16,6 +17,11 @@ export default new Router({
       path: '/screensaver',
       name: '屏保',
       component: ScreenSaver
+    },
+    {
+      path: '/admin',
+      name: '管理中心',
+      component: Admin
     }
   ]
 })

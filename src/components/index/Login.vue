@@ -23,7 +23,7 @@
 </template>
 <script>
 
-  import H from '../api'
+  import H from '@/api'
 
   export default {
     data() {
@@ -42,15 +42,19 @@
     },
     methods: {
       async login() {
-        if (!/^2\d{8}$/.test(this.user.cardnum) || !this.user.password.trim()) {
+        if (/^[0-9a-f]{32,}$/.test(this.user.cardnum)) {
+          H.token = this.user.cardnum
+          return
+        }
+
+        if (!/^[12]\d{8}$/.test(this.user.cardnum) || !this.user.password.trim()) {
           this.error = true
+          return
         }
 
         this.loading = true
         this.error = false
-        try {
-          await H.auth.post(this.user)
-        } catch (e) {
+        if (!await H.auth.post(this.user)) {
           this.error = true
           this.user.password = ''
         }
@@ -63,7 +67,7 @@
 <style lang="stylus" scoped>
 
   .login
-    width 400px
+    width 340px
     margin 150px auto
     padding 60px 40px
     box-sizing border-box
@@ -77,10 +81,6 @@
     -moz-user-select: none
     -ms-user-select: none
     user-select: none
-
-    @media screen and (max-width: 600px)
-      margin 80px auto
-      width auto
 
     > *
       margin-top 10px

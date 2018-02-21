@@ -42,7 +42,7 @@
 </template>
 <script>
 
-  import H from '../../api'
+  import H from '@/api'
 
   export default {
     data() {

@@ -17,18 +17,18 @@
 </template>
 
 <script>
-  import H from '../api'
-  import login from '../components/Login.vue'
-  // import swiper from '../components/widgets/Swiper.vue'
-  import card from '../components/widgets/Card.vue'
-  // import pe from '../components/widgets/Pe.vue'
-  import exam from '../components/widgets/Exam.vue'
-  import lecture from '../components/widgets/Lecture.vue'
-  import curriculum from '../components/widgets/Curriculum.vue'
-  import experiment from '../components/widgets/Experiment.vue'
-  import srtp from '../components/widgets/Srtp.vue'
-  import grade from '../components/widgets/Grade.vue'
-  import notice from '../components/widgets/Notice.vue'
+  import H from '@/api'
+  import login from './Login.vue'
+  // import swiper from './widgets/Swiper.vue'
+  import card from './widgets/Card.vue'
+  // import pe from './widgets/Pe.vue'
+  import exam from './widgets/Exam.vue'
+  import lecture from './widgets/Lecture.vue'
+  import curriculum from './widgets/Curriculum.vue'
+  import experiment from './widgets/Experiment.vue'
+  import srtp from './widgets/Srtp.vue'
+  import grade from './widgets/Grade.vue'
+  import notice from './widgets/Notice.vue'
 
   export default {
     props: ['isLogin'],

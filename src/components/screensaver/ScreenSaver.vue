@@ -9,7 +9,7 @@
 </template>
 <script>
 
-  import live2d from '../components/Live2D.vue'
+  import live2d from '../Live2D.vue'
 
   export default {
     components: {

@@ -1,5 +1,5 @@
 <template lang="pug">
-   
+
   .widget.pe(v-if='pe && pe.content > 0')
     .title
       .zh 跑操
@@ -37,11 +37,11 @@
 
       li.next
         .btn(@click='nextWeek()') >
-   
+
 </template>
 <script>
 
-  import api from '../../api'
+  import api from '@/api'
 
   export default {
     data() {
@@ -107,7 +107,7 @@
       }
     }
   }
-  
+
 </script>
 <style lang="stylus" scoped>
 
