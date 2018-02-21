@@ -23,7 +23,7 @@
             .zh en
             .en zh
     .container
-      router-view(:is-login='isLogin')
+      router-view(:isLogin='isLogin' :isAdmin='isAdmin')
 </template>
 
 <script>
@@ -63,7 +63,7 @@
             }
           }
           this.isAdmin = isAdmin
-          if (adminObj.super) {
+          if (adminObj && adminObj.super) {
             location.href = '#/admin'
           }
         } else if (!H.isLogin) {
