@@ -41,7 +41,7 @@
         this.webapp = true
       }
       offline.install()
-      logger.bindAjax()
+      // logger.bindAjax()
 
       let checkLogin = () => {
         this.isLogin = H.isLogin

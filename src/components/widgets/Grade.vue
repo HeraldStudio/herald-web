@@ -26,7 +26,7 @@
             .en Calculation time
             span {{ formatTimeNatural(gpa.calculationTime) }}
       ul.detail-list
-        li(v-for='k in gpa.detail' v-if='k.semester === gpa.detail[0].semester')
+        li(v-for='k in gpa.detail[0].courses')
           .top
             .left {{ k.courseName }}
           .bottom
