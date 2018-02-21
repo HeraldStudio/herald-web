@@ -30,7 +30,7 @@
           .top
             .left {{ k.courseName }}
           .bottom
-            .left {{ k.semester + ' ' + k.courseType + ' ' + k.credit + '学分' }}
+            .left {{ k.courseType + ' ' + k.credit + '学分' }}
             .right {{ '成绩：' + k.score }}
 
 </template>
