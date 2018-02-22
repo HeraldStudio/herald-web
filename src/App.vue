@@ -49,7 +49,7 @@
       if (window.navigator.standalone) {
         this.webapp = true
       }
-      offline.install()
+      // offline.install()
       logger.bindAjax()
 
       let checkLogin = async () => {
