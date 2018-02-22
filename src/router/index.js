@@ -22,6 +22,10 @@ export default new Router({
       path: '/admin',
       name: '管理中心',
       component: Admin
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
   ]
 })
