@@ -8,7 +8,7 @@
     ul.detail-list
       li(v-for='k in experiment')
         .top
-          .left {{ k.name }}
+          .left {{ k.labName }}
           .right.zh {{ k.score ? '成绩：' + k.score : k.teacherName }}
           .right.en {{ k.score ? 'Score: ' + k.score : k.teacherName }}
         .bottom(v-if='!k.score')

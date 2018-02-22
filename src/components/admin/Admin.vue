@@ -62,7 +62,6 @@
       min-height 100%
       width var(--sidebar-width)
       box-sizing border-box
-      border-right 1px solid var(--divider-color)
 
     .page-container
       position absolute

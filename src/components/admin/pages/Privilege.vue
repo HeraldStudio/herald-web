@@ -11,25 +11,24 @@
           th.phone 手机号
           th.level 级别
           th.authorized 授权时间
-          th.last-used 上次操作
+          th.last-used 上次使用
           th.operation 操作
         tr.admin(v-for='admin in domain.admins')
-          td.cardnum {{ admin.cardnum }}
           td
-            input.name(v-if='admin.level > domain.level' v-model='admin.name')
-            .name(v-else) {{ admin.name }}
+            input.cardnum(:disabled='true' v-model='admin.cardnum')
           td
-            input.phone(v-if='admin.level > domain.level' v-model='admin.phone')
-            .phone(v-else) {{ admin.phone }}
+            input.name(:disabled='admin.level <= domain.level' v-model='admin.name')
+          td
+            input.phone(:disabled='admin.level <= domain.level' v-model='admin.phone')
           td.level {{ admin.level }}
           td.authorized {{ formatTimeNatural(admin.authorized) }}
           td.last-used {{ admin.authorized === admin.last_used ? '从未' : formatTimeNatural(admin.last_used) }}
           td.operations
-            button.save(v-if='admin.level > domain.level' @click='saveAdmin(domain.domain, admin)') 保存
+            button.save(v-if='admin.level > domain.level && admin.name && admin.phone' @click='saveAdmin(domain.domain, admin)') 保存
             confirm-button.remove(v-if='admin.level > domain.level' @click='removeAdmin(domain.domain, admin)' confirm-text='确定') 删除
         tr.admin.add
           td
-            input.cardnum(v-model='domain.newAdmin.cardnum')
+            input.cardnum(v-model='domain.newAdmin.cardnum' placeholder='新增')
           td
             input.name(v-model='domain.newAdmin.name')
           td
@@ -38,7 +37,7 @@
           td.authorized
           td.last-used
           td.operations
-            confirm-button(@click='addAdmin(domain.domain, domain.newAdmin)' confirm-text='确定新增') 新增
+            confirm-button(v-if='domain.newAdmin.cardnum && domain.newAdmin.name && domain.newAdmin.phone' @click='addAdmin(domain.domain, domain.newAdmin)' confirm-text='确定新增') 新增管理员
 </template>
 <script>
   import H from '@/api'
@@ -87,7 +86,7 @@
 <style lang='stylus'>
   .list
     width 100%
-    text-align left
+    text-align center
     border-collapse collapse
 
     th, td
@@ -104,16 +103,22 @@
       color #555
 
       input, button
-        padding 5px 10px
+        padding 3px 7px
         border-radius 3px
-        font-size 14px
+        font-size 13px
 
       input
         width 100%
+        color #333
+
+        &[disabled]
+          background #fff
+          color #555
 
       button
         background #ddfbff
         color #237a86
+        font-weight bold
         margin-right 5px
         cursor pointer
 

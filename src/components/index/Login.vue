@@ -5,11 +5,11 @@
       .zh 统一身份认证
       .en Identification
     .field
-      input.zh(placeholder='一卡通号' v-model='user.cardnum')
-      input.en(placeholder='Student card number' v-model='user.cardnum')
+      input.zh(placeholder='一卡通号' v-model='user.cardnum' @keyup.enter='login()')
+      input.en(placeholder='Student card number' v-model='user.cardnum' @keyup.enter='login()')
     .field
-      input.zh(type='password' placeholder='统一身份认证密码' v-model='user.password')
-      input.en(type='password' placeholder='Combined identification password' v-model='user.password', @submit='login()')
+      input.zh(type='password' placeholder='统一身份认证密码' v-model='user.password' @keyup.enter='login()')
+      input.en(type='password' placeholder='Combined identification password' v-model='user.password' @keyup.enter='login()')
     .error(v-if='error')
       .zh 登录出现问题，请重试
       .en Something wrong, please try again.
