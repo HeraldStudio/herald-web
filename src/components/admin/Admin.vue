@@ -48,8 +48,8 @@
     top 60px
     bottom 0
     left 0
-    right 0
-    max-width 1220px
+    right 10px
+    max-width 1200px
     margin 0 auto
     --sidebar-width 200px
 

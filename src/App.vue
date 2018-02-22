@@ -100,7 +100,7 @@
       font-family 'Avenir Next', 'Noble Scarlet', 'PingFang SC', 'Microsoft YaHei UI', sans-serif
       -webkit-text-size-adjust: 100%
 
-    *:not(input, textarea, a, a *, *[onclick])
+    *:not(input, button, textarea, a, a *, *[onclick])
       -webkit-user-select: none
       -moz-user-select: none
       -ms-user-select: none
@@ -132,7 +132,7 @@
 
     button
       color #fff
-      background #555
+      background var(--theme-color)
       -webkit-transition .2s
       -moz-transition .2s
       -ms-transition .2s
@@ -140,7 +140,7 @@
       transition .2s
 
     button:active
-      background #212121
+      background var(--theme-color-dark)
 
     input
       color #555

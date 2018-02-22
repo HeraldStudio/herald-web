@@ -1,24 +1,25 @@
 <template lang="pug">
 
-  .login
-    .title
-      .zh 统一身份认证
-      .en Identification
-    .field
-      input.zh(placeholder='一卡通号' v-model='user.cardnum' @keyup.enter='login()')
-      input.en(placeholder='Student card number' v-model='user.cardnum' @keyup.enter='login()')
-    .field
-      input.zh(type='password' placeholder='统一身份认证密码' v-model='user.password' @keyup.enter='login()')
-      input.en(type='password' placeholder='Combined identification password' v-model='user.password' @keyup.enter='login()')
-    .error(v-if='error')
-      .zh 登录出现问题，请重试
-      .en Something wrong, please try again.
-    button(v-if='loading')
-      .zh 登录中…
-      .en Loading...
-    button(v-else, @click='login()')
-      .zh 登录
-      .en Sign in
+  .login-wrapper
+    .login
+      .title
+        .zh 统一身份认证
+        .en Identification
+      .field
+        input.zh(placeholder='一卡通号' v-model='user.cardnum' @keyup.enter='login()')
+        input.en(placeholder='Student card number' v-model='user.cardnum' @keyup.enter='login()')
+      .field
+        input.zh(type='password' placeholder='统一身份认证密码' v-model='user.password' @keyup.enter='login()')
+        input.en(type='password' placeholder='Combined identification password' v-model='user.password' @keyup.enter='login()')
+      .error(v-if='error')
+        .zh 登录出现问题，请重试
+        .en Something wrong, please try again.
+      button(v-if='loading')
+        .zh 登录中…
+        .en Loading...
+      button(v-else, @click='login()')
+        .zh 登录
+        .en Sign in
 
 </template>
 <script>
@@ -66,42 +67,49 @@
 </script>
 <style lang="stylus" scoped>
 
-  .login
-    width 340px
-    margin 150px auto
-    padding 60px 40px
-    box-sizing border-box
-    text-align center
-
+  .login-wrapper
+    position fixed
+    left 0
+    right 0
+    top 64px
+    bottom 0
     display flex
-    flex-direction column
-    align-items flex-start
+    align-items center
+    justify-content center
 
-    -webkit-user-select: none
-    -moz-user-select: none
-    -ms-user-select: none
-    user-select: none
+    .login
+      box-sizing border-box
+      text-align center
 
-    > *
-      margin-top 10px
+      display flex
+      flex-direction column
+      align-items flex-start
 
-    .title
-      font-size 18px
-      color #fff
-      padding 5px 10px
-      background var(--theme-color)
+      -webkit-user-select: none
+      -moz-user-select: none
+      -ms-user-select: none
+      user-select: none
 
-    input
-      width 260px
+      > *
+        margin-top 10px
 
-    button
-      font-size 16px
-      padding 5px 10px
+      .title
+        font-size 18px
+        color #fff
+        padding 5px 10px
+        background #555
 
-    .error
-      font-size 14px
-      color #fff
-      background #cc5e6f
-      padding 5px 10px
+      input
+        width 260px
+
+      button
+        font-size 16px
+        padding 5px 10px
+
+      .error
+        font-size 14px
+        color #fff
+        background #cc5e6f
+        padding 5px 10px
 
 </style>

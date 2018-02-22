@@ -5,7 +5,7 @@
       .subtitle 运行状态
       .summary {{ this.redis.server.os }}
         confirm-button.pull(:class='{ disabled: pulling }' @click='pull()' confirm-text='确认更新') {{ pulling ? '更新中…' : (noChange ? '没有变化' : '更新代码') }}
-        confirm-button.restart(:class='{ operationNeeded: restartNeeded }' @click='restart()' confirm-text='确认重启') {{ restartNeeded ? '需要重启' : '重启进程' }}
+        confirm-button.restart(:class='{ disabled: restarted, "operation-needed": restartNeeded }' @click='restart()' confirm-text='确认重启') {{ restartNeeded ? '需要重启' : (restarted ? '重启完毕' : '重启进程') }}
       .dashboard
         .column
           .label 开机天数
@@ -60,7 +60,7 @@
                       p 次数：{{ result.count }}
                       p 状态：{{ result.status }}
                       p 平均耗时：{{ result.averageDuration }}ms
-          .time {{ formatTime(period.endTime) }}
+          .time {{ formatTime((period.startTime + period.endTime) / 2) }}
     .subcontainer.users(v-if='user')
       .subtitle 用户统计
       table
@@ -68,47 +68,33 @@
           th
             .table-header 平台
           th
-            .table-header 总会话数
+            .table-header 总会话
           th
-            .table-header 总用户人数
+            .table-header 总用户
           th
-            .table-header 今日新会话数
+            .table-header 今日新用户
           th
-            .table-header 今日活跃会话数
+            .table-header 今日活跃用户
           th
-            .table-header 本月新会话数
+            .table-header 本月新用户
           th
-            .table-header 本月活跃会话数
+            .table-header 本月活跃用户
         tr(v-for='platform in user.platforms')
-          td
-            .table-cell {{ platform.name }}
-          td
-            .table-cell {{ platform.userCount }}
-          td
-            .table-cell {{ platform.realUserCount }}
-          td
-            .table-cell {{ platform.dailyRegister }}
-          td
-            .table-cell {{ platform.dailyInvoke }}
-          td
-            .table-cell {{ platform.monthlyRegister }}
-          td
-            .table-cell {{ platform.monthlyInvoke }}
+          td {{ platform.name }}
+          td {{ platform.userCount }}
+          td {{ platform.realUserCount }}
+          td {{ platform.dailyRegister }}
+          td {{ platform.dailyInvoke }}
+          td {{ platform.monthlyRegister }}
+          td {{ platform.monthlyInvoke }}
         tr.total
-          td
-            .table-header 合计
-          td
-            .table-header {{ user.userCount }}
-          td
-            .table-header {{ user.realUserCount }}
-          td
-            .table-header {{ user.dailyRegister }}
-          td
-            .table-header {{ user.dailyInvoke }}
-          td
-            .table-header {{ user.monthlyRegister }}
-          td
-            .table-header {{ user.monthlyInvoke }}
+          td 合计
+          td {{ user.userCount }}
+          td {{ user.realUserCount }}
+          td {{ user.dailyRegister }}
+          td {{ user.dailyInvoke }}
+          td {{ user.monthlyRegister }}
+          td {{ user.monthlyInvoke }}
 </template>
 <script>
   import H from '@/api'
@@ -125,11 +111,11 @@
         upstream: null,
         daily: null,
         user: null,
-        intervalDaily: null,
-        intervalOthers: null,
+        interval: null,
         pulling: false,
         noChange: false,
-        restartNeeded: false
+        restartNeeded: false,
+        restarted: false
       }
     },
     computed: {
@@ -162,13 +148,11 @@
         await H.api.admin.status.connection.delete({ name })
         this.connection = await H.api.admin.status.connection()
       },
-      async reloadDaily () {
-        this.daily = await H.api.admin.status.daily()
-      },
-      async reloadOthers () {
+      async reload () {
         this.connection = await H.api.admin.status.connection()
         this.redis = await H.api.admin.status.redis()
         this.user = await H.api.admin.status.user()
+        this.daily = await H.api.admin.status.daily()
         this.upstream = await H.api.admin.status.upstream()
       },
       async pull () {
@@ -185,17 +169,16 @@
       async restart () {
         await H.api.admin.control.restart()
         this.restartNeeded = false
+        this.restarted = true
+        setTimeout(() => { this.restarted = false }, 3000)
       }
     },
     async created () {
-      this.reloadOthers()
-      this.reloadDaily()
-      this.intervalOthers = setInterval(() => this.reloadOthers(), 10000)
-      this.intervalDaily = setInterval(() => this.reloadDaily(), 30000)
+      this.reload()
+      this.interval = setInterval(() => this.reload(), 10000)
     },
     beforeDestroy () {
-      clearInterval(this.intervalOthers)
-      clearInterval(this.intervalDaily)
+      clearInterval(this.interval)
     }
   }
 </script>
@@ -294,7 +277,8 @@
       font-size 14px
       color #6b402a
       display flex
-      flex-direction row
+      flex-direction column
+      align-items center
 
       &.healthy
         background #f1ffc9
@@ -302,7 +286,9 @@
 
       .name
         font-weight bold
-        margin-right 7px
+
+      .timeout
+        font-size 13px
 
   .periods
     .example-block
@@ -420,6 +406,7 @@
 
                 &:hover
                   outline 1px solid var(--theme-color)
+                  border-left none
 
                   .description
                     opacity 1
@@ -439,21 +426,29 @@
     border-collapse collapse
     font-size 14px
 
-    .table-header
-      margin-top 3px
-      display inline-block
-      padding: 5px 10px
-      border-radius 3px
-      background #ddfbff
-      color #237a86
-      font-weight bold
+    tr
+      border-bottom 5px solid transparent
 
-    .table-cell
-      margin-top 3px
-      display inline-block
-      padding: 5px 10px
-      border-radius 3px
-      background #fafafa
-      color #555
+      .table-header
+        margin 5px 0
+        margin-right 15px
+        padding: 5px 0
+        color #555
+        font-weight bold
+        border-bottom 1px solid var(--divider-color)
+
+      td
+        padding: 5px 20px 0 0
+        font-size 14px
+        color #555
+        text-align right
+
+        &:first-child
+          background #d9fbff
+          padding 5px 10px
+          border-radius 3px
+          font-weight bold
+          text-align left
+          display inline-block
 
 </style>
