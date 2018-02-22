@@ -54,7 +54,7 @@
 
       let checkLogin = async () => {
         if (!this.isLogin && H.isLogin) {
-          let adminObj = await H.admin()
+          let adminObj = await H.api.admin.admin()
           let isAdmin = false
           for (let k in adminObj) {
             if (adminObj[k]) {

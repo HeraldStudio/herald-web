@@ -1,14 +1,14 @@
 <template lang='pug'>
   .admin-page#monitor
     .title 系统概况
-    .subcontainer.upstream(v-if='status')
+    .subcontainer.upstream(v-if='upstream')
       .subtitle 上游健康状况
-      .summary {{ healthCount }} / {{ status.upstream.length }}
+      .summary {{ healthCount }} / {{ upstream.length }}
       .upstreams
-        .upstream(v-for='site in status.upstream' :class='{ healthy: site.health }')
+        .upstream(v-for='site in upstream' :class='{ healthy: site.health }')
           .name {{ site.name }}
           .timeout {{ site.timeout === -1 ? '超时' : site.timeout + 'ms' }}
-    .subcontainer.periods(v-if='status')
+    .subcontainer.periods(v-if='daily')
       .subtitle 24 小时调用统计
       .summary
         .example-block.result-2
@@ -20,7 +20,7 @@
         .example-block.result-5
         span 5xx
       .periods-chart
-        .period(v-for='period in status.periods')
+        .period(v-for='period in daily')
           .operations-container
             .operations(:style='{ height: period.count / maxPeriodCount * 100 + "%" }')
               .operation(v-for='operation in period.operations' :style='{ flexGrow: operation.count }')
@@ -32,7 +32,7 @@
                       p 状态：{{ result.status }}
                       p 平均耗时：{{ result.averageDuration }}ms
           .time {{ formatTime(period.endTime) }}
-    .subcontainer.users(v-if='status')
+    .subcontainer.users(v-if='user')
       .subtitle 用户统计
       table
         tr
@@ -50,7 +50,7 @@
             .table-header 本月新会话数
           th
             .table-header 本月活跃会话数
-        tr(v-for='platform in status.users.platforms')
+        tr(v-for='platform in user.platforms')
           td
             .table-cell {{ platform.name }}
           td
@@ -69,17 +69,17 @@
           td
             .table-header 合计
           td
-            .table-header {{ status.users.userCount }}
+            .table-header {{ user.userCount }}
           td
-            .table-header {{ status.users.realUserCount }}
+            .table-header {{ user.realUserCount }}
           td
-            .table-header {{ status.users.dailyRegister }}
+            .table-header {{ user.dailyRegister }}
           td
-            .table-header {{ status.users.dailyInvoke }}
+            .table-header {{ user.dailyInvoke }}
           td
-            .table-header {{ status.users.monthlyRegister }}
+            .table-header {{ user.monthlyRegister }}
           td
-            .table-header {{ status.users.monthlyInvoke }}
+            .table-header {{ user.monthlyInvoke }}
 </template>
 <script>
   import H from '@/api'
@@ -87,15 +87,17 @@
   export default {
     data () {
       return {
-        status: null
+        upstream: null,
+        daily: null,
+        user: null
       }
     },
     computed: {
       healthCount () {
-        return this.status.upstream.filter(k => k.health).length
+        return this.upstream.filter(k => k.health).length
       },
       maxPeriodCount () {
-        return this.status.periods.map(k => k.count).sort((a, b) => a - b).slice(-1)[0] || 1
+        return this.daily.map(k => k.count).sort((a, b) => a - b).slice(-1)[0] || 1
       }
     },
     methods: {
@@ -109,7 +111,9 @@
       }
     },
     async created () {
-      this.status = await H.api.status()
+      this.daily = await H.api.admin.status.daily()
+      this.user = await H.api.admin.status.user()
+      this.upstream = await H.api.admin.status.upstream()
     }
   }
 </script>

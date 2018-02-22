@@ -66,13 +66,18 @@
       top 0
       left var(--sidebar-width)
       right 0
-      padding 40px 0 0 50px
+      padding 40px 0 40px 50px
 
       .admin-page
         .title
           font-size 24px
           color #555
           padding-bottom 25px
+
+        .loading
+          display block
+          font-size 14px
+          color #888
 
         .subcontainer
           position relative
