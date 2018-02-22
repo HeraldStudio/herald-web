@@ -12,12 +12,12 @@
       ul.info-bar
         li.info
           .title
-            .zh 一卡通余额
+            .zh 卡余额
             .en Balance
           .content {{ card.info.balance }}
         li.info
           .title
-            .zh 一卡通状态
+            .zh 卡状态
             .en State
           .content {{ card.info.status.mainStatus }}
         li.info

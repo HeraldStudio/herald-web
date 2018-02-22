@@ -90,7 +90,7 @@
 
         @media screen and (min-width: 600px)
           &:hover
-            border 1px solid var(--theme-color-light)
+            border 1px solid var(--divider-color)
 
         &.loading
           opacity .5
@@ -110,12 +110,14 @@
           position absolute
           left -1px
           top -30px
-          height 30px
-          line-height 30px
+          height 26px
+          line-height 26px
           vertical-align middle
-          padding 0 10px
+          padding 0 7px
           text-align left
-          font-size 14px
+          font-size 13px
+          border-radius 3px
+          font-weight bold
           background #555
           color #fff
           margin-bottom 20px
@@ -127,6 +129,16 @@
           -ms-transition: .3s
           -o-transition: .3s
           transition: .3s
+
+          &::before
+            content ''
+            position absolute
+            bottom -4px
+            left 50%
+            margin-left -3px
+            border-left 3px solid transparent
+            border-right 3px solid transparent
+            border-top 4px solid #555
 
           .reload
             width 16px
@@ -151,32 +163,33 @@
 
         ul.info-bar
           width 100%
+          box-sizing border-box
           margin 0
-          padding 0
+          padding 5px 5px 0 10px
           display flex
           flex-direction row
-
-          li.info + li.info
-            border-left 1px solid var(--divider-color)
+          justify-content center
+          flex-wrap wrap
 
           li.info
             list-style none
-            flex 1 1 auto
+            flex 0 1 auto
             padding 0 10px
+            margin 0 5px 5px 0
             display flex
-            flex-direction column
-            align-items center
+            flex-direction row
             justify-content center
+            font-size 14px
+            padding 3px 7px
+            color var(--theme-color-dark)
+            background var(--theme-color-light)
+            border-radius 3px
 
             .title
-              font-size 14px
-              color #999
-              text-align center
+              font-weight bold
 
-            .content
-              margin-top 5px
-              font-size 16px
-              color var(--theme-color)
+              + .content
+                margin-left 5px
 
           +ul.detail-list>*:first-child
             margin-top 15px
@@ -186,7 +199,8 @@
         ul.detail-list
           width 100%
           margin 0
-          padding 0
+          padding 0 10px
+          box-sizing border-box
           display flex
           flex-direction column
 
@@ -196,7 +210,7 @@
           li
             list-style none
             flex 1 1 auto
-            padding 10px
+            padding 10px 0
             display flex
             flex-direction column
             text-align justify
@@ -207,6 +221,9 @@
               flex-direction row
               align-items center
 
+            .top + .bottom
+              margin-top 5px
+
             .left
               flex 1 1 auto
 
@@ -215,12 +232,15 @@
               margin-left 20px
 
             .top .left
-              font-size 16px
+              font-size 15px
               color var(--theme-color)
 
             .top .right, .bottom .left
               font-size 14px
               color #555
+
+            .bottom .left
+              font-weight bold
 
             .bottom .right
               font-size 14px

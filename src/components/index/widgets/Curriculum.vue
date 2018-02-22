@@ -108,13 +108,20 @@
       display flex
       flex-direction row
       justify-content space-between
-      padding 20px 15px
       -webkit-user-select: none
       -moz-user-select: none
       -ms-user-select: none
       user-select: none
-      color #555
-      font-size 16px
+      padding 20px 15px
+      align-items center
+
+      .cur-week
+        font-size 14px
+        font-weight bold
+        padding 3px 7px
+        border-radius 3px
+        color var(--theme-color-dark)
+        background var(--theme-color-light)
 
       .prev-week, .next-week
         cursor pointer
@@ -138,16 +145,17 @@
       padding 20px 15px !important
 
     .detail-list
-      padding 20px 15px !important
+      padding 20px 25px !important
       box-sizing border-box
 
       .hint
-        padding-left 10px
         font-size 14px
         color #888
+        margin-bottom 3px
 
     .curriculum-list
       height 432px
+      border-bottom 1px solid var(--curriculum-background-color)
       position relative
       overflow hidden
       -webkit-transition: .3s
@@ -169,7 +177,7 @@
         line-height 1.4em
         background #fff
         border-top 2px solid var(--theme-color)
-        box-shadow 0 0 2px rgba(0, 0, 0, .05)
+        box-shadow 0 1px 3px rgba(0, 0, 0, .05)
         display flex
         flex-direction column
         align-items center
@@ -177,6 +185,7 @@
         text-align center
         font-size 10px
         color #333
+        border-radius 3px
 
         &::active
           background #333

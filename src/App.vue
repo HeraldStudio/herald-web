@@ -92,9 +92,9 @@
 <style lang='stylus'>
   :root
     --divider-color #f0f0f0
-    --theme-color #229ded
-    --theme-color-dark #1a7ab8
-    --theme-color-light #78cdff
+    --theme-color #00abc3
+    --theme-color-dark #237a86
+    --theme-color-light #ddfbff
 
     *
       font-family 'Avenir Next', 'Noble Scarlet', 'PingFang SC', 'Microsoft YaHei UI', sans-serif
@@ -189,9 +189,7 @@
         top 2px
         width 56px
         height 56px
-
-        img.logo
-          -webkit-filter invert()
+        filter hue-rotate(-15deg)
 
       @media screen and (max-width: 600px)
         @supports (-webkit-backdrop-filter: blur(20px))

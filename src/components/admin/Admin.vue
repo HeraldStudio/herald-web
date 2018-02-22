@@ -96,7 +96,7 @@
 
           @media screen and (min-width: 600px)
             &:hover
-              border 1px solid var(--theme-color-light)
+              border 1px solid var(--divider-color)
 
           .subtitle
             display inline-block

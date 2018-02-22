@@ -24,7 +24,7 @@
           .title
             .zh 计算时间
             .en Calculation time
-            span {{ formatTimeNatural(gpa.calculationTime) }}
+          .content {{ formatTimeNatural(gpa.calculationTime) }}
       ul.detail-list
         li(v-for='k in gpa.detail[0].courses')
           .top

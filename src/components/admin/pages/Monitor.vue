@@ -187,10 +187,13 @@
     font-size 13px
     font-weight bold
     border-radius 3px
-    padding 3px 5px
-    margin-left 10px
+    padding 3px 7px
+    margin-left 5px
     cursor pointer
     transition .3s
+
+    &:first-of-type
+      margin-left 15px
 
     &.restart
       background #ffedc1
@@ -270,22 +273,23 @@
 
     .upstream
       border-radius 3px
-      padding 5px 10px
+      padding 3px 7px
       margin-right 5px
       margin-top 5px
       background #ffd8c4
       font-size 14px
       color #6b402a
       display flex
-      flex-direction column
+      flex-direction row
       align-items center
 
       &.healthy
-        background #f1ffc9
-        color #719926
+        background #ddfbff
+        color #237a86
 
       .name
         font-weight bold
+        margin-right 5px
 
       .timeout
         font-size 13px
@@ -444,8 +448,9 @@
         text-align right
 
         &:first-child
-          background #d9fbff
-          padding 5px 10px
+          background #ddfbff
+          color #237a86
+          padding 3px 7px
           border-radius 3px
           font-weight bold
           text-align left
