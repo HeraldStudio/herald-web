@@ -1,10 +1,9 @@
 <template lang='pug'>
   #admin-sidebar
     ul
-      li.category 管理
+      li.category 运维
         ul
           li(:class='{ current: current === "monitor" }'   @click='changePage("monitor")')   系统概况
-          li(:class='{ current: current === "devops" }'    @click='changePage("devops")')    运维中心
           li(:class='{ current: current === "privilege" }' @click='changePage("privilege")') 权限管理
           li(:class='{ current: current === "notice" }'    @click='changePage("notice")')    通知公告
       li.category 运营

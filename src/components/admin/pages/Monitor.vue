@@ -1,6 +1,32 @@
 <template lang='pug'>
   .admin-page#monitor
     .title 系统概况
+    .subcontainer.connection(v-if='connection')
+      .subtitle 运行状态
+      .summary {{ this.redis.server.os }}
+      .dashboard
+        .column
+          .label 开机天数
+          .content {{ this.redis.server.uptimeInDays }}
+        .column
+          .label 系统总内存
+          .content {{ this.redis.memory.totalSystemMemoryHuman }}
+        .column
+          .label Redis 已用内存
+          .content {{ this.redis.memory.usedMemoryHuman }}
+        .column
+          .label 当前并发请求数
+          .content {{ this.connection.requestCount }}
+        .column
+          .label 当前爬虫连接数
+          .content {{ this.connection.spiders.activeCount }}
+        .column
+          .label 当前待审核爬虫
+          .content(v-if='!this.connection.spiders.inactiveCount') 0
+          .spider(v-for='spider in this.connection.spiders.inactiveList')
+            .name {{ spider }}
+            button.accept(@click='acceptSpider(spider)' :class='{ confirm: confirming === spider }') {{ confirming === spider ? '确认接受' : '接受' }}
+            button.reject(@click='rejectSpider(spider)') 拒绝
     .subcontainer.upstream(v-if='upstream')
       .subtitle 上游健康状况
       .summary {{ healthCount }} / {{ upstream.length }}
@@ -21,6 +47,7 @@
         span 5xx
       .periods-chart
         .period(v-for='period in daily')
+          .count {{ period.count || '' }}
           .operations-container
             .operations(:style='{ height: period.count / maxPeriodCount * 100 + "%" }')
               .operation(v-for='operation in period.operations' :style='{ flexGrow: operation.count }')
@@ -87,12 +114,20 @@
   export default {
     data () {
       return {
+        connection: null,
+        redis: null,
         upstream: null,
         daily: null,
-        user: null
+        user: null,
+        confirming: null
       }
     },
     computed: {
+      totalConnections () {
+        return this.connection.requestCount +
+          this.connection.spiders.activeCount +
+          this.connection.spiders.inactiveCount
+      },
       healthCount () {
         return this.upstream.filter(k => k.health).length
       },
@@ -108,9 +143,25 @@
           minute = '0' + minute
         }
         return date.getHours() + ':' + minute
+      },
+      async acceptSpider (name) {
+        if (this.confirming !== name) {
+          this.confirming = name
+        } else {
+          await H.api.admin.status.connection.post({ name })
+          this.connection = await H.api.admin.status.connection()
+          this.confirming = null
+        }
+      },
+      async rejectSpider (name) {
+        await H.api.admin.status.connection.delete({ name })
+        this.connection = await H.api.admin.status.connection()
+        this.confirming = null
       }
     },
     async created () {
+      this.connection = await H.api.admin.status.connection()
+      this.redis = await H.api.admin.status.redis()
       this.daily = await H.api.admin.status.daily()
       this.user = await H.api.admin.status.user()
       this.upstream = await H.api.admin.status.upstream()
@@ -118,6 +169,60 @@
   }
 </script>
 <style lang='stylus'>
+  .dashboard
+    display flex
+    flex-direction row
+
+    .column
+      flex 1 1 auto
+      display flex
+      flex-direction column
+      align-items flex-start
+
+      .label
+        color #555
+        font-size 14px
+        font-weight bold
+        padding-bottom 7px
+        margin-bottom 7px
+        border-bottom 1px solid var(--divider-color)
+
+      .content
+        font-size 20px
+
+      .spider
+        display flex
+        flex-direction row
+        align-items center
+        width 100%
+        padding-bottom 3px
+
+        .name
+          font-size 14px
+          flex 1 1 0
+          overflow hidden
+
+        button
+          font-size 13px
+          font-weight bold
+          border-radius 3px
+          padding 3px 5px
+          margin-left 5px
+          cursor pointer
+          transition .3s
+
+          &.accept
+            background #bdf7ff
+            color #468f99
+
+          &.confirm
+            background #ffd8c4
+            color #6b402a
+
+          &.reject
+            background #f5f5f5
+            color #888888
+
   .upstreams
     display flex
     flex-direction row
@@ -165,7 +270,11 @@
       display flex
       flex-direction row
       position relative
-      height 400px
+      height 200px
+      transition .3s
+
+      &:hover
+        height 400px
 
       .period
         flex 1 1 0
@@ -178,6 +287,15 @@
 
         &:last-child .operations-container
           border-right 0 none
+
+        .count
+          writing-mode vertical-lr
+          text-align right
+          height 32px
+          margin-bottom 10px
+          font-size 11px
+          color #888
+          overflow hidden
 
         .operations-container
           flex 1 1 0

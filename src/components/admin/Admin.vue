@@ -104,7 +104,7 @@
           .summary
             display inline
             font-size 14px
-            margin-left 8px
+            margin-left 15px
             color #888
             vertical-align middle
 
