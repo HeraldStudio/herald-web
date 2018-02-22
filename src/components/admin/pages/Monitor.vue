@@ -1,9 +1,11 @@
 <template lang='pug'>
   .admin-page#monitor
     .title 系统概况
-    .subcontainer.connection(v-if='connection')
+    .subcontainer.connection(v-if='connection && redis')
       .subtitle 运行状态
       .summary {{ this.redis.server.os }}
+        confirm-button.pull(:class='{ disabled: pulling }' @click='pull()' confirm-text='确认更新') {{ pulling ? '更新中…' : (noChange ? '没有变化' : '更新代码') }}
+        confirm-button.restart(:class='{ operationNeeded: restartNeeded }' @click='restart()' confirm-text='确认重启') {{ restartNeeded ? '需要重启' : '重启进程' }}
       .dashboard
         .column
           .label 开机天数
@@ -25,8 +27,8 @@
           .content(v-if='!this.connection.spiders.inactiveCount') 0
           .spider(v-for='spider in this.connection.spiders.inactiveList')
             .name {{ spider }}
-            button.accept(@click='acceptSpider(spider)' :class='{ confirm: confirming === spider }') {{ confirming === spider ? '确认接受' : '接受' }}
-            button.reject(@click='rejectSpider(spider)') 拒绝
+            confirm-button.accept(@click='acceptSpider(spider)' confirm-text='确认接受') 接受
+            confirm-button.reject(@click='rejectSpider(spider)' confirm-text='确认拒绝') 拒绝
     .subcontainer.upstream(v-if='upstream')
       .subtitle 上游健康状况
       .summary {{ healthCount }} / {{ upstream.length }}
@@ -110,8 +112,12 @@
 </template>
 <script>
   import H from '@/api'
+  import confirmButton from '@/components/ConfirmButton.vue'
 
   export default {
+    components: {
+      confirmButton
+    },
     data () {
       return {
         connection: null,
@@ -119,7 +125,11 @@
         upstream: null,
         daily: null,
         user: null,
-        confirming: null
+        intervalDaily: null,
+        intervalOthers: null,
+        pulling: false,
+        noChange: false,
+        restartNeeded: false
       }
     },
     computed: {
@@ -145,39 +155,87 @@
         return date.getHours() + ':' + minute
       },
       async acceptSpider (name) {
-        if (this.confirming !== name) {
-          this.confirming = name
-        } else {
-          await H.api.admin.status.connection.post({ name })
-          this.connection = await H.api.admin.status.connection()
-          this.confirming = null
-        }
+        await H.api.admin.status.connection.post({ name })
+        this.connection = await H.api.admin.status.connection()
       },
       async rejectSpider (name) {
         await H.api.admin.status.connection.delete({ name })
         this.connection = await H.api.admin.status.connection()
-        this.confirming = null
+      },
+      async reloadDaily () {
+        this.daily = await H.api.admin.status.daily()
+      },
+      async reloadOthers () {
+        this.connection = await H.api.admin.status.connection()
+        this.redis = await H.api.admin.status.redis()
+        this.user = await H.api.admin.status.user()
+        this.upstream = await H.api.admin.status.upstream()
+      },
+      async pull () {
+        this.pulling = true
+        let { changed, stdout, stderr } = await H.api.admin.control.pull()
+        if (changed) {
+          this.restartNeeded = true
+        } else {
+          this.noChange = true
+          setTimeout(() => { this.noChange = false }, 3000)
+        }
+        this.pulling = false
+      },
+      async restart () {
+        await H.api.admin.control.restart()
+        this.restartNeeded = false
       }
     },
     async created () {
-      this.connection = await H.api.admin.status.connection()
-      this.redis = await H.api.admin.status.redis()
-      this.daily = await H.api.admin.status.daily()
-      this.user = await H.api.admin.status.user()
-      this.upstream = await H.api.admin.status.upstream()
+      this.reloadOthers()
+      this.reloadDaily()
+      this.intervalOthers = setInterval(() => this.reloadOthers(), 10000)
+      this.intervalDaily = setInterval(() => this.reloadDaily(), 30000)
+    },
+    beforeDestroy () {
+      clearInterval(this.intervalOthers)
+      clearInterval(this.intervalDaily)
     }
   }
 </script>
 <style lang='stylus'>
+  .connection .summary button
+    font-size 13px
+    font-weight bold
+    border-radius 3px
+    padding 3px 5px
+    margin-left 10px
+    cursor pointer
+    transition .3s
+
+    &.restart
+      background #ffedc1
+      color #a4832d
+
+    &.pull
+      background #ddfbff
+      color #237a86
+
+    &.confirming, &.operation-needed
+      background #ffd8c4
+      color #6b402a
+
+    &.disabled
+      cursor default
+      pointer-events none
+
   .dashboard
     display flex
     flex-direction row
 
     .column
-      flex 1 1 auto
       display flex
       flex-direction column
-      align-items flex-start
+      flex 1 1 0
+
+      +.column
+        margin-left 20px
 
       .label
         color #555
@@ -194,7 +252,6 @@
         display flex
         flex-direction row
         align-items center
-        width 100%
         padding-bottom 3px
 
         .name
@@ -215,7 +272,7 @@
             background #bdf7ff
             color #468f99
 
-          &.confirm
+          &.confirming
             background #ffd8c4
             color #6b402a
 
@@ -234,12 +291,13 @@
       margin-right 5px
       margin-top 5px
       background #ffd8c4
+      font-size 14px
       color #6b402a
       display flex
       flex-direction row
 
       &.healthy
-        background #f3ffdd
+        background #f1ffc9
         color #719926
 
       .name
@@ -379,6 +437,7 @@
     width 100%
     text-align left
     border-collapse collapse
+    font-size 14px
 
     .table-header
       margin-top 3px

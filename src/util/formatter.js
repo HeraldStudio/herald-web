@@ -10,7 +10,7 @@ export default {
     let nowTime = now.getTime()
     let dsec = Math.round((timestamp - nowTime) / 1000)
     if (Math.abs(dsec) < 60) {
-      return '现在'
+      return dsec < 0 ? '刚刚' : '现在'
     }
     let dmin = Math.round(dsec / 60)
     if (Math.abs(dmin) < 60) {

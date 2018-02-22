@@ -4,16 +4,19 @@
       sidebar(:current='currentPage' @changePage='changePage')
     .page-container
       monitor(v-if='currentPage === "monitor"')
+      privilege(v-if='currentPage === "privilege"')
 </template>
 <script>
   import sidebar from './Sidebar.vue'
   import monitor from './pages/Monitor.vue'
+  import privilege from './pages/Privilege.vue'
 
   export default {
     props: ['isLogin', 'isAdmin'],
     components: {
       sidebar,
-      monitor
+      monitor,
+      privilege
     },
     data () {
       return {
