@@ -6,7 +6,7 @@
       .summary {{ this.redis.server.os }}
         confirm-button.pull(:class='{ disabled: pulling }' @click='pull()' confirm-text='确认更新') {{ pulling ? '更新中…' : '更新代码' }}
         span.pull-result(v-if='changes && !changed' :title='changes') 没有更新
-        span.pull-result(v-if='changes && changed' :title='changes') 已更新
+        span.pull-result(v-if='changes && changed' :title='changes') 代码已更新
       .dashboard
         .column
           .label 开机天数
