@@ -141,23 +141,23 @@
         return date.getHours() + ':' + minute
       },
       async acceptSpider (name) {
-        await H.api.admin.status.connection.post({ name })
-        this.connection = await H.api.admin.status.connection()
+        await H.api.admin.maintenance.connection.post({ name })
+        this.connection = await H.api.admin.maintenance.connection()
       },
       async rejectSpider (name) {
-        await H.api.admin.status.connection.delete({ name })
-        this.connection = await H.api.admin.status.connection()
+        await H.api.admin.maintenance.connection.delete({ name })
+        this.connection = await H.api.admin.maintenance.connection()
       },
       async reload () {
-        this.connection = await H.api.admin.status.connection()
-        this.redis = await H.api.admin.status.redis()
-        this.user = await H.api.admin.status.user()
-        this.daily = await H.api.admin.status.daily()
-        this.upstream = await H.api.admin.status.upstream()
+        this.connection = await H.api.admin.maintenance.connection()
+        this.redis = await H.api.admin.maintenance.redis()
+        this.user = await H.api.admin.maintenance.user()
+        this.daily = await H.api.admin.maintenance.daily()
+        this.upstream = await H.api.admin.maintenance.upstream()
       },
       async pull () {
         this.pulling = true
-        let { changed, out } = await H.api.admin.pull()
+        let { changed, out } = await H.api.admin.maintenance.pull()
         this.changes = out
         this.changed = changed
         this.pulling = false
