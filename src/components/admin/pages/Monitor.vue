@@ -4,8 +4,9 @@
     .subcontainer.connection(v-if='connection && redis')
       .subtitle 运行状态
       .summary {{ this.redis.server.os }}
-        confirm-button.pull(:class='{ disabled: pulling }' @click='pull()' confirm-text='确认更新') {{ pulling ? '更新中…' : (noChange ? '没有变化' : '更新代码') }}
-        confirm-button.restart(:class='{ disabled: restarted, "operation-needed": restartNeeded }' @click='restart()' confirm-text='确认重启') {{ restartNeeded ? '需要重启' : (restarted ? '重启完毕' : '重启进程') }}
+        confirm-button.pull(:class='{ disabled: pulling }' @click='pull()' confirm-text='确认更新') {{ pulling ? '更新中…' : '更新代码' }}
+        span.pull-result(v-if='changes && !changed' :title='changes') 没有更新
+        span.pull-result(v-if='changes && changed' :title='changes') 已更新
       .dashboard
         .column
           .label 开机天数
@@ -113,9 +114,8 @@
         user: null,
         interval: null,
         pulling: false,
-        noChange: false,
-        restartNeeded: false,
-        restarted: false
+        changed: false,
+        changes: null
       }
     },
     computed: {
@@ -157,20 +157,10 @@
       },
       async pull () {
         this.pulling = true
-        let { changed, stdout, stderr } = await H.api.admin.control.pull()
-        if (changed) {
-          this.restartNeeded = true
-        } else {
-          this.noChange = true
-          setTimeout(() => { this.noChange = false }, 3000)
-        }
+        let { changed, out } = await H.api.admin.pull()
+        this.changes = out
+        this.changed = changed
         this.pulling = false
-      },
-      async restart () {
-        await H.api.admin.control.restart()
-        this.restartNeeded = false
-        this.restarted = true
-        setTimeout(() => { this.restarted = false }, 3000)
       }
     },
     async created () {
@@ -184,26 +174,19 @@
 </script>
 <style lang='stylus'>
   .connection .summary button
-    font-size 13px
+    font-size 14px
     font-weight bold
     border-radius 3px
     padding 3px 7px
-    margin-left 5px
+    margin 0 10px
     cursor pointer
     transition .3s
-
-    &:first-of-type
-      margin-left 15px
-
-    &.restart
-      background #ffedc1
-      color #a4832d
 
     &.pull
       background #ddfbff
       color #237a86
 
-    &.confirming, &.operation-needed
+    &.confirming
       background #ffd8c4
       color #6b402a
 
