@@ -22,7 +22,7 @@
             input.phone(:disabled='admin.level <= domain.level' v-model='admin.phone')
           td.level {{ admin.level }}
           td.authorized {{ formatTimeNatural(admin.authorized) }}
-          td.last-used {{ admin.authorized === admin.last_used ? '从未' : formatTimeNatural(admin.last_used) }}
+          td.last-used {{ admin.authorized === admin.lastUsed ? '从未' : formatTimeNatural(admin.lastUsed) }}
           td.operations
             button.save(v-if='admin.level > domain.level && admin.name && admin.phone' @click='saveAdmin(domain.domain, admin)') 保存
             confirm-button.remove(v-if='admin.level > domain.level' @click='removeAdmin(domain.domain, admin)' confirm-text='确定') 删除
