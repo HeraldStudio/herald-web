@@ -20,7 +20,7 @@
     },
     data () {
       return {
-        currentPage: 'monitor'
+        currentPage: ''
       }
     },
     watch: {

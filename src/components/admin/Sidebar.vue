@@ -1,30 +1,102 @@
 <template lang='pug'>
   #admin-sidebar
     ul
-      li.category 运维
+      li.category(v-for='category in categories' v-if='!category.privilege || category.privilege === "independent" && hasAvailable(category) || adminObj[category.privilege]') {{ category.name }}
         ul
-          li(:class='{ current: current === "monitor" }'   @click='changePage("monitor")')   系统概况
-          li(:class='{ current: current === "privilege" }' @click='changePage("privilege")') 权限管理
-          li(:class='{ current: current === "notice" }'    @click='changePage("notice")')    通知公告
-      li.category 运营
-        ul
-          li(:class='{ current: current === "advertise" }' @click='changePage("advertise")') 轮播广告
-          li(:class='{ current: current === "actpass" }'   @click='changePage("actpass")')   活动审核
-      li.category 合作
-        ul
-          li(:class='{ current: current === "actpush" }'   @click='changePage("actpush")')   活动宣传
-          li(:class='{ current: current === "lecture" }'   @click='changePage("lecture")')   讲座发布
-          li(:class='{ current: current === "pe" }'        @click='changePage("pe")')        跑操发布
-          li(:class='{ current: current === "vote" }'      @click='changePage("vote")')      投票系统
-          li(:class='{ current: current === "ticket" }'    @click='changePage("ticket")')    票务系统
-          li(:class='{ current: current === "canteen" }'   @click='changePage("canteen")')   食堂系统
+          li(v-for='page in category.pages' v-if='category.privilege !== "independent" || adminObj[page.page]' :class='{ current: current === page.page }' @click='changePage(page.page)') {{ page.name }}
 </template>
 <script>
+  import H from '@/api'
+
   export default {
     props: ['current'],
+    data() {
+      return {
+        adminObj: null,
+        categories: [
+          {
+            name: '运维',
+            privilege: 'maintenance',
+            pages: [
+              {
+                page: 'monitor',
+                name: '系统概况'
+              },
+              {
+                page: 'privilege',
+                name: '权限管理'
+              },
+              {
+                page: 'notice',
+                name: '通知公告'
+              }
+            ]
+          },
+          {
+            name: '运营',
+            privilege: 'advertise',
+            pages: [
+              {
+                page: 'advertise',
+                name: '轮播广告'
+              },
+              {
+                page: 'actpass',
+                name: '活动审核'
+              }
+            ]
+          },
+          {
+            name: '合作',
+            privilege: 'independent',
+            pages: [
+              {
+                page: 'actpush',
+                name: '活动投放'
+              },
+              {
+                page: 'lecture',
+                name: '讲座发布'
+              },
+              {
+                page: 'pe',
+                name: '跑操发布'
+              },
+              {
+                page: 'vote',
+                name: '投票系统'
+              },
+              {
+                page: 'ticket',
+                name: '票务系统'
+              },
+              {
+                page: 'canteen',
+                name: '食堂系统'
+              }
+            ]
+          },
+        ]
+      }
+    },
+    async created() {
+      this.adminObj = await H.api.admin.admin()
+      if (!this.current) {
+        if (this.adminObj.maintenance) {
+          this.changePage('monitor')
+        } else if (this.adminObj.advertise) {
+          this.changePage('advertise')
+        } else {
+          this.changePage(Object.keys(this.adminObj).find(k => k !== 'super'))
+        }
+      }
+    },
     methods: {
       changePage (newPage) {
         this.$emit('changePage', newPage)
+      },
+      hasAvailable (category) {
+        return !!category.pages.find(k => this.adminObj[k.page])
       }
     }
   }

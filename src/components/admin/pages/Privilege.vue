@@ -53,17 +53,19 @@
         domains: []
       }
     },
-    async created () {
+    async created() {
       let adminObj = await H.api.admin.admin()
-      this.domains = Object.keys(adminObj).filter(k => k !== 'super').map(k => {
-        let domain = adminObj[k]
-        domain.name = domain.domain
-        domain.domain = k
-        domain.admins = []
-        domain.newAdmin = { name: '', cardnum: '', phone: '' }
-        H.api.admin.admin({ domain: k }).then(k => { domain.admins = k.admins })
-        return domain
-      })
+      if (adminObj) {
+        this.domains = Object.keys(adminObj).filter(k => k !== 'super').map(k => {
+          let domain = adminObj[k]
+          domain.name = domain.domain
+          domain.domain = k
+          domain.admins = []
+          domain.newAdmin = { name: '', cardnum: '', phone: '' }
+          H.api.admin.admin({ domain: k }).then(k => { domain.admins = k.admins })
+          return domain
+        })
+      }
     },
     methods: {
       ...formatter,

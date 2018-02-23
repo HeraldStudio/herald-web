@@ -34,7 +34,7 @@
       .subtitle 上游健康状况
       .summary {{ healthCount }} / {{ upstream.length }}
       .upstreams
-        .upstream(v-for='site in upstream' :class='{ healthy: site.health }')
+        a.upstream(v-for='site in upstream' :class='{ healthy: site.health }' :href='site.url' target='_blank')
           .name {{ site.name }}
           .timeout {{ site.timeout === -1 ? '超时' : site.timeout + 'ms' }}
     .subcontainer.periods(v-if='daily')
@@ -254,7 +254,7 @@
     flex-direction row
     flex-wrap wrap
 
-    .upstream
+    a.upstream
       border-radius 3px
       padding 3px 7px
       margin-right 5px
