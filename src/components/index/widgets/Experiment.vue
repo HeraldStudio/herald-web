@@ -1,20 +1,16 @@
 <template lang="pug">
 
   .widget.experiment(v-if='experiment.length')
-    .title
-      .zh 物理实验
-      .en Physics experiment
+    .title 物理实验
       .reload(@click='reload()')
     ul.detail-list
       li(v-for='k in experiment')
         .top
           .left {{ k.labName }}
-          .right.zh {{ k.score ? '成绩：' + k.score : k.teacherName }}
-          .right.en {{ k.score ? 'Score: ' + k.score : k.teacherName }}
+          .right {{ k.score ? '成绩：' + k.score : k.teacherName }}
         .bottom(v-if='!k.score')
           .left {{ formatPeriodNatural(k.startDate, k.endDate) }}
-          .right.zh {{ k.location + '室' }}
-          .right.en {{ 'Room ' + k.location }}
+          .right {{ k.location + '室' }}
 
 </template>
 <script>

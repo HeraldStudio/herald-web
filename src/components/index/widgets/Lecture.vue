@@ -1,24 +1,16 @@
 <template lang="pug">
 
   .widget.lecture
-    .title
-      .zh 人文讲座
-      .en Cultural lecture
+    .title 人文讲座
       .reload(@click='reload()')
-    .empty(v-if='!lectures')
-      .zh 加载中
-      .en Loading...
+    .empty(v-if='!lectures') 加载中
     div(v-else)
       ul.info-bar
         li.info
-          .title
-            .zh 已听讲座次数
-            .en Lectures taken
+          .title 已听讲座次数
           .content {{ lectures.length }}
         li.info
-          .title
-            .zh 剩余讲座次数
-            .en Remaining lecs.
+          .title 剩余讲座次数
           .content {{ Math.max(0, 8 - lectures.length) }}
       ul.detail-list
         li(v-for='item in lectures')

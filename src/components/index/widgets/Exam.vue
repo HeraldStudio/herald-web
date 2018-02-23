@@ -1,16 +1,13 @@
 <template lang="pug">
 
   .widget.exam(v-if='exams && exams.length')
-    .title
-      .zh 考试
-      .en Exams
+    .title 考试
       .reload(@click='reload()')
     ul.detail-list
       li(v-for='item in exams')
         .top
           .left {{ item.courseName }}
-          .right.zh {{ item.daysLeft ? '还有' + item.daysLeft + '天' : '今日考试' }}
-          .right.en {{ item.daysLeft ? item.daysLeft + ' day' + (item.daysLeft == 1 ? '' : 's') + ' left' : 'Today' }}
+          .right {{ item.daysLeft ? '还有' + item.daysLeft + '天' : '今日考试' }}
         .bottom
           .left {{ formatPeriodNatural(item.startTime, item.endTime) }}
           .right {{ item.location }}

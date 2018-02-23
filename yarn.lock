@@ -2859,9 +2859,9 @@ he@1.1.x, he@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
-herald-js@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/herald-js/-/herald-js-1.1.2.tgz#bb100424367cbad0712d9530889b10bd8ed306ac"
+herald-js@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/herald-js/-/herald-js-1.1.3.tgz#146bdc5c3045855617072f42f33c7124e0393cf3"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"

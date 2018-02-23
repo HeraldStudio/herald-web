@@ -1,24 +1,16 @@
 <template lang="pug">
 
   .widget.srtp
-    .title
-      .zh SRTP
-      .en Student Research Training Program
+    .title SRTP
       .reload(@click='reload()')
-    .empty(v-if='!srtp')
-      .zh 加载中
-      .en Loading...
+    .empty(v-if='!srtp') 加载中
     div(v-else)
       ul.info-bar
         li.info
-          .title
-            .zh SRTP学分
-            .en SRTP points
+          .title SRTP学分
           .content {{ srtp.info.points }}
         li.info
-          .title
-            .zh SRTP状态
-            .en SRTP grade
+          .title SRTP状态
           .content {{ srtp.info.grade }}
       ul.detail-list
         li(v-for='k in srtp.projects')

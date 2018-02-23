@@ -1,26 +1,14 @@
 <template lang="pug">
-
   .login-wrapper
     .login
-      .title
-        .zh 统一身份认证
-        .en Identification
+      .title 统一身份认证
       .field
-        input.zh(placeholder='一卡通号' v-model='user.cardnum' @keyup.enter='login()')
-        input.en(placeholder='Student card number' v-model='user.cardnum' @keyup.enter='login()')
+        input(placeholder='一卡通号' v-model='user.cardnum' @keyup.enter='login()')
       .field
-        input.zh(type='password' placeholder='统一身份认证密码' v-model='user.password' @keyup.enter='login()')
-        input.en(type='password' placeholder='Combined identification password' v-model='user.password' @keyup.enter='login()')
-      .error(v-if='error')
-        .zh 登录出现问题，请重试
-        .en Something wrong, please try again.
-      button(v-if='loading')
-        .zh 登录中…
-        .en Loading...
-      button(v-else, @click='login()')
-        .zh 登录
-        .en Sign in
-
+        input(type='password' placeholder='统一身份认证密码' v-model='user.password' @keyup.enter='login()')
+      .error(v-if='error') 登录出现问题，请重试
+      button(v-if='loading') 登录中…
+      button(v-else, @click='login()') 登录
 </template>
 <script>
 

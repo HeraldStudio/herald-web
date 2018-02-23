@@ -1,29 +1,19 @@
 <template lang="pug">
 
   .widget.gpa
-    .title
-      .zh 成绩
-      .en GPA
+    .title 成绩
       .reload(@click='reload()')
-    .empty(v-if='!gpa')
-      .zh 加载中
-      .en Loading...
+    .empty(v-if='!gpa') 加载中
     div(v-else)
       ul.info-bar
         li.info
-          .title
-            .zh 当前绩点
-            .en Current GPA
+          .title 绩点
           .content {{ gpa.gpa || '未计算' }}
         li.info
-          .title
-            .zh 首修绩点
-            .en GPA without revamp
+          .title 首修
           .content {{ gpa.gpaBeforeMakeup || '未计算' }}
         li.info(v-if="gpa.calculationTime")
-          .title
-            .zh 计算时间
-            .en Calculation time
+          .title 计算时间
           .content {{ formatTimeNatural(gpa.calculationTime) }}
       ul.detail-list
         li(v-for='k in gpa.detail[0].courses')

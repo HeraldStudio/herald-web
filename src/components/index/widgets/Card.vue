@@ -1,29 +1,19 @@
 <template lang="pug">
 
   .widget.card
-    .title
-      .zh 一卡通
-      .en ID card
+    .title 一卡通
       .reload(@click='reload()')
-    .empty(v-if='!card')
-      .zh 加载中
-      .en Loading...
+    .empty(v-if='!card') 加载中
     div(v-else)
       ul.info-bar
         li.info
-          .title
-            .zh 卡余额
-            .en Balance
+          .title 卡余额
           .content {{ card.info.balance }}
         li.info
-          .title
-            .zh 卡状态
-            .en State
+          .title 卡状态
           .content {{ card.info.status.mainStatus }}
         li.info
-          .title
-            .zh 今日消费次数
-            .en Payments today
+          .title 今日消费次数
           .content {{ card.detail.length }}
       ul.detail-list
         li(v-for='item in card.detail')

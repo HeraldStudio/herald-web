@@ -7,21 +7,11 @@
         img.logo(src='static/images/logo.png')
       ul.nav
         router-link(to='/')
-          li
-            .zh 主站
-            .en Home
+          li 主站
         router-link(to='/admin' v-if='isAdmin')
-          li
-            .zh 管理中心
-            .en Control center
+          li 管理中心
         a
-          li(@click='logout()' v-if='isLogin')
-            .zh 退出登录
-            .en Sign out
-        a
-          li.lang(@click='toggleLanguage()')
-            .zh en
-            .en zh
+          li(@click='logout()' v-if='isLogin') 退出登录
     .container
       router-view(:isLogin='isLogin' :isAdmin='isAdmin')
 </template>
@@ -41,8 +31,7 @@
       return {
         isLogin: false,
         isAdmin: false,
-        webapp: false,
-        english: false
+        webapp: false
       }
     },
     async created() {
@@ -76,12 +65,9 @@
         setTimeout(checkLogin, 500)
       }
 
-      setTimeout(checkLogin, 100)
+      setTimeout(checkLogin, 500)
     },
     methods: {
-      toggleLanguage() {
-        this.english = !this.english
-      },
       logout() {
         H.deauth()
       }
@@ -151,9 +137,6 @@
       -webkit-appearance none
       -moz-appearance none
       appearance none
-
-    .lang-en .zh, .lang-zh .en
-      display none
 
   #app
     padding 0

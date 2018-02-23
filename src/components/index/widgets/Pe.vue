@@ -1,30 +1,20 @@
 <template lang="pug">
 
   .widget.pe(v-if='pe && pe.content > 0')
-    .title
-      .zh 跑操
-      .en Physical exercise
+    .title 跑操
       .reload(@click='reload()')
     ul.info-bar
       li.info
-        .title
-          .zh 跑操次数
-          .en Exs. taken
+        .title 跑操次数
         .content {{ pe.content }}
       li.info
-        .title
-          .zh 击败人数
-          .en Rank
+        .title 击败人数
         .content {{ pe.rank }}%
       li.info
-        .title
-          .zh 剩余次数
-          .en Remaining exs.
+        .title 剩余次数
         .content {{ Math.max(0, 45 - pe.content) }}
       li.info
-        .title
-          .zh 剩余天数
-          .en Remaining days
+        .title 剩余天数
         .content {{ pe.remain }}
     ul.pe-list(v-if='pedetail')
       li.prev

@@ -1,43 +1,35 @@
 <template lang="pug">
 
   .widget.curriculum
-    .title
-      .zh 课程表
-      .en Curriculum
+    .title 课程表
       .reload(@click='reload()')
-    .empty(v-if='!curriculum')
-      .zh 加载课表需要时间，请耐心等待
-      .en Please wait...
+    .empty(v-if='!curriculum') 加载课表需要时间，请耐心等待
     div(v-else)
       .week-picker
         .prev-week(@click='prevWeek()') <
-        .cur-week.zh 第 {{ displayWeek }} 周
-        .cur-week.en Week {{ displayWeek }}
+        .cur-week 第 {{ displayWeek }} 周
         .next-week(@click='nextWeek()') >
       .week-header
-        .weekday.zh(v-for='item in "一二三四五六日"') {{ item }}
-        .weekday.en(v-for='item in ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]') {{ item }}
+        .weekday(v-for='item in "一二三四五六日"') {{ item }}
       .curriculum-list(:class='{ empty: !displayClasses.length }')
+        table.block-bg
+          tr(v-for='k in [].slice.call([].fill.call({length:13}))')
+            td(v-for='k in [].slice.call([].fill.call({length:7}))')
         .block(v-for='item in displayClasses' v-if='item.dayOfWeek'
-          :style="'left: ' + (item.dayOfWeek - 1) / 7 * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 100 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 100 + '%'")
+          :style="'left: ' + (item.dayOfWeek - 1) / 7 * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 99.5 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 99.5 + '%'")
           .name {{ item.courseName }}
+          .teacher {{ item.teacherName }}
           .place {{ item.location }}
         .empty(v-if='!displayClasses.length') 暂无课程
       ul.detail-list(v-if='displayClasses.find(k => !k.dayOfWeek)')
-        .hint
-          .zh 以下课程无法确定上课时间：
-          .en The course(s) below has no specific time:
+        .hint 以下课程无法确定上课时间：
         li(v-for='item in displayClasses' v-if='!item.dayOfWeek')
           .top
             .left {{ item.courseName }}
             .right {{ item.teacherName }}
           .bottom
-            .left
-              .zh {{ item.beginWeek }}-{{ item.endWeek }}周
-              .en Weeks {{ item.beginWeek }}-{{ item.endWeek }}
-            .right(v-if='item.credit')
-              .zh {{ item.credit }} 学分
-              .en {{ item.credit }} Credits
+            .left {{ item.beginWeek }}-{{ item.endWeek }}周
+            .right(v-if='item.credit') {{ item.credit }} 学分
 
 </template>
 <script>
@@ -102,7 +94,7 @@
   .widget
     padding 0 !important
 
-    --curriculum-background-color #fafafa
+    --curriculum-background-color #fff
 
     .week-picker
       display flex
@@ -155,7 +147,7 @@
 
     .curriculum-list
       height 432px
-      border-bottom 1px solid var(--curriculum-background-color)
+      margin 0 -1px
       position relative
       overflow hidden
       -webkit-transition: .3s
@@ -163,7 +155,17 @@
       -ms-transition: .3s
       -o-transition: .3s
       transition: .3s
-      background var(--curriculum-background-color)
+
+      table.block-bg
+        border-collapse collapse
+        width 100%
+        height 100%
+        box-sizing border-box
+        background #fafafa
+        border 1px solid #f0f0f0
+
+        td
+          border 1px solid #f0f0f0
 
       &.empty
         height 70px
@@ -177,7 +179,7 @@
         line-height 1.4em
         background #fff
         border-top 2px solid var(--theme-color)
-        box-shadow 0 1px 3px rgba(0, 0, 0, .05)
+        box-shadow 0 1px 3px rgba(0, 0, 0, .1)
         display flex
         flex-direction column
         align-items center
@@ -198,9 +200,14 @@
           padding 2px
           width 100%
 
+        .teacher
+          flex 1 1 0
+          font-weight bold
+          color #555
+
         .place
           padding 2px
-          flex 0 0 0
+          flex 0 0 auto
           max-height 4.2em
 
       .empty

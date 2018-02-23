@@ -84,13 +84,11 @@ export default {
     if (date.getFullWeek() === today.getFullWeek() + 1) {
       return '下周' + ['日', '一', '二', '三', '四', '五', '六'][date.getDay()]
     }
-    let ret = Math.abs(dday) + '天' + (dday < 0 ? '前' : '后') + ' ('
     if (date.getFullYear() === today.getFullYear()) {
-      ret += this.formatTime(timestamp, 'M/d')
+      return this.formatTime(timestamp, 'M/d')
     } else {
-      ret += this.formatTime(timestamp, 'yyyy/M/d')
+      return this.formatTime(timestamp, 'yyyy/M/d')
     }
-    return ret + ')'
   },
 
   formatTime: function (timestamp, format) {
