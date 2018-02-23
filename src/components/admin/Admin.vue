@@ -49,7 +49,7 @@
     bottom 0
     left 0
     right 10px
-    max-width 1200px
+    width 1200px
     margin 0 auto
     --sidebar-width 200px
 

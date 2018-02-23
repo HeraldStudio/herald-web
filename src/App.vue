@@ -1,10 +1,10 @@
 <template lang='pug'>
   #app(:class='{ webapp: webapp, "lang-en": english, "lang-zh": !english }')
     .header
-      router-link(to='/')
-        img.logo(src='static/images/logo.png')
+      router-link.live2d-wrapper(to='/')
         .live2d-container
           live2d
+        img.logo(src='static/images/logo.png')
       ul.nav
         router-link(to='/')
           li
@@ -164,11 +164,11 @@
       left 0
       right 0
       z-index 999
-      height 40px
+      height 60px
       max-width 1200px
 
       margin 0 auto
-      padding 10px
+      padding 0 10px
 
       display flex
       flex-direction row
@@ -183,26 +183,33 @@
       -ms-user-select: none
       user-select: none
 
-      .live2d-container
-        position absolute
-        left 16px
-        top 2px
-        width 56px
-        height 56px
-        filter hue-rotate(-15deg)
+      .live2d-wrapper
+        display flex
+        flex-direction row
+        align-items center
+        padding 0 10px
+
+        .live2d-container
+          width 56px
+          height 56px
+          position relative
+          filter hue-rotate(-15deg)
+
+        img.logo
+          width 115px
+          height 40px
+          object-fit cover
+          object-position 100% 50%
+          pointer-events none
 
       @media screen and (max-width: 600px)
+        img.logo
+          display none
+
         @supports (-webkit-backdrop-filter: blur(20px))
           background rgba(255, 255, 255, .8)
           -webkit-backdrop-filter: blur(20px)
           border-bottom 1px solid rgba(0, 0, 0, .05)
-
-      img.logo
-        width auto
-        height 40px
-        object-fit contain
-        pointer-events none
-        padding 0 10px
 
       ul.nav
         height 100%
