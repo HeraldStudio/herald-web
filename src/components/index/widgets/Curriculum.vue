@@ -208,7 +208,6 @@
         .place
           padding 2px
           flex 0 0 auto
-          max-height 4.2em
 
       .empty
         position absolute
