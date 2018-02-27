@@ -81,7 +81,7 @@
     },
     async created() {
       this.activities = await H.api.admin.activity.manage()
-      if (this.activities.length % 10) {
+      if (this.activities.length < 10) {
         this.ended = true
       }
       this.initNewActivity()
@@ -89,7 +89,7 @@
     methods: {
       async loadNextPage() {
         let nextPage = await H.api.admin.activity.manage({ page: this.page + 1 })
-        if (nextPage.length % 10) {
+        if (nextPage.length < 10) {
           this.ended = true
         }
         nextPage = nextPage.filter(k => this.activities.find(j => j.aid !== k.aid))

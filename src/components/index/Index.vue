@@ -99,9 +99,11 @@
           opacity .5
 
         @media screen and (max-width: 600px)
-          margin 40px 0 10px
+          margin 50px 0 0
           padding 20px 15px
           width auto
+          box-shadow none
+          border-bottom 1px solid var(--divider-color)
 
         .empty
           display block
@@ -132,6 +134,14 @@
           -ms-transition: .3s
           -o-transition: .3s
           transition: .3s
+
+          @media screen and (max-width: 600px)
+            left 0
+            right 0
+            top -36px
+            justify-content center
+            background none
+            color #555
 
           &::before
             content ''
