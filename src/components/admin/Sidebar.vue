@@ -1,5 +1,5 @@
 <template lang='pug'>
-  #admin-sidebar
+  #admin-sidebar(v-if='adminObj')
     ul
       li.category(v-for='category in categories' v-if='!category.privilege || category.privilege === "independent" && hasAvailable(category) || adminObj[category.privilege]') {{ category.name }}
         ul
@@ -34,15 +34,15 @@
           },
           {
             name: '运营',
-            privilege: 'advertise',
+            privilege: 'publicity',
             pages: [
               {
-                page: 'advertise',
+                page: 'banner',
                 name: '轮播广告'
               },
               {
-                page: 'actpass',
-                name: '活动审核'
+                page: 'activity',
+                name: '活动管理'
               }
             ]
           },
@@ -51,8 +51,8 @@
             privilege: 'independent',
             pages: [
               {
-                page: 'actpush',
-                name: '活动投放'
+                page: 'publisher',
+                name: '活动发布'
               },
               {
                 page: 'lecture',

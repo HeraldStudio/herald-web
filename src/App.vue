@@ -1,5 +1,5 @@
 <template lang='pug'>
-  #app(:class='{ webapp: webapp, "lang-en": english, "lang-zh": !english }')
+  #app(:class='{ webapp: webapp }')
     .header
       router-link.live2d-wrapper(to='/')
         .live2d-container
@@ -82,15 +82,18 @@
     --theme-color-dark #237a86
     --theme-color-light #ddfbff
 
+    ::selection
+      background var(--theme-color-light)
+
     *
       font-family 'Avenir Next', 'Noble Scarlet', 'PingFang SC', 'Microsoft YaHei UI', sans-serif
       -webkit-text-size-adjust: 100%
 
     *:not(input, button, textarea, a, a *, *[onclick])
-      -webkit-user-select: none
-      -moz-user-select: none
-      -ms-user-select: none
-      user-select: none
+      // -webkit-user-select: none
+      // -moz-user-select: none
+      // -ms-user-select: none
+      // user-select: none
       cursor default
 
     html, body
@@ -128,15 +131,26 @@
     button:active
       background var(--theme-color-dark)
 
-    input
+    input, textarea
       color #555
       background #fafafa
       box-sizing border-box
 
-    input, input:focus
+    input, textarea, input:focus, textarea:focus
       -webkit-appearance none
       -moz-appearance none
       appearance none
+      border none
+      outline none
+      resize none
+
+    input:-webkit-autofill,
+    textarea:-webkit-autofill,
+    select:-webkit-autofill
+      -webkit-box-shadow inset 0 0 0 100px #fafafa
+
+    img:not([src]), img[src=""]
+      opacity 0
 
   #app
     padding 0

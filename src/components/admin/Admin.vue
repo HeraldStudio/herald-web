@@ -5,18 +5,30 @@
     .page-container
       monitor(v-if='currentPage === "monitor"')
       privilege(v-if='currentPage === "privilege"')
+      notice(v-if='currentPage === "notice"')
+      banner(v-if='currentPage === "banner"')
+      activity(v-if='currentPage === "activity"')
+      publisher(v-if='currentPage === "publisher"')
 </template>
 <script>
   import sidebar from './Sidebar.vue'
   import monitor from './pages/Monitor.vue'
   import privilege from './pages/Privilege.vue'
+  import notice from './pages/Notice.vue'
+  import banner from './pages/Banner.vue'
+  import activity from './pages/Activity.vue'
+  import publisher from './pages/Publisher.vue'
 
   export default {
     props: ['isLogin', 'isAdmin'],
     components: {
       sidebar,
       monitor,
-      privilege
+      privilege,
+      notice,
+      banner,
+      activity,
+      publisher
     },
     data () {
       return {

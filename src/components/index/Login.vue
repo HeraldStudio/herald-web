@@ -7,6 +7,7 @@
       .field
         input(type='password' placeholder='统一身份认证密码' v-model='user.password' @keyup.enter='login()')
       .error(v-if='error') 登录出现问题，请重试
+      .error(v-if='forcedLogOut' title='小猴偷米现已采用更完整的加密机制，加密密钥仅由用户持有，故无法为多处登录颁发相同的密钥。因此，为了减轻颁发过多密钥造成的数据库膨胀，我们限定每个平台只允许一处登录。') 由于其他浏览器端登录，当前平台已下线。
       button(v-if='loading') 登录中…
       button(v-else, @click='login()') 登录
 </template>
@@ -23,14 +24,17 @@
           platform: 'web'
         },
         error: false,
-        loading: false
+        loading: false,
+        forcedLogOut: false
       }
     },
     created() {
-
+      this.forcedLogOut = window.herald_forcedLogOut
     },
     methods: {
       async login() {
+        window.herald_forcedLogOut = false
+        
         if (/^[0-9a-f]{32,}$/.test(this.user.cardnum)) {
           H.token = this.user.cardnum
           return

@@ -12,6 +12,9 @@
           .label 开机天数
           .content {{ this.redis.server.uptimeInDays }}
         .column
+          .label 程序启动时间
+          .content {{ formatTimeNatural(this.connection.startTime) }}
+        .column
           .label 系统总内存
           .content {{ this.redis.memory.totalSystemMemoryHuman }}
         .column
@@ -100,6 +103,7 @@
 <script>
   import H from '@/api'
   import confirmButton from '@/components/ConfirmButton.vue'
+  import formatter from '../../../util/formatter'
 
   export default {
     components: {
@@ -132,6 +136,7 @@
       }
     },
     methods: {
+      ...formatter,
       formatTime (timestamp) {
         let date = new Date(timestamp)
         let minute = date.getMinutes()
