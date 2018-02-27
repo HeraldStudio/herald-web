@@ -15,19 +15,19 @@
           .label 程序启动
           .content {{ formatTimeNatural(this.connection.startTime) }}
         .column
-          .label 总内存
+          .label 系统总内存
           .content {{ this.redis.memory.totalSystemMemoryHuman }}
         .column
-          .label Redis 内存
+          .label 已用内存
           .content {{ this.redis.memory.usedMemoryHuman }}
         .column
-          .label 并发请求
+          .label 并发请求数
           .content {{ this.connection.requestCount }}
         .column
-          .label 回源任务
+          .label 回源任务数
           .content {{ this.connection.detachedTaskCount }}
         .column
-          .label 在线爬虫
+          .label 在线爬虫数
           .content {{ this.connection.spiders.activeCount }}
         .column
           .label 待审核爬虫
