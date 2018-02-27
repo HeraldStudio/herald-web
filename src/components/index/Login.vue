@@ -34,7 +34,7 @@
     methods: {
       async login() {
         window.herald_forcedLogOut = false
-        
+
         if (/^[0-9a-f]{32,}$/.test(this.user.cardnum)) {
           H.token = this.user.cardnum
           return
@@ -97,6 +97,16 @@
       button
         font-size 16px
         padding 5px 10px
+        color #fff
+        background var(--theme-color)
+        -webkit-transition .2s
+        -moz-transition .2s
+        -ms-transition .2s
+        -o-transition .2s
+        transition .2s
+
+        &:active
+          background var(--theme-color-dark)
 
       .error
         font-size 14px

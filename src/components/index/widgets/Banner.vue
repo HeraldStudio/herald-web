@@ -1,0 +1,122 @@
+<template lang="pug">
+
+  .widget.banner(v-show='banners.length')
+    .title 编辑推荐
+      .reload(@click='reload()')
+    banner.banner(:auto="5000", :loop="true", :speed="500", :dots="false", :watch-items="banners")
+      banner-item.banner-item(v-for='page in banners' :key='page.bid')
+        .img-container
+          a(v-if='page.url' :href='page.url' target="_blank")
+            img(:src='page.pic' ondragstart="return false")
+          img(v-else :src='page.pic' ondragstart="return false")
+        .text-container
+          .banner-hint(v-if='page.schoolnumPrefix && page.schoolnumPrefix.indexOf("guest") === -1') 专属推荐
+          .banner-title {{ page.title }}
+          a.banner-link(v-if='page.url' :href='page.url' target="_blank") 详情 >
+
+</template>
+<script>
+
+  import H from '@/api'
+  import formatter from "@/util/formatter"
+  import { Carousel, CarouselItem } from 'vue-l-carousel'
+
+  export default {
+    components: {
+      banner: Carousel,
+      'banner-item': CarouselItem
+    },
+    data() {
+      return {
+        banners: []
+      }
+    },
+    created() {
+      this.reload()
+    },
+    methods: {
+      async reload() {
+        this.banners = await H.api.banner()
+      }
+    }
+  }
+
+</script>
+<style>
+
+  @import "~vue-l-carousel/dist/main.css";
+
+  .v-carousel-nav {
+    display: none;
+    padding: 0 12px;
+    font-size: 14px;
+    background: #fff;
+    color: #555;
+  }
+
+  .v-carousel-items {
+    height: 100%
+  }
+
+</style>
+<style lang="stylus" scoped>
+
+  .widget.banner
+    position relative
+    padding 0
+
+    .banner
+      overflow hidden
+
+      .banner-item
+        width 100%
+        height 100%
+
+        .img-container
+          position relative
+          width 100%
+          overflow hidden
+
+          &::after
+            display block
+            content ' '
+            width 100%
+            padding-top 40%
+
+          img
+            position absolute
+            left 0
+            right 0
+            top 0
+            bottom 0
+            width 100%
+            height 100%
+            object-fit cover
+            -webkit-user-select: none
+            -moz-user-select: none
+            -ms-user-select: none
+            user-select: none
+
+        .text-container
+          display flex
+          flex-direction row
+          padding 15px 10px
+          justify-content center
+          align-items center
+
+          * + *
+            margin-left 10px
+
+          .banner-hint, .banner-link
+            padding 3px 7px
+            background var(--theme-color)
+            border-radius 3px
+            color #fff
+            font-weight bold
+
+          .banner-title
+            color #333
+            font-size 15px
+            font-weight bold
+
+</style>

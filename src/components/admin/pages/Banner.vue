@@ -175,14 +175,14 @@
         display flex
         align-items center
         justify-content center
-        border-radius 5px
+        border-radius 3px
         overflow hidden
 
         img.pic
           width 100%
           height 100%
           object-fit cover
-          border-radius 5px
+          border-radius 3px
 
         .pic-upload
           position absolute

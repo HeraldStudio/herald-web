@@ -48,7 +48,7 @@
           td
             timestamp(v-model='newActivity.endTime')
           td.operations(rowspan='2')
-            confirm-button(v-if='newActivity.pic && newActivity.title && activity.content && newActivity.startTime && newActivity.endTime' @click='addActivity()' confirm-text='确定提交') 提交活动
+            confirm-button(v-if='newActivity.pic && newActivity.title && newActivity.content && newActivity.startTime && newActivity.endTime' @click='addActivity()' confirm-text='确定提交') 提交活动
         tr.activity.add
           td(colspan='5')
             textarea.content(v-model='newActivity.content' maxlength='280' placeholder='280字以内')
@@ -193,14 +193,14 @@
           display flex
           align-items center
           justify-content center
-          border-radius 5px
+          border-radius 3px
           overflow hidden
 
           img.pic
             width 100%
             height 100%
             object-fit cover
-            border-radius 5px
+            border-radius 3px
 
           .pic-upload
             position absolute

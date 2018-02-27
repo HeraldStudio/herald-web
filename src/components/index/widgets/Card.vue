@@ -20,8 +20,8 @@
           .top
             .left {{ item.desc }}
           .bottom
-            .left {{ formatTimeNatural(item.time) }}
-            .right {{ item.amount }}
+            .left {{ item.amount.toFixed(2) }}
+            .right {{ formatTimeNatural(item.time) }}
 
 </template>
 <script>

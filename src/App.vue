@@ -119,18 +119,6 @@
       margin 0
       font-size 15px
 
-    button
-      color #fff
-      background var(--theme-color)
-      -webkit-transition .2s
-      -moz-transition .2s
-      -ms-transition .2s
-      -o-transition .2s
-      transition .2s
-
-    button:active
-      background var(--theme-color-dark)
-
     input, textarea
       color #555
       background #fafafa

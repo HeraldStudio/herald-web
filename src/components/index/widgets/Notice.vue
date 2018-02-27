@@ -9,8 +9,8 @@
           .top
             .left {{ item.title }}
           .bottom
-            .left 发布于 {{ formatDateNatural(item.time) }}
-            .right {{ item.category }}
+            .left {{ item.category }}
+            .right 发布于 {{ formatDateNatural(item.time) }}
     .empty(v-if='!notices.length') 暂无通知
 
 </template>

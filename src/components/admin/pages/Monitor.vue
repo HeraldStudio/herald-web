@@ -349,7 +349,7 @@
             left 1px
             right 1px
             bottom 0
-            border-radius 5px
+            border-radius 3px
             background #f8f8f8
             display flex
             flex-direction column
@@ -391,7 +391,7 @@
                     font-size 12px
                     color #555
                     padding 5px 10px
-                    border-radius 5px
+                    border-radius 3px
                     background #fff
                     box-shadow 0 3px 10px rgba(0, 0, 0, .05)
                     z-index 999

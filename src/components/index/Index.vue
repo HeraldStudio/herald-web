@@ -1,7 +1,7 @@
 <template lang=pug>
   .columns(v-if='isLogin')
     .widgets
-      // swiper
+      banner
       card
       curriculum
       // pe
@@ -19,7 +19,7 @@
 <script>
   import H from '@/api'
   import login from './Login.vue'
-  // import swiper from './widgets/Swiper.vue'
+  import banner from './widgets/Banner.vue'
   import card from './widgets/Card.vue'
   // import pe from './widgets/Pe.vue'
   import exam from './widgets/Exam.vue'
@@ -34,7 +34,7 @@
     props: ['isLogin'],
     components: {
       login,
-      // swiper,
+      banner,
       card, /* pe, */ curriculum,
       exam, lecture, experiment, srtp, grade,
       notice
