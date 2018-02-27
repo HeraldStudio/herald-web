@@ -138,10 +138,12 @@
           @media screen and (max-width: 600px)
             left 0
             right 0
-            top -36px
+            top -40px
             justify-content center
             background none
-            color #555
+            color #333
+            font-size 15px
+            padding 5px 0
 
           &::before
             content ''
