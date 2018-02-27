@@ -9,25 +9,28 @@
         span.pull-result(v-if='changes && changed' :title='changes') 代码已更新
       .dashboard
         .column
-          .label 开机天数
-          .content {{ this.redis.server.uptimeInDays }}
+          .label 系统开机
+          .content {{ this.redis.server.uptimeInDays }}天
         .column
-          .label 程序启动时间
+          .label 程序启动
           .content {{ formatTimeNatural(this.connection.startTime) }}
         .column
-          .label 系统总内存
+          .label 总内存
           .content {{ this.redis.memory.totalSystemMemoryHuman }}
         .column
-          .label Redis 已用内存
+          .label Redis 内存
           .content {{ this.redis.memory.usedMemoryHuman }}
         .column
-          .label 当前并发请求数
+          .label 并发请求
           .content {{ this.connection.requestCount }}
         .column
-          .label 当前爬虫连接数
+          .label 回源任务
+          .content {{ this.connection.detachedTaskCount }}
+        .column
+          .label 在线爬虫
           .content {{ this.connection.spiders.activeCount }}
         .column
-          .label 当前待审核爬虫
+          .label 待审核爬虫
           .content(v-if='!this.connection.spiders.inactiveCount') 0
           .spider(v-for='spider in this.connection.spiders.inactiveList')
             .name {{ spider }}
@@ -162,10 +165,13 @@
       },
       async pull () {
         this.pulling = true
-        let { changed, out } = await H.api.admin.maintenance.pull()
-        this.changes = out
-        this.changed = changed
-        this.pulling = false
+        try {
+          let { changed, out } = await H.api.admin.maintenance.pull()
+          this.changes = out
+          this.changed = changed
+        } finally {
+          this.pulling = false
+        }
       }
     },
     async created () {
