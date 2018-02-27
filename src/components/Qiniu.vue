@@ -39,7 +39,7 @@
           },
           validateStatus: code => {
             if (code === 413) {
-              alert('文件超过 1M，请使用图片处理工具压缩后再上传！')
+              this.$toasted.show('文件超过 1M，请使用图片处理工具压缩后再上传！')
               this.percentage = 0
             }
             return true

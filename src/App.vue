@@ -82,63 +82,69 @@
     --theme-color-dark #237a86
     --theme-color-light #ddfbff
 
-    ::selection
-      background var(--theme-color-light)
+  ::selection
+    background var(--theme-color-light)
 
-    *
-      font-family 'Avenir Next', 'Noble Scarlet', 'PingFang SC', 'Microsoft YaHei UI', sans-serif
-      -webkit-text-size-adjust: 100%
+  *
+    font-family 'Avenir Next', 'Noble Scarlet', 'PingFang SC', 'Microsoft YaHei UI', sans-serif
+    -webkit-text-size-adjust: 100%
 
-    *:not(input, button, textarea, a, a *, *[onclick])
-      // -webkit-user-select: none
-      // -moz-user-select: none
-      // -ms-user-select: none
-      // user-select: none
-      cursor default
+  *:not(input, button, textarea, a, a *, *[onclick])
+    // -webkit-user-select: none
+    // -moz-user-select: none
+    // -ms-user-select: none
+    // user-select: none
+    cursor default
 
-    html, body
-      margin 0
-      padding 0
+  html, body
+    margin 0
+    padding 0
 
-    p
-      margin-top 0
-      margin-bottom 0
-      line-height 1.75em
+  p
+    margin-top 0
+    margin-bottom 0
+    line-height 1.75em
 
-    a, a:link, a:hover, a:active, a:focus, a:visited
-      color inherit
-      text-decoration none
-      -webkit-appearance none
-      -moz-appearance none
-      appearance none
+  a, a:link, a:hover, a:active, a:focus, a:visited
+    color inherit
+    text-decoration none
+    -webkit-appearance none
+    -moz-appearance none
+    appearance none
 
-    button, input
-      outline none
-      border none
-      padding 8px 12px
-      margin 0
-      font-size 15px
+  button, input
+    outline none
+    border none
+    padding 8px 12px
+    margin 0
+    font-size 15px
 
-    input, textarea
-      color #555
-      background #fafafa
-      box-sizing border-box
+  input, textarea
+    color #555
+    background #fafafa
+    box-sizing border-box
 
-    input, textarea, input:focus, textarea:focus
-      -webkit-appearance none
-      -moz-appearance none
-      appearance none
-      border none
-      outline none
-      resize none
+  input, textarea, input:focus, textarea:focus
+    -webkit-appearance none
+    -moz-appearance none
+    appearance none
+    border none
+    outline none
+    resize none
 
-    input:-webkit-autofill,
-    textarea:-webkit-autofill,
-    select:-webkit-autofill
-      -webkit-box-shadow inset 0 0 0 100px #fafafa
+  input:-webkit-autofill,
+  textarea:-webkit-autofill,
+  select:-webkit-autofill
+    -webkit-box-shadow inset 0 0 0 100px #fafafa
 
-    img:not([src]), img[src=""]
-      opacity 0
+  img:not([src]), img[src=""]
+    opacity 0
+
+  .toasted-container.top-center
+    top 0
+
+  .toasted.primary
+    font-weight normal
 
   #app
     padding 0
@@ -227,6 +233,9 @@
       margin 0 auto
       padding 70px 15px 10px
       overflow scroll
+
+      @media screen and (max-width: 600px)
+        padding 60px 0 0
 
     // iOS Webapp 顶栏样式
     &.webapp

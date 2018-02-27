@@ -164,7 +164,6 @@
         this.upstream = await H.api.admin.maintenance.upstream()
       },
       async pull () {
-        this.pulling = true
         try {
           let { changed, out } = await H.api.admin.maintenance.pull()
           this.changes = out
