@@ -3,7 +3,7 @@
   .widget.banner(v-show='banners.length')
     .title 编辑推荐
       .reload(@click='reload()')
-    banner.banner(:auto="5000", :loop="true", :speed="500", :dots="false", :watch-items="banners")
+    banner.banner(:auto="5000", :loop="true", :speed="500", :dots="true", :watch-items="banners")
       banner-item.banner-item(v-for='page in banners' :key='page.bid')
         .img-container
           a(v-if='page.url' :href='page.url' target="_blank")
@@ -45,6 +45,19 @@
 <style>
 
   @import "~vue-l-carousel/dist/main.css";
+
+  .v-carousel {
+    padding-bottom: 15px
+  }
+
+  .v-carousel-dots {
+    bottom: 5px;
+  }
+
+  .v-carousel-dot {
+    width: 10px;
+    height: 3px;
+  }
 
   .v-carousel-nav {
     display: none;
@@ -103,6 +116,7 @@
           padding 15px 10px
           justify-content center
           align-items center
+          min-width 0
 
           * + *
             margin-left 10px
@@ -113,10 +127,16 @@
             border-radius 3px
             color #fff
             font-weight bold
+            font-size 13px
+            white-space nowrap
 
           .banner-title
             color #333
             font-size 15px
             font-weight bold
+            white-space nowrap
+            overflow hidden
+            text-overflow ellipsis
+            max-width 100%
 
 </style>

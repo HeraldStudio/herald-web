@@ -193,8 +193,7 @@
           background #333
 
         .name
-          flex 0 1 auto
-          overflow hidden
+          flex 0 0 auto
           font-weight bold
           color var(--theme-color)
           padding 2px
@@ -203,6 +202,7 @@
         .teacher
           flex 1 1 0
           font-weight bold
+          overflow hidden
           color #555
 
         .place

@@ -18,17 +18,17 @@
           td
             div.pic-wrapper
               img.pic(:src='banner.pic' @click='uploadPic(banner)')
-              qiniu.pic-upload(v-model='banner.pic' @input='banner.changed = true') 上传
+              qiniu.pic-upload(v-model='banner.pic' @input='banners[i].changed = true') 上传
           td
-            input.banner-title(v-model='banner.title' @input='banner.changed = true')
+            input.banner-title(v-model='banner.title' @input='banners[i].changed = true')
           td
-            input.url(v-model='banner.url' @input='banner.changed = true')
+            input.url(v-model='banner.url' @input='banners[i].changed = true')
           td
-            timestamp(v-model='banner.startTime' @input='banner.changed = true')
+            timestamp(v-model='banner.startTime' @input='banners[i].changed = true')
           td
-            timestamp(v-model='banner.endTime' @input='banner.changed = true')
+            timestamp(v-model='banner.endTime' @input='banners[i].changed = true')
           td
-            input.schoolnum-prefix(v-model='banner.schoolnumPrefix' @input='banner.changed = true')
+            input.schoolnum-prefix(v-model='banner.schoolnumPrefix' @input='banners[i].changed = true')
           td.operations
             button.save(v-if='banner.pic && banner.title && banner.startTime && banner.endTime && banner.changed' @click='saveBanner(banner)') 保存
             confirm-button.remove(@click='removeBanner(banner.bid)' confirm-text='确定') 删除
@@ -97,13 +97,11 @@
         }
       },
       async addBanner() {
-        delete banner.changed
         await H.api.admin.banner.post({ banner: this.newBanner })
         this.banners = await H.api.admin.banner()
         this.initNewBanner()
       },
       async saveBanner(banner) {
-        delete banner.changed
         await H.api.admin.banner.put({ banner })
         this.banners = await H.api.admin.banner()
       },

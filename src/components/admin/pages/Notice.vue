@@ -14,12 +14,12 @@
           .id {{ i + 1 }}
           .middle
             .first-line
-              input.notice-title(v-model='notice.title')
-              input.url(v-model='notice.url')
-              input.schoolnum-prefix(v-model='notice.schoolnumPrefix')
-            textarea.content(v-model='notice.content')
+              input.notice-title(v-model='notice.title' @input='notices[i].changed = true')
+              input.url(v-model='notice.url' @input='notices[i].changed = true')
+              input.schoolnum-prefix(v-model='notice.schoolnumPrefix' @input='notices[i].changed = true')
+            textarea.content(v-model='notice.content' @input='notices[i].changed = true')
           .operations
-            button.save(v-if='notice.title && notice.content' @click='saveNotice(notice)') 保存
+            button.save(v-if='notice.title && notice.content && notice.changed' @click='saveNotice(notice)') 保存
             confirm-button.remove(@click='removeNotice(notice.nid)' confirm-text='确定') 删除
         .notice.add
           .id

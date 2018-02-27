@@ -1,23 +1,22 @@
 <template lang="pug">
 
-  .widget.notice
-    .title 教务通知
+  .widget.notice(v-show='notices.length')
+    .title 系统公告
       .reload(@click='reload()')
     ul.detail-list
-      li(v-for='item in notices' :class='{ important: item.isImportant }')
+      li(v-for='item in notices')
         a(:href='item.url' target='_blank')
           .top
             .left {{ item.title }}
+            .right(v-if='item.schoolnumPrefix && item.schoolnumPrefix.indexOf("guest") === -1') 专属推送
           .bottom
-            .left {{ item.category }}
-            .right 发布于 {{ formatDateNatural(item.time) }}
+            .left {{ item.content }}
     .empty(v-if='!notices.length') 暂无通知
 
 </template>
 <script>
 
   import H from '@/api'
-  import formatter from '@/util/formatter'
 
   export default {
     data() {
@@ -29,16 +28,33 @@
       this.reload()
     },
     methods: {
-      ...formatter,
       async reload() {
-        this.notices = await H.api.jwc()
+        this.notices = await H.api.notice()
       }
     }
   }
 
 </script>
-<style>
-  .important .top .left {
-    font-weight: bold;
-  }
+<style lang='stylus' scoped>
+  .widget.notice
+    ul.detail-list li
+      a[href=""]
+        pointer-events none
+        cursor normal
+
+      .top .left
+        font-weight bold
+        color #333
+
+      .bottom .left
+        font-weight normal
+
+      .top .right
+        padding 3px 7px
+        background var(--theme-color)
+        border-radius 3px
+        color #fff
+        font-weight bold
+        font-size 13px
+
 </style>

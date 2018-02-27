@@ -7,12 +7,14 @@
       // pe
       exam
     .widgets
+      activity
       experiment
       lecture
       srtp
       grade
     .widgets
       notice
+      jwc
   login(v-else)
 </template>
 
@@ -28,16 +30,17 @@
   import experiment from './widgets/Experiment.vue'
   import srtp from './widgets/Srtp.vue'
   import grade from './widgets/Grade.vue'
+  import activity from './widgets/Activity.vue'
   import notice from './widgets/Notice.vue'
+  import jwc from './widgets/Jwc.vue'
 
   export default {
     props: ['isLogin'],
     components: {
       login,
-      banner,
-      card, /* pe, */ curriculum,
-      exam, lecture, experiment, srtp, grade,
-      notice
+      banner, card, /* pe, */ curriculum,
+      activity, exam, lecture, experiment, srtp, grade,
+      notice, jwc
     },
     data () {
       return {

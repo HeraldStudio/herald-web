@@ -16,7 +16,7 @@
         template(v-for='(activity, i) in activities' :class='getState(activity)')
           tr.activity
             td.state(rowspan='2') {{ activity.changed ? '未保存' : (activity.admittedBy ? { upcoming: '未开始', ongoing: '展示中', ended: '已下架' }[getState(activity)] : '未审核') }}
-            td
+            td(rowspan='2')
               div.pic-wrapper
                 img.pic(:src='activity.pic' @click='uploadPic(activity)')
                 qiniu.pic-upload(v-model='activity.pic' @input='activity.changed = true')
@@ -34,11 +34,11 @@
               button.save(v-if='activity.pic && activity.title && activity.content && activity.startTime && activity.endTime && activity.changed || !activity.admittedBy' @click='saveActivity(activity)') {{ activity.admittedBy ? '保存' : activity.changed ? '保存并通过' : '通过审核' }}
               confirm-button.remove(@click='removeActivity(activity.aid)' confirm-text='确定') 删除
           tr.activity
-            td(colspan='5')
+            td(colspan='4')
               textarea.content(v-model='activity.content')
         tr.activity.add
           td.state(rowspan='2')
-          td
+          td(rowspan='2')
             div.pic-wrapper
               img.pic(:src='newActivity.pic' @click='uploadPic(newActivity)')
               qiniu.pic-upload(v-model='newActivity.pic')
@@ -53,9 +53,9 @@
           td.committed(rowspan='2')
           td.admitted(rowspan='2')
           td.operations(rowspan='2')
-            confirm-button(v-if='newActivity.pic && newActivity.title && activity.content && newActivity.startTime && newActivity.endTime' @click='addActivity()' confirm-text='确定新增') 新增活动
+            confirm-button(v-if='newActivity.pic && newActivity.title && newActivity.content && newActivity.startTime && newActivity.endTime' @click='addActivity()' confirm-text='确定新增') 新增活动
         tr.activity.add
-          td(colspan='5')
+          td(colspan='4')
             textarea.content(v-model='newActivity.content')
         tr.activity.more(v-if='!ended')
           td(colspan='9' @click='loadNextPage()') 加载更多
@@ -194,8 +194,9 @@
           border-top 1px solid var(--divider-color)
 
         .pic-wrapper
-          width 120px
-          height 48px
+          width 100px
+          height 100px
+          margin-right 10px
           position relative
           display flex
           align-items center

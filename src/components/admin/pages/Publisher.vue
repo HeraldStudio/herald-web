@@ -32,7 +32,7 @@
               confirm-button.remove(@click='removeActivity(activity.aid)' confirm-text='确定') 删除
           tr.activity
             td(colspan='5')
-              textarea.content(v-model='activity.content' maxlength='280' placeholder='280字以内')
+              textarea.content(v-model='activity.content' maxlength='100' placeholder='约50个字')
         tr.activity.add
           td.state(rowspan='2')
           td
@@ -51,7 +51,7 @@
             confirm-button(v-if='newActivity.pic && newActivity.title && newActivity.content && newActivity.startTime && newActivity.endTime' @click='addActivity()' confirm-text='确定提交') 提交活动
         tr.activity.add
           td(colspan='5')
-            textarea.content(v-model='newActivity.content' maxlength='280' placeholder='280字以内')
+            textarea.content(v-model='newActivity.content' maxlength='100' placeholder='约50个字')
         tr.activity.more(v-if='!ended')
           td(colspan='9' @click='loadNextPage()') 加载更多
 </template>
