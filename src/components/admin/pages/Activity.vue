@@ -158,10 +158,10 @@
         width 100%
         margin 0
         display block
-        color #333
+        color var(--color-text-regular)
 
       button
-        background #ddfbff
+        background var(--color-primary-bg)
         color #237a86
         font-weight bold
         margin 2.5px
@@ -177,21 +177,21 @@
 
       .activity-header, .activity
         font-size 14px
-        color #555
+        color var(--color-text-bold)
 
         .state
           width 64px
           font-size 13px
 
         &.ongoing .state
-          color var(--theme-color)
+          color var(--color-primary)
           font-weight bold
 
         th, td
           padding 10px 2.5px
 
         td
-          border-top 1px solid var(--divider-color)
+          border-top 1px solid var(--color-divider)
 
         .pic-wrapper
           width 100px

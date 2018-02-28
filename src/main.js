@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import Toasted from 'vue-toasted'
 
-// window.Vue = Vue
+window.Vue = Vue
 
 Vue.config.productionTip = false
 Vue.use(Toasted, {

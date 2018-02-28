@@ -6,10 +6,8 @@
         input(placeholder='一卡通号' v-model='user.cardnum' @keyup.enter='login()')
       .field
         input(type='password' placeholder='统一身份认证密码' v-model='user.password' @keyup.enter='login()')
-      .error(v-if='error') 登录出现问题，请重试
-      .error(v-if='forcedLogOut' title='小猴偷米现已采用更完整的加密机制，加密密钥仅由用户持有，故无法为多处登录颁发相同的密钥。因此，为了减轻颁发过多密钥造成的数据库膨胀，我们限定每个平台只允许一处登录。') 由于其他浏览器端登录，当前平台已下线。
-      button(v-if='loading') 登录中…
-      button(v-else, @click='login()') 登录
+      button.primary(v-if='loading') 登录中…
+      button.primary(v-else, @click='login()') 登录
 </template>
 <script>
 
@@ -23,32 +21,40 @@
           password: '',
           platform: 'web'
         },
-        error: false,
-        loading: false,
-        forcedLogOut: false
+        loading: false
       }
     },
     created() {
-      this.forcedLogOut = window.herald_forcedLogOut
+      if (window.herald_forcedLogOut) {
+        this.$toasted.show('由于其他浏览器端登录，当前平台已下线。', {
+          action: {
+            text: '为什么？',
+            onClick: () => {
+              this.$toasted.show(
+                '小猴偷米现已采用更安全的加密机制，加密密钥仅保存在用户端，且每个用户端密钥不同。' +
+                '每一个有效的密钥，都需要小猴后端系统中对应的一条数据来维持。为了缓解颁发过多密钥' +
+                '造成的数据库过度膨胀，我们设定同一用户在同一平台只允许一处登录。', { duration: 30000 })
+            }
+          },
+        })
+        window.herald_forcedLogOut = false
+      }
     },
     methods: {
       async login() {
-        window.herald_forcedLogOut = false
-
         if (/^[0-9a-f]{32,}$/.test(this.user.cardnum)) {
           H.token = this.user.cardnum
           return
         }
 
         if (!/^[12]\d{8}$/.test(this.user.cardnum) || !this.user.password.trim()) {
-          this.error = true
+          this.$toasted.show('请填写完整')
           return
         }
 
         this.loading = true
-        this.error = false
         if (!await H.auth.post(this.user)) {
-          this.error = true
+          this.$toasted.show('登录出现错误，请重试')
           this.user.password = ''
         }
         this.loading = false
@@ -64,7 +70,7 @@
     left 0
     right 0
     top 64px
-    bottom 0
+    bottom 128px
     display flex
     align-items center
     justify-content center
@@ -75,7 +81,7 @@
 
       display flex
       flex-direction column
-      align-items flex-start
+      align-items center
 
       -webkit-user-select: none
       -moz-user-select: none
@@ -86,32 +92,23 @@
         margin-top 10px
 
       .title
-        font-size 18px
+        font-size 16px
+        font-weight bold
+        background var(--color-text-bold)
         color #fff
         padding 5px 10px
-        background #555
+        border-radius 3px
+        margin-bottom 20px
+
 
       input
         width 260px
 
-      button
-        font-size 16px
-        padding 5px 10px
-        color #fff
-        background var(--theme-color)
-        -webkit-transition .2s
-        -moz-transition .2s
-        -ms-transition .2s
-        -o-transition .2s
-        transition .2s
-
-        &:active
-          background var(--theme-color-dark)
-
       .error
         font-size 14px
         color #fff
-        background #cc5e6f
+        background var(--color-error)
         padding 5px 10px
+        border-radius 3px
 
 </style>

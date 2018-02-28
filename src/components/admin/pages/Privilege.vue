@@ -102,7 +102,7 @@
 
     .admin-header, .admin
       font-size 14px
-      color #555
+      color var(--color-text-bold)
 
       input, button
         padding 3px 7px
@@ -111,14 +111,14 @@
 
       input
         width 100%
-        color #333
+        color var(--color-text-regular)
 
         &[disabled]
           background #fff
-          color #555
+          color var(--color-text-bold)
 
       button
-        background #ddfbff
+        background var(--color-primary-bg)
         color #237a86
         font-weight bold
         margin-right 5px

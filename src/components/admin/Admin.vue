@@ -85,7 +85,7 @@
       .admin-page
         .title
           font-size 24px
-          color #555
+          color var(--color-text-bold)
           padding-bottom 25px
 
         .loading
@@ -108,7 +108,7 @@
 
           @media screen and (min-width: 600px)
             &:hover
-              border 1px solid var(--divider-color)
+              border 1px solid var(--color-divider)
 
           .subtitle
             display inline-block

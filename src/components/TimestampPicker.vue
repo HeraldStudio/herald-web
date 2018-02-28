@@ -71,12 +71,12 @@
   .vdatetime-popup__header,
   .vdatetime-calendar__month__day--selected > span > span,
   .vdatetime-calendar__month__day--selected:hover > span > span {
-    background: var(--theme-color);
+    background: var(--color-primary);
   }
 
   .vdatetime-time-picker__item--selected,
   .vdatetime-popup__actions__button {
-    color: var(--theme-color);
+    color: var(--color-primary);
   }
 
   .vdatetime-time-picker__item:hover,

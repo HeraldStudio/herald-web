@@ -5,7 +5,7 @@ const H = herald({
   onLogin (token) {},
   onLogout (token) {},
   onError (e) {
-    if (e.code === 401 && H.isLogin) {
+    if (e.code === 401) {
       window.herald_forcedLogOut = true
       H.deauth()
     }

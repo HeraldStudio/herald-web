@@ -93,7 +93,7 @@
 
         @media screen and (min-width: 600px)
           &:hover
-            border 1px solid var(--divider-color)
+            border 1px solid var(--color-divider)
 
         &.loading
           opacity .5
@@ -103,7 +103,7 @@
           padding 20px 15px
           width auto
           box-shadow none
-          border-bottom 1px solid var(--divider-color)
+          border-bottom 1px solid var(--color-divider)
 
         .empty
           display block
@@ -123,17 +123,12 @@
           font-size 13px
           border-radius 3px
           font-weight bold
-          background #555
+          background var(--color-text-bold)
           color #fff
           margin-bottom 20px
           display flex
           flex-direction row
           align-items center
-          -webkit-transition: .3s
-          -moz-transition: .3s
-          -ms-transition: .3s
-          -o-transition: .3s
-          transition: .3s
 
           @media screen and (max-width: 600px)
             left 0
@@ -141,7 +136,7 @@
             top -40px
             justify-content center
             background none
-            color #333
+            color var(--color-text-regular)
             font-size 15px
             padding 5px 0
 
@@ -153,7 +148,7 @@
             margin-left -3px
             border-left 3px solid transparent
             border-right 3px solid transparent
-            border-top 4px solid #555
+            border-top 4px solid var(--color-text-bold)
 
           .reload
             width 16px
@@ -196,8 +191,8 @@
             justify-content center
             font-size 14px
             padding 3px 7px
-            color var(--theme-color-dark)
-            background var(--theme-color-light)
+            color var(--color-primary-dark)
+            background var(--color-primary-bg)
             border-radius 3px
 
             .title
@@ -208,7 +203,7 @@
 
           +ul.detail-list>*:first-child
             margin-top 15px
-            border-top 1px solid var(--divider-color)
+            border-top 1px solid var(--color-divider)
             padding-top 10px
 
         ul.detail-list
@@ -220,7 +215,7 @@
           flex-direction column
 
           li + li
-            border-top 1px solid var(--divider-color)
+            border-top 1px solid var(--color-divider)
 
           li
             list-style none
@@ -248,11 +243,11 @@
 
             .top .left
               font-size 15px
-              color var(--theme-color)
+              color var(--color-primary)
 
             .top .right, .bottom .left
               font-size 14px
-              color #555
+              color var(--color-text-bold)
 
             .bottom .left
               font-weight bold

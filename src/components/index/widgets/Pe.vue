@@ -108,7 +108,7 @@
     display flex
     flex-direction row
     justify-content space-around
-    border-top 1px solid var(--divider-color)
+    border-top 1px solid var(--color-divider)
 
     -webkit-user-select: none
     -moz-user-select: none
@@ -124,15 +124,15 @@
       padding-top 20px
 
       .btn
-        color var(--theme-color)
+        color var(--color-primary)
         padding 3px 5px
         text-align center
         font-size 14px
         cursor pointer
 
       .date
-        background #fafafa
-        color #333
+        background var(--color-tool-bg)
+        color var(--color-text-regular)
         padding 3px 0
         text-align center
         font-size 14px
@@ -142,7 +142,7 @@
           color #aaa
 
         &.highlight
-          background var(--theme-color)
+          background var(--color-primary)
           color #fff
 
 </style>

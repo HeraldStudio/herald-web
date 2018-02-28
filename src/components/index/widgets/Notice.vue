@@ -44,14 +44,14 @@
 
       .top .left
         font-weight bold
-        color #333
+        color var(--color-text-regular)
 
       .bottom .left
         font-weight normal
 
       .top .right
         padding 3px 7px
-        background var(--theme-color)
+        background var(--color-primary)
         border-radius 3px
         color #fff
         font-weight bold

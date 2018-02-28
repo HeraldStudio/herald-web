@@ -6,12 +6,10 @@
           live2d
         img.logo(src='static/images/logo.png')
       ul.nav
-        router-link(to='/')
-          li 主站
         router-link(to='/admin' v-if='isAdmin')
           li 管理中心
         a
-          li(@click='logout()' v-if='isLogin') 退出登录
+          li(@click='logout()' v-if='isLogin') 退出
     .container
       router-view(:isLogin='isLogin' :isAdmin='isAdmin')
 </template>
@@ -74,16 +72,36 @@
     }
   }
 </script>
-
 <style lang='stylus'>
   :root
-    --divider-color #f0f0f0
-    --theme-color #00abc3
-    --theme-color-dark #237a86
-    --theme-color-light #ddfbff
+    --color-text-regular   #333333
+    --color-text-bold      #555555
+    --color-text-secondary #888888
+    --color-divider        #f0f0f0
+    --color-tool-bg        #fafafa
+
+    --color-primary-dark   #237a86
+    --color-primary        #00abc3
+    --color-primary-light  #70eafa
+    --color-primary-bg     #ddfbff
+
+    --color-success-dark   #648723
+    --color-success        #7ec200
+    --color-success-light  #cafa70
+    --color-success-bg     #f3ffde
+
+    --color-warning-dark   #876b23
+    --color-warning        #c28b00
+    --color-warning-light  #fad370
+    --color-warning-bg     #fff6de
+
+    --color-error-dark     #872f23
+    --color-error          #c21700
+    --color-error-light    #fa8070
+    --color-error-bg       #ffe2de
 
   ::selection
-    background var(--theme-color-light)
+    background var(--color-primary-bg)
 
   *
     font-family 'Avenir Next', 'Noble Scarlet', 'PingFang SC', 'Microsoft YaHei UI', sans-serif
@@ -100,10 +118,11 @@
     margin 0
     padding 0
 
-  p
+  p, input, textarea
     margin-top 0
     margin-bottom 0
-    line-height 1.75em
+    line-height 1.5em
+    vertical-align middle
 
   a, a:link, a:hover, a:active, a:focus, a:visited
     color inherit
@@ -115,13 +134,35 @@
   button, input
     outline none
     border none
-    padding 8px 12px
+    border-radius 3px
+    padding 5px 10px
     margin 0
-    font-size 15px
+    font-size 14px
+
+  button
+    font-weight bold
+    background var(--color-primary-bg)
+    color var(--color-primary-dark)
+
+  button.primary
+    background var(--color-primary)
+    color #fff
+
+  .bubble
+    padding 0 7px
+    text-align left
+    border-radius 3px
+    font-weight bold
+    background var(--color-text-bold)
+    color #fff
+    margin-bottom 20px
+    display flex
+    flex-direction row
+    align-items center
 
   input, textarea
-    color #555
-    background #fafafa
+    color var(--color-text-bold)
+    background var(--color-tool-bg)
     box-sizing border-box
 
   input, textarea, input:focus, textarea:focus
@@ -135,16 +176,40 @@
   input:-webkit-autofill,
   textarea:-webkit-autofill,
   select:-webkit-autofill
-    -webkit-box-shadow inset 0 0 0 100px #fafafa
+    -webkit-box-shadow inset 0 0 0 100px var(--color-tool-bg)
 
   img:not([src]), img[src=""]
     opacity 0
 
   .toasted-container.top-center
-    top 0
+    top 60px
+    left 0
+    right 0
+    margin-left auto
+    padding 10px
+    -webkit-transform none
+    transform none
 
-  .toasted.primary
-    font-weight normal
+    .toasted
+      margin 0 auto
+      cursor default
+      border-radius 3px
+
+      &.primary
+        font-weight normal
+        min-height 0
+        line-height 1.5em
+        padding 5px 10px
+        font-size 14px
+        font-weight bold
+        text-align justify
+        background var(--color-primary)
+        box-shadow none
+
+      .action
+        color #fff
+        white-space nowrap
+        text-decoration none
 
   #app
     padding 0
@@ -167,7 +232,7 @@
       overflow hidden
 
       background #fff
-      border-bottom 1px solid var(--divider-color)
+      border-bottom 1px solid var(--color-divider)
 
       -webkit-user-select: none
       -moz-user-select: none
@@ -193,9 +258,9 @@
           object-position 100% 50%
           pointer-events none
 
-      @media screen and (max-width: 600px)
-        img.logo
-          display none
+        // @media screen and (max-width: 600px)
+        //   img.logo
+        //     display none
 
         @supports (-webkit-backdrop-filter: blur(20px))
           background rgba(255, 255, 255, .8)
@@ -215,12 +280,12 @@
         li
           list-style none
           font-size 14px
-          color #555
+          color var(--color-text-bold)
           padding 0 10px
           cursor pointer
 
           &.lang
-            background var(--theme-color)
+            background var(--color-primary)
             color #fff
             padding 0
             margin 0 10px

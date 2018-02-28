@@ -109,12 +109,12 @@
     ul
       list-style none
       padding-left 0
-      color #333
+      color var(--color-text-regular)
       font-size 15px
 
       li.category
         padding 15px 20px
-        border-bottom 1px solid var(--divider-color)
+        border-bottom 1px solid var(--color-divider)
         font-size 17px
         color #888
         text-align left
@@ -126,10 +126,10 @@
             cursor pointer
 
             &:hover
-              color var(--theme-color)
+              color var(--color-primary)
 
             &.current
-              color var(--theme-color)
+              color var(--color-primary)
               font-weight bold
 
 </style>

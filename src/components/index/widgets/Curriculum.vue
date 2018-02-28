@@ -112,8 +112,8 @@
         font-weight bold
         padding 3px 7px
         border-radius 3px
-        color var(--theme-color-dark)
-        background var(--theme-color-light)
+        color var(--color-primary-dark)
+        background var(--color-primary-bg)
 
       .prev-week, .next-week
         cursor pointer
@@ -125,7 +125,7 @@
       .weekday
         flex 1 1 0
         text-align center
-        color #555
+        color var(--color-text-bold)
         background var(--curriculum-background-color)
         font-size 12px
         padding 5px
@@ -161,7 +161,7 @@
         width 100%
         height 100%
         box-sizing border-box
-        background #fafafa
+        background var(--color-tool-bg)
         border 1px solid #f0f0f0
 
         td
@@ -178,7 +178,7 @@
         width 14%
         line-height 1.4em
         background #fff
-        border-top 2px solid var(--theme-color)
+        border-top 2px solid var(--color-primary)
         box-shadow 0 1px 3px rgba(0, 0, 0, .1)
         display flex
         flex-direction column
@@ -186,16 +186,16 @@
         justify-content space-between
         text-align center
         font-size 10px
-        color #333
+        color var(--color-text-regular)
         border-radius 3px
 
         &::active
-          background #333
+          background var(--color-text-regular)
 
         .name
           flex 0 0 auto
           font-weight bold
-          color var(--theme-color)
+          color var(--color-primary)
           padding 2px
           width 100%
 
@@ -203,7 +203,7 @@
           flex 1 1 0
           font-weight bold
           overflow hidden
-          color #555
+          color var(--color-text-bold)
 
         .place
           padding 2px

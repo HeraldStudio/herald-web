@@ -98,10 +98,10 @@
       width 100%
       margin 0
       display block
-      color #333
+      color var(--color-text-regular)
 
     button
-      background #ddfbff
+      background var(--color-primary-bg)
       color #237a86
       font-weight bold
       margin-right 5px
@@ -120,12 +120,12 @@
 
     .notice-header, .notice
       font-size 14px
-      color #555
+      color var(--color-text-bold)
       display flex
       flex-direction row
       align-items center
       padding 12px 0
-      border-top 1px solid var(--divider-color)
+      border-top 1px solid var(--color-divider)
 
       > *
         flex 1 1 0

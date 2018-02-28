@@ -193,7 +193,7 @@
     transition .3s
 
     &.pull
-      background #ddfbff
+      background var(--color-primary-bg)
       color #237a86
 
     &.confirming
@@ -217,12 +217,12 @@
         margin-left 20px
 
       .label
-        color #555
+        color var(--color-text-bold)
         font-size 14px
         font-weight bold
         padding-bottom 7px
         margin-bottom 7px
-        border-bottom 1px solid var(--divider-color)
+        border-bottom 1px solid var(--color-divider)
 
       .content
         font-size 20px
@@ -277,7 +277,7 @@
       align-items center
 
       &.healthy
-        background #ddfbff
+        background var(--color-primary-bg)
         color #237a86
 
       .name
@@ -341,7 +341,7 @@
         .operations-container
           flex 1 1 0
           position relative
-          border-right 1px solid #fafafa
+          border-right 1px solid var(--color-tool-bg)
 
           .operations
             position absolute
@@ -353,7 +353,7 @@
             display flex
             flex-direction column
             justify-content flex-end
-            border-radius 3px
+            // border-radius 3px
             overflow hidden
 
             &:hover
@@ -366,13 +366,13 @@
               position relative
 
               + .operation
-                border-top 1px solid rgba(0, 0, 0, .5)
+                box-shadow 0 -1px 0 rgba(0, 0, 0, .1)
 
               .result
                 flex 1 1 0
 
                 + .result
-                  border-left 1px solid rgba(0, 0, 0, .5)
+                  box-shadow inset 1px 0 0 rgba(0, 0, 0, .1)
 
                 .description-container
                   position absolute
@@ -388,7 +388,7 @@
                     right -70px
                     text-align left
                     font-size 12px
-                    color #555
+                    color var(--color-text-bold)
                     padding 5px 10px
                     border-radius 3px
                     background #fff
@@ -402,8 +402,9 @@
                       line-height 1.5em
 
                 &:hover
-                  outline 1px solid var(--theme-color)
+                  outline 1px solid var(--color-primary)
                   border-left none
+                  z-index 999
 
                   .description
                     opacity 1
@@ -430,18 +431,18 @@
         margin 5px 0
         margin-right 15px
         padding: 5px 0
-        color #555
+        color var(--color-text-bold)
         font-weight bold
-        border-bottom 1px solid var(--divider-color)
+        border-bottom 1px solid var(--color-divider)
 
       td
         padding: 5px 20px 0 0
         font-size 14px
-        color #555
+        color var(--color-text-bold)
         text-align right
 
         &:first-child
-          background #ddfbff
+          background var(--color-primary-bg)
           color #237a86
           padding 3px 7px
           border-radius 3px

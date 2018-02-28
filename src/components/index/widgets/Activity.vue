@@ -62,7 +62,7 @@
     padding: 0 12px;
     font-size: 14px;
     background: #fff;
-    color: #555;
+    color: var(--color-text-bold);
   }
 
   .v-carousel-items {
@@ -120,7 +120,7 @@
               margin-top 5px
 
             .activity-title
-              color #333
+              color var(--color-text-regular)
               font-size 15px
               font-weight bold
               white-space nowrap
@@ -129,7 +129,7 @@
               min-width 0
 
             .activity-content
-              color #333
+              color var(--color-text-regular)
               font-size 13px
               max-height 4.5em
               line-height 1.5em

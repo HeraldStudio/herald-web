@@ -76,14 +76,14 @@
     left: 0;
     bottom: 0;
     height: 2px;
-    background: var(--theme-color);
+    background: var(--color-primary);
     transition: .3s;
   }
 
   .qiniu .button {
-    background: var(--theme-color);
+    background: var(--color-primary);
     border-radius: 5px;
-    color: var(--theme-color-light);
+    color: var(--color-primary-bg);
     padding: 1px 7px;
     font-size: 13px;
     font-weight: bold;
@@ -92,6 +92,6 @@
   }
 
   .qiniu .button:active {
-    background: var(--theme-color-dark);
+    background: var(--color-primary-dark);
   }
 </style>

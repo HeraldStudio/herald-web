@@ -64,7 +64,7 @@
     padding: 0 12px;
     font-size: 14px;
     background: #fff;
-    color: #555;
+    color: var(--color-text-bold);
   }
 
   .v-carousel-items {
@@ -123,7 +123,7 @@
 
           .banner-hint, .banner-link
             padding 3px 7px
-            background var(--theme-color)
+            background var(--color-primary)
             border-radius 3px
             color #fff
             font-weight bold
@@ -131,7 +131,7 @@
             white-space nowrap
 
           .banner-title
-            color #333
+            color var(--color-text-regular)
             font-size 15px
             font-weight bold
             white-space nowrap
