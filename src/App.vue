@@ -121,7 +121,7 @@
   p, input, textarea
     margin-top 0
     margin-bottom 0
-    line-height 1.5em
+    line-height 1.75em
     vertical-align middle
 
   a, a:link, a:hover, a:active, a:focus, a:visited
