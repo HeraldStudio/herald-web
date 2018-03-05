@@ -165,10 +165,9 @@
       },
       async pull () {
         try {
-          let { changed, out } = await H.api.admin.maintenance.pull()
-          this.changes = out
-          this.changed = changed
+          await H.api.admin.maintenance.pull()
         } finally {
+        this.$toasted.show('代码已更新，请稍等片刻后刷新页面')
           this.pulling = false
         }
       }

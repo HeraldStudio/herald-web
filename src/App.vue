@@ -117,6 +117,7 @@
   html, body
     margin 0
     padding 0
+    background #fff
 
   p, input, textarea
     margin-top 0
@@ -201,7 +202,7 @@
         line-height 1.5em
         padding 5px 10px
         font-size 14px
-        font-weight bold
+        font-weight normal
         text-align justify
         background var(--color-primary)
         box-shadow none
@@ -210,6 +211,10 @@
         color #fff
         white-space nowrap
         text-decoration none
+        padding 0
+        margin 0
+        font-weight bold
+        font-size inherit
 
   #app
     padding 0
@@ -265,7 +270,6 @@
         @supports (-webkit-backdrop-filter: blur(20px))
           background rgba(255, 255, 255, .8)
           -webkit-backdrop-filter: blur(20px)
-          border-bottom 1px solid rgba(0, 0, 0, .05)
 
       ul.nav
         height 100%
@@ -283,6 +287,7 @@
           color var(--color-text-bold)
           padding 0 10px
           cursor pointer
+          white-space nowrap
 
           &.lang
             background var(--color-primary)

@@ -8,7 +8,6 @@
           .id 序号
           .notice-title 公告标题
           .url 公告链接（可选）
-          .schoolnum-prefix 对指定学号前缀可见
           .operations 操作
         .notice(v-for='(notice, i) in notices')
           .id {{ i + 1 }}
@@ -27,8 +26,7 @@
             .first-line
               input.notice-title(placeholder='新增' v-model='newNotice.title')
               input.url(v-model='newNotice.url')
-              input.schoolnum-prefix(v-model='newNotice.schoolnumPrefix')
-            textarea.content(placeholder='公告内容' v-model='newNotice.content')
+            textarea.content(placeholder='Markdown 内容' v-model='newNotice.content')
           td.operations
             confirm-button(v-if='newNotice.title && newNotice.content' @click='addNotice()' confirm-text='确定新增') 新增公告
 </template>
@@ -152,4 +150,5 @@
 
         .content
           margin-top 5px
+          height 4em
 </style>

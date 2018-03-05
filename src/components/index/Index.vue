@@ -14,7 +14,6 @@
       grade
     .widgets
       notice
-      jwc
   login(v-else)
 </template>
 
@@ -32,7 +31,6 @@
   import grade from './widgets/Grade.vue'
   import activity from './widgets/Activity.vue'
   import notice from './widgets/Notice.vue'
-  import jwc from './widgets/Jwc.vue'
 
   export default {
     props: ['isLogin'],
@@ -40,7 +38,7 @@
       login,
       banner, card, /* pe, */ curriculum,
       activity, exam, lecture, experiment, srtp, grade,
-      notice, jwc
+      notice
     },
     data () {
       return {

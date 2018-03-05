@@ -77,11 +77,9 @@
 
     .login
       box-sizing border-box
-      text-align center
-
       display flex
       flex-direction column
-      align-items center
+      align-items flex-start
 
       -webkit-user-select: none
       -moz-user-select: none
