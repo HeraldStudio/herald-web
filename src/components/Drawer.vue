@@ -3,12 +3,13 @@
   .drawer-wrapper
     .click-area(@click.stop='open()')
       slot
-    .mask(:class='{ shown: drawer }' @click.stop='close()')
-      .drawer
-        .title-bar
-          .title {{ title }}
-        .drawer-view
-          slot(name='content')
+    transition(name="fade-slide-up")
+      .mask(v-if='drawer' @click.stop='close()')
+        .drawer
+          .title-bar
+            .title {{ title }}
+          .drawer-view
+            slot(name='content')
 
 </template>
 <script>
@@ -37,8 +38,8 @@
         Vue.$drawer.count--
         this.$emit('close')
         if (Vue.$drawer.count === 0) {
-         document.getElementsByTagName('html')[0].className
-           = document.getElementsByTagName('html')[0].className.replace(' drawer-shown', '')
+          document.getElementsByTagName('html')[0].className
+            = document.getElementsByTagName('html')[0].className.replace(' drawer-shown', '')
         }
       }
     }
@@ -49,6 +50,19 @@
 
   html.drawer-shown, html.drawer-shown body
     overflow: hidden
+
+  .fade-slide-up-enter-active, .fade-slide-up-leave-active
+    transition .3s
+
+    .drawer
+      transition .3s
+
+  .fade-slide-up-enter, .fade-slide-up-leave-to
+    opacity 0
+    -webkit-backdrop-filter none
+
+    .drawer
+      transform translateY(100%)
 
   .drawer-wrapper
     .click-area
@@ -62,44 +76,32 @@
       bottom 0
       right 0
       margin 0
-      background: rgba(#000, .5)
       z-index: 99999
       cursor: default
       display: flex
       flex-direction: column
       align-items: center
       justify-content: center
-      opacity: 0
-      pointer-events: none
-      transition: .2s
+      background: rgba(#fff, .7)
+      -webkit-backdrop-filter blur(20px)
 
       @media screen and (max-width: 600px)
         width 100%
         justify-content: flex-end
         padding-top 60px
 
-      &.shown
-        opacity: 1
-        pointer-events: all
-        transition: .2s
-
-      &.shown .drawer
-        transform none
-
       .drawer
-        transform translateY(100%)
         overflow: hidden
         background: #fff
         z-index: 100000
         box-sizing: border-box
         width: 600px
-        box-shadow: 0 0 20px rgba(0, 0, 0, .1)
         cursor: default
         display: flex
         flex-direction: column
         padding 20px 0 10px
         overflow-y: scroll
-        transition: .3s
+        box-shadow: 0 0 10px rgba(#000, .1)
 
         @media screen and (max-width: 600px)
           width 100%

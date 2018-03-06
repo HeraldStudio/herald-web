@@ -100,12 +100,16 @@
     --color-error-light    #fa8070
     --color-error-bg       #ffe2de
 
+    -webkit-tap-highlight-color transparent
+
   ::selection
     background var(--color-primary-bg)
 
   *
     font-family 'Avenir Next', 'Noble Scarlet', 'PingFang SC', 'Microsoft YaHei UI', sans-serif
-    -webkit-text-size-adjust: 100%
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 
   *:not(input, button, textarea, a, a *, *[onclick])
     // -webkit-user-select: none
