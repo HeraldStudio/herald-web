@@ -80,6 +80,7 @@
       &.shown
         opacity: 1
         pointer-events: all
+        transition: .2s
 
       &.shown .drawer
         transform none

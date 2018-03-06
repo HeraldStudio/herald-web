@@ -34,6 +34,7 @@
     padding 20px 10px
 
     .dashboard-container
+      width 100%
       display: block
       white-space: nowrap
       overflow-x: scroll
