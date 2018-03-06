@@ -114,6 +114,9 @@
     // user-select: none
     cursor default
 
+  ::-webkit-scrollbar
+    display: none
+
   html, body
     margin 0
     padding 0

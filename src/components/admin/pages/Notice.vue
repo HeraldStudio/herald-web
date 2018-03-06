@@ -2,20 +2,15 @@
   .admin-page#notice
     .title 通知公告
     .subcontainer
-      .summary-p 注：学号前缀可用于将公告发给指定院系、班级或个人，例如填入 090 表示发给学号 090 开头的用户；留空表示所有人可见，guest 表示所有游客可见，!guest 表示所有非游客可见
       .list
         .notice-header
           .id 序号
-          .notice-title 公告标题
-          .url 公告链接（可选）
+          .middle 公告标题
           .operations 操作
         .notice(v-for='(notice, i) in notices')
           .id {{ i + 1 }}
           .middle
-            .first-line
-              input.notice-title(v-model='notice.title' @input='notices[i].changed = true')
-              input.url(v-model='notice.url' @input='notices[i].changed = true')
-              input.schoolnum-prefix(v-model='notice.schoolnumPrefix' @input='notices[i].changed = true')
+            input.notice-title(v-model='notice.title' @input='notices[i].changed = true')
             textarea.content(v-model='notice.content' @input='notices[i].changed = true')
           .operations
             button.save(v-if='notice.title && notice.content && notice.changed' @click='saveNotice(notice)') 保存
@@ -23,9 +18,7 @@
         .notice.add
           .id
           .middle
-            .first-line
-              input.notice-title(placeholder='新增' v-model='newNotice.title')
-              input.url(v-model='newNotice.url')
+            input.notice-title(placeholder='新增' v-model='newNotice.title')
             textarea.content(placeholder='Markdown 内容' v-model='newNotice.content')
           td.operations
             confirm-button(v-if='newNotice.title && newNotice.content' @click='addNotice()' confirm-text='确定新增') 新增公告
@@ -116,6 +109,9 @@
     .notice-header
       font-weight bold
 
+    .notice
+      border-top 1px solid var(--color-divider)
+
     .notice-header, .notice
       font-size 14px
       color var(--color-text-bold)
@@ -123,7 +119,6 @@
       flex-direction row
       align-items center
       padding 12px 0
-      border-top 1px solid var(--color-divider)
 
       > *
         flex 1 1 0
@@ -136,19 +131,9 @@
         flex-direction column
         flex 4 4 0
 
-        .first-line
-          display flex
-          flex-direction row
-
-          > *
-            flex 1 1 0
-            + *
-              margin-left 5px
-
-          .url
-            flex 2 2 0
+        * + *
+          margin-top 5px
 
         .content
-          margin-top 5px
-          height 4em
+          height 5.5em
 </style>

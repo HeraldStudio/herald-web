@@ -1,8 +1,6 @@
 <template lang="pug">
 
-  .widget.pe(v-if='pe && pe.content > 0')
-    .title 跑操
-      .reload(@click='reload()')
+  item(title='跑操' name='跑操次数' :ready='pe' :value='pe.content')
     ul.info-bar
       li.info
         .title 跑操次数
@@ -32,8 +30,12 @@
 <script>
 
   import api from '@/api'
+  import item from '../DashboardItem.vue'
 
   export default {
+    components: {
+      item
+    },
     data() {
       return {
         pe: null,

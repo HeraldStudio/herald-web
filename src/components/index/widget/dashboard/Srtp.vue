@@ -1,10 +1,7 @@
 <template lang="pug">
 
-  .widget.srtp
-    .title SRTP
-      .reload(@click='reload()')
-    .empty(v-if='!srtp') 加载中
-    div(v-else)
+  item(title='SRTP' name='SRTP学分' :ready='srtp' :value='srtp.info.points')
+    div
       ul.info-bar
         li.info
           .title SRTP学分
@@ -25,8 +22,12 @@
 
   import H from '@/api'
   import formatter from '@/util/formatter'
+  import item from '../DashboardItem.vue'
 
   export default {
+    components: {
+      item
+    },
     data() {
       return {
         srtp: null

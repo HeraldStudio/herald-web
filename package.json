@@ -48,6 +48,7 @@
     "http-proxy-middleware": "^0.17.3",
     "js-cookie": "^2.2.0",
     "luxon": "^0.5.3",
+    "marked": "^0.3.17",
     "normalize.css": "^7.0.0",
     "offline-plugin": "^4.9.0",
     "opn": "^5.1.0",

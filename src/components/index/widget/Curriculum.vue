@@ -13,8 +13,8 @@
         .weekday(v-for='item in "一二三四五六日"') {{ item }}
       .curriculum-list(:class='{ empty: !displayClasses.length }')
         table.block-bg
-          tr(v-for='k in [].slice.call([].fill.call({length:13}))')
-            td(v-for='k in [].slice.call([].fill.call({length:7}))')
+          tr(v-for='_ in 13')
+            td(v-for='_ in 7')
         .block(v-for='item in displayClasses' v-if='item.dayOfWeek'
           :style="'left: ' + (item.dayOfWeek - 1) / 7 * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 99.5 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 99.5 + '%'")
           .name {{ item.courseName }}

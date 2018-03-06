@@ -1,10 +1,7 @@
 <template lang="pug">
 
-  .widget.lecture
-    .title 人文讲座
-      .reload(@click='reload()')
-    .empty(v-if='!lectures') 加载中
-    div(v-else)
+  item(title='人文讲座' name='已听讲座' :ready='lectures' :value='lectures.length')
+    div
       ul.info-bar
         li.info
           .title 已听讲座次数
@@ -23,8 +20,12 @@
 
   import H from '@/api'
   import formatter from '@/util/formatter'
+  import item from '../DashboardItem.vue'
 
   export default {
+    components: {
+      item
+    },
     data() {
       return {
         lectures: null

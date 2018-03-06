@@ -1,10 +1,7 @@
 <template lang="pug">
 
-  .widget.gpa
-    .title 成绩
-      .reload(@click='reload()')
-    .empty(v-if='!gpa') 加载中
-    div(v-else)
+  item(title='成绩' name='当前绩点' :ready='gpa' :value='gpa.gpa || "未计算"')
+    div
       ul.info-bar
         li.info
           .title 绩点
@@ -26,8 +23,12 @@
 
   import H from '@/api'
   import formatter from '@/util/formatter'
+  import item from '../DashboardItem.vue'
 
   export default {
+    components: {
+      item
+    },
     data() {
       return {
         gpa: null

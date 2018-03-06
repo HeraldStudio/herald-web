@@ -2,16 +2,12 @@
   .columns(v-if='isLogin')
     .widgets
       banner
-      card
-      curriculum
-      // pe
-      exam
-    .widgets
       activity
-      experiment
-      lecture
-      srtp
-      grade
+      dashboard
+      .todo
+        <!-- exam -->
+        experiment
+        curriculum
     .widgets
       notice
   login(v-else)
@@ -20,24 +16,24 @@
 <script>
   import H from '@/api'
   import login from './Login.vue'
-  import banner from './widgets/Banner.vue'
-  import card from './widgets/Card.vue'
-  // import pe from './widgets/Pe.vue'
-  import exam from './widgets/Exam.vue'
-  import lecture from './widgets/Lecture.vue'
-  import curriculum from './widgets/Curriculum.vue'
-  import experiment from './widgets/Experiment.vue'
-  import srtp from './widgets/Srtp.vue'
-  import grade from './widgets/Grade.vue'
-  import activity from './widgets/Activity.vue'
-  import notice from './widgets/Notice.vue'
+  import banner from './widget/Banner.vue'
+  import activity from './widget/Activity.vue'
+  import notice from './widget/Notice.vue'
+
+  import dashboard from './widget/Dashboard.vue'
+
+  // import exam from './widget/Exam.vue'
+  import curriculum from './widget/Curriculum.vue'
+  import experiment from './widget/Experiment.vue'
 
   export default {
     props: ['isLogin'],
     components: {
       login,
-      banner, card, /* pe, */ curriculum,
-      activity, exam, lecture, experiment, srtp, grade,
+      banner,
+      dashboard,
+      curriculum, experiment,
+      activity,
       notice
     },
     data () {
@@ -211,6 +207,7 @@
           box-sizing border-box
           display flex
           flex-direction column
+          white-space normal
 
           li + li
             border-top 1px solid var(--color-divider)
