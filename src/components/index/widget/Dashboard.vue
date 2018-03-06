@@ -39,6 +39,7 @@
       white-space: nowrap
       overflow-x: scroll
       box-sizing: border-box
+      justify-content: center
 
       > *
         display: inline-block

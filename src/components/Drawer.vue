@@ -1,9 +1,9 @@
 <template lang="pug">
 
   .drawer-wrapper
-    .click-area(@click.stop='drawer = !drawer')
+    .click-area(@click.stop='open()')
       slot
-    .mask(:class='{ shown: drawer }' @click.stop='drawer = !drawer')
+    .mask(:class='{ shown: drawer }' @click.stop='close()')
       .drawer
         .title-bar
           .title {{ title }}
@@ -23,21 +23,22 @@
         drawer: false
       }
     },
-    watch: {
-      drawer () {
-        if (this.drawer) {
-          Vue.$drawer.count++
-          this.$emit('open')
-        } else {
-          Vue.$drawer.count--
-          this.$emit('close')
-        }
-
-        if (Vue.$drawer.count) {
+    methods: {
+      open () {
+        this.drawer = true
+        Vue.$drawer.count++
+        this.$emit('open')
+        if (Vue.$drawer.count === 1) {
           document.getElementsByTagName('html')[0].className += ' drawer-shown'
-        } else {
-          document.getElementsByTagName('html')[0].className
-            = document.getElementsByTagName('html')[0].className.replace(' drawer-shown', '')
+        }
+      },
+      close () {
+        this.drawer = false
+        Vue.$drawer.count--
+        this.$emit('close')
+        if (Vue.$drawer.count === 0) {
+         document.getElementsByTagName('html')[0].className
+           = document.getElementsByTagName('html')[0].className.replace(' drawer-shown', '')
         }
       }
     }
