@@ -14,14 +14,20 @@
     ul.pe-list
       li.prev
         .btn(@click='prevWeek()') <
-
       li(v-for='item, i in curWeek')
         .date(:class='{ highlight: item.hasExercise }')
           span.month(v-if='i == 0') {{ item.date.getMonth() + 1 }}/
           span {{ item.date.getDate() }}
-
       li.next
         .btn(@click='nextWeek()') >
+    ul.detail-list
+      li(v-for='item in pe.health')
+        .top
+          .left {{ item.name }}
+          .right {{ item.score }} 分
+        .bottom
+          .left {{ item.value }}
+          .right {{ item.grade }}
 
 </template>
 <script>
@@ -87,12 +93,13 @@
 
   ul.pe-list
     width 100%
-    margin 15px 0 0
+    margin 15px 0
     padding 0
     display flex
     flex-direction row
     justify-content space-around
     border-top 1px solid var(--color-divider)
+    border-bottom 1px solid var(--color-divider)
 
     -webkit-user-select: none
     -moz-user-select: none
@@ -105,7 +112,7 @@
     li
       list-style none
       flex 1 1 0
-      padding-top 20px
+      padding 20px 0
 
       .btn
         color var(--color-primary)
