@@ -1,16 +1,22 @@
 <template lang="pug">
 
-  item(title='一卡通' name='卡余额' :ready='card' :value='card.info.balance')
+  item(title='一卡通' name='卡余额' :value='card && card.info && card.info.balance')
     ul.info-bar
       li.info
         .title 卡余额
         .content {{ card.info.balance }}
       li.info
-        .title 卡状态
-        .content {{ card.info.status.mainStatus }}
-      li.info
         .title 今日消费次数
         .content {{ card.detail.length }}
+      li.info.charge
+        drawer(title='一卡通充值')
+          .title 充值
+          .content(slot='content')
+            .amount-select
+              .amount(v-for='amount in [50, 100, 200, 300, 500]' :class='{ selected: charge.amount === amount }' @click='charge.amount = amount') {{ amount }}
+            input(placeholder='金额' v-model='charge.amount')
+            input.password(placeholder='六位查询密码' type='password' v-model='charge.password')
+            button(@click.stop='confirmCharge()') 确认充值
     ul.detail-list
       li(v-for='item in card.detail')
         .top
@@ -19,7 +25,7 @@
           .left {{ item.amount.toFixed(2) }}
           .right {{ formatTimeNatural(item.time) }}
       li.prev-day
-        .hint 截至{{ formatDateNatural(oldestDate) }} 总支出 {{ totalPayments.toFixed(2) }}
+        .hint {{ formatDateNatural(oldestDate) }}至今 总支出 {{ totalPayments.toFixed(2) }}
         button(@click.stop='loadPrevDay()' :class='{ loading: loading }') {{ loading ? '...' : '加载前一天' }}
 
 </template>
@@ -28,16 +34,21 @@
   import H from '@/api'
   import formatter from '@/util/formatter'
   import item from '../DashboardItem.vue'
+  import drawer from '@/components/Drawer.vue'
 
   export default {
     components: {
-      item
+      item, drawer
     },
     data() {
       return {
         card: null,
         oldestDate: null,
-        loading: false
+        loading: false,
+        charge: {
+          amount: 100,
+          password: ''
+        }
       }
     },
     created() {
@@ -68,6 +79,14 @@
         } finally {
           this.loading = false
         }
+      },
+      changeAmount(ev) {
+        this.charge.amount = ev.target.value
+      },
+      async confirmCharge() {
+        this.$toasted.show('正在处理，请稍候…')
+        let res = await H.api.card.put(this.charge)
+        this.$toasted.show(res)
       }
     }
   }
@@ -93,5 +112,45 @@
 
       &.loading
         pointer-events none
+
+  .charge
+
+    .content
+      display flex
+      flex-direction column
+      align-items center
+
+      > * + *
+        margin-top 10px
+
+      .amount-select
+        width 100%
+        display flex
+        flex-direction row
+        flex-wrap wrap
+        justify-content center
+        margin-bottom 15px
+
+        *
+          flex 1 1 0
+          width 0
+          display flex
+          align-items center
+          justify-content center
+          text-align center
+          color #333
+          padding 10px 0
+          border-radius 3px
+          border 1px solid var(--color-divider)
+
+          &.selected
+            border 1px solid var(--color-primary)
+            color var(--color-primary)
+
+          + *
+            margin-left 5px
+
+      input
+        text-align center
 
 </style>

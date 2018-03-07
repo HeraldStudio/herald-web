@@ -37,7 +37,7 @@
         this.webapp = true
       }
       // offline.install()
-      // logger.bindAjax()
+      logger.bindAjax()
 
       let checkLogin = async () => {
         if (!this.isLogin && H.isLogin) {
@@ -111,13 +111,6 @@
     -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
 
-  *:not(input, button, textarea, a, a *, *[onclick])
-    // -webkit-user-select: none
-    // -moz-user-select: none
-    // -ms-user-select: none
-    // user-select: none
-    cursor default
-
   ::-webkit-scrollbar
     display: none
 
@@ -143,7 +136,7 @@
     outline none
     border none
     border-radius 3px
-    padding 5px 10px
+    padding 3px 7px
     margin 0
     font-size 14px
 
@@ -151,6 +144,7 @@
     font-weight bold
     background var(--color-primary-bg)
     color var(--color-primary-dark)
+    cursor pointer
 
   button.primary
     background var(--color-primary)

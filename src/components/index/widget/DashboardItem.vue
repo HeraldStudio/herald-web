@@ -4,9 +4,9 @@
     drawer(:title='title' @open='$emit("drawerOpen")')
       .dashboard-item
         .name {{ name }}
-        .value {{ ready ? value : '···' }}
-      .content(slot='content' v-if='ready')
-        slot.
+        .value {{ value == null ? '···' : value }}
+      .content(slot='content' v-if='value != null')
+        slot(v-if='value != null')
 
 </template>
 <script>
@@ -15,7 +15,7 @@
 
   export default {
     components: { drawer },
-    props: ['ready', 'name', 'value', 'title'],
+    props: ['name', 'value', 'title'],
     data() {
       return {}
     }

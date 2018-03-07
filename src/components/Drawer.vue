@@ -5,7 +5,7 @@
       slot
     transition(name="fade-slide-up")
       .mask(v-if='drawer' @click.stop='close()')
-        .drawer
+        .drawer(@click.stop='')
           .title-bar
             .title {{ title }}
           .drawer-view
@@ -82,12 +82,12 @@
       flex-direction: column
       align-items: center
       justify-content: center
-      background: rgba(#fff, .7)
+      background: rgba(#000, .1)
       -webkit-backdrop-filter blur(20px)
 
       @media screen and (max-width: 600px)
         width 100%
-        justify-content: flex-end
+        /* justify-content: flex-end */
         padding-top 60px
 
       .drawer
@@ -101,7 +101,7 @@
         flex-direction: column
         padding 20px 0 10px
         overflow-y: scroll
-        box-shadow: 0 0 10px rgba(#000, .1)
+        box-shadow: 0 3px 15px rgba(#000, .1)
 
         @media screen and (max-width: 600px)
           width 100%
@@ -118,6 +118,7 @@
           .title
             font-size: 16px
             font-weight: bold
+            color: #333
 
         .drawer-view
           flex 0 0 auto

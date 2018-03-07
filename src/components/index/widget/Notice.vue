@@ -46,7 +46,8 @@
           this.markdown = `[下载附件](${notice.url})`
         } else {
           this.markdown = '加载中…'
-          this.markdown = '# ' + notice.title + '\n\n' + await H.api.notice.post(notice)
+          let res = await H.api.notice.post(notice)
+          this.markdown = '# ' + notice.title + '\n\n' + res
         }
         this.markdown = marked(this.markdown.replace(/\*\*/g, ' ** '))
       }
@@ -64,6 +65,7 @@
     transition .3s
     color #555
     text-align justify
+    font-size 14px
 
     @media screen and (max-width: 600px)
       margin 0 10px

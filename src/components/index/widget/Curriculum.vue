@@ -2,41 +2,43 @@
 
   .widget.curriculum
     .title 课程表
-      .reload(@click='reload()')
-    .empty(v-if='!curriculum') 加载课表需要时间，请耐心等待
-    div(v-else)
-      .week-picker
-        .prev-week(@click='prevWeek()') <
-        .cur-week 第 {{ displayWeek }} 周
-        .next-week(@click='nextWeek()') >
-      .week-header
-        .weekday(v-for='item in "一二三四五六日"') {{ item }}
-      .curriculum-list(:class='{ empty: !displayClasses.length }')
-        table.block-bg
-          tr(v-for='_ in 13')
-            td(v-for='_ in 7')
-        .block(v-for='item in displayClasses' v-if='item.dayOfWeek'
-          :style="'left: ' + (item.dayOfWeek - 1) / 7 * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 99.5 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 99.5 + '%'")
-          .name {{ item.courseName }}
-          .teacher {{ item.teacherName }}
-          .place {{ item.location }}
-        .empty(v-if='!displayClasses.length') 暂无课程
-      ul.detail-list(v-if='displayClasses.find(k => !k.dayOfWeek)')
-        .hint 以下课程无法确定上课时间：
-        li(v-for='item in displayClasses' v-if='!item.dayOfWeek')
-          .top
-            .left {{ item.courseName }}
-            .right {{ item.teacherName }}
-          .bottom
-            .left {{ item.beginWeek }}-{{ item.endWeek }}周
-            .right(v-if='item.credit') {{ item.credit }} 学分
+    //- drawer(title='课程表')
+    //-   button 查看课表
+    //-   div(slot='content')
+    .week-picker
+      .prev-week(@click='prevWeek()') <
+      .cur-week 第 {{ displayWeek }} 周
+      .next-week(@click='nextWeek()') >
+    .week-header
+      .weekday(v-for='item in "一二三四五六日"') {{ item }}
+    .curriculum-list(:class='{ empty: !displayClasses.length }')
+      table.block-bg
+        tr(v-for='_ in 13')
+          td(v-for='_ in 7')
+      .block(v-for='item in displayClasses' v-if='item.dayOfWeek'
+        :style="'left: ' + (item.dayOfWeek - 1) / 7 * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 99.5 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 99.5 + '%'")
+        .name {{ item.courseName }}
+        .teacher {{ item.teacherName }}
+        .place {{ item.location }}
+      .empty(v-if='!displayClasses.length') 暂无课程
+    ul.detail-list(v-if='displayClasses.find(k => !k.dayOfWeek)')
+      .hint 以下课程无法确定上课时间：
+      li(v-for='item in displayClasses' v-if='!item.dayOfWeek')
+        .top
+          .left {{ item.courseName }}
+          .right {{ item.teacherName }}
+        .bottom
+          .left {{ item.beginWeek }}-{{ item.endWeek }}周
+          .right(v-if='item.credit') {{ item.credit }} 学分
 
 </template>
 <script>
 
   import H from '@/api'
+  import drawer from '@/components/Drawer.vue'
 
   export default {
+    components: { drawer },
     data() {
       return {
         term: null,
@@ -92,8 +94,7 @@
 <style lang="stylus" scoped>
 
   .widget
-    padding 0 !important
-
+    padding 15px 0 25px !important
     --curriculum-background-color #fff
 
     .week-picker
@@ -133,11 +134,8 @@
         +.weekday
           margin-left 1px
 
-    .empty
-      padding 20px 15px !important
-
     .detail-list
-      padding 20px 25px !important
+      padding 20px 25px 0 !important
       box-sizing border-box
 
       .hint

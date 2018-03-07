@@ -3,6 +3,7 @@
     .widgets
       banner
       activity
+    .widgets
       dashboard
       .todo
         <!-- exam -->

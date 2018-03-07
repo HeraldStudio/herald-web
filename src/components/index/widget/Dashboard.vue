@@ -4,7 +4,7 @@
     .title 信息板
     .dashboard-container
       card
-      //- pe
+      pe
       lecture
       srtp
       grade
@@ -13,14 +13,14 @@
 
 <script>
   import card from './dashboard/Card.vue'
-  // import pe from './dashboard/Pe.vue'
+  import pe from './dashboard/Pe.vue'
   import lecture from './dashboard/Lecture.vue'
   import srtp from './dashboard/Srtp.vue'
   import grade from './dashboard/Grade.vue'
 
   export default {
     components: {
-      card, /* pe, */lecture, srtp, grade,
+      card, pe, lecture, srtp, grade,
     },
     data () {
       return {}
@@ -39,7 +39,7 @@
       white-space: nowrap
       overflow-x: scroll
       box-sizing: border-box
-      justify-content: center
+      text-align: center
 
       > *
         display: inline-block

@@ -1,20 +1,17 @@
 <template lang="pug">
 
-  item(title='跑操' name='跑操次数' :ready='pe' :value='pe.content')
+  item(title='跑操' name='跑操次数' :value='pe && pe.count')
     ul.info-bar
       li.info
         .title 跑操次数
-        .content {{ pe.content }}
-      li.info
-        .title 击败人数
-        .content {{ pe.rank }}%
+        .content {{ pe.count }}
       li.info
         .title 剩余次数
-        .content {{ Math.max(0, 45 - pe.content) }}
+        .content {{ Math.max(0, 45 - pe.count) }}
       li.info
         .title 剩余天数
-        .content {{ pe.remain }}
-    ul.pe-list(v-if='pedetail')
+        .content {{ pe.remainDays }}
+    ul.pe-list
       li.prev
         .btn(@click='prevWeek()') <
 
@@ -29,7 +26,7 @@
 </template>
 <script>
 
-  import api from '@/api'
+  import H from '@/api'
   import item from '../DashboardItem.vue'
 
   export default {
@@ -39,8 +36,6 @@
     data() {
       return {
         pe: null,
-        pc: null,
-        pedetail: null,
         curDate: 0
       }
     },
@@ -55,11 +50,13 @@
         let firstDay = new Date(baseDay.getTime() + delta - spare)
         return [0, 1, 2, 3, 4, 5, 6].map(i => {
           let date = new Date(firstDay.getTime() + i * 1000 * 60 * 60 * 24)
-          let exercises = (this.pedetail || []).filter(k =>
-            k.getFullYear() === date.getFullYear() &&
-            k.getMonth() === date.getMonth() &&
-            k.getDate() === date.getDate()
-          )
+          let exercises = this.pe.detail.filter(k => {
+            let d = new Date(k)
+            console.log(date, d)
+            return d.getFullYear() === date.getFullYear() &&
+              d.getMonth() === date.getMonth() &&
+              d.getDate() === date.getDate()
+          })
           let hasExercise = !!exercises.length
           return {
             date, hasExercise, exercises
@@ -70,25 +67,10 @@
     methods: {
       async reload() {
         this.curDate = new Date().getTime()
-        this.pe = (await api.post('/api/pe')).data
-        this.pc = (await api.post('/api/pc')).result
-        this.pedetail = (await api.post('/api/pedetail')).result.map(k => {
-          let date = new Date()
-          let [y, M, d] = k.sign_date.split('-').map(i => parseInt(i))
-          let h = Math.floor(k.sign_time)
-          let m = Math.floor(k.sign_time * 100 % 100)
-          date.setFullYear(y)
-          date.setMonth(M - 1)
-          date.setDate(d)
-          date.setHours(h)
-          date.setMinutes(m)
-          date.setSeconds(0)
-          date.setMilliseconds(0)
-          return date
-        }).sort((a, b) => a - b)
+        this.pe = await H.api.pe()
 
-        if (this.pedetail.length) {
-          this.curDate = this.pedetail.slice(-1)[0].getTime()
+        if (this.pe.detail.length) {
+          this.curDate = this.pe.detail.slice(-1)[0]
         }
       },
       prevWeek() {
@@ -135,6 +117,7 @@
       .date
         background var(--color-tool-bg)
         color var(--color-text-regular)
+        border-radius 3px
         padding 3px 0
         text-align center
         font-size 14px
@@ -144,7 +127,7 @@
           color #aaa
 
         &.highlight
-          background var(--color-primary)
-          color #fff
+          background var(--color-primary-bg)
+          color var(--color-primary-dark)
 
 </style>

@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  item(title='成绩' name='当前绩点' :ready='gpa' :value='gpa.gpa || "未计算"')
+  item(title='成绩' name='当前绩点' :value='gpa && (gpa.gpa || "未计算")')
     div
       ul.info-bar
         li.info

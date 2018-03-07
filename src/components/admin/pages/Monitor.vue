@@ -164,10 +164,11 @@
         this.upstream = await H.api.admin.maintenance.upstream()
       },
       async pull () {
+        this.$toasted.show('正在请求更新代码…')
         try {
           await H.api.admin.maintenance.pull()
         } finally {
-        this.$toasted.show('代码已更新，请稍等片刻后刷新页面')
+          this.$toasted.show('代码已更新，请稍等片刻后刷新页面')
           this.pulling = false
         }
       }
