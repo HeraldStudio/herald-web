@@ -2,9 +2,9 @@
   .columns(v-if='isLogin')
     .widgets
       banner
+      dashboard
       activity
     .widgets
-      dashboard
       .todo
         <!-- exam -->
         experiment
