@@ -37,7 +37,7 @@
         this.webapp = true
       }
       // offline.install()
-      // logger.bindAjax()
+      logger.bindAjax()
 
       let checkLogin = async () => {
         if (!this.isLogin && H.isLogin) {
@@ -225,7 +225,7 @@
       top 0
       left 0
       right 0
-      z-index 999
+      z-index 10000
       height 60px
       max-width 1200px
 

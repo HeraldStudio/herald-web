@@ -75,8 +75,11 @@
           let prevDayTimestamp = this.oldestDate - 1000 * 60 * 60 * 24
           let prevDay = new Date(prevDayTimestamp)
           let prevDayName = `${prevDay.getFullYear()}-${prevDay.getMonth() + 1}-${prevDay.getDate()}`
-          this.card.detail = this.card.detail.concat((await H.api.card({ date: prevDayName })).detail)
-          this.oldestDate = prevDayTimestamp
+          let res = await H.api.card({ date: prevDayName })
+          if (res) {
+            this.card.detail = this.card.detail.concat(res.detail)
+            this.oldestDate = prevDayTimestamp
+          }
         } finally {
           this.loading = false
         }

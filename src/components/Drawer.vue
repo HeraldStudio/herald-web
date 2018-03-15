@@ -88,7 +88,7 @@
       @media screen and (max-width: 600px)
         width 100%
         justify-content: flex-end
-        padding-top 60px
+        padding-top 120px
 
       .drawer
         overflow: hidden
@@ -101,7 +101,7 @@
         flex-direction: column
         padding 20px 0 10px
         overflow-y: scroll
-        box-shadow: 0 3px 15px rgba(#000, .1)
+        box-shadow: 0 -1px 0 rgba(0, 0, 0, .05)
 
         @media screen and (max-width: 600px)
           width 100%
