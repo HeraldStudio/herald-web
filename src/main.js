@@ -10,9 +10,18 @@ window.Vue = Vue
 Vue.config.productionTip = false
 Vue.use(Toasted, {
   duration: 5000,
-  // singleton: true,
   position: 'top-center'
 })
+
+// Toast 去重
+let lastToastText = null
+Vue.toasted.__show = Vue.toasted.show
+Vue.toasted.show = (text, ...args) => {
+  if (text !== lastToastText) {
+    lastToastText = text
+    return Vue.toasted.__show(text, ...args)
+  }
+}
 
 router.afterEach(route => document.title = '小猴偷米' + (route.name ? '丨' + route.name : ''))
 

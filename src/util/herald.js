@@ -3,7 +3,7 @@ module.exports = (conf) => {
     sessionName: 'default',
     baseURL: 'https://boss.myseu.cn/ws3/',
     requestDelegate: async (url, method, headers, body) => {
-      return (await require('axios')({ url, method, headers, data: body, timeout: 5000 })).data
+      return (await require('axios')({ url, method, headers, data: body, timeout: 10000 })).data
     },
     storageDelegate: {
       async set (key, value) {
@@ -84,10 +84,11 @@ module.exports = (conf) => {
       try {
         res = await config.requestDelegate(url, method.toUpperCase(), headers, body)
       } catch (e) {
+        console.error(e)
         res = {
           success: false,
           code: 599,
-          reason: '请求失败'
+          reason: '请求超时'
         }
       }
 
