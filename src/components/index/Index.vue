@@ -66,7 +66,7 @@
       display flex
       flex-direction column
       align-items flex-start
-      flex 1 1 0
+      flex 1 1 auto
       padding 0
 
       @media screen and (max-width: 600px)
