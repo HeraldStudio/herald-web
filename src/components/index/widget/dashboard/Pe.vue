@@ -1,33 +1,34 @@
 <template lang="pug">
 
   item(title='跑操' name='跑操次数' :value='pe && pe.count')
-    ul.info-bar
-      li.info
-        .title 跑操次数
-        .content {{ pe.count }}
-      li.info
-        .title 剩余次数
-        .content {{ Math.max(0, 45 - pe.count) }}
-      li.info
-        .title 剩余天数
-        .content {{ pe.remainDays }}
-    ul.pe-list
-      li.prev
-        .btn(@click='prevWeek()') <
-      li(v-for='item, i in curWeek')
-        .date(:class='{ highlight: item.hasExercise }')
-          span.month(v-if='i == 0') {{ item.date.getMonth() + 1 }}/
-          span {{ item.date.getDate() }}
-      li.next
-        .btn(@click='nextWeek()') >
-    ul.detail-list
-      li(v-for='item in pe.health')
-        .top
-          .left {{ item.name }}
-          .right {{ item.score }} 分
-        .bottom
-          .left {{ item.value }}
-          .right {{ item.grade }}
+    div(v-if='pe')
+      ul.info-bar
+        li.info
+          .title 跑操次数
+          .content {{ pe.count }}
+        li.info
+          .title 剩余次数
+          .content {{ Math.max(0, 45 - pe.count) }}
+        li.info
+          .title 剩余天数
+          .content {{ pe.remainDays }}
+      ul.pe-list
+        li.prev
+          .btn(@click='prevWeek()') <
+        li(v-for='item, i in curWeek')
+          .date(:class='{ highlight: item.hasExercise }')
+            span.month(v-if='i == 0') {{ item.date.getMonth() + 1 }}/
+            span {{ item.date.getDate() }}
+        li.next
+          .btn(@click='nextWeek()') >
+      ul.detail-list
+        li(v-for='item in pe.health')
+          .top
+            .left {{ item.name }}
+            .right {{ item.score }} 分
+          .bottom
+            .left {{ item.value }}
+            .right {{ item.grade }}
 
 </template>
 <script>
@@ -75,7 +76,7 @@
         this.curDate = new Date().getTime()
         this.pe = await H.api.pe()
 
-        if (this.pe.detail.length) {
+        if (this.pe && this.pe.detail.length) {
           this.curDate = this.pe.detail.slice(-1)[0]
         }
       },

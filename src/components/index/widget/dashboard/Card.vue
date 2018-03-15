@@ -1,32 +1,33 @@
 <template lang="pug">
 
   item(title='一卡通' name='卡余额' :value='card && card.info && card.info.balance')
-    ul.info-bar
-      li.info
-        .title 卡余额
-        .content {{ card.info.balance }}
-      li.info
-        .title 今日消费次数
-        .content {{ card.detail.length }}
-      li.info.charge
-        drawer(title='一卡通充值')
-          .title 充值
-          .content(slot='content')
-            .amount-select
-              .amount(v-for='amount in [50, 100, 200, 300, 500]' :class='{ selected: charge.amount === amount }' @click='charge.amount = amount') {{ amount }}
-            input(placeholder='金额' v-model='charge.amount')
-            input.password(placeholder='六位查询密码' type='password' v-model='charge.password')
-            button(@click.stop='confirmCharge()') 确认充值
-    ul.detail-list
-      li(v-for='item in card.detail')
-        .top
-          .left {{ item.desc }}
-        .bottom
-          .left {{ item.amount.toFixed(2) }}
-          .right {{ formatTimeNatural(item.time) }}
-      li.prev-day
-        .hint {{ formatDateNatural(oldestDate) }}至今 总支出 {{ totalPayments.toFixed(2) }}
-        button(@click.stop='loadPrevDay()' :class='{ loading: loading }') {{ loading ? '...' : '加载前一天' }}
+    div(v-if='card')
+      ul.info-bar
+        li.info
+          .title 卡余额
+          .content {{ card.info.balance }}
+        li.info
+          .title 今日消费次数
+          .content {{ card.detail.length }}
+        li.info.charge
+          drawer(title='一卡通充值')
+            .title 充值
+            .content(slot='content')
+              .amount-select
+                .amount(v-for='amount in [50, 100, 200, 300, 500]' :class='{ selected: charge.amount === amount }' @click='charge.amount = amount') {{ amount }}
+              input(placeholder='金额' v-model='charge.amount')
+              input.password(placeholder='六位查询密码' type='password' v-model='charge.password')
+              button(@click.stop='confirmCharge()') 确认充值
+      ul.detail-list
+        li(v-for='item in card.detail')
+          .top
+            .left {{ item.desc }}
+          .bottom
+            .left {{ item.amount.toFixed(2) }}
+            .right {{ formatTimeNatural(item.time) }}
+        li.prev-day
+          .hint {{ formatDateNatural(oldestDate) }}至今 总支出 {{ totalPayments.toFixed(2) }}
+          button(@click.stop='loadPrevDay()' :class='{ loading: loading }') {{ loading ? '...' : '加载前一天' }}
 
 </template>
 <script>

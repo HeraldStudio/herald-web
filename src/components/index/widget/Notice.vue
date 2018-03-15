@@ -12,7 +12,8 @@
             .left {{ item.category }}
             .right 发布于 {{ formatDateNatural(item.time) }}
           .content(slot='content')
-            .markdown-container(v-html='markdown')
+            .markdown-container(v-if='markdown' v-html='markdown')
+            .markdown-container(v-else) 加载中…
     .empty(v-if='!notices.length') 暂无通知
 
 </template>
@@ -45,7 +46,6 @@
         if (notice.isAttachment) {
           this.markdown = `[下载附件](${notice.url})`
         } else {
-          this.markdown = '加载中…'
           let res = await H.api.notice.post(notice)
           this.markdown = '# ' + notice.title + '\n\n' + res
         }

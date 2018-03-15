@@ -1,7 +1,7 @@
 <template lang="pug">
 
   item(title='SRTP' name='SRTP学分' :value='srtp && srtp.info.points')
-    div
+    div(v-if='srtp')
       ul.info-bar
         li.info
           .title SRTP学分

@@ -1,4 +1,4 @@
-import herald from 'herald-js'
+import herald from './util/herald.js'
 import Vue from 'vue'
 
 const H = herald({

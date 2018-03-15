@@ -1,7 +1,7 @@
 <template lang="pug">
 
   item(title='成绩' name='当前绩点' :value='gpa && (gpa.gpa || "未计算")')
-    div
+    div(v-if='gpa')
       ul.info-bar
         li.info
           .title 绩点
@@ -12,7 +12,7 @@
         li.info(v-if="gpa.calculationTime")
           .title 计算时间
           .content {{ formatTimeNatural(gpa.calculationTime) }}
-      ul.detail-list
+      ul.detail-list(v-if='gpa.detail[0]')
         li(v-for='k in gpa.detail[0].courses')
           .top
             .left {{ k.courseName }}

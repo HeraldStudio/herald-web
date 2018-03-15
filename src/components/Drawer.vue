@@ -87,7 +87,7 @@
 
       @media screen and (max-width: 600px)
         width 100%
-        /* justify-content: flex-end */
+        justify-content: flex-end
         padding-top 60px
 
       .drawer

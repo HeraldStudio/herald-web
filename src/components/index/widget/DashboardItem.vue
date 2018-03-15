@@ -4,7 +4,7 @@
     drawer(:title='title' @open='$emit("drawerOpen")')
       .dashboard-item
         .name {{ name }}
-        .value {{ value == null ? '···' : value }}
+        .value {{ value != null ? value : '···' }}
       .content(slot='content' v-if='value != null')
         slot(v-if='value != null')
 

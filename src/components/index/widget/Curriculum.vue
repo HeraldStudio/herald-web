@@ -1,10 +1,7 @@
 <template lang="pug">
 
-  .widget.curriculum
+  .widget.curriculum(v-if='curriculum')
     .title 课程表
-    //- drawer(title='课程表')
-    //-   button 查看课表
-    //-   div(slot='content')
     .week-picker
       .prev-week(@click='prevWeek()') <
       .cur-week 第 {{ displayWeek }} 周
