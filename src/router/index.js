@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/index/Index'
-import ScreenSaver from '@/components/screensaver/ScreenSaver'
+import ScreenSaver from '@/components/ScreenSaver'
 import Admin from '@/components/admin/Admin'
 
 Vue.use(Router)

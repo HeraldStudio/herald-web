@@ -44,7 +44,7 @@
     top 0
     right 0
     bottom 0
-    z-index 9999
+    z-index 99999
     background #000
     display flex
     flex-direction row
