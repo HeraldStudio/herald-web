@@ -193,7 +193,7 @@
     transform none
 
     .toasted
-      margin 0 auto
+      margin 0 auto 10px
       cursor default
       border-radius 3px
 

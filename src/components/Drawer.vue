@@ -76,13 +76,13 @@
       bottom 0
       right 0
       margin 0
-      z-index: 99999
+      z-index: 9998
       cursor: default
       display: flex
       flex-direction: column
       align-items: center
       justify-content: center
-      background: rgba(#000, .1)
+      /* background: rgba(#000, .1) */
       -webkit-backdrop-filter blur(20px)
 
       @media screen and (max-width: 600px)
@@ -93,7 +93,7 @@
       .drawer
         overflow: hidden
         background: #fff
-        z-index: 100000
+        z-index: 9999
         box-sizing: border-box
         width: 600px
         cursor: default

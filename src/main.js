@@ -10,7 +10,7 @@ window.Vue = Vue
 Vue.config.productionTip = false
 Vue.use(Toasted, {
   duration: 5000,
-  singleton: true,
+  // singleton: true,
   position: 'top-center'
 })
 

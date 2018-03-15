@@ -66,11 +66,12 @@
       display flex
       flex-direction column
       align-items flex-start
-      flex 1 1 auto
+      flex 1 1 0
       padding 0
 
       @media screen and (max-width: 600px)
         flex-direction column
         align-items stretch
+        flex 0 0 auto
 
 </style>
