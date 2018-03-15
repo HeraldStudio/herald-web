@@ -192,7 +192,7 @@
       .line1
         top 20%
         left 42%
-        width 18%
+        width 14%
         height 56%
 
     &.sleep
@@ -208,13 +208,13 @@
       .line1
         top 9%
         left 48%
-        width 18%
+        width 14%
         height 64%
 
       .line2
         left 24%
         width 64%
-        height 18%
+        height 14%
         opacity 1
 
     &.blink
@@ -224,7 +224,7 @@
       .line1
         top 45%
         left 42%
-        width 18%
+        width 14%
         height 0
         -webkit-transition: .1s
         -moz-transition: .1s
@@ -239,14 +239,14 @@
       .line1
         top 9%
         left 48%
-        width 18%
+        width 14%
         height 64%
         transform rotate(45deg)
 
       .line2
         left 24%
         width 64%
-        height 18%
+        height 14%
         opacity 1
         transform rotate(45deg)
 
