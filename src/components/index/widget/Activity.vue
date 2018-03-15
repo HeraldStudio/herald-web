@@ -1,8 +1,6 @@
 <template lang="pug">
 
-  .widget.activity(v-show='activities.length')
-    .title 校园活动
-      .reload(@click='reload()')
+  widget.activity(title='校园活动' :show='activities.length')
     activity.activity(:auto="5000", :loop="true", :speed="500", :dots="true", :watch-items="activities")
       activity-item.activity-item(v-for='activity in activities' :key='activity.aid')
         a.activity-container(:href='activity.url' target="_blank")
@@ -16,11 +14,13 @@
 <script>
 
   import H from '@/api'
+  import widget from './Widget.vue'
   import formatter from "@/util/formatter"
   import { Carousel, CarouselItem } from 'vue-l-carousel'
 
   export default {
     components: {
+      widget,
       activity: Carousel,
       'activity-item': CarouselItem
     },

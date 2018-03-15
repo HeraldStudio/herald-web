@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  #live2d(:class='curState', @click='animateRandom()')
+  .live2d(:class='curState', @click='animateRandom()')
     img.bg(src='static/images/live2d.png')
     .eyes(:style='"transform: translate(" + mouseX * 2 + "%, " + mouseY * 2 + "%)"')
       .eye.left-eye
@@ -9,7 +9,7 @@
       .eye.right-eye
         .line1
         .line2
-   
+
 </template>
 <script>
 
@@ -18,19 +18,19 @@
   const timeout = (t) => new Promise(r => setTimeout(r, t))
 
   function getOffsetTop(obj){
-    let tmp = obj.offsetTop;
+    let tmp = obj.offsetTop - obj.scrollTop;
     let val = obj.offsetParent;
-    while(val){
-      tmp += val.offsetTop;
+    while (val){
+      tmp += val.offsetTop - val.scrollTop;
       val = val.offsetParent;
     }
     return tmp;
   }
   function getOffsetLeft(obj){
-    let tmp = obj.offsetLeft;
+    let tmp = obj.offsetLeft - obj.scrollLeft;
     let val = obj.offsetParent;
-    while(val){
-      tmp += val.offsetLeft;
+    while (val){
+      tmp += val.offsetLeft - val.scrollLeft;
       val = val.offsetParent;
     }
     return tmp;
@@ -62,14 +62,14 @@
         this.autoEmote()
       }
       if (this.followCursor) {
-        document.onmousemove = (ev) => {
-          let el = document.getElementById('live2d')
+        document.addEventListener('mousemove', (ev) => {
+          let el = this.$el
           let x = ev.clientX - (getOffsetLeft(el) + el.clientWidth / 2)
           let y = ev.clientY - (getOffsetTop(el) + el.clientHeight / 2)
           let l = Math.max(Math.sqrt(x * x + y * y), 40)
           this.mouseX = x / l
           this.mouseY = y / l
-        }
+        })
       }
     },
     methods: {
@@ -104,11 +104,11 @@
       }
     }
   }
-  
+
 </script>
 <style lang="stylus" scoped>
 
-  #live2d
+  .live2d
     position absolute
     left 0
     right 0
@@ -202,7 +202,7 @@
       .line1
         left 24%
         width 56%
-        height 18%
+        height 14%
 
     &.shiny
       .line1

@@ -19,7 +19,7 @@ const H = herald({
         }
       })
     } else {
-      Vue.toasted.show('请求出错：' + e.reason || '请求失败')
+      Vue.toasted.show('请求出错：' + e.reason || '部分接口请求失败')
     }
     return null // 返回 null 给调用者，vue 层要做 null 判断
   }

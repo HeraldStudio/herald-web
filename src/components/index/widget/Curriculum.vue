@@ -1,14 +1,13 @@
 <template lang="pug">
 
-  .widget.curriculum(v-if='curriculum')
-    .title 课程表
+  widget.curriculum(title='课程表' :show='curriculum')
     .week-picker
       .prev-week(@click='prevWeek()') <
       .cur-week 第 {{ displayWeek }} 周
       .next-week(@click='nextWeek()') >
     .week-header
       .weekday(v-for='item in "一二三四五六日"') {{ item }}
-    .curriculum-list(:class='{ empty: !displayClasses.length }')
+    .curriculum-list(v-if='displayClasses' :class='{ empty: !displayClasses.length }')
       table.block-bg
         tr(v-for='_ in 13')
           td(v-for='_ in 7')
@@ -18,7 +17,7 @@
         .teacher {{ item.teacherName }}
         .place {{ item.location }}
       .empty(v-if='!displayClasses.length') 暂无课程
-    ul.detail-list(v-if='displayClasses.find(k => !k.dayOfWeek)')
+    ul.detail-list(v-if='displayClasses && displayClasses.find(k => !k.dayOfWeek)')
       .hint 以下课程无法确定上课时间：
       li(v-for='item in displayClasses' v-if='!item.dayOfWeek')
         .top
@@ -32,10 +31,11 @@
 <script>
 
   import H from '@/api'
+  import widget from './Widget.vue'
   import drawer from '@/components/Drawer.vue'
 
   export default {
-    components: { drawer },
+    components: { widget, drawer },
     data() {
       return {
         term: null,

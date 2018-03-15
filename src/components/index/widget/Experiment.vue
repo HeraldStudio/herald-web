@@ -1,8 +1,6 @@
 <template lang="pug">
 
-  .widget.experiment(v-if='experiment.length')
-    .title 物理实验
-      .reload(@click='reload()')
+  widget.experiment(title='物理实验' :show='experiment.length')
     ul.detail-list
       li(v-for='k in experiment')
         .top
@@ -16,9 +14,11 @@
 <script>
 
   import H from '@/api'
+  import widget from './Widget.vue'
   import formatter from '@/util/formatter'
 
   export default {
+    components: { widget },
     data() {
       return {
         experiment: []

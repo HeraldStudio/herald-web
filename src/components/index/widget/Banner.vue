@@ -1,8 +1,6 @@
 <template lang="pug">
 
-  .widget.banner(v-show='banners.length')
-    .title 编辑推荐
-      .reload(@click='reload()')
+  widget.banner(title='编辑推荐' :show='banners.length')
     banner.banner(:auto="5000", :loop="true", :speed="500", :dots="true", :watch-items="banners")
       banner-item.banner-item(v-for='page in banners' :key='page.bid')
         .img-container
@@ -18,11 +16,13 @@
 <script>
 
   import H from '@/api'
+  import widget from './Widget.vue'
   import formatter from "@/util/formatter"
   import { Carousel, CarouselItem } from 'vue-l-carousel'
 
   export default {
     components: {
+      widget,
       banner: Carousel,
       'banner-item': CarouselItem
     },

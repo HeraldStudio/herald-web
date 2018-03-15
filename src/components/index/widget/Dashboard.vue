@@ -1,7 +1,6 @@
 <template lang=pug>
 
-  .widget.dashboard
-    .title 信息板
+  widget.dashboard(title='信息板')
     .dashboard-container
       card
       pe
@@ -12,6 +11,7 @@
 </template>
 
 <script>
+  import widget from './Widget.vue'
   import card from './dashboard/Card.vue'
   import pe from './dashboard/Pe.vue'
   import lecture from './dashboard/Lecture.vue'
@@ -21,6 +21,7 @@
   export default {
     components: {
       card, pe, lecture, srtp, grade,
+      widget,
     },
     data () {
       return {}

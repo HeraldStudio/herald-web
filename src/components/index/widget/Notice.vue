@@ -1,8 +1,6 @@
 <template lang="pug">
 
-  .widget.notice
-    .title 通知公告
-      .reload(@click='reload()')
+  widget.notice(title='通知公告')
     ul.detail-list
       li(v-for='item in notices' :class='{ important: item.isImportant }')
         drawer(title='通知内容' @open='loadMarkdown(item)' @close='markdown = ""')
@@ -20,6 +18,7 @@
 <script>
 
   import H from '@/api'
+  import widget from './Widget.vue'
   import formatter from '@/util/formatter'
   import drawer from '@/components/Drawer'
   import marked from 'marked'
@@ -27,7 +26,7 @@
   marked.setOptions({ gfm: true })
 
   export default {
-    components: { drawer },
+    components: { drawer, widget },
     data() {
       return {
         notices: [],
