@@ -174,21 +174,17 @@
         box-sizing border-box
         margin 0 -1px -1px 0
         width 14%
-        line-height 1.4em
+        line-height 1.3em
         background #fff
-        border-top 2px solid var(--color-primary)
+        border-top 1px solid var(--color-primary)
         box-shadow 0 1px 3px rgba(0, 0, 0, .1)
         display flex
         flex-direction column
         align-items center
         justify-content space-between
         text-align center
-        font-size 10px
+        font-size 11px
         color var(--color-text-regular)
-        border-radius 3px
-
-        &::active
-          background var(--color-text-regular)
 
         .name
           flex 0 0 auto

@@ -24,5 +24,64 @@
   <body onselectstart="return false">
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <div id="splash"></div>
+    <script>
+      setTimeout(function () {
+        var splash = document.getElementById('splash')
+        splash.className = 'hidden'
+        setTimeout(function () {
+          splash.parentNode.removeChild(splash)
+        }, 500)
+      }, 0)
+    </script>
+    <style>
+      #splash {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        z-index: 99999;
+        display: none;
+        background-size: cover;
+        background-position: 50% 100%;
+        pointer-events: none;
+        transition: .5s;
+      }
+
+      #splash.hidden {
+        transform: scale(5);
+        opacity: 0;
+      }
+
+      @media screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) {
+        #splash {
+          background-image: url(static/images/splash-1536-2008.png);
+          display: block;
+        }
+      }
+
+      @media screen and (device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) {
+        #splash {
+          background-image: url(static/images/splash-1242-2208.png);
+          display: block;
+        }
+      }
+
+      @media screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) {
+        #splash {
+          background-image: url(static/images/splash-750-1334.png);
+          display: block;
+        }
+      }
+
+      @media screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) {
+        #splash {
+          background-image: url(static/images/splash-640-1136.png);
+          display: block;
+        }
+      }
+    </style>
   </body>
 </html>

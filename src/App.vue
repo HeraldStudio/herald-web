@@ -6,8 +6,12 @@
           live2d
         img.logo(src='static/images/logo.png')
       ul.nav
+        drawer(title='小猴偷米微信')
+          li 微信端
+          .content(slot='content')
+            img.qr(src='static/images/qrcode.jpg')
         drawer(title='小猴偷米 App')
-          li App
+          li 客户端
           .content(slot='content')
             .hint 小猴偷米 App 是较早版本，已不再保持活跃更新，新 App 开发正在筹备中，建议使用网页版和小程序，获得更完整的体验。
             .buttons
@@ -16,10 +20,6 @@
                 button Android 4.1+
               a(href='https://itunes.apple.com/cn/app/id1107998946' target='_blank')
                 button iOS 8.0+
-        drawer(title='公众号 · 小程序')
-          li 公众号 · 小程序
-          .content(slot='content')
-            img.qr(src='static/images/qrcode.jpg')
         drawer(title='运行状态')
           li 运行状态
           .content(slot='content')
@@ -29,7 +29,6 @@
           li 管理中心
     .container
       router-view(:isLogin='isLogin' :isAdmin='isAdmin')
-    splash
 </template>
 
 <script>
@@ -39,12 +38,11 @@
   import offline from 'offline-plugin/runtime'
   import live2d from './components/Live2D.vue'
   import status from './components/Status.vue'
-  import splash from '@/components/Splash.vue'
 
   export default {
     name: 'app',
     components: {
-      live2d, drawer, status, splash
+      live2d, drawer, status
     },
     data() {
       return {
