@@ -67,6 +67,9 @@
       filter hue-rotate(-15deg)
       margin-bottom 10px
 
+      @media screen and (max-width: 600px)
+        display none
+
     .hint
       margin-bottom 30px
       font-size 16px
