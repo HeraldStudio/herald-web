@@ -1,7 +1,7 @@
 module.exports = (conf) => {
   const config = {
     sessionName: 'default',
-    baseURL: '//myseu.cn/ws3/',
+    baseURL: '/ws3/',
     requestDelegate: async (url, method, headers, body) => {
       return (await require('axios')({ url, method, headers, data: body, timeout: 10000 })).data
     },
