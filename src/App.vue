@@ -29,6 +29,7 @@
           li 管理中心
     .container
       router-view(:isLogin='isLogin' :isAdmin='isAdmin')
+    splash
 </template>
 
 <script>
@@ -38,11 +39,12 @@
   import offline from 'offline-plugin/runtime'
   import live2d from './components/Live2D.vue'
   import status from './components/Status.vue'
+  import splash from '@/components/Splash.vue'
 
   export default {
     name: 'app',
     components: {
-      live2d, drawer, status
+      live2d, drawer, status, splash
     },
     data() {
       return {
