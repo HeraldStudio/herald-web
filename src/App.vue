@@ -6,6 +6,8 @@
           live2d
         img.logo(src='static/images/logo.png')
       ul.nav
+        router-link(to='/')
+          li 首页
         drawer(title='小猴偷米微信')
           li 微信端
           .content(slot='content')
@@ -206,6 +208,9 @@
     -webkit-transform none
     transform none
     pointer-events none
+
+    @media screen and (max-width: 600px)
+      top 100px
 
     .toasted
       margin 0 auto 10px

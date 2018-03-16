@@ -65,6 +65,9 @@
     margin 0 auto
     --sidebar-width 200px
 
+    @media screen and (max-width: 600px)
+      top 100px
+
     .sidebar-container
       position sticky
       position -webkit-sticky
