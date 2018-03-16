@@ -17,9 +17,9 @@
         .teacher {{ item.teacherName }}
         .place {{ item.location }}
       .empty(v-if='!displayClasses.length') 暂无课程
-    ul.detail-list(v-if='displayClasses && displayClasses.find(k => !k.dayOfWeek)')
+    ul.detail-list(v-if='floatClasses && floatClasses.length')
       .hint 以下课程无法确定上课时间：
-      li(v-for='item in displayClasses' v-if='!item.dayOfWeek')
+      li(v-for='item in floatClasses')
         .top
           .left {{ item.courseName }}
           .right {{ item.teacherName }}
@@ -83,6 +83,9 @@
           k.endWeek >= this.displayWeek &&
           this.displayWeek % 2 !== ['odd', 'even'].indexOf(k.flip)
         )
+      },
+      floatClasses() {
+        return this.displayClasses && this.displayClasses.filter(k => !k.dayOfWeek)
       }
     }
   }
@@ -91,7 +94,7 @@
 <style lang="stylus" scoped>
 
   .widget
-    padding 15px 0 25px !important
+    padding 15px 0 0 !important
     --curriculum-background-color #fff
 
     .week-picker
@@ -132,7 +135,7 @@
           margin-left 1px
 
     .detail-list
-      padding 20px 25px 0 !important
+      padding 20px 25px 25px !important
       box-sizing border-box
 
       .hint
@@ -142,7 +145,7 @@
 
     .curriculum-list
       height 432px
-      margin 0 -1px
+      margin 0
       position relative
       overflow hidden
       -webkit-transition: .3s

@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  item(title='SRTP' name='SRTP学分' :value='srtp && srtp.info.points')
+  item(title='SRTP' name='SRTP' :value='srtp && srtp.info.points')
     div(v-if='srtp')
       ul.info-bar
         li.info

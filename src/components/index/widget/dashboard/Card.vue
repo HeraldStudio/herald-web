@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  item(title='一卡通' name='卡余额' :value='card && card.info && card.info.balance')
+  item(title='一卡通' name='余额' :value='card && card.info && card.info.balance')
     div(v-if='card')
       ul.info-bar
         li.info

@@ -78,6 +78,9 @@
     position relative
     padding 0
 
+    @media screen and (max-width: 600px)
+      margin-top 0
+
     .banner
       overflow hidden
 

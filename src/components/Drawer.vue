@@ -76,24 +76,26 @@
       bottom 0
       right 0
       margin 0
-      z-index: 9998
+      z-index: 10001
       cursor: default
       display: flex
       flex-direction: column
       align-items: center
       justify-content: center
-      /* background: rgba(#000, .1) */
+      background: rgba(#000, .1)
       -webkit-backdrop-filter blur(20px)
+      padding-top 60px
 
       @media screen and (max-width: 600px)
         width 100%
+        z-index: 9998
         justify-content: flex-end
         padding-top 120px
 
       .drawer
         overflow: hidden
         background: #fff
-        z-index: 9999
+        z-index: 10002
         box-sizing: border-box
         width: 600px
         cursor: default
@@ -101,10 +103,11 @@
         flex-direction: column
         padding 20px 0 10px
         overflow-y: scroll
-        box-shadow: 0 -1px 0 rgba(0, 0, 0, .05)
+        box-shadow 0 3px 12px rgba(0, 0, 0, .05)
 
         @media screen and (max-width: 600px)
           width 100%
+          box-shadow: 0 -1px 0 rgba(0, 0, 0, .05)
 
         .title-bar
           margin 0 30px
@@ -122,6 +125,6 @@
 
         .drawer-view
           flex 0 0 auto
-          padding 15px
+          padding 15px 25px
 
 </style>

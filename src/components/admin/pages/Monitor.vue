@@ -161,7 +161,7 @@
         this.redis = await H.api.admin.maintenance.redis()
         this.user = await H.api.admin.maintenance.user()
         this.daily = await H.api.admin.maintenance.daily()
-        this.upstream = await H.api.admin.maintenance.upstream()
+        this.upstream = await H.api.health()
       },
       async pull () {
         this.$toasted.show('正在请求更新代码…')
@@ -183,271 +183,272 @@
   }
 </script>
 <style lang='stylus'>
-  .connection .summary button
-    font-size 14px
-    font-weight bold
-    border-radius 3px
-    padding 3px 7px
-    margin 0 10px
-    cursor pointer
-    transition .3s
-
-    &.pull
-      background var(--color-primary-bg)
-      color #237a86
-
-    &.confirming
-      background #ffd8c4
-      color #6b402a
-
-    &.disabled
-      cursor default
-      pointer-events none
-
-  .dashboard
-    display flex
-    flex-direction row
-
-    .column
-      display flex
-      flex-direction column
-      flex 1 1 0
-
-      +.column
-        margin-left 20px
-
-      .label
-        color var(--color-text-bold)
-        font-size 14px
-        font-weight bold
-        padding-bottom 7px
-        margin-bottom 7px
-        border-bottom 1px solid var(--color-divider)
-
-      .content
-        font-size 20px
-
-      .spider
-        display flex
-        flex-direction row
-        align-items center
-        padding-bottom 3px
-
-        .name
-          font-size 14px
-          flex 1 1 0
-          overflow hidden
-
-        button
-          font-size 13px
-          font-weight bold
-          border-radius 3px
-          padding 3px 5px
-          margin-left 5px
-          cursor pointer
-          transition .3s
-
-          &.accept
-            background #bdf7ff
-            color #468f99
-
-          &.confirming
-            background #ffd8c4
-            color #6b402a
-
-          &.reject
-            background #f5f5f5
-            color #888888
-
-  .upstreams
-    display flex
-    flex-direction row
-    flex-wrap wrap
-
-    a.upstream
+  #monitor
+    .connection .summary button
+      font-size 14px
+      font-weight bold
       border-radius 3px
       padding 3px 7px
-      margin-right 5px
-      margin-top 5px
-      background #ffd8c4
-      font-size 14px
-      color #6b402a
-      display flex
-      flex-direction row
-      align-items center
+      margin 0 10px
+      cursor pointer
+      transition .3s
 
-      &.healthy
+      &.pull
         background var(--color-primary-bg)
         color #237a86
 
-      .name
-        font-weight bold
-        margin-right 5px
+      &.confirming
+        background #ffd8c4
+        color #6b402a
 
-      .timeout
-        font-size 13px
+      &.disabled
+        cursor default
+        pointer-events none
 
-  .periods
-    .example-block
-      display inline-block
-      margin 0 5px
-      width 1em
-      height 1em
-      border-radius 3px
-
-    .result-2
-      background #70eafa
-
-    .result-3
-      background #bef558
-
-    .result-4
-      background #ffcd4d
-
-    .result-5
-      background #f07867
-
-    .periods-chart
+    .dashboard
       display flex
       flex-direction row
-      position relative
-      height 200px
-      transition .3s
 
-      &:hover
-        height 400px
-
-      .period
-        flex 1 1 0
+      .column
         display flex
         flex-direction column
-        overflow hidden
+        flex 1 1 0
 
-        &:hover
-          overflow visible
+        +.column
+          margin-left 20px
 
-        &:last-child .operations-container
-          border-right 0 none
+        .label
+          color var(--color-text-bold)
+          font-size 14px
+          font-weight bold
+          padding-bottom 7px
+          margin-bottom 7px
+          border-bottom 1px solid var(--color-divider)
 
-        .count
-          writing-mode vertical-lr
-          text-align right
-          height 32px
-          margin-bottom 10px
-          font-size 11px
-          color #888
-          overflow hidden
+        .content
+          font-size 20px
 
-        .operations-container
-          flex 1 1 0
-          position relative
-          border-right 1px solid var(--color-tool-bg)
+        .spider
+          display flex
+          flex-direction row
+          align-items center
+          padding-bottom 3px
 
-          .operations
-            position absolute
-            left 1px
-            right 1px
-            bottom 0
-            border-radius 3px
-            background #f8f8f8
-            display flex
-            flex-direction column
-            justify-content flex-end
-            // border-radius 3px
+          .name
+            font-size 14px
+            flex 1 1 0
             overflow hidden
 
-            &:hover
-              overflow visible
+          button
+            font-size 13px
+            font-weight bold
+            border-radius 3px
+            padding 3px 5px
+            margin-left 5px
+            cursor pointer
+            transition .3s
 
-            .operation
-              flex 1 1 0
-              display flex
-              flex-direction row
-              position relative
+            &.accept
+              background #bdf7ff
+              color #468f99
 
-              + .operation
-                box-shadow 0 -1px 0 rgba(0, 0, 0, .1)
+            &.confirming
+              background #ffd8c4
+              color #6b402a
 
-              .result
-                flex 1 1 0
+            &.reject
+              background #f5f5f5
+              color #888888
 
-                + .result
-                  box-shadow inset 1px 0 0 rgba(0, 0, 0, .1)
+    .upstreams
+      display flex
+      flex-direction row
+      flex-wrap wrap
 
-                .description-container
-                  position absolute
-                  top 0
-                  left 50%
-                  width 0
-                  height 0
-
-                  .description
-                    position absolute
-                    bottom 0
-                    left -70px
-                    right -70px
-                    text-align left
-                    font-size 12px
-                    color var(--color-text-bold)
-                    padding 5px 10px
-                    border-radius 3px
-                    background #fff
-                    box-shadow 0 3px 10px rgba(0, 0, 0, .05)
-                    z-index 999
-                    opacity 0
-                    transition .5s
-                    pointer-events none
-
-                    p
-                      line-height 1.5em
-
-                &:hover
-                  outline 1px solid var(--color-primary)
-                  border-left none
-                  z-index 999
-
-                  .description
-                    opacity 1
-                    bottom 10px
-
-        .time
-          writing-mode vertical-lr
-          height 32px
-          margin-top 10px
-          font-size 11px
-          color #888
-          overflow hidden
-
-  .users table
-    width 100%
-    text-align left
-    border-collapse collapse
-    font-size 14px
-
-    tr
-      border-bottom 5px solid transparent
-
-      .table-header
-        margin 5px 0
-        margin-right 15px
-        padding: 5px 0
-        color var(--color-text-bold)
-        font-weight bold
-        border-bottom 1px solid var(--color-divider)
-
-      td
-        padding: 5px 20px 0 0
+      a.upstream
+        border-radius 3px
+        padding 3px 7px
+        margin-right 5px
+        margin-top 5px
+        background #ffd8c4
         font-size 14px
-        color var(--color-text-bold)
-        text-align right
+        color #6b402a
+        display flex
+        flex-direction row
+        align-items center
 
-        &:first-child
+        &.healthy
           background var(--color-primary-bg)
           color #237a86
-          padding 3px 7px
-          border-radius 3px
+
+        .name
           font-weight bold
-          text-align left
-          display inline-block
+          margin-right 5px
+
+        .timeout
+          font-size 13px
+
+    .periods
+      .example-block
+        display inline-block
+        margin 0 5px
+        width 1em
+        height 1em
+        border-radius 3px
+
+      .result-2
+        background #70eafa
+
+      .result-3
+        background #bef558
+
+      .result-4
+        background #ffcd4d
+
+      .result-5
+        background #f07867
+
+      .periods-chart
+        display flex
+        flex-direction row
+        position relative
+        height 200px
+        transition .3s
+
+        &:hover
+          height 400px
+
+        .period
+          flex 1 1 0
+          display flex
+          flex-direction column
+          overflow hidden
+
+          &:hover
+            overflow visible
+
+          &:last-child .operations-container
+            border-right 0 none
+
+          .count
+            writing-mode vertical-lr
+            text-align right
+            height 32px
+            margin-bottom 10px
+            font-size 11px
+            color #888
+            overflow hidden
+
+          .operations-container
+            flex 1 1 0
+            position relative
+            border-right 1px solid var(--color-tool-bg)
+
+            .operations
+              position absolute
+              left 1px
+              right 1px
+              bottom 0
+              border-radius 3px
+              background #f8f8f8
+              display flex
+              flex-direction column
+              justify-content flex-end
+              // border-radius 3px
+              overflow hidden
+
+              &:hover
+                overflow visible
+
+              .operation
+                flex 1 1 0
+                display flex
+                flex-direction row
+                position relative
+
+                + .operation
+                  box-shadow 0 -1px 0 rgba(0, 0, 0, .1)
+
+                .result
+                  flex 1 1 0
+
+                  + .result
+                    box-shadow inset 1px 0 0 rgba(0, 0, 0, .1)
+
+                  .description-container
+                    position absolute
+                    top 0
+                    left 50%
+                    width 0
+                    height 0
+
+                    .description
+                      position absolute
+                      bottom 0
+                      left -70px
+                      right -70px
+                      text-align left
+                      font-size 12px
+                      color var(--color-text-bold)
+                      padding 5px 10px
+                      border-radius 3px
+                      background #fff
+                      box-shadow 0 3px 10px rgba(0, 0, 0, .05)
+                      z-index 999
+                      opacity 0
+                      transition .5s
+                      pointer-events none
+
+                      p
+                        line-height 1.5em
+
+                  &:hover
+                    outline 1px solid var(--color-primary)
+                    border-left none
+                    z-index 999
+
+                    .description
+                      opacity 1
+                      bottom 10px
+
+          .time
+            writing-mode vertical-lr
+            height 32px
+            margin-top 10px
+            font-size 11px
+            color #888
+            overflow hidden
+
+    .users table
+      width 100%
+      text-align left
+      border-collapse collapse
+      font-size 14px
+
+      tr
+        border-bottom 5px solid transparent
+
+        .table-header
+          margin 5px 0
+          margin-right 15px
+          padding: 5px 0
+          color var(--color-text-bold)
+          font-weight bold
+          border-bottom 1px solid var(--color-divider)
+
+        td
+          padding: 5px 20px 0 0
+          font-size 14px
+          color var(--color-text-bold)
+          text-align right
+
+          &:first-child
+            background var(--color-primary-bg)
+            color #237a86
+            padding 3px 7px
+            border-radius 3px
+            font-weight bold
+            text-align left
+            display inline-block
 
 </style>

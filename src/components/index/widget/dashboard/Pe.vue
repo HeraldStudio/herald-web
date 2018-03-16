@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  item(title='跑操' name='跑操次数' :value='pe && pe.count')
+  item(title='跑操和体测' name='跑操' :value='pe && pe.count')
     div(v-if='pe')
       ul.info-bar
         li.info
@@ -25,7 +25,9 @@
         li(v-for='item in pe.health')
           .top
             .left {{ item.name }}
-            .right {{ item.score }} 分
+
+            //- 有等级的时候显示分数，这样最符合数据实际情况
+            .right(v-if='item.grade') {{ item.score }} 分
           .bottom
             .left {{ item.value }}
             .right {{ item.grade }}

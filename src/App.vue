@@ -6,10 +6,27 @@
           live2d
         img.logo(src='static/images/logo.png')
       ul.nav
+        drawer(title='小猴偷米 App')
+          li App
+          .content(slot='content')
+            .hint 小猴偷米 App 是较早版本，已不再保持活跃更新，新 App 开发正在筹备中，建议使用网页版和小程序，获得更完整的体验。
+            .buttons
+              p 仍要下载：
+              a(href='http://herald-app.oss-cn-shanghai.aliyuncs.com/app-release.apk' target='_blank')
+                button Android 4.1+
+              a(href='https://itunes.apple.com/cn/app/id1107998946' target='_blank')
+                button iOS 8.0+
+        drawer(title='公众号 · 小程序')
+          li 公众号 · 小程序
+          .content(slot='content')
+            img.qr(src='static/images/qrcode.jpg')
+        drawer(title='运行状态')
+          li 运行状态
+          .content(slot='content')
+            .hint 小猴偷米的正常工作依赖于以下学校网站，但他们可能偶尔出现宕机。下面显示了它们目前的状态。
+            status
         router-link(to='/admin' v-if='isAdmin')
           li 管理中心
-        a
-          li(@click='logout()' v-if='isLogin') 退出
     .container
       router-view(:isLogin='isLogin' :isAdmin='isAdmin')
 </template>
@@ -17,13 +34,15 @@
 <script>
   import logger from './logger'
   import H from './api'
+  import drawer from '@/components/Drawer.vue'
   import offline from 'offline-plugin/runtime'
   import live2d from './components/Live2D.vue'
+  import status from './components/Status.vue'
 
   export default {
     name: 'app',
     components: {
-      live2d
+      live2d, drawer, status
     },
     data() {
       return {
@@ -64,11 +83,6 @@
       }
 
       setTimeout(checkLogin, 500)
-    },
-    methods: {
-      logout() {
-        H.deauth()
-      }
     }
   }
 </script>
@@ -235,7 +249,6 @@
       display flex
       flex-direction row
       justify-content flex-start
-      overflow hidden
 
       background #fff
       border-bottom 1px solid var(--color-divider)
@@ -244,6 +257,11 @@
       -moz-user-select: none
       -ms-user-select: none
       user-select: none
+
+      @media screen and (max-width: 600px)
+        flex-direction column
+        height 100px
+        align-items center
 
       .live2d-wrapper
         display flex
@@ -282,6 +300,35 @@
         align-items center
         justify-content flex-end
 
+        .qr
+          width 100%
+          height auto
+
+        .hint
+          display block
+          font-size 14px
+          margin-bottom 15px
+
+          &::before
+            content '!'
+            display inline-block
+            width 20px
+            height 20px
+            margin-right 5px
+            border-radius 50%
+            background var(--color-warning-light)
+            color var(--color-warning-dark)
+            text-align center
+
+        .buttons
+          display flex
+          justify-content center
+          margin-top 25px
+          align-items: center;
+
+          * + *
+            margin-left 10px
+
         li
           list-style none
           font-size 14px
@@ -306,7 +353,7 @@
       overflow scroll
 
       @media screen and (max-width: 600px)
-        padding 60px 0 0
+        padding 100px 0 0
 
     // iOS Webapp 顶栏样式
     &.webapp

@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  item(title='人文讲座' name='已听讲座' :value='lectures && lectures.length')
+  item(title='人文讲座' name='讲座' :value='lectures && lectures.length')
     div(v-if='lectures')
       ul.info-bar
         li.info

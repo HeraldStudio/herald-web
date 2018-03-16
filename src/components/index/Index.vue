@@ -2,10 +2,11 @@
   .columns
     .widgets
       banner
-      dashboard(v-if='isLogin')
+      dashboard(v-if='isLogin' :is-login='isLogin')
       activity
     .widgets
       .todo(v-if='isLogin')
+        exam
         experiment
         curriculum
       .guest(v-else)
@@ -23,19 +24,16 @@
 
   import dashboard from './widget/Dashboard.vue'
 
-  // import exam from './widget/Exam.vue'
+  import exam from './widget/Exam.vue'
   import curriculum from './widget/Curriculum.vue'
   import experiment from './widget/Experiment.vue'
 
   export default {
     props: ['isLogin'],
     components: {
-      login,
-      banner,
-      dashboard,
-      curriculum, experiment,
-      activity,
-      notice
+      login, banner, dashboard,
+      curriculum, experiment, exam,
+      activity, notice
     },
     data () {
       return {

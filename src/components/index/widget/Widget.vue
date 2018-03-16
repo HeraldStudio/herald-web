@@ -28,6 +28,9 @@
     transform translateY(-100px) !important
     opacity 0 !important
 
+  .slide-leave-active
+    position absolute
+
   .widget
     position relative
     margin 40px 10px 10px
@@ -46,7 +49,7 @@
 
     @media screen and (min-width: 600px)
       &:hover
-        border 1px solid var(--color-divider)
+        border 1px solid var(--color-primary)
 
     &.loading
       opacity .5
@@ -158,6 +161,9 @@
         margin-top 15px
         border-top 1px solid var(--color-divider)
         padding-top 10px
+
+    .drawer-view ul.detail-list
+      padding 0
 
     ul.detail-list
       width 100%
