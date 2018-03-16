@@ -253,12 +253,17 @@
       justify-content flex-start
 
       background #fff
-      border-bottom 1px solid var(--color-divider)
+      border-bottom 1px solid rgba(0, 0, 0, .07)
 
       -webkit-user-select: none
       -moz-user-select: none
       -ms-user-select: none
       user-select: none
+
+      @supports (-webkit-backdrop-filter: blur(20px))
+        background: rgba(255, 255, 255, .8)
+        -webkit-backdrop-filter: blur(20px)
+        box-shadow inset 0 30px 40px #fff
 
       @media screen and (max-width: 600px)
         flex-direction column
@@ -283,14 +288,6 @@
           object-fit cover
           object-position 100% 50%
           pointer-events none
-
-        // @media screen and (max-width: 600px)
-        //   img.logo
-        //     display none
-
-        @supports (-webkit-backdrop-filter: blur(20px))
-          background rgba(255, 255, 255, .8)
-          -webkit-backdrop-filter: blur(20px)
 
       ul.nav
         height 100%
@@ -356,12 +353,5 @@
 
       @media screen and (max-width: 600px)
         padding 100px 0 0
-
-    // iOS Webapp 顶栏样式
-    &.webapp
-      .header
-        @media screen and (max-width: 600px)
-          @supports (-webkit-backdrop-filter: blur(20px))
-            box-shadow inset 0 30px 40px #fff
 
 </style>
