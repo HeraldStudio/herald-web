@@ -7,7 +7,7 @@ const H = herald({
   onError (e) {
     if (e.code === 401) {
       H.deauth()
-      Vue.toasted.show('由于其他浏览器端登录，当前平台已下线。')
+      Vue.toasted.show('由于其他浏览器登录，当前平台已下线')
     } else {
       Vue.toasted.show(e.code + '：' + e.reason || '部分接口请求失败')
     }
