@@ -29,25 +29,23 @@
     background #fff
     z-index 99999
     display none
+    background-size cover
+    background-position 50% 100%
 
     @media screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)
       background-image url(../../static/images/splash-1536-2008.png)
-      background-size cover
       display block
 
     @media screen and (device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)
       background-image url(../../static/images/splash-1242-2208.png)
-      background-size cover
       display block
 
     @media screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)
       background-image url(../../static/images/splash-750-1334.png)
-      background-size cover
       display block
 
     @media screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)
       background-image url(../../static/images/splash-640-1136.png)
-      background-size cover
       display block
 
 </style>
