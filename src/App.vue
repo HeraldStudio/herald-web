@@ -23,7 +23,7 @@
         drawer(title='运行状态')
           li 运行状态
           .content(slot='content')
-            .hint 小猴偷米的正常工作依赖于以下学校网站，但他们可能偶尔出现宕机。下面显示了它们目前的状态。
+            .hint 小猴偷米的正常工作依赖于以下学校网站，但它们常常会出现宕机，导致小猴偷米对应的功能无法使用。下面显示了它们目前的状态。
             status
         router-link(to='/admin' v-if='isAdmin')
           li 管理中心
@@ -205,11 +205,13 @@
     padding 10px
     -webkit-transform none
     transform none
+    pointer-events none
 
     .toasted
       margin 0 auto 10px
       cursor default
       border-radius 3px
+      pointer-events all
 
       &.primary
         font-weight normal

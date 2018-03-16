@@ -1,11 +1,11 @@
 <template lang='pug'>
   transition-group(name='slide')
-    .upstream(v-if='upstream' key='1')
+    div(v-if='upstream' key='1')
       .upstreams
         a.upstream(v-for='site in upstream' :class='{ healthy: site.health }' :href='site.url' target='_blank')
           .name {{ site.name }}
           .timeout {{ site.timeout === -1 ? '超时' : site.timeout + 'ms' }}
-    p(v-else key='0') 检测中…
+    p.loading(v-else key='0') 检测中…
 </template>
 <script>
   import H from '@/api'
@@ -21,7 +21,11 @@
     }
   }
 </script>
-<style lang='stylus'>
+<style lang='stylus' scoped>
+  .loading
+    font-size 14px
+    text-align: center;
+
   .upstreams
     display flex
     flex-direction row
