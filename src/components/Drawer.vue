@@ -90,7 +90,7 @@
         width 100%
         z-index: 9998
         justify-content: flex-end
-        padding-top 120px
+        padding-top 160px
 
       .drawer
         overflow: hidden
