@@ -174,10 +174,10 @@
       flex-direction column
       white-space normal
 
-      li + li
+      > li + li
         border-top 1px solid var(--color-divider)
 
-      li
+      > li
         list-style none
         flex 1 1 auto
         padding 10px 0
