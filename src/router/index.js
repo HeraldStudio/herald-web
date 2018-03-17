@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/index/Index'
+import NoticePage from '@/components/NoticePage'
 import ScreenSaver from '@/components/ScreenSaver'
 import Admin from '@/components/admin/Admin'
 
@@ -17,6 +18,11 @@ export default new Router({
       path: '/screensaver',
       name: '屏保',
       component: ScreenSaver
+    },
+    {
+      path: '/notice/:nid',
+      name: '通知公告',
+      component: NoticePage
     },
     {
       path: '/admin',

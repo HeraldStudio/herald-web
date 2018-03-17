@@ -1,56 +1,30 @@
 <template lang="pug">
 
-  widget.notice(title='通知公告')
-    ul.detail-list
-      li(v-for='item in notices' :class='{ important: item.isImportant }')
-        drawer(title='通知内容' @open='loadMarkdown(item)' @close='markdown = ""')
-          .top
-            .left {{ item.title }}
-          .bottom
-            .left {{ item.category }}
-            .right 发布于 {{ formatDateNatural(item.time) }}
-          .content(slot='content')
-            .markdown-container(v-if='markdown' v-html='markdown')
-            .markdown-container(v-else) 加载中…
-    .empty(v-if='!notices.length') 暂无通知
+  .notice-page
+    .markdown-container(v-if='markdown' v-html='markdown')
+    .markdown-container(v-else) 加载中…
 
 </template>
 <script>
 
   import H from '@/api'
-  import widget from './Widget.vue'
-  import formatter from '@/util/formatter'
-  import drawer from '@/components/Drawer'
   import marked from 'marked'
 
   marked.setOptions({ gfm: true })
 
   export default {
-    components: { drawer, widget },
     data() {
       return {
-        notices: [],
         markdown: ''
       }
     },
     created() {
-      this.reload()
-      if (/[?&]nid=(\d+)/.test(window.location.search)) {
-        this.loadMarkdown({ nid: RegExp.$1 })
-      }
+      this.loadMarkdown({ nid: this.$route.params.nid })
     },
     methods: {
-      ...formatter,
-      async reload() {
-        this.notices = (await H.api.notice()).slice(0, 10)
-      },
       async loadMarkdown(notice) {
-        if (notice.isAttachment) {
-          this.markdown = `[下载附件](${notice.url})`
-        } else {
-          let res = await H.api.notice.post(notice)
-          this.markdown = '# ' + notice.title + '\n\n' + res
-        }
+        let res = await H.api.notice.post(notice)
+        this.markdown = '# ' + notice.title + '\n\n' + res
         this.markdown = marked(this.markdown.replace(/\*\*/g, ' ** '))
       }
     }
@@ -58,19 +32,13 @@
 
 </script>
 <style lang="stylus">
-  .important .top .left
-    font-weight bold
-
   .markdown-container
     border-top 1px solid transparent
-    margin 0 15px
+    padding 15px 25px
     transition .3s
     color #555
     text-align justify
     font-size 14px
-
-    @media screen and (max-width: 600px)
-      margin 0 10px
 
     a, a:hover, a:active, a:visited
       color var(--color-primary)
