@@ -58,8 +58,7 @@
 
 </script>
 <style lang="stylus">
-  widget.notice
-
+  .notice
     .important .top .left
       font-weight bold
 
