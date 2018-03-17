@@ -35,7 +35,7 @@
     methods: {
       async reload() {
         let now = new Date().getTime()
-        this.activities = (await H.api.activity()).map(k =>
+        this.activities = (await H.api.activity()).filter(k =>
           k.startTime <= now && k.endTime > now)
       }
     }
