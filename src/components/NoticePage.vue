@@ -24,8 +24,7 @@
     methods: {
       async loadMarkdown(notice) {
         let res = await H.api.notice.post(notice)
-        this.markdown = '# ' + notice.title + '\n\n' + res
-        this.markdown = marked(this.markdown.replace(/\*\*/g, ' ** '))
+        this.markdown = marked(res)
       }
     }
   }
