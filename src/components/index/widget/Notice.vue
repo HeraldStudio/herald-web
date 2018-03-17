@@ -35,6 +35,9 @@
     },
     created() {
       this.reload()
+      if (/[?&]nid=(\d+)/.test(location.search)) {
+        this.loadMarkdown({ nid: RegExp.$1 })
+      }
     },
     methods: {
       ...formatter,
