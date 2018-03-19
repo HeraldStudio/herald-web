@@ -370,6 +370,11 @@
                   + .result
                     box-shadow inset 1px 0 0 rgba(0, 0, 0, .1)
 
+                  &:hover
+                    outline 1px solid var(--color-primary)
+                    border-left none
+                    z-index 999
+
           .time
             writing-mode vertical-lr
             height 32px
