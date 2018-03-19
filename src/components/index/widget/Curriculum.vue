@@ -192,6 +192,7 @@
           color var(--color-primary)
           padding 2px
           width 100%
+          overflow hidden
 
         .teacher
           flex 1 100 0
