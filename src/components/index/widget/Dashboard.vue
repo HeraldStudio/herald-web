@@ -3,7 +3,7 @@
   widget.dashboard(title='信息板')
     .info-container
       .name {{ user ? user.name : '加载中' }}
-      .identity {{ user ? user.college + ' ' + user.identity : '…' }}
+      .identity {{ user ? user.identity : '…' }}
       button(@click='logout()') 注销
     .dashboard-container
       card
