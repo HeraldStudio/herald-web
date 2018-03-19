@@ -187,14 +187,14 @@
         color var(--color-text-regular)
 
         .name
-          flex 0 0 auto
+          flex 0 1 auto
           font-weight bold
           color var(--color-primary)
           padding 2px
           width 100%
 
         .teacher
-          flex 1 1 0
+          flex 1 100 0
           font-weight bold
           overflow hidden
           color var(--color-text-bold)
