@@ -58,7 +58,8 @@
           .operations-container
             .operations(:style='{ height: period.count / maxPeriodCount * 100 + "%" }')
               .operation(v-for='operation in period.operations' :style='{ flexGrow: operation.count }')
-                .result(v-for='result in operation.results' :style='{ flexGrow: result.count }' :class='"result-" + result.status[0]' :title='operation.operation + "&#10;次数：" + result.count + "&#10;状态：" + result.status + "&#10;平均耗时：" + result.averageDuration + "ms"')
+                .result(v-for='result in operation.results' :style='{ flexGrow: result.count }'
+                  :class='"result-" + result.status[0]' :title='generateDescription(operation, result)')
           .time {{ formatTime((period.startTime + period.endTime) / 2) }}
     .subcontainer.users(v-if='user')
       .subtitle 用户统计
@@ -161,6 +162,14 @@
           this.$toasted.show('代码已更新，请稍等片刻后刷新页面')
           this.pulling = false
         }
+      },
+      generateDescription(operation, result) {
+        return [
+          operation.operation,
+          "次数：" + result.count,
+          "状态：" + result.status,
+          "平均耗时：" + result.averageDuration + "ms"
+        ].join('\n')
       }
     },
     async created () {
