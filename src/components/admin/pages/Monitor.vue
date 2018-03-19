@@ -58,13 +58,9 @@
           .operations-container
             .operations(:style='{ height: period.count / maxPeriodCount * 100 + "%" }')
               .operation(v-for='operation in period.operations' :style='{ flexGrow: operation.count }')
-                .result(v-for='result in operation.results' :style='{ flexGrow: result.count }' :class='"result-" + result.status[0]')
-                  .description-container
-                    .description
-                      p {{ operation.operation }}
-                      p 次数：{{ result.count }}
-                      p 状态：{{ result.status }}
-                      p 平均耗时：{{ result.averageDuration }}ms
+                .result(v-for='result in operation.results'
+                  :style='{ flexGrow: result.count }' :class='"result-" + result.status[0]'
+                  :title='operation.operation + "\n次数：" + result.count + "\n状态：" + result.status + "\n平均耗时：" + result.averageDuration + "ms"')
           .time {{ formatTime((period.startTime + period.endTime) / 2) }}
     .subcontainer.users(v-if='user')
       .subtitle 用户统计
@@ -366,42 +362,6 @@
 
                   + .result
                     box-shadow inset 1px 0 0 rgba(0, 0, 0, .1)
-
-                  .description-container
-                    position absolute
-                    top 0
-                    left 50%
-                    width 0
-                    height 0
-
-                    .description
-                      position absolute
-                      bottom 0
-                      left -70px
-                      right -70px
-                      text-align left
-                      font-size 12px
-                      color var(--color-text-bold)
-                      padding 5px 10px
-                      border-radius 3px
-                      background #fff
-                      box-shadow 0 3px 10px rgba(0, 0, 0, .05)
-                      z-index 999
-                      opacity 0
-                      transition .5s
-                      pointer-events none
-
-                      p
-                        line-height 1.5em
-
-                  &:hover
-                    outline 1px solid var(--color-primary)
-                    border-left none
-                    z-index 999
-
-                    .description
-                      opacity 1
-                      bottom 10px
 
           .time
             writing-mode vertical-lr
