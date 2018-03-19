@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
-    "build": "yarn; node build/build.js",
+    "build": "yarn; node build/build.js && rm -rf dist && mv dist-tmp dist",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
