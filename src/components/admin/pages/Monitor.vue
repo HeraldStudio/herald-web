@@ -58,7 +58,7 @@
           .operations-container
             .operations(:style='{ height: period.count / maxPeriodCount * 100 + "%" }')
               .operation(v-for='operation in period.operations' :style='{ flexGrow: operation.count }')
-                .result(v-for='result in operation.results' :style='{ flexGrow: result.count }' :class='"result-" + result.status[0]' :title='operation.operation + "\n次数：" + result.count + "\n状态：" + result.status + "\n平均耗时：" + result.averageDuration + "ms"')
+                .result(v-for='result in operation.results' :style='{ flexGrow: result.count }' :class='"result-" + result.status[0]' :title='operation.operation + "&#10次数：" + result.count + "&#10状态：" + result.status + "&#10平均耗时：" + result.averageDuration + "ms"')
           .time {{ formatTime((period.startTime + period.endTime) / 2) }}
     .subcontainer.users(v-if='user')
       .subtitle 用户统计
