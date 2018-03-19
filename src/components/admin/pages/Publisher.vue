@@ -14,21 +14,21 @@
           th.operations 操作
         template(v-for='(activity, i) in activities' :class='getState(activity)')
           tr.activity
-            td.state(rowspan='2') {{ activity.changed ? '未保存' : (activity.admittedBy ? { upcoming: '未开始', ongoing: '展示中', ended: '已下架' }[getState(activity)] : '待审核') }}
+            td.state(rowspan='2') {{ activity.admittedBy ? { upcoming: '未开始', ongoing: '展示中', ended: '已下架' }[getState(activity)] : '待审核' }}
             td(rowspan='2')
               div.pic-wrapper
                 img.pic(:src='activity.pic' @click='uploadPic(activity)')
-                qiniu.pic-upload(v-model='activity.pic' @input='activities[i].changed = true')
+                qiniu.pic-upload(v-model='activity.pic')
             td
-              input.activity-title(v-model='activity.title' @input='activities[i].changed = true')
+              input.activity-title(v-model='activity.title')
             td
-              input.url(v-model='activity.url' @input='activities[i].changed = true')
+              input.url(v-model='activity.url')
             td
-              timestamp(v-model='activity.startTime' @input='activities[i].changed = true')
+              timestamp(v-model='activity.startTime')
             td
-              timestamp(v-model='activity.endTime' @input='activities[i].changed = true')
+              timestamp(v-model='activity.endTime')
             td.operations(rowspan='2')
-              button.save(v-if='activity.pic && activity.title && activity.content && activity.startTime && activity.endTime && activity.changed' @click='saveActivity(activity)') {{ activity.admittedBy ? '保存并待审' : '保存' }}
+              button.save(v-if='activity.pic && activity.title && activity.content && activity.startTime && activity.endTime' @click='saveActivity(activity)') {{ activity.admittedBy ? '保存并待审' : '保存' }}
               confirm-button.remove(@click='removeActivity(activity.aid)' confirm-text='确定') 删除
           tr.activity
             td(colspan='4')

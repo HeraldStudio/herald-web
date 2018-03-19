@@ -15,23 +15,23 @@
           th.operations 操作
         template(v-for='(activity, i) in activities' :class='getState(activity)')
           tr.activity
-            td.state(rowspan='2') {{ activity.changed ? '未保存' : (activity.admittedBy ? { upcoming: '未开始', ongoing: '展示中', ended: '已下架' }[getState(activity)] : '未审核') }}
+            td.state(rowspan='2') {{ activity.admittedBy ? { upcoming: '未开始', ongoing: '展示中', ended: '已下架' }[getState(activity)] : '未审核' }}
             td(rowspan='2')
               div.pic-wrapper
                 img.pic(:src='activity.pic' @click='uploadPic(activity)')
-                qiniu.pic-upload(v-model='activity.pic' @input='activity.changed = true')
+                qiniu.pic-upload(v-model='activity.pic')
             td
-              input.activity-title(v-model='activity.title' @input='activity.changed = true')
+              input.activity-title(v-model='activity.title')
             td
-              input.url(v-model='activity.url' @input='activity.changed = true')
+              input.url(v-model='activity.url')
             td
-              timestamp(v-model='activity.startTime' @input='activity.changed = true')
+              timestamp(v-model='activity.startTime')
             td
-              timestamp(v-model='activity.endTime' @input='activity.changed = true')
+              timestamp(v-model='activity.endTime')
             td.committed(rowspan='2') {{ activity.committedByName }}
             td.admitted(rowspan='2') {{ activity.admittedByName }}
             td.operations(rowspan='2')
-              button.save(v-if='activity.pic && activity.title && activity.content && activity.startTime && activity.endTime && activity.changed || !activity.admittedBy' @click='saveActivity(activity)') {{ activity.admittedBy ? '保存' : activity.changed ? '保存并通过' : '通过审核' }}
+              button.save(v-if='activity.pic && activity.title && activity.content && activity.startTime && activity.endTime' @click='saveActivity(activity)') {{ activity.admittedBy ? '保存' : '保存并通过' }}
               confirm-button.remove(@click='removeActivity(activity.aid)' confirm-text='确定') 删除
           tr.activity
             td(colspan='4')

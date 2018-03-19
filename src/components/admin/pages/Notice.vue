@@ -10,10 +10,10 @@
         .notice(v-for='(notice, i) in notices')
           .id {{ i + 1 }}
           .middle
-            input.notice-title(v-model='notice.title' @input='notices[i].changed = true')
-            textarea.content(v-model='notice.content' @input='notices[i].changed = true')
+            input.notice-title(v-model='notice.title')
+            textarea.content(v-model='notice.content')
           .operations
-            button.save(v-if='notice.title && notice.content && notice.changed' @click='saveNotice(notice)') 保存
+            button.save(v-if='notice.title && notice.content' @click='saveNotice(notice)') 保存
             confirm-button.remove(@click='removeNotice(notice.nid)' confirm-text='确定') 删除
         .notice.add
           .id

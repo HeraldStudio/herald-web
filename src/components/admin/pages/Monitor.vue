@@ -5,8 +5,6 @@
       .subtitle 运行状态
       .summary {{ this.redis.server.os }}
         confirm-button.pull(:class='{ disabled: pulling }' @click='pull()' confirm-text='确认更新') {{ pulling ? '更新中…' : '更新代码' }}
-        span.pull-result(v-if='changes && !changed' :title='changes') 没有更新
-        span.pull-result(v-if='changes && changed' :title='changes') 代码已更新
       .dashboard
         .column
           .label 系统开机
@@ -120,9 +118,7 @@
         daily: null,
         user: null,
         interval: null,
-        pulling: false,
-        changed: false,
-        changes: null
+        pulling: false
       }
     },
     computed: {
@@ -312,11 +308,7 @@
         display flex
         flex-direction row
         position relative
-        height 200px
-        transition .3s
-
-        &:hover
-          height 400px
+        height 320px
 
         .period
           flex 1 1 0

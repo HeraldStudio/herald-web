@@ -14,23 +14,23 @@
           th.schoolnum-prefix 学号前缀
           th.operations 操作
         tr.banner(v-for='(banner, i) in banners' :class='getState(banner)')
-          td.state {{ banner.changed ? '未保存' : { upcoming: '未开始', ongoing: '展示中', ended: '已下架' }[getState(banner)] }}
+          td.state {{ { upcoming: '未开始', ongoing: '展示中', ended: '已下架' }[getState(banner)] }}
           td
             div.pic-wrapper
               img.pic(:src='banner.pic' @click='uploadPic(banner)')
-              qiniu.pic-upload(v-model='banner.pic' @input='banners[i].changed = true') 上传
+              qiniu.pic-upload(v-model='banner.pic') 上传
           td
-            input.banner-title(v-model='banner.title' @input='banners[i].changed = true')
+            input.banner-title(v-model='banner.title')
           td
-            input.url(v-model='banner.url' @input='banners[i].changed = true')
+            input.url(v-model='banner.url')
           td
-            timestamp(v-model='banner.startTime' @input='banners[i].changed = true')
+            timestamp(v-model='banner.startTime')
           td
-            timestamp(v-model='banner.endTime' @input='banners[i].changed = true')
+            timestamp(v-model='banner.endTime')
           td
-            input.schoolnum-prefix(v-model='banner.schoolnumPrefix' @input='banners[i].changed = true')
+            input.schoolnum-prefix(v-model='banner.schoolnumPrefix')
           td.operations
-            button.save(v-if='banner.pic && banner.title && banner.startTime && banner.endTime && banner.changed' @click='saveBanner(banner)') 保存
+            button.save(v-if='banner.pic && banner.title && banner.startTime && banner.endTime' @click='saveBanner(banner)') 保存
             confirm-button.remove(@click='removeBanner(banner.bid)' confirm-text='确定') 删除
         tr.banner.add
           td.state
