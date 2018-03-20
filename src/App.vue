@@ -200,17 +200,18 @@
     opacity 0
 
   .toasted-container.top-center
-    top 60px
-    left 0
+    // 覆盖vendor原有属性，由于webpack资源重排，不加important覆盖不上
+    -webkit-transform none !important
+    transform none !important
+    top 60px !important
+    left 0 !important
     right 0
     margin-left auto
     padding 10px
-    -webkit-transform none
-    transform none
     pointer-events none
 
     @media screen and (max-width: 600px)
-      top 100px
+      top 100px !important
 
     .toasted
       margin 0 auto 10px
