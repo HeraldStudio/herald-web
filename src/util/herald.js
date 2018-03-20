@@ -3,7 +3,9 @@ module.exports = (conf) => {
     sessionName: 'default',
     baseURL: '/ws3/',
     requestDelegate: async (url, method, headers, body) => {
-      return (await require('axios')({ url, method, headers, data: body, timeout: 10000 })).data
+      // 条件：前端超时 > 后端超时 (= 后端爬虫超时 + 后端 axios 超时)
+      // 这样才会在后端回源失败时取得后端缓存数据
+      return (await require('axios')({ url, method, headers, data: body, timeout: 20000 })).data
     },
     storageDelegate: {
       async set (key, value) {
