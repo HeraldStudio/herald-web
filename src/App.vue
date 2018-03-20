@@ -203,6 +203,8 @@
     // 覆盖vendor原有属性，由于webpack资源重排，不加important覆盖不上
     -webkit-transform none !important
     transform none !important
+    // 浮于抽屉上层
+    z-index 10005 !important
     top 60px !important
     left 0 !important
     right 0
