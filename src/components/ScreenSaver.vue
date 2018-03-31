@@ -2,7 +2,7 @@
 
   #live2d-page
     .live2d-container
-      live2d(:follow-cursor='false', :auto-emotion='true')
+      live2d(:auto-emotion='true')
     .clock-container(:class='{ shakeup: shakeup }')
       .clock {{ time }}
 
