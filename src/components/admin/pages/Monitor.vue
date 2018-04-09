@@ -72,13 +72,13 @@
           th
             .table-header 总用户
           th
-            .table-header 今日新用户
+            .table-header 24小时新用户
           th
-            .table-header 今日活跃用户
+            .table-header 24小时活跃用户
           th
-            .table-header 本月新用户
+            .table-header 30天新用户
           th
-            .table-header 本月活跃用户
+            .table-header 30天活跃用户
         tr(v-for='platform in user.platforms')
           td {{ platform.name }}
           td {{ platform.userCount }}
