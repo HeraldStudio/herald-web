@@ -1,15 +1,18 @@
 <template lang="pug">
 
-  item(title='成绩' name='绩点' :value='gpa && (gpa.gpa || "未计算")')
+  item(title='成绩' :name='isGraduate ? "成绩" : "绩点"' :value='gpa && (gpa.gpa || "暂无")')
     div(v-if='gpa')
       ul.info-bar
         li.info
-          .title 绩点
-          .content {{ gpa.gpa || '未计算' }}
-        li.info
+          .title {{ isGraduate ? "规格化平均成绩" : "绩点" }}
+          .content {{ gpa.gpa || '暂无' }}
+        li.info(v-if="!isGraduate")
           .title 首修
           .content {{ gpa.gpaBeforeMakeup || '未计算' }}
-        li.info(v-if="gpa.calculationTime")
+        li.info(v-if="isGraduate")
+          .title 已修学分
+          .content {{ totalCredits }}
+        li.info(v-if="!isGraduate && gpa.calculationTime")
           .title 计算时间
           .content {{ formatTimeNatural(gpa.calculationTime) }}
       ul.detail-list(v-if='gpa.detail[0]')
@@ -26,6 +29,7 @@
   import item from '../DashboardItem.vue'
 
   export default {
+    props: ['isGraduate'],
     components: {
       item
     },
@@ -41,6 +45,13 @@
       ...formatter,
       async reload() {
         this.gpa = await H.api.gpa()
+      }
+    },
+    computed: {
+      totalCredits() {
+        return this.gpa.detail
+          .map(k => k.courses).reduce((a, b) => a.concat(b), [])
+          .map(k => k.credit).reduce((a, b) => a + b, 0)
       }
     }
   }

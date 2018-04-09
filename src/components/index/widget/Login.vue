@@ -7,6 +7,8 @@
       input(placeholder='一卡通号' v-model='user.cardnum' @keyup.enter='login()')
     .field
       input(type='password' placeholder='统一身份认证密码' v-model='user.password' @keyup.enter='login()')
+    .field(v-if='isGraduate')
+      input(type='password' placeholder='研院密码（初始为八位生日，留空同上）' v-model='user.gpassword' @keyup.enter='login()')
     button.primary(v-if='loading') 登录中…
     button.primary(v-else, @click='login()') 登录
 
@@ -25,6 +27,7 @@
         user: {
           cardnum: '',
           password: '',
+          gpassword: '',
           platform: 'web'
         },
         loading: false
@@ -49,6 +52,11 @@
           this.user.password = ''
         }
         this.loading = false
+      }
+    },
+    computed: {
+      isGraduate () {
+        return /^22/.test(this.user.cardnum)
       }
     }
   }

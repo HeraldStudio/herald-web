@@ -7,10 +7,10 @@
       button(@click='logout()') 注销
     .dashboard-container
       card
-      pe
-      lecture
-      srtp
-      grade
+      pe(v-if='/本科/.test(user.identity)')
+      lecture(v-if='/本科/.test(user.identity)')
+      srtp(v-if='/本科/.test(user.identity)')
+      grade(v-if='/生/.test(user.identity)' :isGraduate='!/本科/.test(user.identity)')
 
 </template>
 
