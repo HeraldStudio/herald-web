@@ -48,7 +48,7 @@
     methods: {
       ...formatter,
       async reload() {
-        this.notices = (await H.api.notice()).slice(0, 10)
+        this.notices = await H.api.notice()
       },
       async loadMarkdown(notice) {
         if (notice.isAttachment) {
