@@ -32,7 +32,7 @@
     data: () => ({}),
     methods: {
       logout() {
-        H.auth.delete()
+        H.token = ''
       }
     }
   }
