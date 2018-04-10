@@ -5,7 +5,7 @@
       .name {{ user ? user.name : '加载中' }}
       .identity {{ user ? user.identity : '…' }}
       button(@click='logout()') 注销
-    .dashboard-container
+    .dashboard-container(v-if='user')
       card
       pe(v-if='/本科/.test(user.identity)')
       lecture(v-if='/本科/.test(user.identity)')
@@ -24,31 +24,15 @@
   import H from '@/api'
 
   export default {
-    props: ['isLogin'],
+    props: ['user'],
     components: {
       card, pe, lecture, srtp, grade,
       widget,
     },
-    data () {
-      return {
-        user: null
-      }
-    },
-    async created () {
-      if (this.isLogin) {
-        this.user = await H.api.user()
-      }
-    },
-    watch: {
-      async isLogin() {
-        if (this.isLogin) {
-          this.user = await H.api.user()
-        }
-      }
-    },
+    data: () => ({}),
     methods: {
       logout() {
-        H.deauth()
+        H.auth.delete()
       }
     }
   }

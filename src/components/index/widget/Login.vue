@@ -1,14 +1,14 @@
 <template lang="pug">
 
-  widget.login(title='统一身份认证' :show='!isLogin')
+  widget.login(title='统一身份认证' :show='!user')
     .live2d-container
       live2d
     .field
-      input(placeholder='一卡通号' v-model='user.cardnum' @keyup.enter='login()')
+      input(placeholder='一卡通号' v-model='form.cardnum' @keyup.enter='login()')
     .field
-      input(type='password' placeholder='统一身份认证密码' v-model='user.password' @keyup.enter='login()')
+      input(type='password' placeholder='统一身份认证密码' v-model='form.password' @keyup.enter='login()')
     .field(v-if='isGraduate')
-      input(type='password' placeholder='研院密码（初始为八位生日，留空同上）' v-model='user.gpassword' @keyup.enter='login()')
+      input(type='password' placeholder='研院密码（初始为八位生日，留空同上）' v-model='form.gpassword' @keyup.enter='login()')
     button.primary(v-if='loading') 登录中…
     button.primary(v-else, @click='login()') 登录
 
@@ -20,11 +20,11 @@
   import live2d from '@/components/Live2D.vue'
 
   export default {
-    props: ['isLogin'],
+    props: ['user'],
     components: { live2d, widget },
     data() {
       return {
-        user: {
+        form: {
           cardnum: '',
           password: '',
           gpassword: '',
@@ -36,27 +36,28 @@
     created() {},
     methods: {
       async login() {
-        if (/^[0-9a-f]{32,}$/.test(this.user.cardnum)) {
-          H.token = this.user.cardnum
+        if (/^[0-9a-f]{32,}$/.test(this.form.cardnum)) {
+          H.token = this.form.cardnum
           return
         }
 
-        if (!/^[12]\d{8}$/.test(this.user.cardnum) || !this.user.password.trim()) {
+        if (!/^[12]\d{8}$/.test(this.form.cardnum) || !this.form.password.trim()) {
           this.$toasted.show('请填写完整')
           return
         }
 
         this.loading = true
-        if (!await H.auth.post(this.user)) {
+        if (!await H.auth.post(this.form)) {
           this.$toasted.show('登录出现错误，请重试')
-          this.user.password = ''
+          this.form.password = ''
+          this.form.gpassword = ''
         }
         this.loading = false
       }
     },
     computed: {
       isGraduate () {
-        return /^22/.test(this.user.cardnum)
+        return /^22/.test(this.form.cardnum)
       }
     }
   }

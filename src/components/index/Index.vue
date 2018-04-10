@@ -2,12 +2,12 @@
   .columns
     .widgets
       banner
-      dashboard(v-if='isLogin' :is-login='isLogin')
+      dashboard(v-if='user' :user='user')
       activity
     .widgets
-      .todo(v-if='isLogin')
-        exam
-        experiment
+      .todo(v-if='user')
+        exam(v-if='/^21/.test(user.cardnum)')
+        experiment(v-if='/^21/.test(user.cardnum)')
         curriculum
       .guest(v-else)
         login
@@ -29,7 +29,7 @@
   import experiment from './widget/Experiment.vue'
 
   export default {
-    props: ['isLogin'],
+    props: ['user'],
     components: {
       login, banner, dashboard,
       curriculum, experiment, exam,

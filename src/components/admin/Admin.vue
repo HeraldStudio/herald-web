@@ -1,5 +1,5 @@
 <template lang='pug'>
-  #admin(v-if='isAdmin')
+  #admin(v-if='user && user.admin')
     .sidebar-container
       sidebar(:current='currentPage' @changePage='changePage')
     .page-container
@@ -20,7 +20,7 @@
   import publisher from './pages/Publisher.vue'
 
   export default {
-    props: ['isLogin', 'isAdmin'],
+    props: ['user'],
     components: {
       sidebar,
       monitor,
@@ -33,18 +33,6 @@
     data () {
       return {
         currentPage: ''
-      }
-    },
-    watch: {
-      isAdmin () {
-        if (!this.isAdmin) {
-          location.hash = '#/'
-        }
-      },
-      isLogin () {
-        if (!this.isAdmin) {
-          location.hash = '#/'
-        }
       }
     },
     methods: {

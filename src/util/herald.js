@@ -1,7 +1,7 @@
 module.exports = (conf) => {
   const config = {
     sessionName: 'default',
-    baseURL: '/ws3/',
+    baseURL: 'https://myseu.cn/ws3/',
     requestDelegate: async (url, method, headers, body) => {
       // 条件：前端超时 > 后端超时 (= 后端爬虫超时 + 后端 axios 超时)
       // 这样才会在后端回源失败时取得后端缓存数据
@@ -61,10 +61,6 @@ module.exports = (conf) => {
       }
 
       let path = route.join('/')
-      if (path === 'deauth') {
-        await changeToken(null)
-        return
-      }
 
       let url = config.baseURL + path
       let body = null, headers = {}
@@ -102,7 +98,7 @@ module.exports = (conf) => {
 
       if (res.success) {
         if (path === 'auth') {
-          await changeToken(res.result)
+          await changeToken(method === 'delete' ? null : res.result)
         }
         return res.result
       } else {
@@ -121,11 +117,7 @@ module.exports = (conf) => {
       }
 
       let path = _route.join('/')
-      if (path === 'deauth') {
-        return 'Call this function to deauth'
-      } else {
-        return 'Call this function to ' + method.toUpperCase() + ' ' + config.baseURL + path
-      }
+      return 'Call this function to ' + method.toUpperCase() + ' ' + config.baseURL + path
     }
 
     let builder = new Proxy (handler, {

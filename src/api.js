@@ -6,7 +6,7 @@ const H = herald({
   onLogout (token) {},
   onError (e) {
     if (e.code === 401) {
-      H.deauth()
+      H.auth.delete()
       Vue.toasted.show('登录已失效，请重新登录')
     } else {
       Vue.toasted.show(e.code + '：' + e.reason || '部分接口请求失败')

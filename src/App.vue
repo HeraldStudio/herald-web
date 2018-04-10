@@ -27,10 +27,10 @@
           .content(slot='content')
             .hint 小猴偷米的正常工作依赖于以下学校网站，但它们常常会出现宕机，导致小猴偷米对应的功能无法使用。下面显示了它们目前的状态。
             status
-        router-link(to='/admin' v-if='isAdmin')
+        router-link(to='/admin' v-if='user && user.admin')
           li 管理中心
     .container
-      router-view(:isLogin='isLogin' :isAdmin='isAdmin')
+      router-view(:user='user')
 </template>
 
 <script>
@@ -48,8 +48,7 @@
     },
     data() {
       return {
-        isLogin: false,
-        isAdmin: false,
+        user: null,
         webapp: false
       }
     },
@@ -60,31 +59,21 @@
       // offline.install()
       // logger.bindAjax()
 
-      let checkLogin = async () => {
-        if (!this.isLogin && H.isLogin) {
-          let adminObj = await H.api.admin.admin()
-          let isAdmin = false
-          for (let k in adminObj) {
-            if (adminObj[k]) {
-              isAdmin = true
-              break
-            }
-          }
-          this.isAdmin = isAdmin
-          if (adminObj && adminObj.super) {
+      setInterval(async () => {
+        if (!this.user && H.isLogin) {
+          let user = await H.api.user()
+          user.admin = await H.api.admin.admin()
+          if (user.admin && user.admin.super) {
             location.href = '#/admin'
+          } else {
+            location.href = '#/'
           }
-        } else if (!H.isLogin) {
-          this.isAdmin = false
-        }
-        this.isLogin = H.isLogin
-        if (!this.isAdmin && /^#\/admin/.test(location.hash)) {
+          this.user = user
+        } else if (this.user && !H.isLogin) {
+          this.user = null
           location.href = '#/'
         }
-        setTimeout(checkLogin, 500)
-      }
-
-      setTimeout(checkLogin, 500)
+      }, 500)
     }
   }
 </script>
