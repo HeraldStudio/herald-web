@@ -1,20 +1,26 @@
 <template lang="pug">
 
-  item(title='成绩' :name='isGraduate ? "成绩" : "绩点"' :value='gpa && (gpa.gpa || "暂无")')
+  item(title='成绩' :name='isGraduate ? "成绩" : "绩点"' :value='gpa && (gpa.gpa || gpa.score || "暂无")')
     div(v-if='gpa')
       ul.info-bar
-        li.info
-          .title {{ isGraduate ? "规格化平均成绩" : "绩点" }}
+        li.info(v-if="!isGraduate")
+          .title 绩点
           .content {{ gpa.gpa || '暂无' }}
         li.info(v-if="!isGraduate")
           .title 首修
           .content {{ gpa.gpaBeforeMakeup || '未计算' }}
-        li.info(v-if="isGraduate")
-          .title 已修学分
-          .content {{ totalCredits }}
         li.info(v-if="!isGraduate && gpa.calculationTime")
           .title 计算时间
           .content {{ formatTimeNatural(gpa.calculationTime) }}
+        li.info(v-if="isGraduate")
+          .title 规格化平均成绩
+          .content {{ gpa.score }}
+        li.info(v-if="isGraduate")
+          .title 已修学分
+          .content {{ gpa.credits.total }}
+        li.info(v-if="isGraduate")
+          .title 应修学分
+          .content {{ gpa.credits.total }}
       ul.detail-list(v-if='gpa.detail[0]')
         li(v-for='k in gpa.detail[0].courses')
           .top
