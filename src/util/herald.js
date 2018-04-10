@@ -17,9 +17,10 @@ module.exports = (conf) => {
     },
     onLogin (newToken) {},
     onLogout (oldToken) {},
-    onError (res) {
+    onError (res, path) {
       let e = new Error(res.reason)
       e.code = res.code
+      e.path = res.path
       throw e
     }
   }
@@ -102,7 +103,7 @@ module.exports = (conf) => {
         }
         return res.result
       } else {
-        return (config.onError && config.onError(res))
+        return (config.onError && config.onError(res, '/' + path))
       }
     }
 

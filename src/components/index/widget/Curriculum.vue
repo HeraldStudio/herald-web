@@ -144,7 +144,7 @@
         margin-bottom 3px
 
     .curriculum-list
-      height 432px
+      height 520px
       margin 0
       position relative
       overflow hidden

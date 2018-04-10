@@ -61,7 +61,6 @@
           let date = new Date(firstDay.getTime() + i * 1000 * 60 * 60 * 24)
           let exercises = this.pe.detail.filter(k => {
             let d = new Date(k)
-            console.log(date, d)
             return d.getFullYear() === date.getFullYear() &&
               d.getMonth() === date.getMonth() &&
               d.getDate() === date.getDate()
