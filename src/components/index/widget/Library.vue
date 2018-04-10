@@ -5,9 +5,9 @@
       li(v-for='item in books')
         .top
           .left {{ item.name }}
+          button.right(@click='renew(item.bookId)') 续借
         .bottom
           .left 应还： {{ formatDateNatural(item.returnDate) }}
-          button.right(@click='renew(item.bookId)') 续借
 
 </template>
 <script>

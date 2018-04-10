@@ -185,6 +185,7 @@
         flex-direction column
         text-align justify
         word-break break-all
+        color var(--color-text-bold)
 
         .top, .bottom
           display flex
@@ -207,7 +208,6 @@
 
         .top .right, .bottom .left
           font-size 14px
-          color var(--color-text-bold)
 
         .bottom .left
           font-weight bold
