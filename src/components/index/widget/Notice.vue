@@ -2,7 +2,7 @@
 
   widget.notice(title='通知公告')
     ul.detail-list
-      li(v-for='item in notices' :class='{ important: item.isImportant }')
+      li(v-for='item in notices' :key='item.title' :class='{ important: item.isImportant }')
         drawer(title='通知内容' @open='loadMarkdown(item)' @close='markdown = ""')
           .top
             .left {{ item.title }}
