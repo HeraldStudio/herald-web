@@ -12,6 +12,7 @@
       .guest(v-else)
         login
     .widgets
+      library(v-if='user')
       notice
 </template>
 
@@ -27,13 +28,14 @@
   import exam from './widget/Exam.vue'
   import curriculum from './widget/Curriculum.vue'
   import experiment from './widget/Experiment.vue'
+  import library from './widget/Library.vue'
 
   export default {
     props: ['user'],
     components: {
       login, banner, dashboard,
       curriculum, experiment, exam,
-      activity, notice
+      activity, notice, library
     },
     data () {
       return {

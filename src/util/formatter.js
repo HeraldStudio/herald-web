@@ -43,7 +43,7 @@ export default {
       }
       return startDate + ' ' + this.formatTime(start, 'H:mm') + '~' + this.formatTime(end, 'H:mm')
     } else {
-      return startDate + this.formatTime(start, 'H:mm') + '~' + endDate + this.formatTime(end, 'H:mm')
+      return startDate + ' ' + this.formatTime(start, 'H:mm') + '~' + endDate + ' ' + this.formatTime(end, 'H:mm')
     }
   },
 
