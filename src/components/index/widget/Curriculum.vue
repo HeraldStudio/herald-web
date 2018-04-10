@@ -2,21 +2,25 @@
 
   widget.curriculum(title='课程表' :show='curriculum')
     .week-picker
-      .prev-week(@click='prevWeek()') <
-      .cur-week 第 {{ displayWeek }} 周
-      .next-week(@click='nextWeek()') >
-    .week-header
-      .weekday(v-for='item in "一二三四五六日"') {{ item }}
-    .curriculum-list(v-if='displayClasses' :class='{ empty: !displayClasses.length }')
-      table.block-bg
-        tr(v-for='_ in 13' v-if='displayClasses.length')
-          td(v-for='_ in 7')
-      .block(v-for='item in displayClasses' v-if='item.dayOfWeek'
-        :style="'left: ' + (item.dayOfWeek - 1) / 7 * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 99.5 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 99.5 + '%'")
-        .name {{ item.courseName }}
-        .teacher {{ item.teacherName }}
-        .place {{ item.location }}
-      .empty(v-if='!displayClasses.length') 暂无课程
+      .prev(@click='prevTerm()') 〈
+      .cur(title='点击回到本学期' @click='reload()') {{ term && term.code }}
+      .next(@click='nextTerm()') 〉
+      .prev(@click='prevWeek()') 〈
+      .cur(title='点击回到本周' @click='displayWeek = currentWeek') 第 {{ displayWeek }} 周
+      .next(@click='nextWeek()') 〉
+    div
+      .week-header(v-if='fixedClasses.length || !floatClasses.length')
+        .weekday(v-for='item in "一二三四五六日"') {{ item }}
+      .curriculum-list(v-if='fixedClasses.length || !floatClasses.length' :class='{ empty: !fixedClasses.length }')
+        table.block-bg
+          tr(v-for='_ in 13' v-if='fixedClasses.length')
+            td(v-for='_ in 7')
+        .block(v-for='item in fixedClasses' v-if='item.dayOfWeek'
+          :style="'left: ' + (item.dayOfWeek - 1) / 7 * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 99.5 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 99.5 + '%'")
+          .name {{ item.courseName }}
+          .teacher {{ item.teacherName }}
+          .place {{ item.location }}
+        .empty(v-if='!fixedClasses.length') 暂无课程
     ul.detail-list(v-if='floatClasses && floatClasses.length')
       .hint 以下课程无法确定上课时间：
       li(v-for='item in floatClasses')
@@ -39,6 +43,7 @@
     data() {
       return {
         term: null,
+        terms: null,
         curriculum: null,
         displayWeek: 1,
         currentWeek: 1,
@@ -49,14 +54,22 @@
       this.reload()
     },
     methods: {
-      async reload() {
-        let { curriculum, term } = await H.api.curriculum()
+      async reload(preferredTerm = '') {
+        this.terms = await H.api.term()
+        let { curriculum, term } = await H.api.curriculum({ term: preferredTerm })
         this.curriculum = curriculum
         this.term = term
 
         if (term.startDate) {
           let now = new Date()
-          this.currentWeek = Math.max(1, Math.ceil((now.getTime() - term.startDate) / (1000 * 60 * 60 * 24 * 7)))
+          this.currentWeek =
+            Math.min(this.maxWeek,
+              Math.max(1,
+                Math.ceil(
+                  (now.getTime() - term.startDate) / (1000 * 60 * 60 * 24 * 7)
+                )
+              )
+            )
           this.currentDayOfWeek = (now.getDay() + 6) % 7 + 1
           this.displayWeek = this.currentWeek
         } else {
@@ -74,6 +87,14 @@
         if (this.displayWeek < this.term.maxWeek) {
           this.displayWeek += 1
         }
+      },
+      prevTerm() {
+        let terms = this.terms.map(k => k.name)
+        this.reload(terms[(terms.indexOf(this.term.code) - 1) % terms.length])
+      },
+      nextTerm() {
+        let terms = this.terms.map(k => k.name)
+        this.reload(terms[(terms.indexOf(this.term.code) + 1) % terms.length])
       }
     },
     computed: {
@@ -84,8 +105,14 @@
           this.displayWeek % 2 !== ['odd', 'even'].indexOf(k.flip)
         )
       },
+      fixedClasses() {
+        return this.displayClasses && this.displayClasses.filter(k => k.dayOfWeek)
+      },
       floatClasses() {
         return this.displayClasses && this.displayClasses.filter(k => !k.dayOfWeek)
+      },
+      maxWeek() {
+        return this.curriculum.map(k => k.endWeek).reduce((a, b) => Math.max(a, b), 0)
       }
     }
   }
@@ -100,7 +127,7 @@
     .week-picker
       display flex
       flex-direction row
-      justify-content space-between
+      justify-content space-around
       -webkit-user-select: none
       -moz-user-select: none
       -ms-user-select: none
@@ -108,7 +135,8 @@
       padding 20px 15px
       align-items center
 
-      .cur-week
+      .cur
+        cursor pointer
         font-size 14px
         font-weight bold
         padding 3px 7px
@@ -116,8 +144,10 @@
         color var(--color-primary-dark)
         background var(--color-primary-bg)
 
-      .prev-week, .next-week
+      .prev, .next
         cursor pointer
+        color #ccc
+
 
     .week-header
       display flex

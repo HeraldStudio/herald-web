@@ -26,6 +26,7 @@
   marked.setOptions({ gfm: true })
 
   export default {
+    props: ['user'],
     components: { drawer, widget },
     data() {
       return {
@@ -37,6 +38,11 @@
       this.reload()
       if (/[?&]nid=(\d+)/.test(window.location.search)) {
         this.loadMarkdown({ nid: RegExp.$1 })
+      }
+    },
+    watch: {
+      user () {
+        this.reload()
       }
     },
     methods: {

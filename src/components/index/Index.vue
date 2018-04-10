@@ -13,7 +13,7 @@
         login
     .widgets
       library(v-if='user')
-      notice
+      notice(:user='user')
 </template>
 
 <script>
