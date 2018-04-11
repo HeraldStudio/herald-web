@@ -5,9 +5,11 @@
       li(v-for='item in books')
         .top
           .left {{ item.name }}
-          button.right(@click='renew(item.bookId)') 续借
+          .right 应还：{{ formatDateNatural(item.returnDate) }}
         .bottom
-          .left 应还： {{ formatDateNatural(item.returnDate) }}
+          .left {{ item.author }}
+          button.right(v-if='!item.renewCount' @click='renew(item.bookId)') 续借
+          .right(v-else) 已续借
 
 </template>
 <script>
@@ -39,3 +41,9 @@
   }
 
 </script>
+<style lang='stylus'>
+  .library button
+    padding 2px 5px
+    font-size 13px
+    color var(--color-primary-dark) !important
+</style>

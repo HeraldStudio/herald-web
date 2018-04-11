@@ -43,8 +43,8 @@
     data() {
       return {
         term: null,
-        terms: null,
-        curriculum: null,
+        terms: [],
+        curriculum: [],
         displayWeek: 1,
         currentWeek: 1,
         currentDayOfWeek: 1
@@ -99,17 +99,17 @@
     },
     computed: {
       displayClasses() {
-        return this.curriculum && this.curriculum.filter(k =>
+        return this.curriculum.filter(k =>
           k.beginWeek <= this.displayWeek &&
           k.endWeek >= this.displayWeek &&
           this.displayWeek % 2 !== ['odd', 'even'].indexOf(k.flip)
         )
       },
       fixedClasses() {
-        return this.displayClasses && this.displayClasses.filter(k => k.dayOfWeek)
+        return this.displayClasses.filter(k => k.dayOfWeek)
       },
       floatClasses() {
-        return this.displayClasses && this.displayClasses.filter(k => !k.dayOfWeek)
+        return this.displayClasses.filter(k => !k.dayOfWeek)
       },
       maxWeek() {
         return this.curriculum.map(k => k.endWeek).reduce((a, b) => Math.max(a, b), 0)
