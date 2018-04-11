@@ -548,7 +548,7 @@ function ajaxSendFP(url, data) {
 				console.log(data);
 				createCookie('FpID', data['FpID'], 1000);
 			} else {
-				alert(xmlhttp.status);
+				//alert(xmlhttp.status);
 				// error
 			}
 		}
