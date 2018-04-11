@@ -529,10 +529,6 @@ function getFP() {
 
 // Ajax
 function ajaxSendFP(url, data) {
-<<<<<<< HEAD
-=======
-	//console.log(data.toString());
->>>>>>> 4cc5fcca2743e045879b3bb1046391ff3e0e7158
 	var xmlhttp;
 	if (window.XMLHttpRequest) {
 		// code for IE7+, Firefox, Chrome, Opera, Safari, Android
