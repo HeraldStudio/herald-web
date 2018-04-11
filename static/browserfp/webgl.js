@@ -1,5 +1,5 @@
 function experimentDied(experiment, reason) {
-	console.log(reason);
+	//console.log(reason);
 	//alert(reason);
 }
 
@@ -40,7 +40,7 @@ WebGLTeapot.prototype.setupShaders = function() {
 
 	if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
 		experimentDied(this.name, "Shader did not compile: " + gl.getShaderInfoLog(shader));
-		console.log('error 1');
+		//console.log('error 1');
 		return false;
 	}
 
@@ -54,7 +54,7 @@ WebGLTeapot.prototype.setupShaders = function() {
 
 	if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
 		experimentDied(this.name, "Shader did not compile: " + gl.getShaderInfoLog(shader));
-		console.log('error2');
+		//console.log('error2');
 		return false;
 	}
 
