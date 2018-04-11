@@ -530,7 +530,7 @@ function getFP() {
 
 // Ajax
 function ajaxSendFP(url, data) {
-	console.log(data.toString());
+	//console.log(data.toString());
 	var xmlhttp;
 	if (window.XMLHttpRequest) {
 		// code for IE7+, Firefox, Chrome, Opera, Safari, Android
@@ -548,7 +548,7 @@ function ajaxSendFP(url, data) {
 				console.log(data);
 				createCookie('FpID', data['FpID'], 1000);
 			} else {
-				alert(xmlhttp.status);
+	//			alert(xmlhttp.status);
 				// error
 			}
 		}
