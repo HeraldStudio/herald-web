@@ -57,7 +57,7 @@
         this.webapp = true
       }
       // offline.install()
-      logger.bindAjax()
+      // logger.bindAjax()
 
       setInterval(async () => {
         if (!this.user && H.isLogin) {
