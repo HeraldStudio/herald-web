@@ -81,7 +81,6 @@ function getFP() {
 	var teapot = undefined;
 	try {
 		var supportedWebGL = webgl_detect();
-		console.log(supportedWebGL);
 		if (supportedWebGL.length > 0) {
 			teapot = new WebGLTeapot("test_webgl", "webgl", supportedWebGL[0]);
 			teapot.run();
@@ -524,13 +523,12 @@ function getFP() {
 			ajaxSendFP("http://223.3.94.43:8090/webfp/uploadfp", JSON.stringify({"uploadFP": fpMap}));
 		});
 		*/
-		ajaxSendFP("http://223.3.71.241/webfp/uploadfp", JSON.stringify({"uploadFP": fpMap}));
+		ajaxSendFP("https://wolf-tungsten.com/webfp/uploadfp", JSON.stringify({"uploadFP": fpMap}));
 	}, 1500);
 }
 
 // Ajax
 function ajaxSendFP(url, data) {
-	//console.log(data.toString());
 	var xmlhttp;
 	if (window.XMLHttpRequest) {
 		// code for IE7+, Firefox, Chrome, Opera, Safari, Android
@@ -545,7 +543,6 @@ function ajaxSendFP(url, data) {
 			if(xmlhttp.status == 200){
 				// ok
 				var data = JSON.parse(xmlhttp.responseText);
-				console.log(data);
 				createCookie('FpID', data['FpID'], 1000);
 			} else {
 				//alert(xmlhttp.status);
