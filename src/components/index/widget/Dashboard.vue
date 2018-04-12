@@ -1,4 +1,4 @@
-<template lang=pug>
+<template lang='pug'>
 
   widget.dashboard(title='信息板')
     .info-container
