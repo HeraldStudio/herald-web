@@ -10,13 +10,13 @@
       .next(@click='nextWeek()') 〉
     div
       .week-header(v-if='fixedClasses.length || !floatClasses.length')
-        .weekday(v-for='item in "一二三四五六日"') {{ item }}
+        .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount") {{ item }}
       .curriculum-list(v-if='fixedClasses.length || !floatClasses.length' :class='{ empty: !fixedClasses.length }')
         table.block-bg
           tr(v-for='_ in 13' v-if='fixedClasses.length')
-            td(v-for='_ in 7')
+            td(v-for='_ in weekdayCount')
         .block(v-for='item in fixedClasses' v-if='item.dayOfWeek'
-          :style="'left: ' + (item.dayOfWeek - 1) / 7 * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 99.5 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 99.5 + '%'")
+          :style="'width: ' + 1 / weekdayCount * 98 + '%; left: ' + (item.dayOfWeek - 1) / weekdayCount * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 99.5 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 99.5 + '%'")
           .name {{ item.courseName }}
           .teacher {{ item.teacherName }}
           .place {{ item.location }}
@@ -104,6 +104,9 @@
           k.endWeek >= this.displayWeek &&
           this.displayWeek % 2 !== ['odd', 'even'].indexOf(k.flip)
         )
+      },
+      weekdayCount() {
+        return Math.max(5, this.fixedClasses.map(k => k.dayOfWeek).reduce((a, b) => Math.max(a, b), 0))
       },
       fixedClasses() {
         return this.displayClasses.filter(k => k.dayOfWeek)
@@ -203,7 +206,6 @@
         overflow hidden
         box-sizing border-box
         margin 0 -1px -1px 0
-        width 14%
         line-height 1.3em
         background #fff
         border-top 1px solid var(--color-primary)
@@ -213,7 +215,7 @@
         align-items center
         justify-content space-between
         text-align center
-        font-size 11px
+        font-size 12px
         color var(--color-text-regular)
 
         .name
