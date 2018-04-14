@@ -8,8 +8,10 @@
       ul.nav
         router-link(to='/')
           li 首页
+        router-link(to='/search')
+          li 搜索
         drawer(title='小猴偷米微信')
-          li 微信端
+          li 微信
           .content(slot='content')
             img.qr(src='static/images/qrcode.jpg')
         drawer(title='小猴偷米 App')
@@ -57,7 +59,7 @@
         this.webapp = true
       }
       // offline.install()
-      // logger.bindAjax()
+      logger.bindAjax()
 
       setInterval(async () => {
         if (!this.user && H.isLogin) {
