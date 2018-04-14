@@ -13,7 +13,9 @@
       .summary 找到 {{ result.count }} 个网页
       .result(v-for='row in result.rows')
         a(:href='row.url' target='_blank')
-          .title {{ row.title || '无标题' }}
+          .title-line
+            .title {{ row.title || '无标题' }}
+            .matches {{ row.wordHitCount }} 个匹配
           .href {{ row.url }}
           .appears
             .appear(v-for='appear in row.appears')
@@ -37,7 +39,7 @@
         searching: '',
         error: false,
         result: {},
-        page: 0
+        page: 1
       }
     },
     async created() {
@@ -184,13 +186,28 @@
             display block
             padding 20px 0
 
-            .title
-              font-size 18px
-              font-weight bold
-              white-space nowrap
-              overflow hidden
-              word-break break-all
-              text-overflow ellipsis
+            .title-line
+              display flex
+              flex-direction row
+              align-items baseline 
+
+              .title
+                font-size 18px
+                font-weight bold
+                white-space nowrap
+                overflow hidden
+                word-break break-all
+                text-overflow ellipsis
+              
+              .matches
+                flex-shrink 0
+                font-size 14px
+                color var(--color-text-secondary)
+                margin-left 10px
+                white-space nowrap
+                overflow hidden
+                word-break break-all
+                text-overflow ellipsis
 
             .href
               display inline-block
@@ -201,8 +218,9 @@
               white-space nowrap
               overflow hidden
               text-overflow ellipsis
-              color #fff
-              background var(--color-primary)
+              color var(--color-primary-dark)
+              background var(--color-primary-bg)
+              border-radius 3px
               padding 0 5px
               word-break break-all
               margin 5px 0
