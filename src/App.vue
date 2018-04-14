@@ -67,8 +67,6 @@
           user.admin = await H.api.admin.admin()
           if (user.admin && user.admin.super) {
             location.href = '#/admin'
-          } else {
-            location.href = '#/'
           }
           this.user = user
         } else if (this.user && !H.isLogin) {
