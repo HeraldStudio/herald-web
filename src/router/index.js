@@ -15,11 +15,11 @@ export default new Router({
       name: '首页',
       component: Index
     },
-    {
-      path: '/search',
-      name: '搜索',
-      component: Search
-    },
+    // {
+    //   path: '/search',
+    //   name: '搜索',
+    //   component: Search
+    // },
     {
       path: '/screensaver',
       name: '屏保',
