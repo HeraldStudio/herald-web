@@ -7,8 +7,8 @@
     .widgets
       .todo(v-if='user')
         exam(v-if='/^21/.test(user.cardnum)')
-        experiment(v-if='/^21/.test(user.cardnum)')
         curriculum
+        experiment(v-if='/^21/.test(user.cardnum)')
       .guest(v-else)
         login
     .widgets
