@@ -3,7 +3,7 @@
   widget.curriculum(title='课程表' :show='curriculum')
     .week-picker
       .prev(@click='prevTerm()') 〈
-      .cur(title='点击回到本学期' @click='reload()') {{ term && term.code }}
+      .cur(title='点击回到本学期' @click='reload()') {{ term && term.code || '…' }}
       .next(@click='nextTerm()') 〉
       .prev(@click='prevWeek()') 〈
       .cur(title='点击回到本周' @click='displayWeek = currentWeek') 第 {{ displayWeek }} 周
