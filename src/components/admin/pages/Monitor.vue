@@ -1,100 +1,102 @@
 <template lang='pug'>
   .admin-page#monitor
     .title 系统概况
-    .subcontainer.connection(v-if='connection && redis')
-      .subtitle 运行状态
-      .summary {{ this.redis.server.os }}
-        confirm-button.pull(:class='{ disabled: pulling }' @click='pull()' confirm-text='确认更新') {{ pulling ? '更新中…' : '更新代码' }}
-      .dashboard
-        .column
-          .label 系统开机
-          .content {{ this.redis.server.uptimeInDays }}天
-        .column
-          .label 程序启动
-          .content {{ formatTimeNatural(this.connection.startTime) }}
-        .column
-          .label 系统总内存
-          .content {{ this.redis.memory.totalSystemMemoryHuman }}
-        .column
-          .label 已用内存
-          .content {{ this.redis.memory.usedMemoryHuman }}
-        .column
-          .label 并发请求数
-          .content {{ this.connection.requestCount }}
-        .column
-          .label 回源任务数
-          .content {{ this.connection.detachedTaskCount }}
-        .column
-          .label 在线爬虫数
-          .content {{ this.connection.spiders.activeCount }}
-        .column
-          .label 待审核爬虫
-          .content(v-if='!this.connection.spiders.inactiveCount') 0
-          .spider(v-for='spider in this.connection.spiders.inactiveList')
-            .name {{ spider }}
-            confirm-button.accept(@click='acceptSpider(spider)' confirm-text='确认接受') 接受
-            confirm-button.reject(@click='rejectSpider(spider)' confirm-text='确认拒绝') 拒绝
-    .subcontainer.upstream(v-if='upstream')
-      .subtitle 上游健康状况
-      .summary {{ healthCount }} / {{ upstream.length }}
-      .upstreams
-        a.upstream(v-for='site in upstream' :class='{ healthy: site.health }' :href='site.url' target='_blank')
-          .name {{ site.name }}
-          .timeout {{ site.timeout === -1 ? '超时' : site.timeout + 'ms' }}
-    .subcontainer.periods(v-if='daily')
-      .subtitle 24 小时调用统计
-      .summary
-        .example-block.result-2
-        span 2xx
-        .example-block.result-3
-        span 3xx
-        .example-block.result-4
-        span 4xx
-        .example-block.result-5
-        span 5xx
-      .periods-chart
-        .period(v-for='period in daily')
-          .count {{ period.count || '' }}
-          .operations-container
-            .operations(:style='{ height: period.count / maxPeriodCount * 100 + "%" }')
-              .operation(v-for='operation in period.operations' :style='{ flexGrow: operation.count }')
-                .result(v-for='result in operation.results' :style='{ flexGrow: result.count }'
-                  :class='"result-" + String(result.status)[0]' :title='generateDescription(operation, result)')
-          .time {{ formatTime((period.startTime + period.endTime) / 2) }}
-    .subcontainer.users(v-if='user')
-      .subtitle 用户统计
-      table
-        tr
-          th
-            .table-header 平台
-          th
-            .table-header 总会话
-          th
-            .table-header 总用户
-          th
-            .table-header 24小时新用户
-          th
-            .table-header 24小时活跃用户
-          th
-            .table-header 30天新用户
-          th
-            .table-header 30天活跃用户
-        tr(v-for='platform in user.platforms')
-          td {{ platform.name }}
-          td {{ platform.userCount }}
-          td {{ platform.realUserCount }}
-          td {{ platform.dailyRegister }}
-          td {{ platform.dailyInvoke }}
-          td {{ platform.monthlyRegister }}
-          td {{ platform.monthlyInvoke }}
-        tr.total
-          td 合计
-          td {{ user.userCount }}
-          td {{ user.realUserCount }}
-          td {{ user.dailyRegister }}
-          td {{ user.dailyInvoke }}
-          td {{ user.monthlyRegister }}
-          td {{ user.monthlyInvoke }}
+    transition-group(name='slide')
+      .subcontainer.connection(key='connection' v-if='connection && redis')
+        .subtitle 运行状态
+        .summary {{ this.redis.server.os }}
+          confirm-button.pull(:class='{ disabled: pulling }' @click='pull()' confirm-text='确认更新') {{ pulling ? '更新中…' : '更新代码' }}
+        .dashboard
+          .column
+            .label 系统开机
+            .content {{ this.redis.server.uptimeInDays }}天
+          .column
+            .label 程序启动
+            .content {{ formatTimeNatural(this.connection.startTime) }}
+          .column
+            .label 系统总内存
+            .content {{ this.redis.memory.totalSystemMemoryHuman }}
+          .column
+            .label 已用内存
+            .content {{ this.redis.memory.usedMemoryHuman }}
+          .column
+            .label 并发请求数
+            .content {{ this.connection.requestCount }}
+          .column
+            .label 回源任务数
+            .content {{ this.connection.detachedTaskCount }}
+          .column
+            .label 在线爬虫数
+            .content {{ this.connection.spiders.activeCount }}
+          .column
+            .label 待审核爬虫
+            .content(v-if='!this.connection.spiders.inactiveCount') 0
+            .spider(v-for='spider in this.connection.spiders.inactiveList')
+              .name {{ spider }}
+              confirm-button.accept(@click='acceptSpider(spider)' confirm-text='确认接受') 接受
+              confirm-button.reject(@click='rejectSpider(spider)' confirm-text='确认拒绝') 拒绝
+      .subcontainer.upstream(key='upstream' v-if='upstream')
+        .subtitle 上游健康状况
+        .summary {{ healthCount }} / {{ upstream.length }}
+        .upstreams
+          a.upstream(v-for='site in upstream' :class='{ healthy: site.health }' :href='site.url' target='_blank')
+            .name {{ site.name }}
+            .timeout {{ site.timeout === -1 ? '超时' : site.timeout + 'ms' }}
+      .subcontainer.periods(key='daily' v-if='daily')
+        .subtitle 24 小时接口调用分布
+        .summary
+          .example-block.result-2
+          span 2xx
+          .example-block.result-3
+          span 3xx
+          .example-block.result-4
+          span 4xx
+          .example-block.result-5
+          span 5xx
+        .periods-chart
+          .period(v-for='(period, i) in daily' :class='{ fade: !period.isToday }')
+            .count {{ period.count || '' }}
+            .operations-container
+              .operations(:style='{ height: period.count / maxPeriodCount * 100 + "%" }')
+                .operation(v-for='operation in period.operations' :style='{ flexGrow: operation.count }')
+                  .result(v-for='result in operation.results' :style='{ flexGrow: result.count }'
+                    :class='"result-" + String(result.status)[0]' :title='generateDescription(operation, result)')
+            .time.left(v-if='i < 47') {{ i % 2 == 0 ? i / 2 : '' }}
+            .time.right(v-else) 24
+      .subcontainer.users(key='user' v-if='user')
+        .subtitle 用户统计
+        table
+          tr
+            th
+              .table-header 平台
+            th
+              .table-header 总会话
+            th
+              .table-header 总用户
+            th
+              .table-header 24小时新用户
+            th
+              .table-header 24小时活跃用户
+            th
+              .table-header 30天新用户
+            th
+              .table-header 30天活跃用户
+          tr(v-for='platform in user.platforms')
+            td {{ platform.name }}
+            td {{ platform.userCount }}
+            td {{ platform.realUserCount }}
+            td {{ platform.dailyRegister }}
+            td {{ platform.dailyInvoke }}
+            td {{ platform.monthlyRegister }}
+            td {{ platform.monthlyInvoke }}
+          tr.total
+            td 合计
+            td {{ user.userCount }}
+            td {{ user.realUserCount }}
+            td {{ user.dailyRegister }}
+            td {{ user.dailyInvoke }}
+            td {{ user.monthlyRegister }}
+            td {{ user.monthlyInvoke }}
 </template>
 <script>
   import H from '@/api'
@@ -183,6 +185,16 @@
 </script>
 <style lang='stylus'>
   #monitor
+    .slide-enter-active, .slide-leave-active
+      transition .3s !important
+
+    .slide-enter, .slide-leave-to
+      transform translateY(-100px) !important
+      opacity 0 !important
+
+    .slide-leave-active
+      position absolute
+
     .connection .summary button
       font-size 14px
       font-weight bold
@@ -311,16 +323,16 @@
         display flex
         flex-direction row
         position relative
-        height 320px
+        height 400px
 
         .period
           flex 1 1 0
           display flex
           flex-direction column
-          overflow hidden
+          transition .2s
 
-          &:hover
-            overflow visible
+          &.fade:not(:hover)
+            opacity .3
 
           &:last-child .operations-container
             border-right 0 none
@@ -352,9 +364,6 @@
               // border-radius 3px
               overflow hidden
 
-              &:hover
-                overflow visible
-
               .operation
                 flex 1 1 0
                 display flex
@@ -376,12 +385,18 @@
                     z-index 999
 
           .time
-            writing-mode vertical-lr
-            height 32px
+            height 12px
             margin-top 10px
             font-size 11px
             color #888
             overflow hidden
+            text-align center
+
+            &.left
+              transform translateX(-50%)
+
+            &.right
+              transform translateX(50%)
 
     .users table
       width 100%
