@@ -53,6 +53,7 @@
           span 4xx
           .example-block.result-5
           span 5xx
+          span &nbsp; 灰色为昨日数据
         .periods-chart
           .period(v-for='(period, i) in daily' :class='{ fade: !period.isToday }')
             .count {{ period.count || '' }}
@@ -332,7 +333,10 @@
           transition .2s
 
           &.fade:not(:hover)
-            opacity .3
+            .operations-container
+              transform scaleX(0.1)
+              filter grayscale()
+              border-right 0px solid transparent
 
           &:last-child .operations-container
             border-right 0 none
@@ -350,6 +354,7 @@
             flex 1 1 0
             position relative
             border-right 1px solid var(--color-tool-bg)
+            transition .3s
 
             .operations
               position absolute
