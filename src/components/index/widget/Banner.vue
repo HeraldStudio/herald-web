@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  widget.banner(title='编辑推荐' :show='banner.length')
+  widget.banner(title='编辑推荐' :show='banner && banner.length')
     banner.banner(:auto="5000", :loop="true", :speed="500", :dots="true", :watch-items="banner")
       banner-item.banner-item(v-for='page in banner' :key='page.bid')
         .img-container
