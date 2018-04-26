@@ -35,13 +35,6 @@
               .name {{ spider }}
               confirm-button.accept(@click='acceptSpider(spider)' confirm-text='确认接受') 接受
               confirm-button.reject(@click='rejectSpider(spider)' confirm-text='确认拒绝') 拒绝
-      .subcontainer.upstream(key='upstream' v-if='upstream')
-        .subtitle 上游健康状况
-        .summary {{ healthCount }} / {{ upstream.length }}
-        .upstreams
-          a.upstream(v-for='site in upstream' :class='{ healthy: site.health }' :href='site.url' target='_blank')
-            .name {{ site.name }}
-            .timeout {{ site.timeout === -1 ? '超时' : site.timeout + 'ms' }}
       .subcontainer.periods(key='daily' v-if='daily')
         .subtitle 24 小时接口调用分布
         .summary
@@ -59,11 +52,18 @@
             .count {{ period.count || '' }}
             .operations-container
               .operations(:style='{ height: period.count / maxPeriodCount * 100 + "%" }')
-                .operation(v-for='operation in period.operations' :style='{ flexGrow: operation.count }')
-                  .result(v-for='result in operation.results' :style='{ flexGrow: result.count }'
-                    :class='"result-" + String(result.status)[0]' :title='generateDescription(operation, result)')
+                .operation(v-for='route in period.routes' :style='{ flexGrow: route.count }')
+                  .result(v-for='result in route.results' :style='{ flexGrow: result.count }'
+                    :class='"result-" + String(result.status)[0]' :title='generateDescription(route, result)')
             .time.left(v-if='i < 47') {{ i % 2 == 0 ? i / 2 : '' }}
             .time.right(v-else) 24
+      .subcontainer.upstream(key='upstream' v-if='upstream')
+        .subtitle 上游健康状况
+        .summary {{ healthCount }} / {{ upstream.length }}
+        .upstreams
+          a.upstream(v-for='site in upstream' :class='{ healthy: site.health }' :href='site.url' target='_blank')
+            .name {{ site.name }}
+            .timeout {{ site.timeout === -1 ? '超时' : site.timeout + 'ms' }}
       .subcontainer.users(key='user' v-if='user')
         .subtitle 用户统计
         table
@@ -166,12 +166,11 @@
           this.pulling = false
         }
       },
-      generateDescription(operation, result) {
+      generateDescription(route, result) {
         return [
-          operation.operation,
+          route.route,
           "次数：" + result.count,
-          "状态：" + result.status,
-          "平均耗时：" + result.averageDuration + "ms"
+          "状态：" + result.status
         ].join('\n')
       }
     },
@@ -323,8 +322,12 @@
       .periods-chart
         display flex
         flex-direction row
-        position relative
-        height 400px
+        // position relative
+        height 300px
+        transition .2s
+
+        &:hover
+          height 480px
 
         .period
           flex 1 1 0
@@ -373,7 +376,7 @@
                 flex 1 1 0
                 display flex
                 flex-direction row
-                position relative
+                // position relative
 
                 + .operation
                   box-shadow 0 -1px 0 rgba(0, 0, 0, .1)
