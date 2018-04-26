@@ -210,7 +210,7 @@
         overflow hidden
         box-sizing border-box
         margin 0 -1px -1px 0
-        line-height 1.3em
+        line-height 1.2em
         background #fff
         border-top 1px solid var(--color-primary)
         box-shadow 0 1px 3px rgba(0, 0, 0, .1)

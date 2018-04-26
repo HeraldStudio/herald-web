@@ -5,7 +5,7 @@
       .subcontainer.connection(key='connection' v-if='connection && redis')
         .subtitle 运行状态
         .summary {{ this.redis.server.os }}
-          confirm-button.pull(:class='{ disabled: pulling }' @click='pull()' confirm-text='确认更新') {{ pulling ? '更新中…' : '更新代码' }}
+          //- confirm-button.pull(:class='{ disabled: pulling }' @click='pull()' confirm-text='确认更新') {{ pulling ? '更新中…' : '更新代码' }}
         .dashboard
           .column
             .label 系统开机
