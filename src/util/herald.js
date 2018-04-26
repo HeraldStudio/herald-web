@@ -8,10 +8,10 @@ module.exports = (conf) => {
       return (await require('axios')({ url, method, headers, data: body, timeout: 20000 })).data
     },
     storageDelegate: {
-      async set (key, value) {
+      set (key, value) {
         return require('js-cookie').set(key, value, { expires: 60 })
       },
-      async get (key) {
+      get (key) {
         return require('js-cookie').get(key)
       }
     },
@@ -38,7 +38,7 @@ module.exports = (conf) => {
       let oldToken = token
       token = null
       if (config.storageDelegate) {
-        await config.storageDelegate.set(tokenKey, '')
+        config.storageDelegate.set(tokenKey, '')
       }
       config.onLogout && await config.onLogout(oldToken)
     }
@@ -46,7 +46,7 @@ module.exports = (conf) => {
     if (token) {
       config.onLogin && config.onLogin(token)
       if (config.storageDelegate) {
-        await config.storageDelegate.set(tokenKey, token)
+        config.storageDelegate.set(tokenKey, token)
       }
     }
   }
@@ -153,9 +153,9 @@ module.exports = (conf) => {
     return builder
   }
 
-  const prepare = async () => {
+  const prepare = () => {
     if (config.storageDelegate) {
-      token = await config.storageDelegate.get(tokenKey)
+      token = config.storageDelegate.get(tokenKey)
     }
     if (token) {
       config.onLogin && config.onLogin(token)

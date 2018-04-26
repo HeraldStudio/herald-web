@@ -1,16 +1,16 @@
 <template lang="pug">
 
-  item(title='人文讲座' name='讲座' :value='lectures && lectures.length')
-    div(v-if='lectures')
+  item(title='人文讲座' name='讲座' :value='lecture && lecture.length')
+    div(v-if='lecture')
       ul.info-bar
         li.info
           .title 已听讲座次数
-          .content {{ lectures.length }}
+          .content {{ lecture.length }}
         li.info
           .title 剩余讲座次数
-          .content {{ Math.max(0, 8 - lectures.length) }}
+          .content {{ Math.max(0, 8 - lecture.length) }}
       ul.detail-list
-        li(v-for='item in lectures')
+        li(v-for='item in lecture')
           .top
             .left {{ formatTimeNatural(item.time) }}
             .right {{ item.location }}
@@ -28,16 +28,17 @@
     },
     data() {
       return {
-        lectures: null
+        lecture: null
       }
     },
+    persist: ['lecture'],
     created() {
       this.reload()
     },
     methods: {
       ...formatter,
       async reload() {
-        this.lectures = await H.api.lecture()
+        this.lecture = await H.api.lecture()
       }
     }
   }

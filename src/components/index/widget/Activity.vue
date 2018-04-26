@@ -29,6 +29,7 @@
         activities: []
       }
     },
+    persist: ['activities'],
     created() {
       this.reload()
     },

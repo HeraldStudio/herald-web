@@ -2,7 +2,7 @@
 
   widget.notice(title='通知公告')
     ul.detail-list
-      li(v-for='item in notices' :key='item.title' :class='{ important: item.isImportant }')
+      li(v-for='item in notice' :key='item.title' :class='{ important: item.isImportant }')
         drawer(title='通知内容' @open='loadMarkdown(item)' @close='markdown = ""')
           .top
             .left {{ item.title }}
@@ -12,7 +12,7 @@
           .content(slot='content')
             .markdown-container(v-if='markdown' v-html='markdown')
             .markdown-container(v-else) 加载中…
-    .empty(v-if='!notices.length') 暂无通知
+    .empty(v-if='!notice || !notice.length') 暂无通知
 
 </template>
 <script>
@@ -30,10 +30,11 @@
     components: { drawer, widget },
     data() {
       return {
-        notices: [],
+        notice: [],
         markdown: ''
       }
     },
+    persist: ['notice'],
     created() {
       this.reload()
       if (/[?&]nid=(\d+)/.test(window.location.search)) {
@@ -48,7 +49,7 @@
     methods: {
       ...formatter,
       async reload() {
-        this.notices = await H.api.notice()
+        this.notice = await H.api.notice()
       },
       async loadMarkdown(notice) {
         if (notice.isAttachment) {

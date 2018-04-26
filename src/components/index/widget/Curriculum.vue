@@ -3,7 +3,7 @@
   widget.curriculum(title='课程表' :show='curriculum')
     .week-picker
       .prev(@click='prevTerm()') 〈
-      .cur(title='点击回到本学期' @click='reload()') {{ term && term.code || '…' }}
+      .cur(title='点击回到本学期' @click='reload()') {{ curriculum.term && curriculum.term.code || '…' }}
       .next(@click='nextTerm()') 〉
       .prev(@click='prevWeek()') 〈
       .cur(title='点击回到本周' @click='displayWeek = currentWeek') 第 {{ displayWeek }} 周
@@ -42,31 +42,29 @@
     components: { widget, drawer },
     data() {
       return {
-        term: null,
-        terms: [],
-        curriculum: [],
+        term: [],
+        curriculum: {
+          curriculum: [],
+          term: {}
+        },
         displayWeek: 1,
         currentWeek: 1,
         currentDayOfWeek: 1
       }
     },
+    persist: ['curriculum', 'term'],
     created() {
       this.reload()
     },
-    methods: {
-      async reload(preferredTerm = '') {
-        this.terms = await H.api.term()
-        let { curriculum, term } = await H.api.curriculum({ term: preferredTerm })
-        this.curriculum = curriculum
-        this.term = term
-
-        if (term.startDate) {
+    watch: {
+      curriculum() {
+        if (this.curriculum.term.startDate) {
           let now = new Date()
           this.currentWeek =
             Math.min(this.maxWeek,
               Math.max(1,
                 Math.ceil(
-                  (now.getTime() - term.startDate) / (1000 * 60 * 60 * 24 * 7)
+                  (now.getTime() - this.curriculum.term.startDate) / (1000 * 60 * 60 * 24 * 7)
                 )
               )
             )
@@ -77,6 +75,12 @@
           this.currentDayOfWeek = 0
           this.displayWeek = this.currentWeek
         }
+      }
+    },
+    methods: {
+      async reload(preferredTerm = '') {
+        this.term = await H.api.term()
+        this.curriculum = await H.api.curriculum({ term: preferredTerm })
       },
       prevWeek() {
         if (this.displayWeek > 1) {
@@ -84,22 +88,22 @@
         }
       },
       nextWeek() {
-        if (this.displayWeek < this.term.maxWeek) {
+        if (this.displayWeek < this.curriculum.term.maxWeek) {
           this.displayWeek += 1
         }
       },
       prevTerm() {
-        let terms = this.terms.map(k => k.name)
-        this.reload(terms[(terms.indexOf(this.term.code) - 1) % terms.length])
+        let term = this.term.map(k => k.name)
+        this.reload(term[(term.indexOf(this.curriculum.term.code) - 1) % term.length])
       },
       nextTerm() {
-        let terms = this.terms.map(k => k.name)
-        this.reload(terms[(terms.indexOf(this.term.code) + 1) % terms.length])
+        let term = this.term.map(k => k.name)
+        this.reload(term[(term.indexOf(this.curriculum.term.code) + 1) % term.length])
       }
     },
     computed: {
       displayClasses() {
-        return this.curriculum.filter(k =>
+        return this.curriculum.curriculum.filter(k =>
           k.beginWeek <= this.displayWeek &&
           k.endWeek >= this.displayWeek &&
           this.displayWeek % 2 !== ['odd', 'even'].indexOf(k.flip)
@@ -115,7 +119,7 @@
         return this.displayClasses.filter(k => !k.dayOfWeek)
       },
       maxWeek() {
-        return this.curriculum.map(k => k.endWeek).reduce((a, b) => Math.max(a, b), 0)
+        return this.curriculum.curriculum.map(k => k.endWeek).reduce((a, b) => Math.max(a, b), 0)
       }
     }
   }

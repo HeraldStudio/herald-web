@@ -48,6 +48,7 @@
         curDate: 0
       }
     },
+    persist: ['pe'],
     created() {
       this.reload()
     },

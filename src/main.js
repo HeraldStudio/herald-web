@@ -4,13 +4,19 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Toasted from 'vue-toasted'
+import Persist from 'vue-persist'
 
 // window.Vue = Vue
 
 Vue.config.productionTip = false
+
 Vue.use(Toasted, {
   duration: 5000,
   position: 'top-center'
+})
+
+Vue.use(Persist, {
+  name: 'herald-default-persist'
 })
 
 // Toast 去重

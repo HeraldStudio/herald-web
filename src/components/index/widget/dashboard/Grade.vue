@@ -44,6 +44,7 @@
         gpa: null
       }
     },
+    persist: ['gpa'],
     created() {
       this.reload()
     },

@@ -33,6 +33,7 @@
         srtp: null
       }
     },
+    persist: ['srtp'],
     created() {
       this.reload()
     },

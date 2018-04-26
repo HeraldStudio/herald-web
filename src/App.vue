@@ -52,6 +52,7 @@
         webapp: false
       }
     },
+    persist: ['user'],
     async created() {
       if (window.navigator.standalone) {
         this.webapp = true

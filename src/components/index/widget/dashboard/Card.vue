@@ -56,6 +56,7 @@
         }
       }
     },
+    persist: ['card'],
     created() {
       this.oldestDate = new Date().getTime()
       this.reload()

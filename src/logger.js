@@ -64,7 +64,10 @@ export class Log {
   }
 }
 
-export default {
+let logger = {
+  openListeners: [],
+  doneListeners: [],
+  pending: 0,
 
   bindAjax() {
     try {
@@ -87,6 +90,10 @@ export default {
       XMLHttpRequest.prototype.open = function (...args) {
         this._method = args[0].toUpperCase()
         this._url = _resolveUrl(args[1])
+        logger.pending++
+        if (logger.pending == 1) {
+          logger.openListeners.map(k => k())
+        }
         xhrOpen.apply(this, args)
       }
 
@@ -95,12 +102,16 @@ export default {
 
         this.addEventListener('readystatechange', () => {
           if (this.readyState === XMLHttpRequest.DONE) {
+            logger.pending--
+            if (logger.pending == 0) {
+              logger.doneListeners.map(k => k())
+            }
             const endTime = new Date();
             const costTime = endTime - startTime;
             if (this.status >= 200 && this.status < 400) {
-              new Log().blue(this.status).cyan(this._method).green(this._url).yellow(costTime + 'ms').fire(console.groupCollapsed)
+              new Log().blue(this.status).cyan(this._method).auto(this._url).yellow(costTime + 'ms').fire(console.groupCollapsed)
             } else {
-              new Log().red(this.status).cyan(this._method).green(this._url).yellow(costTime + 'ms').fire(console.groupCollapsed)
+              new Log().red(this.status).cyan(this._method).auto(this._url).yellow(costTime + 'ms').fire(console.groupCollapsed)
             }
             if (data) new Log().blue('Request:').auto(data).fire()
             new Log().blue('Response:').auto(this.responseText).fire()
@@ -115,3 +126,5 @@ export default {
     }
   }
 }
+
+export default logger

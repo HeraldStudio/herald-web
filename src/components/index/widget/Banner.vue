@@ -1,8 +1,8 @@
 <template lang="pug">
 
-  widget.banner(title='编辑推荐' :show='banners.length')
-    banner.banner(:auto="5000", :loop="true", :speed="500", :dots="true", :watch-items="banners")
-      banner-item.banner-item(v-for='page in banners' :key='page.bid')
+  widget.banner(title='编辑推荐' :show='banner.length')
+    banner.banner(:auto="5000", :loop="true", :speed="500", :dots="true", :watch-items="banner")
+      banner-item.banner-item(v-for='page in banner' :key='page.bid')
         .img-container
           a(v-if='page.url' :href='page.url' target="_blank")
             img(:src='page.pic' ondragstart="return false")
@@ -28,15 +28,16 @@
     },
     data() {
       return {
-        banners: []
+        banner: []
       }
     },
+    persist: ['banner'],
     created() {
       this.reload()
     },
     methods: {
       async reload() {
-        this.banners = await H.api.banner()
+        this.banner = await H.api.banner()
       }
     }
   }

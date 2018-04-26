@@ -9,11 +9,14 @@
       .eye.right-eye
         .line1
         .line2
+    .loading(:class='{ shown: isLoading }')
+      .inner
 
 </template>
 <script>
 
   import api from '../api'
+  import logger from '../logger'
 
   const timeout = (t) => new Promise(r => setTimeout(r, t))
 
@@ -53,10 +56,13 @@
         curState: 'curious',
         lastRandom: '',
         mouseX: 0,
-        mouseY: 0
+        mouseY: 0,
+        isLoading: false
       }
     },
     created() {
+      logger.openListeners.push(() => this.isLoading = true)
+      logger.doneListeners.push(() => this.isLoading = false)
       this.autoBlink()
       if (this.autoEmotion) {
         this.autoEmote()
@@ -107,6 +113,12 @@
 
 </script>
 <style lang="stylus" scoped>
+
+  @keyframes rotate
+    from
+      transform rotate(0deg)
+    to
+      transform rotate(360deg)
 
   .live2d
     position absolute
@@ -276,6 +288,31 @@
         .line1
           width 20%
           height 20%
+      
+    .loading
+      position absolute
+      left 20%
+      top 22%
+      right 20%
+      bottom 20%
+      background #fff
+      border-radius 50%
+      transition .2s
 
+      &:not(.shown)
+        opacity 0
+
+      .inner
+        position absolute
+        left 20%
+        top 45%
+        right 20%
+        bottom 45%
+        background #31a6f2
+        // border-radius 50%
+        animation-name rotate
+        animation-duration 1s
+        animation-iteration-count infinite
+        animation-timing-function linear
 
 </style>
