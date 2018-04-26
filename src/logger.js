@@ -70,61 +70,53 @@ let logger = {
   pending: 0,
 
   bindAjax() {
-    try {
-      if (!XMLHttpRequest.prototype._injected) {
-        XMLHttpRequest.prototype._injected = true
+    logger.doneListeners.push(function () {
+      const endTime = new Date();
+      const costTime = endTime - this.startTime;
+      if (this.status >= 200 && this.status < 400) {
+        new Log().blue(this.status).cyan(this._method).auto(this._url).yellow(costTime + 'ms').fire(console.groupCollapsed)
       } else {
-        // Duplicate injection
-        return
+        new Log().red(this.status).cyan(this._method).auto(this._url).yellow(costTime + 'ms').fire(console.groupCollapsed)
       }
-
-      let xhrOpen = XMLHttpRequest.prototype.open
-      let xhrSend = XMLHttpRequest.prototype.send
-
-      function _resolveUrl (url) {
-        const link = document.createElement('a')
-        link.href = url
-        return `${link.protocol}//${link.host}${link.pathname}${link.search}${link.hash}`
-      }
-
-      XMLHttpRequest.prototype.open = function (...args) {
-        this._method = args[0].toUpperCase()
-        this._url = _resolveUrl(args[1])
-        logger.pending++
-        if (logger.pending == 1) {
-          logger.openListeners.map(k => k())
-        }
-        xhrOpen.apply(this, args)
-      }
-
-      XMLHttpRequest.prototype.send = function (data) {
-        const startTime = new Date()
-
-        this.addEventListener('readystatechange', () => {
-          if (this.readyState === XMLHttpRequest.DONE) {
-            logger.pending--
-            if (logger.pending == 0) {
-              logger.doneListeners.map(k => k())
-            }
-            const endTime = new Date();
-            const costTime = endTime - startTime;
-            if (this.status >= 200 && this.status < 400) {
-              new Log().blue(this.status).cyan(this._method).auto(this._url).yellow(costTime + 'ms').fire(console.groupCollapsed)
-            } else {
-              new Log().red(this.status).cyan(this._method).auto(this._url).yellow(costTime + 'ms').fire(console.groupCollapsed)
-            }
-            if (data) new Log().blue('Request:').auto(data).fire()
-            new Log().blue('Response:').auto(this.responseText).fire()
-            console.groupEnd()
-          }
-        });
-
-        xhrSend.call(this, data);
-      };
-    } catch (e) {
-      new Log().blue('Logger Inject').green('Fail').fire(console.error)
-    }
+      if (data) new Log().blue('Request:').auto(data).fire()
+      new Log().blue('Response:').auto(this.responseText).fire()
+      console.groupEnd()
+    })
   }
 }
+
+let xhrOpen = XMLHttpRequest.prototype.open
+let xhrSend = XMLHttpRequest.prototype.send
+
+function _resolveUrl(url) {
+  const link = document.createElement('a')
+  link.href = url
+  return `${link.protocol}//${link.host}${link.pathname}${link.search}${link.hash}`
+}
+
+XMLHttpRequest.prototype.open = function (...args) {
+  this._method = args[0].toUpperCase()
+  this._url = _resolveUrl(args[1])
+  logger.pending++
+  if (logger.pending == 1) {
+    logger.openListeners.map(k => k.call(this))
+  }
+  xhrOpen.apply(this, args)
+}
+
+XMLHttpRequest.prototype.send = function (data) {
+  this.startTime = new Date()
+
+  this.addEventListener('readystatechange', () => {
+    if (this.readyState === XMLHttpRequest.DONE) {
+      logger.pending--
+      if (logger.pending == 0) {
+        logger.doneListeners.map(k => k.call(this))
+      }
+    }
+  });
+
+  xhrSend.call(this, data);
+};
 
 export default logger
