@@ -36,7 +36,7 @@
               confirm-button.accept(@click='acceptSpider(spider)' confirm-text='确认接受') 接受
               confirm-button.reject(@click='rejectSpider(spider)' confirm-text='确认拒绝') 拒绝
       .subcontainer.periods(key='daily' v-if='daily')
-        .subtitle 24 小时接口调用分布
+        .subtitle 24 小时接口调用 / 活跃用户统计
         .summary
           .example-block.result-2
           span 2xx
@@ -46,7 +46,6 @@
           span 4xx
           .example-block.result-5
           span 5xx
-          span &nbsp; 灰色为昨日数据
         .periods-chart
           .period(v-for='(period, i) in daily' :class='{ fade: !period.isToday }')
             .count {{ period.count || '' }}
@@ -57,6 +56,9 @@
                     :class='"result-" + String(result.status)[0]' :title='generateDescription(route, result)')
             .time.left(v-if='i < 47') {{ i % 2 == 0 ? i / 2 : '' }}
             .time.right(v-else) 24
+            .users-container
+              .users(:style='{ height: period.userCount / maxUserCount * 100 + "%" }')
+            .user-count {{ period.userCount || '' }}
       .subcontainer.upstream(key='upstream' v-if='upstream')
         .subtitle 上游健康状况
         .summary {{ healthCount }} / {{ upstream.length }}
@@ -130,6 +132,9 @@
       },
       maxPeriodCount () {
         return this.daily.map(k => k.count).sort((a, b) => a - b).slice(-1)[0] || 1
+      },
+      maxUserCount () {
+        return this.daily.map(k => k.userCount).sort((a, b) => a - b).slice(-1)[0] || 1
       }
     },
     methods: {
@@ -328,18 +333,29 @@
 
         &:hover
           height 480px
+        
+        &:not(:hover)
+          .count, .user-count
+            height 0 !important
+            margin 0 !important
 
         .period
           flex 1 1 0
           display flex
           flex-direction column
-          transition .2s
+
+          &:hover
+            background #fafafa
+
+          &:not(:hover)
+            .count, .user-count
+              opacity 0
 
           &.fade:not(:hover)
-            .operations-container
-              transform scaleX(0.1)
-              filter grayscale()
-              border-right 0px solid transparent
+            .operations-container, .users-container
+              > *
+                transform scaleX(0.1)
+                filter grayscale()
 
           &:last-child .operations-container
             border-right 0 none
@@ -352,12 +368,24 @@
             font-size 11px
             color #888
             overflow hidden
+            transition .2s
+
+          .user-count
+            writing-mode vertical-lr
+            text-align left
+            height 32px
+            margin-top 10px
+            font-size 11px
+            color #ddd
+            overflow hidden
+            transition .2s
 
           .operations-container
-            flex 1 1 0
+            flex 3 3 0
             position relative
             border-right 1px solid var(--color-tool-bg)
             transition .3s
+            overflow hidden
 
             .operations
               position absolute
@@ -371,6 +399,7 @@
               justify-content flex-end
               // border-radius 3px
               overflow hidden
+              transition .2s
 
               .operation
                 flex 1 1 0
@@ -393,8 +422,8 @@
                     z-index 999
 
           .time
-            height 12px
-            margin-top 10px
+            height 15px
+            margin 3px 0
             font-size 11px
             color #888
             overflow hidden
@@ -405,6 +434,26 @@
 
             &.right
               transform translateX(50%)
+
+          .users-container
+            flex 1 1 0
+            position relative
+            border-right 1px solid var(--color-tool-bg)
+            transition .3s
+
+            .users
+              position absolute
+              left 1px
+              right 1px
+              top 0
+              border-radius 3px
+              background #f0f0f0
+              display flex
+              flex-direction column
+              justify-content flex-end
+              // border-radius 3px
+              overflow hidden
+              transition .2s
 
     .users table
       width 100%
