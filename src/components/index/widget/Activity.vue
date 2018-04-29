@@ -3,7 +3,7 @@
   widget.activity(title='校园活动' :show='activities.length')
     activity.activity(:auto="5000", :loop="true", :speed="500", :dots="true", :watch-items="activities")
       activity-item.activity-item(v-for='activity in activities' :key='activity.aid')
-        a.activity-container(:href='activity.url' target="_blank")
+        .activity-container(@click='click(activity)')
           .img-container
             img(:src='activity.pic' ondragstart="return false")
           .text-container
@@ -38,6 +38,13 @@
         let now = new Date().getTime()
         this.activities = (await H.api.activity()).filter(k =>
           k.startTime <= now && k.endTime > now)
+      },
+      async click({ hasUrl, aid }) {
+        if (hasUrl) {
+          window.open(await H.api.activity.put({ aid }), '_blank')
+        } else {
+          this.$toasted.show('该活动没有详情页面')
+        }
       }
     }
   }
@@ -90,6 +97,7 @@
           display flex
           flex-direction row
           padding 20px
+          cursor pointer
 
           .img-container
             position relative

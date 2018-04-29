@@ -3,14 +3,12 @@
   widget.banner(title='编辑推荐' :show='banner && banner.length')
     banner.banner(:auto="5000", :loop="true", :speed="500", :dots="true", :watch-items="banner")
       banner-item.banner-item(v-for='page in banner' :key='page.bid')
-        .img-container
-          a(v-if='page.url' :href='page.url' target="_blank")
-            img(:src='page.pic' ondragstart="return false")
-          img(v-else :src='page.pic' ondragstart="return false")
+        .img-container(@click='click(page)')
+          img(:src='page.pic' ondragstart="return false")
         .text-container
           .banner-hint(v-if='page.schoolnumPrefix && page.schoolnumPrefix.indexOf("guest") === -1') 专属推荐
           .banner-title {{ page.title }}
-          a.banner-link(v-if='page.url' :href='page.url' target="_blank") 详情 >
+          .banner-link(v-if='page.hasUrl' @click='click(page)') 详情 >
 
 </template>
 <script>
@@ -38,6 +36,13 @@
     methods: {
       async reload() {
         this.banner = await H.api.banner()
+      },
+      async click({ hasUrl, bid }) {
+        if (hasUrl) {
+          window.open(await H.api.banner.put({ bid }), '_blank')
+        } else {
+          this.$toasted.show('该横幅没有详情页面')
+        }
       }
     }
   }
@@ -113,6 +118,7 @@
             -moz-user-select: none
             -ms-user-select: none
             user-select: none
+            cursor pointer
 
         .text-container
           display flex
