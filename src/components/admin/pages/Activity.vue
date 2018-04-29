@@ -11,7 +11,8 @@
           th.start-date 开始时间
           th.end-date 结束时间
           th.committed 发布人
-          th.admitted 审核人
+          //- th.admitted 审核人
+          th.click 点击量
           th.operations 操作
         template(v-for='(activity, i) in activities' :class='getState(activity)')
           tr.activity
@@ -29,7 +30,8 @@
             td
               timestamp(v-model='activity.endTime')
             td.committed(rowspan='2') {{ activity.committedByName }}
-            td.admitted(rowspan='2') {{ activity.admittedByName }}
+            //- td.admitted(rowspan='2') {{ activity.admittedByName }}
+            td.click(rowspan='2') {{ activity.clicks }}
             td.operations(rowspan='2')
               button.save(v-if='activity.pic && activity.title && activity.content && activity.startTime && activity.endTime' @click='saveActivity(activity)') {{ activity.admittedBy ? '保存' : '保存并通过' }}
               confirm-button.remove(@click='removeActivity(activity.aid)' confirm-text='确定') 删除
@@ -51,7 +53,7 @@
           td
             timestamp(v-model='newActivity.endTime')
           td.committed(rowspan='2')
-          td.admitted(rowspan='2')
+          td.click(rowspan='2')
           td.operations(rowspan='2')
             confirm-button(v-if='newActivity.pic && newActivity.title && newActivity.content && newActivity.startTime && newActivity.endTime' @click='addActivity()' confirm-text='确定新增') 新增活动
         tr.activity.add
@@ -243,6 +245,6 @@
           .content
             margin-top 5px
 
-        .committed, .admitted, .operations
-          width 80px
+        .committed, .admitted, .operations, .click
+          width 60px
 </style>

@@ -12,6 +12,7 @@
           th.start-date 开始时间
           th.end-date 结束时间
           th.schoolnum-prefix 学号前缀
+          th.click 点击量
           th.operations 操作
         tr.banner(v-for='(banner, i) in banners' :class='getState(banner)')
           td.state {{ { upcoming: '未开始', ongoing: '展示中', ended: '已下架' }[getState(banner)] }}
@@ -29,6 +30,7 @@
             timestamp(v-model='banner.endTime')
           td
             input.schoolnum-prefix(v-model='banner.schoolnumPrefix')
+          td.click {{ banner.clicks }}
           td.operations
             button.save(v-if='banner.pic && banner.title && banner.startTime && banner.endTime' @click='saveBanner(banner)') 保存
             confirm-button.remove(@click='removeBanner(banner.bid)' confirm-text='确定') 删除
@@ -48,6 +50,7 @@
             timestamp(v-model='newBanner.endTime')
           td
             input.schoolnum-prefix(v-model='newBanner.schoolnumPrefix')
+          td.click
           td.operations
             confirm-button(v-if='newBanner.pic && newBanner.title && newBanner.startTime && newBanner.endTime' @click='addBanner()' confirm-text='确定新增') 新增轮播图
 </template>
@@ -215,6 +218,12 @@
         .content
           margin-top 5px
 
+      .click
+        width 60px
+
       .operations
-        width 100px
+        width 50px
+
+        * + *
+          margin-top 5px
 </style>
