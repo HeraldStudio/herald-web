@@ -38,8 +38,12 @@
         this.banner = await H.api.banner()
       },
       async click({ hasUrl, bid }) {
+        // 根据 Safari 安全机制，不允许异步打开窗口，必须先打开，然后异步设置 URL
+        // https://blog.csdn.net/wgrzhuaq/article/details/7821725
         if (hasUrl) {
-          window.open(await H.api.banner.put({ bid }), '_blank')
+          let win = window.open('about:blank', '_blank')
+          let url = await H.api.banner.put({ bid })
+          win.location = url
         } else {
           this.$toasted.show('该横幅没有详情页面')
         }
@@ -140,6 +144,7 @@
             font-weight bold
             font-size 13px
             white-space nowrap
+            cursor pointer
 
           .banner-title
             color var(--color-text-regular)

@@ -40,8 +40,12 @@
           k.startTime <= now && k.endTime > now)
       },
       async click({ hasUrl, aid }) {
+        // 根据 Safari 安全机制，不允许异步打开窗口，必须先打开，然后异步设置 URL
+        // https://blog.csdn.net/wgrzhuaq/article/details/7821725
         if (hasUrl) {
-          window.open(await H.api.activity.put({ aid }), '_blank')
+          let win = window.open('about:blank', '_blank')
+          let url = await H.api.activity.put({ aid })
+          win.location = url
         } else {
           this.$toasted.show('该活动没有详情页面')
         }
