@@ -126,6 +126,7 @@
             display flex
             flex-direction column
             margin-left 15px
+            overflow hidden
 
             * + *
               margin-top 5px

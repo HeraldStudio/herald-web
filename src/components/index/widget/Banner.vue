@@ -127,6 +127,7 @@
           justify-content center
           align-items center
           min-width 0
+          overflow hidden
 
           * + *
             margin-left 10px
