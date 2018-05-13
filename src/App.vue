@@ -18,9 +18,9 @@
             .hint 小猴偷米 App 是较早版本，已不再保持活跃更新，新 App 开发正在筹备中，建议使用网页版和小程序，获得更完整的体验。
             .buttons
               p 仍要下载：
-              a(href='http://herald-app.oss-cn-shanghai.aliyuncs.com/app-release.apk' target='_blank')
+              a(href='http://static.myseu.cn/herald-v1-final.apk' target='_blank')
                 button Android 4.1+
-              a(href='https://itunes.apple.com/cn/app/id1107998946' target='_blank')
+              a(href='https://itunes.apple.com/cn/app/id1378941139' target='_blank')
                 button iOS 8.0+
         drawer(title='运行状态')
           li 运行状态
