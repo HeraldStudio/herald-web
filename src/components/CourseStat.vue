@@ -126,6 +126,7 @@
 
         .name
           flex 1 1 auto
+          text-align left
           color var(--color-primary)
           font-size 16px
 
