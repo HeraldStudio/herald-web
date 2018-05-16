@@ -7,6 +7,12 @@
         p.
           此列表根据你所在院系最近一段时间成绩查询记录的匿名统计，根据教务处排课编号排除你已经上过的课程，
           从而推测出你下学期（短学期和长学期）可能上到的必选、限选、任选课程，供选课时参考。
+      .search-tools
+        .hint 高级查询（查询其他院系年级或学期）
+        .fields
+          input.schoolnum(v-model='query.schoolnum' placeholder='学号前五位')
+          input.term(v-model='query.term' placeholder='预测学期，如 17-18-3')
+          button(@click='loadCourse()') ＞
       .list(v-if='stat.length')
         .course(v-for='(course, i) in stat' :key='course.cid')
           .head(v-if='i == 0 || course.semester != stat[i - 1].semester') 第{{ course.semester }}学期
@@ -47,6 +53,10 @@
     components: { login: Login },
     data() {
       return {
+        query: {
+          term: '',
+          schoolnum: ''
+        },
         stat: [],
         optional: [],
         ended: false
@@ -67,7 +77,14 @@
     },
     methods: {
       async loadCourse() {
-        this.stat = await H.api.course({ term: 'next' })
+        let q = {}
+        if (this.query.term) {
+          q.term = this.query.term
+        }
+        if (this.query.schoolnum) {
+          q.schoolnum = this.query.schoolnum
+        }
+        this.stat = await H.api.course(q)
       },
       async loadOptional() {
         if (!this.ended) {
@@ -102,18 +119,49 @@
     .hint
       font-size 14px
       color var(--color-text-secondary)
-      margin 15px 0
+      margin 20px 0
 
       p
         line-height 1.5em
-        margin 1em 0
+        margin 0.5em 0
+
+    .search-tools
+      padding 10px
+      margin 15px 0 5px
+      border-radius 3px
+      border 1px solid var(--color-divider)
+      box-shadow 0 5px 15px rgba(#000, .1)
+
+      .hint
+        font-weight: bold
+        color var(--color-text-bold)
+        margin 0 0 20px
+    
+      .fields
+        display flex
+        flex-direction row
+        align-items center
+
+        * + *
+          margin-left 5px
+
+        input.term
+          width 50px
+          flex 2 2 0
+          font-size 13px
+
+        input.schoolnum
+          width 50px
+          flex 1 1 0
+          font-size 13px
     
     .course
       padding 10px 0
       border-bottom 1px solid var(--color-divider)
 
       .head
-        padding-bottom 10px
+        padding-top 5px
+        padding-bottom 15px
         margin-bottom 10px
         border-bottom 1px solid var(--color-divider)
         font-weight bold
