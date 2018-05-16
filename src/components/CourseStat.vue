@@ -119,6 +119,7 @@
         font-weight bold
         font-size 13px
         color var(--color-text-bold)
+        text-align left
 
       .line
         display flex
