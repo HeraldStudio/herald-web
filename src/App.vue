@@ -274,6 +274,7 @@
         box-shadow inset 0 30px 40px #fff
 
       @media screen and (max-width: 600px)
+        position absolute
         flex-direction column
         height 100px
         align-items center
