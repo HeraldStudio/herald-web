@@ -29,7 +29,7 @@
         .course(v-for='course in optional' :key='course.cid')
           .line
             .name {{ course.courseName }}
-            .credit {{ course.courseType.split('').slice(0, 2).join('') }}
+            .credit {{ course.courseType.split('').slice(0, 2).join('').replace('经济', '经管') }}
           .line
             .info(v-if='course.avgScore') 样本容量 {{ course.sampleCount }} / 粗略平均成绩 {{ course.avgScore }}
             .info(v-else) 样本容量 {{ course.sampleCount }}
@@ -130,7 +130,12 @@
           color var(--color-primary)
           font-size 16px
 
-        .credit, .info
+        .info
+          color var(--color-text-bold)
+          font-size 13px
+
+        .credit
+          flex 0 0 auto
           color var(--color-text-bold)
           font-size 13px
 
