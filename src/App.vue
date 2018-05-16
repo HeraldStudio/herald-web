@@ -190,6 +190,12 @@
   select:-webkit-autofill
     -webkit-box-shadow inset 0 0 0 100px var(--color-tool-bg)
 
+  hr
+    border 0 none
+    height 1px
+    background var(--color-divider)
+    margin 25px 0
+
   img:not([src]), img[src=""]
     opacity 0
 
