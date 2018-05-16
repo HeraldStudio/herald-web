@@ -2,7 +2,7 @@
 
   #course-stat
     .course-stat(v-if='user')
-      .title 小猴偷米课表预测 v3.0 build 369e263f
+      .title 小猴偷米课表预测 v3.0
       .hint(v-if='stat.length')
         p.
           此列表根据你所在院系最近一段时间成绩查询记录的匿名统计，根据教务处排课编号排除你已经上过的课程，
