@@ -63,7 +63,6 @@
       // 套壳用，通过 URL 参数导入 token
       if (/importToken=([0-9a-fA-F]+)/.test(location.search)) {
         H.token = RegExp.$1
-        location.search = ''
       } else {
         setInterval(async () => {
           if (!this.user && H.isLogin) {
@@ -78,6 +77,9 @@
             location.href = '#/'
           }
         }, 500)
+      }
+      if (location.search) {
+        location.search = ''
       }
     }
   }
@@ -106,7 +108,7 @@
     --color-warning-bg     #fff6de
 
     --color-error-dark     #872f23
-    --color-error          #c21700
+    --color-error          #c23720
     --color-error-light    #fa8070
     --color-error-bg       #ffe2de
 

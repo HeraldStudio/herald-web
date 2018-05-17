@@ -1,14 +1,15 @@
 <template lang="pug">
 
   widget.activity(title='校园活动' :show='activities.length')
-    activity.activity(:auto="5000", :loop="true", :speed="500", :dots="true", :watch-items="activities")
-      activity-item.activity-item(v-for='activity in activities' :key='activity.aid')
-        .activity-container(@click='click(activity)')
-          .img-container
-            img(:src='activity.pic' ondragstart="return false")
-          .text-container
-            .activity-title {{ activity.title }}
-            .activity-content {{ activity.content }}
+    .activity-item(v-for='(activity, i) in activities' :key='activity.aid' :style='"z-index: " + (i + 1)' :class='{ collapsed: activity.endTime <= now }')
+      .activity-container(@click='click(activity)')
+        .activity-title
+          .tag.ongoing(v-if='activity.startTime <= now && activity.endTime > now') 进行中
+          .tag.upcoming(v-if='activity.startTime > now') 未开始
+          .tag.ended(v-if='activity.endTime <= now') 已结束
+          span {{ activity.title }}
+        img(:src='activity.pic' ondragstart="return false")
+        .activity-content {{ activity.content }}
 
 </template>
 <script>
@@ -16,16 +17,14 @@
   import H from '@/api'
   import widget from './Widget.vue'
   import formatter from "@/util/formatter"
-  import { Carousel, CarouselItem } from 'vue-l-carousel'
 
   export default {
     components: {
-      widget,
-      activity: Carousel,
-      'activity-item': CarouselItem
+      widget
     },
     data() {
       return {
+        now: +new Date(),
         activities: []
       }
     },
@@ -36,8 +35,7 @@
     methods: {
       async reload() {
         let now = new Date().getTime()
-        this.activities = (await H.api.activity()).filter(k =>
-          k.startTime <= now && k.endTime > now)
+        this.activities = await H.api.activity({ pagesize: 20 })
       },
       async click({ hasUrl, aid }) {
         // 根据 Safari 安全机制，不允许异步打开窗口，必须先打开，然后异步设置 URL
@@ -54,103 +52,81 @@
   }
 
 </script>
-<style>
-
-  @import "~vue-l-carousel/dist/main.css";
-
-  .v-carousel {
-    padding-bottom: 15px
-  }
-
-  .v-carousel-dots {
-    bottom: 5px;
-  }
-
-  .v-carousel-dot {
-    width: 10px;
-    height: 3px;
-  }
-
-  .v-carousel-nav {
-    display: none;
-    padding: 0 12px;
-    font-size: 14px;
-    background: #fff;
-    color: var(--color-text-bold);
-  }
-
-  .v-carousel-items {
-    height: 100%
-  }
-
-</style>
 <style lang="stylus" scoped>
 
   .widget.activity
     position relative
     padding 0
+    border 0
+    box-shadow none
 
-    .activity
+    .activity-item
       overflow hidden
+      background #fff
+      position relative
+      box-shadow 0 0 20px rgba(0, 0, 0, .05)
+      margin-bottom 10px
+      transform perspective(600px)
+      transition .5s
 
-      .activity-item
-        width 100%
-        height 100%
+      &.collapsed:not(:last-child):not(:hover)
+        transform perspective(600px) rotateX(-15deg)
+        transform-origin 50% 0
+        height 250px
+        margin-bottom -195px
 
-        .activity-container
-          display flex
-          flex-direction row
-          padding 20px
-          cursor pointer
+      .activity-container
+        display flex
+        flex-direction column
+        padding 20px
+        cursor pointer
 
-          .img-container
-            position relative
-            width 80px
-            height 80px
-            flex 0 0 80px
-            overflow hidden
-            border-radius 3px
+        * + *
+          margin-top 15px
 
-            img
-              position absolute
-              left 0
-              right 0
-              top 0
-              bottom 0
-              width 100%
-              height 100%
-              object-fit cover
-              -webkit-user-select: none
-              -moz-user-select: none
-              -ms-user-select: none
-              user-select: none
+        .activity-title
+          color var(--color-text-regular)
+          font-size 15px
+          font-weight bold
+          // white-space nowrap
+          overflow hidden
+          text-overflow ellipsis
+          min-width 0
+        
+        .tag
+          display inline-block
+          border-radius 3px
+          margin-right 5px
+          color #ffffff
+          font-size 13px
+          padding 1px 3px
+          vertical-align baseline
 
-          .text-container
-            flex 1 1 0
-            display flex
-            flex-direction column
-            margin-left 15px
-            overflow hidden
+          &.ongoing
+            background var(--color-primary)
 
-            * + *
-              margin-top 5px
+          &.upcoming
+            background var(--color-success)
 
-            .activity-title
-              color var(--color-text-regular)
-              font-size 15px
-              font-weight bold
-              white-space nowrap
-              overflow hidden
-              text-overflow ellipsis
-              min-width 0
+          &.ended
+            background #ccc
 
-            .activity-content
-              color var(--color-text-regular)
-              font-size 13px
-              max-height 4.5em
-              line-height 1.5em
-              overflow hidden
-              text-overflow ellipsis
-              min-width 0
+        img
+          border-radius 3px
+          width 100%
+          object-fit cover
+          -webkit-user-select: none
+          -moz-user-select: none
+          -ms-user-select: none
+          user-select: none
+
+        .activity-content
+          color var(--color-text-regular)
+          font-size 13px
+          max-height 4.5em
+          line-height 1.5em
+          overflow hidden
+          text-overflow ellipsis
+          min-width 0
 
 </style>

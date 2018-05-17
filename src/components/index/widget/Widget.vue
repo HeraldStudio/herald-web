@@ -193,7 +193,7 @@
           align-items center
 
         .top + .bottom
-          margin-top 5px
+          margin-top 3px
 
         .left
           flex 1 1 auto
@@ -207,13 +207,13 @@
           color var(--color-primary)
 
         .top .right, .bottom .left
-          font-size 14px
+          font-size 13px
 
         .bottom .left
           font-weight bold
 
         .bottom .right
-          font-size 14px
+          font-size 13px
           color #888
 
         &:last-child

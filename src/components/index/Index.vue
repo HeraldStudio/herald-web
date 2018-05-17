@@ -9,10 +9,10 @@
         exam(v-if='/^21/.test(user.cardnum)')
         curriculum
         experiment(v-if='/^21/.test(user.cardnum)')
+        library(v-if='user')
       .guest(v-else)
         login
     .widgets
-      library(v-if='user')
       notice(:user='user')
 </template>
 

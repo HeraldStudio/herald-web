@@ -5,7 +5,10 @@
       li(v-for='item in notice' :key='item.title' :class='{ important: item.isImportant }')
         drawer(title='通知内容' @open='loadMarkdown(item)' @close='markdown = ""')
           .top
-            .left {{ item.title }}
+            .left
+              .tag.important(v-if='item.isImportant') 重要
+              .tag.attachment(v-if='item.isAttachment') 附件
+              span {{ item.title }}
           .bottom
             .left {{ item.category }}
             .right 发布于 {{ formatDateNatural(item.time) }}
@@ -66,8 +69,21 @@
 </script>
 <style lang="stylus">
   .notice
-    .important .top .left
+    .tag
+      display inline-block
+      border-radius 3px
+      margin-right 5px
+      color #ffffff
+      font-size 13px
+      padding 1px 3px
+      vertical-align baseline
       font-weight bold
+
+      &.attachment
+        background var(--color-primary)
+
+      &.important
+        background var(--color-error)
 
     .markdown-container
       border-top 1px solid transparent
