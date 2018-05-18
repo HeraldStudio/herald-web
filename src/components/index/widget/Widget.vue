@@ -190,7 +190,7 @@
         .top, .bottom
           display flex
           flex-direction row
-          align-items center
+          // align-items center
 
         .top + .bottom
           margin-top 3px

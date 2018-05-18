@@ -1,21 +1,24 @@
 <template lang="pug">
 
   widget.notice(title='通知公告')
+    ul.info-bar
+      li.info(v-for='site in sites' @click='currentSite = site' :class='{ selected: currentSite == site }')
+        .title {{ site }}
     ul.detail-list
-      li(v-for='item in notice' :key='item.title' :class='{ important: item.isImportant }')
+      li(v-for='item in filteredNotice' :key='item.title' :class='{ important: item.isImportant }')
         drawer(title='通知内容' @open='loadMarkdown(item)' @close='markdown = ""')
           .top
             .left
               .tag.important(v-if='item.isImportant') 重要
               .tag.attachment(v-if='item.isAttachment') 附件
               span {{ item.title }}
-          .bottom
+            .right {{ formatDateNatural(item.time) }}
+          .bottom(v-if='item.category')
             .left {{ item.category }}
-            .right 发布于 {{ formatDateNatural(item.time) }}
           .content(slot='content')
             .markdown-container(v-if='markdown' v-html='markdown')
             .markdown-container(v-else) 加载中…
-    .empty(v-if='!notice || !notice.length') 暂无通知
+    .empty(v-if='!filteredNotice || !filteredNotice.length') 暂无通知
 
 </template>
 <script>
@@ -34,7 +37,8 @@
     data() {
       return {
         notice: [],
-        markdown: ''
+        markdown: '',
+        currentSite: null,
       }
     },
     persist: ['notice'],
@@ -49,16 +53,45 @@
         this.reload()
       }
     },
+    computed: {
+      sites() {
+        return this.notice.map(k => k.site).sort((a, b) => {
+          let predef = ['教务处', '总务处', 'SRTP'].reverse()
+          a = ~predef.indexOf(a)
+          b = ~predef.indexOf(b)
+          return a - b
+        }).reduce((a, b) => a.slice(-1)[0] === b ? a : a.concat(b), [])
+      },
+      filteredNotice() {
+        if (this.sites.length === 0) {
+          return []
+        }
+        if (!this.currentSite) {
+          this.currentSite = this.sites[0]
+        }
+        return this.notice.filter(k => k.site === this.currentSite)
+      }
+    },
     methods: {
       ...formatter,
       async reload() {
-        this.notice = await H.api.notice()
+        let notice = await H.api.notice()
+        let competition = await H.api.srtp.competition()
+        this.notice = notice.concat(competition.map(k => ({
+          title: k.name,
+          site: 'SRTP',
+          time: k.startTime,
+          srtpId: k.id
+        }))).sort((a, b) => b.time - a.time)
       },
       async loadMarkdown(notice) {
         if (notice.isAttachment) {
           this.markdown = `[下载附件](${notice.url})`
-        } else {
+        } else if (notice.site !== 'SRTP') {
           let res = await H.api.notice.post(notice)
+          this.markdown = res
+        } else {
+          let res = await H.api.srtp.competition.post({ id: notice.srtpId })
           this.markdown = res
         }
         this.markdown = marked(this.markdown.replace(/\*\*/g, ' ** '))
@@ -68,7 +101,16 @@
 
 </script>
 <style lang="stylus">
-  .notice
+  .widget.notice
+    li.info
+      cursor pointer
+      transition .3s
+
+      &:not(.selected)
+        background none
+        color var(--color-text-bold)
+        font-weight normal
+
     .tag
       display inline-block
       border-radius 3px
