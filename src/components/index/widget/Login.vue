@@ -77,7 +77,7 @@
       margin-bottom 10px
 
       @media screen and (max-width: 600px)
-        display none
+        margin 50px 0
 
     .hint
       margin-bottom 30px

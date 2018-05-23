@@ -109,7 +109,7 @@
           .title
             color var(--color-text-secondary)
             font-size 11px
-            line-height 1em
+            line-height 1.1em
             margin-bottom 3px
 
 </style>

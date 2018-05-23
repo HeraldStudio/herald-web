@@ -3,7 +3,7 @@
     .header
       router-link.live2d-wrapper(to='/')
         .live2d-container
-          live2d
+          live2d(:showAjax='true')
         img.logo(src='static/images/logo.png')
       ul.nav
         router-link(to='/')
@@ -200,6 +200,9 @@
 
   img:not([src]), img[src=""]
     opacity 0
+
+  ::-webkit-scrollbar
+    display none !important
 
   .toasted-container.top-center
     // 覆盖vendor原有属性，由于webpack资源重排，不加important覆盖不上

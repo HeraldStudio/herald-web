@@ -48,6 +48,10 @@
       autoEmotion: {
         type: Boolean,
         default: false
+      },
+      showAjax: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -61,8 +65,10 @@
       }
     },
     created() {
-      logger.openListeners.push(() => this.isLoading = true)
-      logger.doneListeners.push(() => this.isLoading = false)
+      if (this.showAjax) {
+        logger.openListeners.push(() => this.isLoading = true)
+        logger.doneListeners.push(() => this.isLoading = false)
+      }
       this.autoBlink()
       if (this.autoEmotion) {
         this.autoEmote()
