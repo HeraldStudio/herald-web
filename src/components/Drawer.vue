@@ -76,7 +76,7 @@
       bottom 0
       right 0
       margin 0
-      z-index: 10001
+      z-index: 10002
       cursor: default
       display: flex
       flex-direction: column
@@ -93,7 +93,7 @@
       .drawer
         overflow: hidden
         background: #fff
-        z-index: 10002
+        z-index: 10003
         box-sizing: border-box
         width: 600px
         cursor: default
