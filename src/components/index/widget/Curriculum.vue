@@ -8,7 +8,7 @@
       .prev(@click='prevWeek()') 〈
       .cur(title='点击回到本周' @click='displayWeek = currentWeek') 第 {{ displayWeek }} 周
       .next(@click='nextWeek()') 〉
-    div
+    div.curriculum-container
       .week-header(v-if='fixedClasses.length || !floatClasses.length')
         .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount") {{ item }}
       .curriculum-list(v-if='fixedClasses.length || !floatClasses.length' :class='{ empty: !fixedClasses.length }')
@@ -155,21 +155,95 @@
         cursor pointer
         color #ccc
 
+    .curriculum-container
+      width 100%
+      max-width 480px
+      margin 0 auto
 
-    .week-header
-      display flex
-      flex-direction row
+      .week-header
+        display flex
+        flex-direction row
 
-      .weekday
-        flex 1 1 0
-        text-align center
-        color var(--color-text-bold)
-        background var(--curriculum-background-color)
-        font-size 12px
-        padding 5px
+        .weekday
+          flex 1 1 0
+          text-align center
+          color var(--color-text-bold)
+          background var(--curriculum-background-color)
+          font-size 12px
+          padding 5px
 
-        +.weekday
-          margin-left 1px
+          +.weekday
+            margin-left 1px
+
+      .curriculum-list
+        height 520px
+        margin 0
+        position relative
+        overflow hidden
+        -webkit-transition: .3s
+        -moz-transition: .3s
+        -ms-transition: .3s
+        -o-transition: .3s
+        transition: .3s
+
+        table.block-bg
+          border-collapse collapse
+          width 100%
+          height 100%
+          box-sizing border-box
+          background var(--color-tool-bg)
+          border 1px solid #f0f0f0
+
+          td
+            border 1px solid #f0f0f0
+
+        &.empty
+          height 70px
+
+        .block
+          position absolute
+          overflow hidden
+          box-sizing border-box
+          margin 0 -1px -1px 0
+          line-height 1.2em
+          background #fff
+          border-top 1px solid var(--color-primary)
+          box-shadow 0 1px 3px rgba(0, 0, 0, .1)
+          display flex
+          flex-direction column
+          align-items center
+          justify-content space-between
+          text-align center
+          font-size 12px
+          color var(--color-text-regular)
+
+          .name
+            flex 0 1 auto
+            font-weight bold
+            color var(--color-primary)
+            padding 2px
+            width 100%
+            overflow hidden
+
+          .teacher
+            flex 1 100 0
+            font-weight bold
+            overflow hidden
+            color var(--color-text-bold)
+
+          .place
+            padding 2px
+            flex 0 0 auto
+
+        .empty
+          position absolute
+          top 50%
+          left 0
+          right 0
+          margin-top -0.75em
+          color #aaa
+          font-size 14px
+          text-align center
 
     .detail-list
       padding 20px 25px 25px !important
@@ -179,75 +253,5 @@
         font-size 14px
         color #888
         margin-bottom 3px
-
-    .curriculum-list
-      height 520px
-      margin 0
-      position relative
-      overflow hidden
-      -webkit-transition: .3s
-      -moz-transition: .3s
-      -ms-transition: .3s
-      -o-transition: .3s
-      transition: .3s
-
-      table.block-bg
-        border-collapse collapse
-        width 100%
-        height 100%
-        box-sizing border-box
-        background var(--color-tool-bg)
-        border 1px solid #f0f0f0
-
-        td
-          border 1px solid #f0f0f0
-
-      &.empty
-        height 70px
-
-      .block
-        position absolute
-        overflow hidden
-        box-sizing border-box
-        margin 0 -1px -1px 0
-        line-height 1.2em
-        background #fff
-        border-top 1px solid var(--color-primary)
-        box-shadow 0 1px 3px rgba(0, 0, 0, .1)
-        display flex
-        flex-direction column
-        align-items center
-        justify-content space-between
-        text-align center
-        font-size 12px
-        color var(--color-text-regular)
-
-        .name
-          flex 0 1 auto
-          font-weight bold
-          color var(--color-primary)
-          padding 2px
-          width 100%
-          overflow hidden
-
-        .teacher
-          flex 1 100 0
-          font-weight bold
-          overflow hidden
-          color var(--color-text-bold)
-
-        .place
-          padding 2px
-          flex 0 0 auto
-
-      .empty
-        position absolute
-        top 50%
-        left 0
-        right 0
-        margin-top -0.75em
-        color #aaa
-        font-size 14px
-        text-align center
 
 </style>

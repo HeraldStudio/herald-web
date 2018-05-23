@@ -114,6 +114,9 @@
         color var(--color-text-bold)
         font-weight normal
 
+    .important .top .left
+      font-weight bold
+
     .tag
       display inline-block
       border-radius 3px
@@ -122,13 +125,10 @@
       font-size 13px
       padding 1px 3px
       vertical-align baseline
-      font-weight bold
-
-      &.attachment
-        background var(--color-primary)
+      background var(--color-primary)
 
       &.important
-        background var(--color-error)
+        font-weight bold
 
     .markdown-container
       border-top 1px solid transparent

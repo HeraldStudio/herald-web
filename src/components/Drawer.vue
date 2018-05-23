@@ -105,7 +105,6 @@
 
         @media screen and (max-width: 600px)
           width 100%
-          box-shadow: 0 -1px 0 rgba(0, 0, 0, .05)
 
         .title-bar
           margin 0 30px

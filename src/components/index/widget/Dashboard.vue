@@ -79,7 +79,8 @@
       > *
         display: inline-block
         box-sizing: border-box
-        width 20%
+        width 19.6%
+        max-width 80px
 
         + *
           border-left 1px solid var(--color-divider)
