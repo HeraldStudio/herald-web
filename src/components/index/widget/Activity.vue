@@ -57,23 +57,21 @@
   .widget.activity
     position relative
     padding 0
-    border 0
-    box-shadow none
+
+    @media screen and (max-width: 600px)
+      padding 0
+      border 0
 
     .activity-item
       overflow hidden
       background #fff
       position relative
-      box-shadow 0 0 20px rgba(0, 0, 0, .05)
-      margin-bottom 10px
-      transform perspective(600px)
       transition .5s
+      border-bottom 1px solid var(--color-divider)
 
-      &.collapsed:not(:last-child):not(:hover)
-        transform perspective(600px) rotateX(-15deg)
-        transform-origin 50% 0
-        height 250px
-        margin-bottom -195px
+      @media screen and (max-width: 600px)
+        border-bottom 0 none
+        border-top 10px solid var(--color-divider)
 
       .activity-container
         display flex

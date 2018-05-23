@@ -34,6 +34,11 @@
     async created () {
 
     },
+    watch: {
+      currentTab () {
+        document.body.scrollTop = 0
+      }
+    },
     methods: {
 
     }
@@ -59,35 +64,28 @@
 
   @media screen and (max-width: 600px)
     .tab-container
-      position fixed
-      top 100px
-      left 0
-      right 0
-      bottom 0
       display flex
       flex-direction column
       align-items stretch
+      margin-bottom 50px
 
       .tabs
-        flex 1 1 0
         overflow hidden
         position relative
 
         .tab
-          position absolute
-          top 0
-          left 0
-          right 0
-          bottom 0
-          overflow-y scroll
           display none
 
           &.active
             display block
 
       .tab-bar
+        position fixed
+        bottom 0
+        left 0
+        right 0
+        height 50px
         z-index 999
-        flex 0 0 60px
         background #fff
         border-top 1px solid var(--color-divider)
         box-shadow 0 -5px 15px rgba(0, 0, 0, .05)
@@ -100,15 +98,18 @@
           display flex
           flex-direction column
           align-items center
+          justify-content center
+          cursor pointer
 
           .icon
             width 32px
             height 32px
-            margin-top 3px
             filter hue-rotate(-15deg)
 
           .title
             color var(--color-text-secondary)
-            font-size 12px
+            font-size 11px
+            line-height 1em
+            margin-bottom 3px
 
 </style>

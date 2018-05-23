@@ -11,6 +11,7 @@
       lecture(v-if='/本科/.test(user.identity)')
       srtp(v-if='/本科/.test(user.identity)')
       grade(v-if='/生/.test(user.identity)' :isGraduate='!/本科/.test(user.identity)')
+      library
 
 </template>
 
@@ -21,12 +22,13 @@
   import lecture from './dashboard/Lecture.vue'
   import srtp from './dashboard/Srtp.vue'
   import grade from './dashboard/Grade.vue'
+  import library from './dashboard/Library.vue'
   import H from '@/api'
 
   export default {
     props: ['user'],
     components: {
-      card, pe, lecture, srtp, grade,
+      card, pe, lecture, srtp, grade, library,
       widget,
     },
     data: () => ({}),

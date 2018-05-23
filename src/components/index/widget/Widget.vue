@@ -186,7 +186,7 @@
           // align-items center
 
         .top + .bottom
-          margin-top 3px
+          margin-top 2px
 
         .left
           flex 1 1 auto
@@ -197,7 +197,7 @@
 
         .top .left
           font-size 15px
-          // color var(--color-primary)
+          color var(--color-primary)
 
         .top .right, .bottom .left
           font-size 13px
