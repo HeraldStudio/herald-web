@@ -85,7 +85,7 @@
         left 0
         right 0
         height 50px
-        z-index 10001
+        z-index 9999
         background #fff
         border-top 1px solid var(--color-divider)
         box-shadow 0 -5px 15px rgba(0, 0, 0, .05)

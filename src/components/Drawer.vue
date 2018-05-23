@@ -77,7 +77,7 @@
       bottom 0
       right 0
       margin 0
-      z-index: 10002
+      z-index: 10001
       cursor: default
       display: flex
       flex-direction: column
@@ -96,7 +96,7 @@
         left 0
         top 0
         right 0
-        z-index 10003
+        z-index 10002
         text-align center
         padding 20px 0
         color rgba(0, 0, 0, .2)
@@ -104,7 +104,7 @@
 
       .drawer
         background: #fff
-        z-index: 10003
+        z-index: 10002
         box-sizing: border-box
         width: 600px
         cursor: default
