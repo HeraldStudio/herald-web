@@ -5,6 +5,7 @@
       slot
     transition(name="fade-slide-up")
       .mask(v-if='drawer' @click.stop='close()')
+        .close-hint 轻触返回
         .drawer(@click.stop='')
           .title-bar
             .title {{ title }}
@@ -90,8 +91,18 @@
         width 100%
         justify-content: flex-end
 
+      .close-hint
+        position fixed
+        left 0
+        top 0
+        right 0
+        z-index 10003
+        text-align center
+        padding 20px 0
+        color rgba(0, 0, 0, .2)
+        font-size 14px
+
       .drawer
-        overflow: hidden
         background: #fff
         z-index: 10003
         box-sizing: border-box
@@ -102,6 +113,7 @@
         padding 20px 0 10px
         overflow-y: scroll
         box-shadow 0 3px 12px rgba(0, 0, 0, .05)
+        position relative
 
         @media screen and (max-width: 600px)
           width 100%
