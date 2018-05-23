@@ -55,11 +55,11 @@
       opacity .5
 
     @media screen and (max-width: 600px)
-      margin 50px 0 0
+      margin 0 0 0
       padding 20px 15px
       width auto
       box-shadow none
-      border-bottom 1px solid var(--color-divider)
+      border-top 10px solid var(--color-divider)
 
     .empty
       display block
@@ -87,14 +87,7 @@
       align-items center
 
       @media screen and (max-width: 600px)
-        left 0
-        right 0
-        top -40px
-        justify-content center
-        background none
-        color var(--color-text-regular)
-        font-size 15px
-        padding 5px 0
+        display none
 
       &::before
         content ''
@@ -204,7 +197,7 @@
 
         .top .left
           font-size 15px
-          color var(--color-primary)
+          // color var(--color-primary)
 
         .top .right, .bottom .left
           font-size 13px

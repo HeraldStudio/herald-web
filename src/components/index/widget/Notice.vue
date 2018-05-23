@@ -55,12 +55,15 @@
     },
     computed: {
       sites() {
-        return this.notice.map(k => k.site).sort((a, b) => {
-          let predef = ['教务处', '总务处', 'SRTP'].reverse()
-          a = ~predef.indexOf(a)
-          b = ~predef.indexOf(b)
-          return a - b
-        }).reduce((a, b) => a.slice(-1)[0] === b ? a : a.concat(b), [])
+        return this.notice.map(k => k.site)
+          .sort().filter((k, i, a) => a.indexOf(k) === i)
+          .sort((a, b) => {
+            let predef = ['教务处', '总务处', 'SRTP'].reverse()
+            a = ~predef.indexOf(a)
+            b = ~predef.indexOf(b)
+            return a - b
+          })
+          .reduce((a, b) => a.slice(-1)[0] === b ? a : a.concat(b), [])
       },
       filteredNotice() {
         if (this.sites.length === 0) {

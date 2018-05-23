@@ -40,7 +40,7 @@
 
 <style lang="stylus">
 
-  .columns .widgets .widget.dashboard
+  .widget.dashboard
     padding 20px 10px
 
     .info-container
