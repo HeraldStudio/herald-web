@@ -379,7 +379,7 @@
             text-align center
 
     .mina-header
-      height 80px
+      height 65px
       position fixed
 
     .container
@@ -393,6 +393,6 @@
         padding 100px 0 0
     
     .mina-container
-      padding-top 80px
+      padding-top 65px
 
 </style>
