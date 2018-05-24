@@ -151,7 +151,7 @@
     padding 0
     background #fff
 
-    @media screen and (max-width: 1200px) and (min-width: 601px)
+    @media screen and (max-width: 1200px)
       background var(--color-divider)
 
   p, input, textarea
