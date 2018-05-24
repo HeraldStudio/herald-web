@@ -55,13 +55,14 @@
       opacity .5
 
     @media screen and (max-width: 1200px)
-      margin 0 0 0
+      margin 0 0 10px
       padding 20px 15px
       width auto
+      border none
       box-shadow none
-      border-width 0 0 10px 0 !important
-      border-style solid !important
-      border-color var(--color-divider) !important
+
+      &:hover
+        border none
 
     .empty
       display block

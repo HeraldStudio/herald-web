@@ -50,10 +50,6 @@
   // 神秘代码，同时适配 PC/Pad/Phone 三种布局，修改时请注意全面调试（Safari 开发菜单 -> 进入响应式设计模式）
 
   .tab-container
-    --left-column-width 40%
-
-    @media screen and (max-width: 800px)
-      --left-column-width 320px
 
     @media screen and (max-width: 1200px)
       display flex
@@ -73,7 +69,6 @@
       @media screen and (max-width: 1200px)
         overflow hidden
         position relative
-        box-shadow 0 0 25px rgba(0, 0, 0, .1)
 
       .tab
         display flex

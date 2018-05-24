@@ -129,6 +129,11 @@
 
     -webkit-tap-highlight-color transparent
 
+    --left-column-width 40%
+
+    @media screen and (max-width: 800px)
+      --left-column-width 320px
+
   ::selection
     background var(--color-primary-bg)
 
@@ -145,6 +150,9 @@
     margin 0
     padding 0
     background #fff
+
+    @media screen and (max-width: 1200px) and (min-width: 601px)
+      background var(--color-divider)
 
   p, input, textarea
     margin-top 0

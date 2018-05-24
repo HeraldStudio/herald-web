@@ -100,7 +100,7 @@
 
         .img-container
           position relative
-          width 100%
+          margin 15px 15px 0
           overflow hidden
 
           &::after
@@ -123,15 +123,15 @@
             -ms-user-select: none
             user-select: none
             cursor pointer
+            border-radius 3px
 
         .text-container
           display flex
           flex-direction row
           padding 15px 10px
           justify-content center
-          align-items center
+          align-items baseline
           min-width 0
-          overflow hidden
 
           * + *
             margin-left 10px
@@ -144,15 +144,17 @@
             font-weight bold
             font-size 13px
             white-space nowrap
+            overflow hidden
             cursor pointer
 
           .banner-title
             color var(--color-text-regular)
             font-size 15px
             font-weight bold
-            white-space nowrap
+            // white-space nowrap
             overflow hidden
             text-overflow ellipsis
-            max-width 100%
+            line-height 1.7em
+            height 1.7em
 
 </style>

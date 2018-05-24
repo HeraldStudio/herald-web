@@ -101,9 +101,12 @@
       flex-direction: column
       align-items: center
       justify-content: center
-      background: rgba(#000, .1)
-      -webkit-backdrop-filter blur(20px)
+      background: rgba(#000, .3)
       padding-top 60px
+
+      @supports(-webkit-backdrop-filter: blur(20px))
+        -webkit-backdrop-filter blur(20px)
+        background: rgba(#000, .1)
 
       @media screen and (max-width: 1200px) and (min-width: 601px)
         top 60px
@@ -126,8 +129,11 @@
         z-index 10002
         text-align center
         padding 20px 0
-        color rgba(0, 0, 0, .2)
+        color rgba(#000, .3)
         font-size 14px
+
+        @media screen and (max-width: 1200px) and (min-width: 601px)
+          display none
 
       .drawer
         background: #fff
@@ -153,7 +159,7 @@
 
         .title-bar
           margin 0 30px
-          padding 15px 0
+          padding 10px 0
           flex 0 0 auto
           display: flex
           flex-direction: row
@@ -161,7 +167,7 @@
           align-items: center
 
           .title
-            font-size: 16px
+            font-size: 17px
             font-weight: bold
             color: #333
 

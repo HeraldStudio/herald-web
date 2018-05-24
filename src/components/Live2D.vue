@@ -298,7 +298,7 @@
     .loading
       position absolute
       left 20%
-      top 22%
+      top 23%
       right 20%
       bottom 20%
       background #fff
