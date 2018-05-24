@@ -1,36 +1,46 @@
 <template lang='pug'>
   #app(:class='{ webapp: webapp }')
-    .header
-      router-link.live2d-wrapper(to='/')
-        .live2d-container
-          live2d(:showAjax='true')
-        img.logo(src='static/images/logo.png')
-      ul.nav
-        router-link(to='/')
-          li 首页
-        drawer(title='小猴偷米微信')
-          li 微信端
-          .content(slot='content')
-            img.qr(src='static/images/qrcode.jpg')
-        drawer(title='小猴偷米 App')
-          li 客户端
-          .content(slot='content')
-            .hint 小猴偷米 App 是较早版本，已不再保持活跃更新，新 App 开发正在筹备中，建议使用网页版和小程序，获得更完整的体验。
-            .buttons
-              p 仍要下载：
-              a(href='http://static.myseu.cn/herald-v1-final.apk' target='_blank')
-                button Android 4.1+
-              a(href='https://itunes.apple.com/cn/app/id1378941139' target='_blank')
-                button iOS 8.0+
-        drawer(title='运行状态')
-          li 运行状态
-          .content(slot='content')
-            .hint 小猴偷米的正常工作依赖于以下学校网站，但它们常常会出现宕机，导致小猴偷米对应的功能无法使用。下面显示了它们目前的状态。
-            status
-        router-link(to='/admin' v-if='user && user.admin')
-          li 管理中心
-    .container
-      router-view(:user='user')
+    .root(v-if="mina")
+      .header.mina-header
+        router-link.live2d-wrapper.mina-live2d-wrapper(to='/')
+          .live2d-container
+            live2d(:showAjax='true')
+          img.logo(src='static/images/logo.png')
+      .container.mina-container
+        router-view(:user='user')
+
+    .root(v-else)
+      .header
+        router-link.live2d-wrapper(to='/')
+          .live2d-container
+            live2d(:showAjax='true')
+          img.logo(src='static/images/logo.png')
+        ul.nav
+          router-link(to='/')
+            li 首页
+          drawer(title='小猴偷米微信')
+            li 微信端
+            .content(slot='content')
+              img.qr(src='static/images/qrcode.jpg')
+          drawer(title='小猴偷米 App')
+            li 客户端
+            .content(slot='content')
+              .hint 小猴偷米 App 是较早版本，已不再保持活跃更新，新 App 开发正在筹备中，建议使用网页版和小程序，获得更完整的体验。
+              .buttons
+                p 仍要下载：
+                a(href='http://static.myseu.cn/herald-v1-final.apk' target='_blank')
+                  button Android 4.1+
+                a(href='https://itunes.apple.com/cn/app/id1378941139' target='_blank')
+                  button iOS 8.0+
+          drawer(title='运行状态')
+            li 运行状态
+            .content(slot='content')
+              .hint 小猴偷米的正常工作依赖于以下学校网站，但它们常常会出现宕机，导致小猴偷米对应的功能无法使用。下面显示了它们目前的状态。
+              status
+          router-link(to='/admin' v-if='user && user.admin')
+            li 管理中心
+      .container
+        router-view(:user='user')
 </template>
 
 <script>
@@ -49,13 +59,20 @@
     data() {
       return {
         user: null,
-        webapp: false
+        webapp: false,
+        mina: false
       }
     },
     persist: ['user'],
     async created() {
       if (window.navigator.standalone) {
         this.webapp = true
+      }
+
+      this.mina = true
+      
+      if (window.__wxjs_environment) {
+        this.mina = true
       }
       // offline.install()
       // logger.bindAjax()
@@ -302,6 +319,11 @@
           object-fit cover
           object-position 100% 50%
           pointer-events none
+        
+      .mina-live2d-wrapper
+        padding-top 13px
+        padding-left 0
+        align-self flex-start
 
       ul.nav
         height 100%
@@ -358,6 +380,10 @@
             width 26px
             text-align center
 
+    .mina-header
+      height 80px
+      position fixed
+
     .container
       max-width 1200px
 
@@ -367,5 +393,8 @@
 
       @media screen and (max-width: 600px)
         padding 100px 0 0
+    
+    .mina-container
+      padding-top 80px
 
 </style>
