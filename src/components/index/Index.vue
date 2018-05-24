@@ -50,6 +50,8 @@
   // 神秘代码，同时适配 PC/Pad/Phone 三种布局，修改时请注意全面调试（Safari 开发菜单 -> 进入响应式设计模式）
 
   .tab-container
+    --left-column-width 45%
+
     @media screen and (max-width: 1200px)
       display flex
       flex-direction column
@@ -60,7 +62,7 @@
       display flex
       flex-direction row
       align-items flex-start
-      max-width 400px
+      max-width var(--left-column-width)
 
       @media screen and (max-width: 600px)
         max-width none
@@ -85,7 +87,7 @@
 
     .tab-bar
       display none
-      max-width 400px
+      max-width var(--left-column-width)
 
       @media screen and (max-width: 600px)
         max-width none

@@ -79,6 +79,10 @@
     .drawer
       transform translateY(100%)
 
+      // Pad 环境下改为从右侧推入
+      @media screen and (max-width: 1200px) and (min-width: 601px)
+        transform translateX(100%)
+
   .drawer-wrapper
     .click-area
       cursor pointer
@@ -103,7 +107,7 @@
 
       @media screen and (max-width: 1200px) and (min-width: 601px)
         top 60px
-        left 400px
+        left var(--left-column-width, 0)
         background var(--color-divider)
         -webkit-backdrop-filter none
         padding-top 0
@@ -139,8 +143,10 @@
         box-shadow 0 3px 12px rgba(0, 0, 0, .05)
         position relative
 
-        @media screen and (max-width: 1200px)
+        @media screen and (max-width: 1200px) and (min-width: 601px)
           box-shadow none
+          width 100%
+          height 100%
 
         @media screen and (max-width: 600px)
           width 100%
