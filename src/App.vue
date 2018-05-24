@@ -69,8 +69,6 @@
         this.webapp = true
       }
 
-      this.mina = true
-      
       if (window.__wxjs_environment) {
         this.mina = true
       }
