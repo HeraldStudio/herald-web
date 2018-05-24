@@ -20,7 +20,7 @@
 }
 
 #splash.shrink::before {
-  transition: .3s;
+  transition: .5s;
   transform: scale(0.8);
 }
 

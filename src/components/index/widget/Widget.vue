@@ -46,20 +46,22 @@
     transition: .3s
     display flex
     flex-direction column
+    background #fff
 
-    @media screen and (min-width: 600px)
-      &:hover
-        border 1px solid var(--color-primary)
+    &:hover
+      border 1px solid var(--color-primary)
 
     &.loading
       opacity .5
 
-    @media screen and (max-width: 600px)
+    @media screen and (max-width: 1200px)
       margin 0 0 0
       padding 20px 15px
       width auto
       box-shadow none
-      border-top 10px solid var(--color-divider)
+      border-width 0 0 10px 0 !important
+      border-style solid !important
+      border-color var(--color-divider) !important
 
     .empty
       display block
@@ -86,7 +88,7 @@
       flex-direction row
       align-items center
 
-      @media screen and (max-width: 600px)
+      @media screen and (max-width: 1200px)
         display none
 
       &::before

@@ -272,6 +272,7 @@
       z-index 10000
       height 60px
       max-width 1200px
+      box-sizing border-box
 
       margin 0 auto
       padding 0 10px
@@ -389,8 +390,11 @@
       padding 70px 15px 10px
       overflow scroll
 
+      @media screen and (max-width: 1200px)
+        padding 60px 0 0
+
       @media screen and (max-width: 600px)
-        padding 100px 0 0
+        padding-top 100px
     
     .mina-container
       padding-top 65px

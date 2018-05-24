@@ -47,39 +47,50 @@
 
 <style lang="stylus">
 
-  .tabs
-    display flex
-    flex-direction row
-    align-items flex-start
+  // 神秘代码，同时适配 PC/Pad/Phone 三种布局，修改时请注意全面调试（Safari 开发菜单 -> 进入响应式设计模式）
 
-    .tab
-      display flex
-      flex-direction column
-      align-items flex-start
-      flex 1 1 0
-      padding 0
-
-  .tab-bar
-    display none
-
-  @media screen and (max-width: 600px)
-    .tab-container
+  .tab-container
+    @media screen and (max-width: 1200px)
       display flex
       flex-direction column
       align-items stretch
       margin-bottom 50px
 
-      .tabs
+    .tabs
+      display flex
+      flex-direction row
+      align-items flex-start
+      max-width 400px
+
+      @media screen and (max-width: 600px)
+        max-width none
+
+      @media screen and (max-width: 1200px)
         overflow hidden
         position relative
+        box-shadow 0 0 25px rgba(0, 0, 0, .1)
 
-        .tab
+      .tab
+        display flex
+        flex-direction column
+        align-items flex-start
+        flex 1 1 0
+        padding 0
+
+        @media screen and (max-width: 1200px)
           display none
-
+          
           &.active
             display block
 
-      .tab-bar
+    .tab-bar
+      display none
+      max-width 400px
+
+      @media screen and (max-width: 600px)
+        max-width none
+
+      @media screen and (max-width: 1200px)
         position fixed
         bottom 0
         left 0

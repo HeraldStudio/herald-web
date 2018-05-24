@@ -70,8 +70,7 @@
       border-bottom 1px solid var(--color-divider)
 
       @media screen and (max-width: 600px)
-        border-bottom 0 none
-        border-top 10px solid var(--color-divider)
+        border-bottom 10px solid var(--color-divider)
 
       .activity-container
         display flex

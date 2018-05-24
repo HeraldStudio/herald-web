@@ -6,5 +6,5 @@ setTimeout(function () {
     setTimeout(function () {
       splash.parentNode.removeChild(splash)
     }, 500)
-  }, 300)
+  }, 500)
 }, 1000)

@@ -18,6 +18,8 @@
   import Vue from 'vue'
   Vue.$drawer = { count: 0 }
 
+  var currentOpen = null
+
   export default {
     props: ['title'],
     data() {
@@ -27,7 +29,13 @@
     },
     methods: {
       open () {
+        // pad 环境下左右分栏，一个 drawer 已打开的时候，可能触发打开另一个 drawer，
+        // 这样将导致 drawer 之间的叠放层次不确定，因此需要记录并关闭已打开的 drawer
+        if (currentOpen) {
+          currentOpen.close()
+        }
         this.drawer = true
+        currentOpen = this
         Vue.$drawer.count++
         this.$emit('open')
         if (Vue.$drawer.count === 1) {
@@ -36,6 +44,7 @@
       },
       close () {
         this.drawer = false
+        currentOpen = null
         Vue.$drawer.count--
         this.$emit('close')
         if (Vue.$drawer.count === 0) {
@@ -49,8 +58,13 @@
 </script>
 <style lang="stylus">
 
+  // PC 和 Phone 环境下，mask 覆盖了整个页面，不能允许滚动，否则体验不好
+  // 但 Pad 环境下，mask 为右侧栏，仍需要允许滚动
   html.drawer-shown, html.drawer-shown body
     overflow: hidden
+
+    @media screen and (max-width: 1200px) and (min-width: 601px)
+      overflow visible
 
   .fade-slide-up-enter-active, .fade-slide-up-leave-active
     transition .3s
@@ -87,9 +101,18 @@
       -webkit-backdrop-filter blur(20px)
       padding-top 60px
 
+      @media screen and (max-width: 1200px) and (min-width: 601px)
+        top 60px
+        left 400px
+        background var(--color-divider)
+        -webkit-backdrop-filter none
+        padding-top 0
+        padding-left 10px
+
       @media screen and (max-width: 600px)
         width 100%
         justify-content: flex-end
+        padding-left 0
 
       .close-hint
         position fixed
@@ -107,6 +130,7 @@
         z-index: 10002
         box-sizing: border-box
         width: 600px
+        max-width 100%
         cursor: default
         display: flex
         flex-direction: column
@@ -114,6 +138,9 @@
         overflow-y: scroll
         box-shadow 0 3px 12px rgba(0, 0, 0, .05)
         position relative
+
+        @media screen and (max-width: 1200px)
+          box-shadow none
 
         @media screen and (max-width: 600px)
           width 100%
