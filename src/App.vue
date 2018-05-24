@@ -320,7 +320,7 @@
           pointer-events none
         
       .mina-live2d-wrapper
-        padding-top 13px
+        padding-top 18px
         padding-left 0
         align-self flex-start
 
@@ -380,7 +380,7 @@
             text-align center
 
     .mina-header
-      height 65px
+      height 75px
       position fixed
 
     .container
@@ -397,6 +397,6 @@
         padding-top 100px
     
     .mina-container
-      padding-top 65px
+      padding-top 75px
 
 </style>
