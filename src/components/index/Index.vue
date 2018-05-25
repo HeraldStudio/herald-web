@@ -57,6 +57,22 @@
       align-items stretch
       margin-bottom 50px
 
+      @media screen and (min-width: 601px)
+
+        &::before
+          content '从左侧选择功能进行查看'
+          position fixed
+          left var(--left-column-width)
+          top 60px
+          bottom 0
+          right 0
+          border-left 10px solid var(--color-divider)
+          display flex
+          align-items center
+          justify-content center
+          color var(--color-divider)
+          font-size 20px
+
     .tabs
       display flex
       flex-direction row

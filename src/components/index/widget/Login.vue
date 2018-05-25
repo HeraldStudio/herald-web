@@ -67,7 +67,7 @@
 
   .widget.login
     align-items center
-    padding 30px 0
+    padding 50px 0
 
     .live2d-container
       position relative

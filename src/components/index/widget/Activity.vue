@@ -1,7 +1,7 @@
 <template lang="pug">
 
   widget.activity(title='校园活动' :show='activities.length')
-    .activity-item(v-for='(activity, i) in activities' :key='activity.aid' :style='"z-index: " + (i + 1)' :class='{ collapsed: activity.endTime <= now }')
+    .activity-item(v-for='(activity, i) in activities' :key='activity.aid' :style='"z-index: " + i' :class='{ collapsed: activity.endTime <= now }')
       .activity-container(@click='click(activity)')
         .activity-title
           .tag.ongoing(v-if='activity.startTime <= now && activity.endTime > now') 进行中
@@ -75,7 +75,7 @@
       .activity-container
         display flex
         flex-direction column
-        padding 15px
+        padding 20px
         cursor pointer
 
         * + *

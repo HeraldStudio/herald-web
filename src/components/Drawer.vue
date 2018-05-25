@@ -145,9 +145,11 @@
         display: flex
         flex-direction: column
         padding 20px 0 10px
-        overflow-y: scroll
         box-shadow 0 3px 12px rgba(0, 0, 0, .05)
         position relative
+        overflow-y scroll
+        overscroll-behavior contain
+        -webkit-overflow-scrolling touch
 
         @media screen and (max-width: 1200px) and (min-width: 601px)
           box-shadow none

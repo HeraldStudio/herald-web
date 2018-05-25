@@ -100,7 +100,7 @@
 
         .img-container
           position relative
-          margin 15px 15px 0
+          margin 20px 20px 0
           overflow hidden
 
           &::after
@@ -128,7 +128,7 @@
         .text-container
           display flex
           flex-direction row
-          padding 15px 10px
+          padding 15px 20px
           justify-content center
           align-items baseline
           min-width 0

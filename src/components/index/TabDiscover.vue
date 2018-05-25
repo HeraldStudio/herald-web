@@ -1,15 +1,17 @@
 <template lang='pug'>
   .tab
+    banner(v-if='user')
     activity
 </template>
 
 <script>
   import activity from './widget/Activity.vue'
+  import banner from './widget/Banner.vue'
 
   export default {
     props: ['user'],
     components: {
-      activity
+      banner, activity
     },
     data () {
       return {}

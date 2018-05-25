@@ -150,9 +150,7 @@
     margin 0
     padding 0
     background #fff
-
-    @media screen and (max-width: 1200px)
-      background var(--color-divider)
+    overflow-x hidden
 
   p, input, textarea
     margin-top 0

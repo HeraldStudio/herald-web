@@ -55,14 +55,14 @@
       opacity .5
 
     @media screen and (max-width: 1200px)
-      margin 0 0 10px
+      margin 0
       padding 20px 15px
       width auto
-      border none
       box-shadow none
 
-      &:hover
+      &, &:hover
         border none
+        border-bottom 1px solid var(--color-divider)
 
     .empty
       display block
@@ -73,14 +73,13 @@
     .widget-title
       position absolute
       left -1px
-      top -30px
+      top -26px
       height 26px
       line-height 26px
       vertical-align middle
       padding 0 7px
       text-align left
       font-size 13px
-      border-radius 3px
       font-weight bold
       background var(--color-text-bold)
       color #fff
@@ -88,6 +87,7 @@
       display flex
       flex-direction row
       align-items center
+      z-index 1
 
       @media screen and (max-width: 1200px)
         display none

@@ -2,7 +2,6 @@
   .tab
     dashboard(v-if='user' :user='user')
     login(v-else)
-    banner
     .todo(v-if='user')
       exam(v-if='/^21/.test(user.cardnum)')
       curriculum
@@ -10,7 +9,6 @@
 </template>
 
 <script>
-  import banner from './widget/Banner.vue'
   import exam from './widget/Exam.vue'
   import login from './widget/Login.vue'
   import dashboard from './widget/Dashboard.vue'
@@ -20,7 +18,7 @@
   export default {
     props: ['user'],
     components: {
-      banner, login, dashboard, curriculum, experiment, exam
+      login, dashboard, curriculum, experiment, exam
     },
     data () {
       return {}
