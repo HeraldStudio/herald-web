@@ -103,7 +103,6 @@
       justify-content: center
       background: rgba(#000, .3)
       padding-top 60px
-      transition background, -webkit-backdrop-filter .3s
 
       @supports(-webkit-backdrop-filter: blur(20px))
         -webkit-backdrop-filter blur(20px)
