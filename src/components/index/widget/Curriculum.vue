@@ -10,13 +10,13 @@
       .next(@click='nextWeek()') ›
     div.curriculum-container
       .week-header(v-if='fixedClasses.length || !floatClasses.length')
-        .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount") {{ item }}
+        .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount" :class='{ current: displayWeek == currentWeek && i + 1 == currentDayOfWeek }') {{ item }}
       .curriculum-list(v-if='fixedClasses.length || !floatClasses.length' :class='{ empty: !fixedClasses.length }')
         table.block-bg
           tr(v-for='_ in 13' v-if='fixedClasses.length')
             td(v-for='_ in weekdayCount')
         .block(v-for='item in fixedClasses' v-if='item.dayOfWeek'
-          :style="'width: ' + 1 / weekdayCount * 98 + '%; left: ' + (item.dayOfWeek - 1) / weekdayCount * 100 + '%; top: ' + (item.beginPeriod - 1) / 13 * 99.5 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 99.5 + '%'")
+          :style="'width: ' + 1 / weekdayCount * 99 + '%; left: ' + ((item.dayOfWeek - 1) / weekdayCount * 100 + 0.1) + '%; top: ' + (item.beginPeriod - 1) / 13 * 99.8 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 99.8 + '%'")
           .name {{ item.courseName }}
           .teacher {{ item.teacherName }}
           .place {{ item.location }}
@@ -177,6 +177,11 @@
           +.weekday
             margin-left 1px
 
+          &.current
+            color var(--color-primary)
+            font-weight bold
+            border-bottom 1px solid var(--color-primary)
+
       .curriculum-list
         height 520px
         margin 0
@@ -194,10 +199,16 @@
           height 100%
           box-sizing border-box
           background var(--color-tool-bg)
-          border 1px solid #f0f0f0
+          table-layout fixed
 
           td
             border 1px solid #f0f0f0
+
+            &:first-child
+              border-left none
+
+            &:last-child
+              border-right none
 
         &.empty
           height 70px
