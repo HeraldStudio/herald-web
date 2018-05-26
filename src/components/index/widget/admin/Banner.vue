@@ -1,6 +1,5 @@
 <template lang='pug'>
   .admin-page#banner
-    .title 轮播广告
     .subcontainer
       .summary-p 注：学号前缀可用于将轮播图发给指定院系、班级或个人，例如填入 090 表示发给学号 090 开头的用户；留空表示所有人可见，guest 表示所有游客可见，!guest 表示所有非游客可见
       table.list

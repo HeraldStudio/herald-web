@@ -1,6 +1,7 @@
 <template lang='pug'>
   .tab
     dashboard(v-if='user' :user='user')
+    admin(v-if='user && user.admin' :user='user')
     login(v-else)
     .todo(v-if='user')
       exam(v-if='/^21/.test(user.cardnum)')
@@ -11,6 +12,7 @@
 <script>
   import exam from './widget/Exam.vue'
   import login from './widget/Login.vue'
+  import admin from './widget/Admin.vue'
   import dashboard from './widget/Dashboard.vue'
   import curriculum from './widget/Curriculum.vue'
   import experiment from './widget/Experiment.vue'
@@ -18,7 +20,7 @@
   export default {
     props: ['user'],
     components: {
-      login, dashboard, curriculum, experiment, exam
+      login, dashboard, admin, curriculum, experiment, exam
     },
     data () {
       return {}

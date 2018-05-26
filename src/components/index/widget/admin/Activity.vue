@@ -1,8 +1,6 @@
 <template lang='pug'>
-  .admin-page#publisher
-    .title 活动发布
+  .admin-page#activity
     .subcontainer
-      .summary-p 发布的活动需要等待运营人员审核。已审核的活动一旦经过修改，将下架重新等待审核，请谨慎操作。
       table.list
         tr.activity-header
           th.state 状态
@@ -11,10 +9,11 @@
           th.url 链接 (可选)
           th.start-date 开始时间
           th.end-date 结束时间
+          th.click 点击量
           th.operations 操作
         template(v-for='(activity, i) in activities' :class='getState(activity)')
           tr.activity
-            td.state(rowspan='2') {{ activity.admittedBy ? { upcoming: '未开始', ongoing: '展示中', ended: '已下架' }[getState(activity)] : '待审核' }}
+            td.state(rowspan='2') {{ { upcoming: '未开始', ongoing: '展示中', ended: '已下架' }[getState(activity)] }}
             td(rowspan='2')
               div.pic-wrapper
                 img.pic(:src='activity.pic' @click='uploadPic(activity)')
@@ -27,12 +26,13 @@
               timestamp(v-model='activity.startTime')
             td
               timestamp(v-model='activity.endTime')
+            td.click(rowspan='2') {{ activity.clicks }}
             td.operations(rowspan='2')
-              button.save(v-if='activity.pic && activity.title && activity.content && activity.startTime && activity.endTime' @click='saveActivity(activity)') {{ activity.admittedBy ? '保存并待审' : '保存' }}
+              button.save(v-if='activity.pic && activity.title && activity.content && activity.startTime && activity.endTime' @click='saveActivity(activity)') 保存
               confirm-button.remove(@click='removeActivity(activity.aid)' confirm-text='确定') 删除
           tr.activity
             td(colspan='4')
-              textarea.content(v-model='activity.content' maxlength='100' placeholder='约50个字')
+              textarea.content(v-model='activity.content')
         tr.activity.add
           td.state(rowspan='2')
           td(rowspan='2')
@@ -47,11 +47,12 @@
             timestamp(v-model='newActivity.startTime')
           td
             timestamp(v-model='newActivity.endTime')
+          td.click(rowspan='2')
           td.operations(rowspan='2')
-            confirm-button(v-if='newActivity.pic && newActivity.title && newActivity.content && newActivity.startTime && newActivity.endTime' @click='addActivity()' confirm-text='确定提交') 提交活动
+            confirm-button(v-if='newActivity.pic && newActivity.title && newActivity.content && newActivity.startTime && newActivity.endTime' @click='addActivity()' confirm-text='确定新增') 新增活动
         tr.activity.add
           td(colspan='4')
-            textarea.content(v-model='newActivity.content' maxlength='100' placeholder='约50个字')
+            textarea.content(v-model='newActivity.content')
         tr.activity.more(v-if='!ended')
           td(colspan='9' @click='loadNextPage()') 加载更多
 </template>
@@ -75,7 +76,7 @@
       }
     },
     async created() {
-      this.activities = await H.api.admin.activity.publish()
+      this.activities = await H.api.admin.activity()
       if (this.activities.length < 10) {
         this.ended = true
       }
@@ -83,7 +84,7 @@
     },
     methods: {
       async loadNextPage() {
-        let nextPage = await H.api.admin.activity.publish({ page: this.page + 1 })
+        let nextPage = await H.api.admin.activity({ page: this.page + 1 })
         if (nextPage.length < 10) {
           this.ended = true
         }
@@ -115,24 +116,24 @@
         }
       },
       async addActivity() {
-        await H.api.admin.activity.publish.post({ activity: this.newActivity })
-        this.activities = await H.api.admin.activity.publish()
+        await H.api.admin.activity.post({ activity: this.newActivity })
+        this.activities = await H.api.admin.activity()
         this.initNewActivity()
       },
       async saveActivity(activity) {
-        await H.api.admin.activity.publish.put({ activity })
-        this.activities = await H.api.admin.activity.publish()
+        await H.api.admin.activity.put({ activity })
+        this.activities = await H.api.admin.activity()
       },
       async removeActivity(aid) {
-        await H.api.admin.activity.publish.delete({ aid })
-        this.activities = await H.api.admin.activity.publish()
+        await H.api.admin.activity.delete({ aid })
+        this.activities = await H.api.admin.activity()
       }
     }
   }
 </script>
 <style lang='stylus'>
 
-  #publisher
+  #activity
 
     .summary-p
       font-size 14px
@@ -183,8 +184,10 @@
           font-weight bold
 
         th, td
-          border-top 1px solid var(--color-divider)
           padding 10px 2.5px
+
+        td
+          border-top 1px solid var(--color-divider)
 
         .pic-wrapper
           width 100px
@@ -236,6 +239,6 @@
           .content
             margin-top 5px
 
-        .committed, .admitted, .operations
-          width 90px
+        .operations, .click
+          width 60px
 </style>

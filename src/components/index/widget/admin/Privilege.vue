@@ -1,6 +1,5 @@
 <template lang='pug'>
   .admin-page#monitor
-    .title 权限管理
     .subcontainer.domain(v-for='domain in domains')
       .subtitle {{ domain.name }}
       .summary {{ domain.desc }}

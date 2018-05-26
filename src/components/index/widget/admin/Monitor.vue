@@ -1,40 +1,41 @@
 <template lang='pug'>
   .admin-page#monitor
-    .title 系统概况
     transition-group(name='slide')
-      .subcontainer.connection(key='connection' v-if='connection && redis')
-        .subtitle 运行状态
-        .summary {{ this.redis.server.os }}
-          //- confirm-button.pull(:class='{ disabled: pulling }' @click='pull()' confirm-text='确认更新') {{ pulling ? '更新中…' : '更新代码' }}
-        .dashboard
-          .column
-            .label 系统开机
-            .content {{ this.redis.server.uptimeInDays }}天
-          .column
-            .label 程序启动
-            .content {{ formatTimeNatural(this.connection.startTime) }}
-          .column
-            .label 系统总内存
-            .content {{ this.redis.memory.totalSystemMemoryHuman }}
-          .column
-            .label 已用内存
-            .content {{ this.redis.memory.usedMemoryHuman }}
-          .column
-            .label 并发请求数
-            .content {{ this.connection.requestCount }}
-          .column
-            .label 回源任务数
-            .content {{ this.connection.detachedTaskCount }}
-          .column
-            .label 在线爬虫数
-            .content {{ this.connection.spiders.activeCount }}
-          .column
-            .label 待审核爬虫
-            .content(v-if='!this.connection.spiders.inactiveCount') 0
-            .spider(v-for='spider in this.connection.spiders.inactiveList')
-              .name {{ spider }}
-              confirm-button.accept(@click='acceptSpider(spider)' confirm-text='确认接受') 接受
-              confirm-button.reject(@click='rejectSpider(spider)' confirm-text='确认拒绝') 拒绝
+      .dashboard(key='connection' v-if='connection && redis')
+        .column
+          .label 系统开机
+          .content {{ this.redis.server.uptimeInDays }}天
+        .column
+          .label 程序启动
+          .content {{ formatTimeNatural(this.connection.startTime) }}
+        .column
+          .label 总内存
+          .content {{ this.redis.memory.totalSystemMemoryHuman }}
+        .column
+          .label Redis 已用
+          .content {{ this.redis.memory.usedMemoryHuman }}
+        .column
+          .label 并发量
+          .content {{ this.connection.requestCount }}
+        .column
+          .label 回源数
+          .content {{ this.connection.detachedTaskCount }}
+        .column
+          .label 在线爬虫
+          .content {{ this.connection.spiders.activeCount }}
+        .column
+          .label 待审爬虫
+          .content(v-if='!this.connection.spiders.inactiveCount') 0
+          .spider(v-for='spider in this.connection.spiders.inactiveList')
+            .name {{ spider }}
+            confirm-button.accept(@click='acceptSpider(spider)' confirm-text='确认接受') 接受
+            confirm-button.reject(@click='rejectSpider(spider)' confirm-text='确认拒绝') 拒绝
+      .subcontainer.upstream(key='upstream' v-if='upstream')
+        .subtitle 上游健康状况
+        .upstreams
+          a.upstream(v-for='site in upstream' :class='{ healthy: site.health }' :href='site.url' target='_blank')
+            .name {{ site.name }}
+            .timeout {{ site.timeout === -1 ? '超时' : site.timeout + 'ms' }}
       .subcontainer.periods(key='daily' v-if='daily')
         .subtitle 24 小时接口调用 / 活跃用户统计
         .summary
@@ -56,16 +57,9 @@
                     :class='"result-" + String(result.status)[0]' :title='generateDescription(route, result)')
             .time.left(v-if='i < 47') {{ i % 2 == 0 ? i / 2 : '' }}
             .time.right(v-else) 24
-            .users-container
-              .users(:style='{ height: period.userCount / maxUserCount * 100 + "%" }')
-            .user-count {{ period.userCount || '' }}
-      .subcontainer.upstream(key='upstream' v-if='upstream')
-        .subtitle 上游健康状况
-        .summary {{ healthCount }} / {{ upstream.length }}
-        .upstreams
-          a.upstream(v-for='site in upstream' :class='{ healthy: site.health }' :href='site.url' target='_blank')
-            .name {{ site.name }}
-            .timeout {{ site.timeout === -1 ? '超时' : site.timeout + 'ms' }}
+            //- .users-container
+            //-   .users(:style='{ height: period.userCount / maxUserCount * 100 + "%" }')
+            //- .user-count {{ period.userCount || '' }}
       .subcontainer.users(key='user' v-if='user')
         .subtitle 用户统计
         table
@@ -104,7 +98,7 @@
 <script>
   import H from '@/api'
   import confirmButton from '@/components/ConfirmButton.vue'
-  import formatter from '../../../util/formatter'
+  import formatter from '@/util/formatter'
 
   export default {
     components: {
@@ -224,14 +218,15 @@
     .dashboard
       display flex
       flex-direction row
+      flex-wrap wrap
+      justify-content center
 
       .column
         display flex
         flex-direction column
-        flex 1 1 0
-
-        +.column
-          margin-left 20px
+        text-align center
+        white-space nowrap
+        margin 0 10px 20px
 
         .label
           color var(--color-text-bold)
@@ -280,12 +275,12 @@
       display flex
       flex-direction row
       flex-wrap wrap
+      justify-content center
 
       a.upstream
         border-radius 3px
         padding 3px 7px
-        margin-right 5px
-        margin-top 5px
+        margin 2.5px
         background #ffd8c4
         font-size 14px
         color #6b402a
@@ -305,6 +300,8 @@
           font-size 13px
 
     .periods
+      overflow visible
+
       .example-block
         display inline-block
         margin 0 5px
@@ -328,19 +325,12 @@
         display flex
         flex-direction row
         // position relative
-        height 300px
+        height 400px
         transition .2s
 
-        &:hover
-          height 480px
-        
-        &:not(:hover)
-          .count, .user-count
-            height 0 !important
-            margin 0 !important
-
         .period
-          flex 1 1 0
+          flex 1 1 2%
+          width 2%
           display flex
           flex-direction column
 
@@ -426,7 +416,6 @@
             margin 3px 0
             font-size 11px
             color #888
-            overflow hidden
             text-align center
 
             &.left

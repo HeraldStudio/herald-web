@@ -50,41 +50,38 @@
   // 神秘代码，同时适配 PC/Pad/Phone 三种布局，修改时请注意全面调试（Safari 开发菜单 -> 进入响应式设计模式）
 
   .tab-container
+    display flex
+    flex-direction column
+    align-items stretch
+    margin-bottom 50px
 
-    @media screen and (max-width: 1200px)
+    &::before
+      content '从左侧选择功能进行查看'
+      position fixed
+      left var(--left-column-width)
+      top 60px
+      bottom 0
+      right 0
+      border-left 10px solid var(--color-divider)
       display flex
-      flex-direction column
-      align-items stretch
-      margin-bottom 50px
+      align-items center
+      justify-content center
+      color var(--color-divider)
+      font-size 20px
 
-      @media screen and (min-width: 601px)
-
-        &::before
-          content '从左侧选择功能进行查看'
-          position fixed
-          left var(--left-column-width)
-          top 60px
-          bottom 0
-          right 0
-          border-left 10px solid var(--color-divider)
-          display flex
-          align-items center
-          justify-content center
-          color var(--color-divider)
-          font-size 20px
+      @media screen and (max-width: 600px)
+        display none
 
     .tabs
       display flex
       flex-direction row
       align-items flex-start
       max-width var(--left-column-width)
+      overflow hidden
+      position relative
 
       @media screen and (max-width: 600px)
         max-width none
-
-      @media screen and (max-width: 1200px)
-        overflow hidden
-        position relative
 
       .tab
         display flex
@@ -92,51 +89,46 @@
         align-items flex-start
         flex 1 1 0
         padding 0
-
-        @media screen and (max-width: 1200px)
-          display none
+        display none
           
-          &.active
-            display block
+        &.active
+          display block
 
     .tab-bar
-      display none
       max-width var(--left-column-width)
+      position fixed
+      bottom 0
+      left 0
+      right 0
+      height 50px
+      z-index 9999
+      background #fff
+      border-top 1px solid var(--color-divider)
+      box-shadow 0 -5px 15px rgba(0, 0, 0, .05)
+      display flex
+      flex-direction row
+      align-items center
 
       @media screen and (max-width: 600px)
         max-width none
 
-      @media screen and (max-width: 1200px)
-        position fixed
-        bottom 0
-        left 0
-        right 0
-        height 50px
-        z-index 9999
-        background #fff
-        border-top 1px solid var(--color-divider)
-        box-shadow 0 -5px 15px rgba(0, 0, 0, .05)
+      .tab-item
+        flex 1 1 auto
         display flex
-        flex-direction row
+        flex-direction column
         align-items center
+        justify-content center
+        cursor pointer
 
-        .tab-item
-          flex 1 1 auto
-          display flex
-          flex-direction column
-          align-items center
-          justify-content center
-          cursor pointer
+        .icon
+          width 32px
+          height 32px
+          filter hue-rotate(-15deg)
 
-          .icon
-            width 32px
-            height 32px
-            filter hue-rotate(-15deg)
-
-          .title
-            color var(--color-text-secondary)
-            font-size 11px
-            line-height 1.1em
-            margin-bottom 3px
+        .title
+          color var(--color-text-secondary)
+          font-size 11px
+          line-height 1.1em
+          margin-bottom 3px
 
 </style>

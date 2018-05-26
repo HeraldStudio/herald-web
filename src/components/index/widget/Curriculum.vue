@@ -2,12 +2,12 @@
 
   widget.curriculum(title='课程表' :show='curriculum')
     .week-picker
-      .prev(@click='prevTerm()') 〈
+      .prev(@click='prevTerm()') ‹
       .cur(title='点击回到本学期' @click='reload()') {{ curriculum.term && curriculum.term.code || '…' }}
-      .next(@click='nextTerm()') 〉
-      .prev(@click='prevWeek()') 〈
+      .next(@click='nextTerm()') ›
+      .prev(@click='prevWeek()') ‹
       .cur(title='点击回到本周' @click='displayWeek = currentWeek') 第 {{ displayWeek }} 周
-      .next(@click='nextWeek()') 〉
+      .next(@click='nextWeek()') ›
     div.curriculum-container
       .week-header(v-if='fixedClasses.length || !floatClasses.length')
         .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount") {{ item }}
@@ -154,6 +154,8 @@
       .prev, .next
         cursor pointer
         color #ccc
+        font-size 16px
+        font-weight bold
 
     .curriculum-container
       width 100%

@@ -14,13 +14,13 @@
           .content {{ pe.remainDays }}
       ul.pe-list
         li.prev
-          .btn(@click='prevWeek()') <
+          .btn(@click='prevWeek()') ‹
         li(v-for='item, i in curWeek')
           .date(:class='{ highlight: item.hasExercise }')
             span.month(v-if='i == 0') {{ item.date.getMonth() + 1 }}/
             span {{ item.date.getDate() }}
         li.next
-          .btn(@click='nextWeek()') >
+          .btn(@click='nextWeek()') ›
       ul.detail-list
         li(v-for='item in pe.health')
           .top
@@ -118,11 +118,10 @@
       padding 20px 0
 
       .btn
-        color var(--color-primary)
-        padding 3px 5px
-        text-align center
-        font-size 14px
         cursor pointer
+        color #ccc
+        font-size 16px
+        font-weight bold
 
       .date
         background var(--color-tool-bg)

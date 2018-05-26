@@ -1,6 +1,5 @@
 <template lang='pug'>
   .admin-page#notice
-    .title 通知公告
     .subcontainer
       .list
         .notice-header

@@ -37,8 +37,6 @@
             .content(slot='content')
               .hint 小猴偷米的正常工作依赖于以下学校网站，但它们常常会出现宕机，导致小猴偷米对应的功能无法使用。下面显示了它们目前的状态。
               status
-          router-link(to='/admin' v-if='user && user.admin')
-            li 管理中心
       .container
         router-view(:user='user')
 </template>
@@ -134,6 +132,9 @@
     @media screen and (max-width: 800px)
       --left-column-width 320px
 
+    @media screen and (min-width: 1000px)
+      --left-column-width 400px
+
   ::selection
     background var(--color-primary-bg)
 
@@ -201,9 +202,9 @@
     box-sizing border-box
 
   input, textarea, input:focus, textarea:focus
-    -webkit-appearance none
-    -moz-appearance none
-    appearance none
+    // -webkit-appearance none
+    // -moz-appearance none
+    // appearance none
     border none
     outline none
     resize none
@@ -277,7 +278,6 @@
       right 0
       z-index 10000
       height 60px
-      max-width 1200px
       box-sizing border-box
 
       margin 0 auto
@@ -390,14 +390,9 @@
       position fixed
 
     .container
-      max-width 1200px
-
       margin 0 auto
-      padding 70px 15px 10px
+      padding 60px 0 0
       overflow scroll
-
-      @media screen and (max-width: 1200px)
-        padding 60px 0 0
 
       @media screen and (max-width: 600px)
         padding-top 100px

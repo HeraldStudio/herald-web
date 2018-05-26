@@ -4,10 +4,11 @@
     .click-area(@click.stop='toggle()')
       slot
     transition(name="fade-slide-up")
-      .mask(v-if='drawer' @click.stop='close()' :style='"z-index: " + (10000 + index)')
-        .close-hint 轻触返回
+      .drawer-mask(v-if='drawer' @click.stop='close()' :style='"z-index: " + (10000 + index)')
+        //- 这里的空点击事件是防止 drawer 里面的点击事件被冒泡上来导致关闭 drawer
         .drawer(@click.stop='' :class='{ underlay: underlay }')
           .title-bar
+            .close-btn(@click.stop='close()') ‹
             .title {{ title }}
           .drawer-view
             slot(name='content')
@@ -114,13 +115,13 @@
 </script>
 <style lang="stylus">
 
-  // PC 和 Phone 环境下，mask 覆盖了整个页面，不能允许滚动，否则体验不好
-  // 但 Pad 环境下，mask 为右侧栏，仍需要允许滚动
+  // PC 和 Pad 环境下，mask 为右侧栏，仍需要允许滚动
+  // 手机环境下，mask 覆盖了整个页面，不能允许滚动，否则体验不好
   html.drawer-shown, html.drawer-shown body
-    overflow: hidden
+    overflow visible
 
-    @media screen and (max-width: 1200px) and (min-width: 601px)
-      overflow visible
+    @media screen and (max-width: 600px)
+      overflow hidden
 
   .fade-slide-up-enter-active, .fade-slide-up-leave-active
     transition .3s
@@ -133,21 +134,19 @@
     -webkit-backdrop-filter none
 
     .drawer
-      transform translateY(100%)
+      transform translateX(100%)
 
-      // Pad 环境下改为从右侧推入
-      @media screen and (max-width: 1200px) and (min-width: 601px)
-        transform translateX(100%)
+      // 手机环境下为从底部推入
+      @media screen and (max-width: 600px)
+        transform translateY(100%)
 
   .drawer-wrapper
     .click-area
       cursor pointer
 
-    .mask
+    .drawer-mask
       position: fixed
       overflow: hidden
-      top 0
-      left 0
       bottom 0
       right 0
       margin 0
@@ -157,81 +156,93 @@
       flex-direction: column
       align-items: center
       justify-content: center
-      background: rgba(#000, .3)
-      padding-top 60px
-
-      @supports(-webkit-backdrop-filter: blur(20px))
-        -webkit-backdrop-filter blur(20px)
-        background: rgba(#000, .1)
-
-      @media screen and (max-width: 1200px) and (min-width: 601px)
-        top 60px
-        left var(--left-column-width, 0)
-        background var(--color-divider)
-        -webkit-backdrop-filter none
-        padding-top 0
-        padding-left 10px
+      top 60px
+      left var(--left-column-width, 0)
+      background var(--color-divider)
+      padding-top 0
+      padding-left 10px
 
       @media screen and (max-width: 600px)
+        top 0
+        left 0
         width 100%
+        background: rgba(#000, .3)
         justify-content: flex-end
+        padding-top 60px
         padding-left 0
 
-      .close-hint
-        position fixed
-        left 0
-        top 0
-        right 0
-        z-index 10002
-        text-align center
-        padding 20px 0
-        color rgba(#000, .3)
-        font-size 14px
+        @supports(-webkit-backdrop-filter: blur(20px))
+          -webkit-backdrop-filter blur(20px)
+          background: rgba(#000, .1)
 
-        @media screen and (max-width: 1200px) and (min-width: 601px)
-          display none
+      .close-hint
+        display none
+
+        @media screen and (max-width: 600px)
+          display block
+          position fixed
+          left 0
+          top 0
+          right 0
+          z-index 10002
+          text-align center
+          padding 20px 0
+          color rgba(#000, .3)
+          font-size 14px
 
       .drawer
         background: #fff
         z-index: 10002
         box-sizing: border-box
-        width: 600px
         max-width 100%
         cursor: default
         display: flex
         flex-direction: column
-        padding 20px 0 10px
-        box-shadow 0 3px 12px rgba(0, 0, 0, .05)
+        padding 15px 0 10px
         position relative
         overflow-y scroll
         overscroll-behavior contain
         -webkit-overflow-scrolling touch
+        width 100%
+        height 100%
 
         // 对于 Safari，若两个抽屉嵌套，外层抽屉必须变成 overflow-y: visible，否则内层抽屉将被外层抽屉裁剪
         &.underlay
           overflow-y visible
 
-        @media screen and (max-width: 1200px) and (min-width: 601px)
-          box-shadow none
-          width 100%
-          height 100%
-
         @media screen and (max-width: 600px)
-          width 100%
+          box-shadow 0 3px 12px rgba(0, 0, 0, .05)
+          height auto
 
         .title-bar
           margin 0 30px
-          padding 10px 0
+          padding 10px 25px 10px 0
           flex 0 0 auto
           display: flex
           flex-direction: row
-          justify-content: center
           align-items: center
 
+          .close-btn
+            width 25px
+            height 30px
+            font-size 20px
+            font-weight bold
+            color var(--color-text-bold)
+            cursor pointer
+
+          @media screen and (max-width: 600px)
+            padding 10px 0
+
+            .close-btn
+              display none
+
           .title
-            font-size: 17px
-            font-weight: bold
-            color: #333
+            flex 1 1 0
+            padding 0 7px
+            text-align center
+            font-size 16px
+            font-weight bold
+            color var(--color-text-bold)
 
         .drawer-view
           flex 0 0 auto

@@ -2,7 +2,6 @@
 
   transition(name='slide')
     .widget(v-if='show')
-      .widget-title {{ title }}
       slot
 
 </template>
@@ -33,11 +32,6 @@
 
   .widget
     position relative
-    margin 40px 10px 10px
-    padding 20px 15px
-    box-shadow 0 3px 15px rgba(0, 0, 0, .07)
-    border 1px solid transparent
-    width 380px
     box-sizing border-box
     -webkit-transition: .3s
     -moz-transition: .3s
@@ -47,81 +41,14 @@
     display flex
     flex-direction column
     background #fff
-
-    &:hover
-      border 1px solid var(--color-primary)
-
-    &.loading
-      opacity .5
-
-    @media screen and (max-width: 1200px)
-      margin 0
-      padding 20px 15px
-      width auto
-      box-shadow none
-
-      &, &:hover
-        border none
-        border-bottom 1px solid var(--color-divider)
+    padding 20px 15px
+    border-bottom 1px solid var(--color-divider)
 
     .empty
       display block
       text-align center
       color #888
       font-size 14px
-
-    .widget-title
-      position absolute
-      left -1px
-      top -26px
-      height 26px
-      line-height 26px
-      vertical-align middle
-      padding 0 7px
-      text-align left
-      font-size 13px
-      font-weight bold
-      background var(--color-text-bold)
-      color #fff
-      margin-bottom 20px
-      display flex
-      flex-direction row
-      align-items center
-      z-index 1
-
-      @media screen and (max-width: 1200px)
-        display none
-
-      &::before
-        content ''
-        position absolute
-        bottom -4px
-        left 50%
-        margin-left -3px
-        border-left 3px solid transparent
-        border-right 3px solid transparent
-        border-top 4px solid var(--color-text-bold)
-
-      .reload
-        width 16px
-        height 18px
-        margin-left 5px
-        cursor pointer
-        -webkit-transition: 1s
-        -moz-transition: 1s
-        -ms-transition: 1s
-        -o-transition: 1s
-        transition: 1s
-        display none
-
-        &:active
-          transform rotate(-360deg)
-          -webkit-transition: 0s
-          -moz-transition: 0s
-          -ms-transition: 0s
-          -o-transition: 0s
-          transition: 0s
-          transform-origin 50% 40%
 
     ul.info-bar
       width 100%
