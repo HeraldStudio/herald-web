@@ -1,8 +1,8 @@
 <template lang='pug'>
   .tab
     dashboard(v-if='user' :user='user')
-    admin(v-if='user && user.admin' :user='user')
     login(v-else)
+    admin(v-if='user && user.admin' :user='user')
     .todo(v-if='user')
       exam(v-if='/^21/.test(user.cardnum)')
       curriculum
