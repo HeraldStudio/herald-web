@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  widget.activity(title='校园活动' :show='activities.length')
+  widget.activity(title='校园活动' :show='activities && activities.length')
     .activity-item(v-for='(activity, i) in activities' :key='activity.aid' :style='"z-index: " + i' :class='{ collapsed: activity.endTime <= now }')
       .activity-container(@click='click(activity)')
         .activity-title

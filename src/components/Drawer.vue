@@ -51,14 +51,14 @@
             k.underlay = i < drawerStack.length - 1
           })
 
+          // 更新 html 的总 class 以便控制页面的可滚动性
+          this.updateClasses()
+
           // 启动打开抽屉的动画效果
           this.drawer = true
 
           // 发出事件
           this.$emit('open')
-
-          // 更新 html 的总 class 以便控制页面的可滚动性
-          this.updateClasses()
 
           // 等待打开的动画效果结束
           await this.waitForAnimation()
@@ -102,11 +102,11 @@
         }
       },
       updateClasses() {
+        let html = document.getElementsByTagName('html')[0]
         if (!drawerStack.length) {
-          document.getElementsByTagName('html')[0].className
-            = document.getElementsByTagName('html')[0].className.replace(/ drawer-shown/g, '')
+          html.classList.remove('drawer-shown')
         } else {
-          document.getElementsByTagName('html')[0].className += ' drawer-shown'
+          html.classList.add('drawer-shown')
         }
       }
     }
