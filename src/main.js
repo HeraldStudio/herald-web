@@ -29,7 +29,7 @@ Vue.toasted.show = (text, ...args) => {
   }
 }
 
-router.afterEach(route => document.title = '小猴偷米' + (route.name ? '丨' + route.name : ''))
+// router.afterEach(route => document.title = '小猴偷米' + (route.name ? '丨' + route.name : ''))
 
 new Vue({
   el: '#app',

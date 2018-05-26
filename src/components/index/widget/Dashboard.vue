@@ -4,7 +4,7 @@
     .info-container
       .name {{ user ? user.name : '加载中' }}
       .identity {{ user ? user.identity : '…' }}
-      button(@click='logout()') 注销
+      img.icon(@click='logout()' src='static/images/logout.png')
     .dashboard-container(v-if='user')
       card
       pe(v-if='/本科/.test(user.identity)')
@@ -51,7 +51,7 @@
       margin 0 10px 20px
       display flex
       flex-direction row
-      align-items: baseline
+      align-items: center
 
       * + *
         margin-left 10px
@@ -67,6 +67,11 @@
         flex 1 1 0
         white-space: nowrap
         color var(--color-text-secondary)
+
+      .icon
+        width 20px
+        height 20px
+        cursor pointer
 
     .dashboard-container
       width 100%
