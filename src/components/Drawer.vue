@@ -1,12 +1,12 @@
 <template lang="pug">
 
   .drawer-wrapper
-    .click-area(@click.stop='open()')
+    .click-area(@click.stop='toggle()')
       slot
     transition(name="fade-slide-up")
-      .mask(v-if='drawer' @click.stop='close()')
+      .mask(v-if='drawer' @click.stop='close()' :style='"z-index: " + (10000 + index)')
         .close-hint 轻触返回
-        .drawer(@click.stop='')
+        .drawer(@click.stop='' :class='{ underlay: underlay }')
           .title-bar
             .title {{ title }}
           .drawer-view
@@ -14,47 +14,103 @@
 
 </template>
 <script>
-
-  import Vue from 'vue'
-  Vue.$drawer = { count: 0 }
-
-  var currentOpen = null
-
+  // 魔法代码，小心修改
+  
+  let drawerStack = []
   export default {
     props: ['title'],
     data() {
       return {
-        drawer: false
+        drawer: false,
+        index: 0,
+        underlay: false // 用于修正 Safari 外层抽屉裁剪内层抽屉的问题，见样式表
       }
     },
     methods: {
-      open () {
-        // pad 环境下左右分栏，一个 drawer 已打开的时候，可能触发打开另一个 drawer，
-        // 这样将导致 drawer 之间的叠放层次不确定，因此需要记录并关闭已打开的 drawer
-        if (currentOpen) {
-          currentOpen.close()
-        }
-        this.drawer = true
-        currentOpen = this
-        Vue.$drawer.count++
-        this.$emit('open')
-        if (Vue.$drawer.count === 1) {
-          document.getElementsByTagName('html')[0].className += ' drawer-shown'
+      async open () {
+        // pad 环境下左右分栏，一个 drawer 已打开的时候，可能触发打开另一个 drawer，这样将导致 drawer 之间的叠放层次不确定
+        // 但也不应该强行关闭已打开的 drawer，因为如果新的 drawer 在已经打开的 drawer 内部（如一卡通充值），关闭已打开 drawer 会导致新 drawer 不显示
+        // 应该维护一个栈，这个栈类似于 Android Activity Stack，新打开的抽屉在顶部
+        
+        // 若需要打开已有的抽屉（提升），则将其上层的所有抽屉关闭
+        if (this.drawer) {
+          let count = drawerStack.length
+
+          // 将上层的所有抽屉抽出，并全部关闭
+          drawerStack.splice(this.index + 1, count - this.index - 1).map(k => k.close())
+
+          // 等待其他抽屉的关闭动画结束
+          await this.waitForAnimation()
+        } else {
+          // 更新当前抽屉的叠放次序
+          this.index = drawerStack.length
+
+          // 将抽屉加入栈，需要更新栈中其他抽屉的状态
+          drawerStack.push(this)
+          drawerStack.map((k, i) => {
+            k.underlay = i < drawerStack.length - 1
+          })
+
+          // 启动打开抽屉的动画效果
+          this.drawer = true
+
+          // 发出事件
+          this.$emit('open')
+
+          // 更新 html 的总 class 以便控制页面的可滚动性
+          this.updateClasses()
+
+          // 等待打开的动画效果结束
+          await this.waitForAnimation()
         }
       },
-      close () {
+      async close () {
+        if (!this.drawer) {
+          return
+        }
+
+        // 启动关闭抽屉的动画效果
         this.drawer = false
-        currentOpen = null
-        Vue.$drawer.count--
+
+        // 发出事件
         this.$emit('close')
-        if (Vue.$drawer.count === 0) {
+
+        // 等待关闭的动画效果结束
+        await this.waitForAnimation()
+
+        // 将抽屉移出栈，栈中其他抽屉可能受到影响，所以要更新他们的叠放次序
+        drawerStack = drawerStack.filter(k => k !== this)
+        drawerStack.map((k, i) => {
+          k.index = i
+          k.underlay = i < drawerStack.length - 1
+        })
+
+        // 更新 html 的总 class 以便控制页面的可滚动性
+        this.updateClasses()
+      },
+      async waitForAnimation() {
+        // 假假的等待 300ms，用于让当前动画结束
+        await new Promise(r => setTimeout(r, 300))
+      },
+      async toggle() {
+        // 模仿 Windows 下的任务栏图标点击行为，未打开 -> 打开，不在上层 -> 提升，在上层 -> 关闭
+        if (!~drawerStack.slice(-1).indexOf(this)) {
+          // 打开或提升都是 open() 函数
+          await this.open()
+        } else {
+          await this.close()
+        }
+      },
+      updateClasses() {
+        if (drawerStack.length === 0) {
           document.getElementsByTagName('html')[0].className
             = document.getElementsByTagName('html')[0].className.replace(' drawer-shown', '')
+        } else if (drawerStack.length === 1) {
+          document.getElementsByTagName('html')[0].className += ' drawer-shown'
         }
       }
     }
   }
-
 </script>
 <style lang="stylus">
 
@@ -150,6 +206,10 @@
         overflow-y scroll
         overscroll-behavior contain
         -webkit-overflow-scrolling touch
+
+        // 对于 Safari，若两个抽屉嵌套，外层抽屉必须变成 overflow-y: visible，否则内层抽屉将被外层抽屉裁剪
+        &.underlay
+          overflow-y visible
 
         @media screen and (max-width: 1200px) and (min-width: 601px)
           box-shadow none
