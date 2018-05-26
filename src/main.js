@@ -5,8 +5,7 @@ import App from './App'
 import router from './router'
 import Toasted from 'vue-toasted'
 import Persist from 'vue-persist'
-
-// window.Vue = Vue
+import interceptor from './util/interceptor'
 
 Vue.config.productionTip = false
 
@@ -25,6 +24,7 @@ Vue.toasted.__show = Vue.toasted.show
 Vue.toasted.show = (text, ...args) => {
   if (text !== lastToastText) {
     lastToastText = text
+    setTimeout(() => lastToastText = null, 5000)
     return Vue.toasted.__show(text, ...args)
   }
 }

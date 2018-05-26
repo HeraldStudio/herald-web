@@ -16,7 +16,6 @@
 <script>
 
   import api from '../api'
-  import logger from '../logger'
 
   const timeout = (t) => new Promise(r => setTimeout(r, t))
 
@@ -49,7 +48,7 @@
         type: Boolean,
         default: false
       },
-      showAjax: {
+      isLoading: {
         type: Boolean,
         default: false
       }
@@ -60,15 +59,10 @@
         curState: 'curious',
         lastRandom: '',
         mouseX: 0,
-        mouseY: 0,
-        isLoading: false
+        mouseY: 0
       }
     },
     created() {
-      if (this.showAjax) {
-        logger.openListeners.push(() => this.isLoading = true)
-        logger.doneListeners.push(() => this.isLoading = false)
-      }
       this.autoBlink()
       if (this.autoEmotion) {
         this.autoEmote()

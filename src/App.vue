@@ -4,7 +4,7 @@
       .header(v-if='env != "mina"')
         router-link.live2d-wrapper(to='/')
           .live2d-container
-            live2d(:showAjax='true')
+            live2d(:isLoading='isLoading')
           img.logo(src='static/images/logo.png')
         ul.nav
           drawer(title='小猴偷米微信端 / App') 
@@ -40,16 +40,30 @@
       return {
         user: null,
         env: '',
+        isLoading: false
+      }
+    },
+    watch: {
+      isLoading() {
+        // 将 Ajax 状态发送给小程序端显示
+        if (this.env === 'mina') {
+          wx.miniProgram.postMessage({
+            data: this.isLoading ? 'showNavigationBarLoading' : 'hideNavigationBarLoading'
+          })
+        }
       }
     },
     persist: ['user'],
     async created() {
+      logger.openListeners.push(() => this.isLoading = true)
+      logger.doneListeners.push(() => this.isLoading = false)
+
       if (window.navigator.standalone) {
-        this.env = 'webapp'
+        window.__herald_env = this.env = 'webapp'
       }
 
       if (window.__wxjs_environment === 'miniprogram') {
-        this.env = 'mina'
+        window.__herald_env = this.env = 'mina'
       }
 
       // 套壳用，通过 URL 参数导入 token
@@ -72,11 +86,6 @@
             location.href = '#/'
           }
         }, 500)
-      }
-
-      // 小程序套壳用，通过 URL 参数设置顶部 padding 值
-      if (/statusBarHeight=([0-9]+)/.test(location.search)) {
-        document.body.style['--status-bar-height'] = parseInt(RegExp.$1)
       }
     }
   }
@@ -218,7 +227,7 @@
     -webkit-transform none !important
     transform none !important
     // 浮于抽屉上层
-    z-index 10005 !important
+    z-index 99999 !important
     top 60px !important
     left 0 !important
     right 0

@@ -43,7 +43,14 @@
         if (hasUrl) {
           let win = window.open('about:blank', '_blank')
           let url = await H.api.activity.put({ aid })
-          win.location = url
+
+          // 由于 interceptor.js 的 hook，window.open 可能返回 null（小程序情况）
+          // 此时，直接调用 window.open 来触发 hook 中的复制链接
+          if (win) {
+            win.location = url
+          } else {
+            window.open(url)
+          }
         } else {
           this.$toasted.show('该活动没有详情页面')
         }
