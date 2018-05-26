@@ -1,7 +1,7 @@
 <template lang='pug'>
   .admin-page#monitor
     transition-group(name='slide')
-      .dashboard(key='connection' v-if='connection && redis')
+      .subcontainer.dashboard(key='connection' v-if='connection && redis')
         .column
           .label 系统开机
           .content {{ this.redis.server.uptimeInDays }}天
@@ -225,7 +225,7 @@
         flex-direction column
         text-align center
         white-space nowrap
-        margin 0 10px 20px
+        margin 10px
 
         .label
           color var(--color-text-bold)

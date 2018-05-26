@@ -6,7 +6,7 @@
         .title {{ site }}
     ul.detail-list
       li(v-for='item in filteredNotice' :key='item.title' :class='{ important: item.isImportant }')
-        drawer(title='通知内容' @open='loadMarkdown(item)' @close='markdown = ""')
+        drawer(title='通知内容' @open='loadMarkdown(item)')
           .top
             .left
               .tag.important(v-if='item.isImportant') 重要
@@ -16,7 +16,7 @@
           .bottom(v-if='item.category')
             .left {{ item.category }}
           .content(slot='content')
-            markdown(:markdown='markdown')
+            markdown(:markdown='item.markdown')
     .empty(v-if='!filteredNotice || !filteredNotice.length') 暂无通知
 
 </template>
@@ -86,14 +86,15 @@
       },
       async loadMarkdown(notice) {
         if (notice.isAttachment) {
-          this.markdown = `[下载附件](${notice.url})`
+          notice.markdown = `[下载附件](${notice.url})`
         } else if (notice.site !== 'SRTP') {
           let res = await H.api.notice.post(notice)
-          this.markdown = res
+          notice.markdown = res
         } else {
           let res = await H.api.srtp.competition.post({ id: notice.srtpId })
-          this.markdown = res
+          notice.markdown = res
         }
+        this.notice = this.notice.slice()
       }
     }
   }

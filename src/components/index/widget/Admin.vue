@@ -66,10 +66,13 @@
           margin-bottom 20px
 
         .subcontainer
-          border-top 1px solid var(--color-divider)
-          padding 20px 0
           text-align center
           overflow-x scroll
+
+          + .subcontainer
+            border-top 1px solid var(--color-divider)
+            padding-top 20px
+            margin-top 20px
 
         .subtitle
           padding 0 7px

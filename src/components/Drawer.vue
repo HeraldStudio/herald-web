@@ -3,15 +3,14 @@
   .drawer-wrapper
     .click-area(@click.stop='toggle()')
       slot
-    transition(name="fade-slide-up")
-      .drawer-mask(v-if='drawer' @click.stop='close()' :style='"z-index: " + (10000 + index)')
-        //- 这里的空点击事件是防止 drawer 里面的点击事件被冒泡上来导致关闭 drawer
-        .drawer(@click.stop='' :class='{ underlay: underlay }')
-          .title-bar
-            .close-btn(@click.stop='close()') ‹
-            .title {{ title }}
-          .drawer-view
-            slot(name='content')
+    transition(name="slide-left")
+      //- 这里的空点击事件是防止 drawer 里面的点击事件被冒泡上来导致关闭 drawer
+      .drawer(v-if='drawer' @click.stop='' :class='{ underlay: underlay }' :style='"z-index: " + (10000 + index)')
+        .title-bar
+          .close-btn(@click.stop='close()') ‹
+          .title {{ title }}
+        .drawer-view
+          slot(name='content')
 
 </template>
 <script>
@@ -123,129 +122,82 @@
     @media screen and (max-width: 600px)
       overflow hidden
 
-  .fade-slide-up-enter-active, .fade-slide-up-leave-active
+  .slide-left-enter-active, .slide-left-leave-active
     transition .3s
 
-    .drawer
-      transition .3s
-
-  .fade-slide-up-enter, .fade-slide-up-leave-to
+  .slide-left-enter, .slide-left-leave-to
     opacity 0
     -webkit-backdrop-filter none
-
-    .drawer
-      transform translateX(100%)
-
-      // 手机环境下为从底部推入
-      @media screen and (max-width: 600px)
-        transform translateY(100%)
+    transform translateX(100%)
 
   .drawer-wrapper
     .click-area
       cursor pointer
 
-    .drawer-mask
-      position: fixed
-      overflow: hidden
+    .drawer
+      position fixed
+      top 0
       bottom 0
+      left var(--left-column-width, 0)
       right 0
       margin 0
-      z-index: 10001
-      cursor: default
-      display: flex
-      flex-direction: column
-      align-items: center
-      justify-content: center
-      top 60px
-      left var(--left-column-width, 0)
-      background var(--color-divider)
-      padding-top 0
-      padding-left 10px
+
+      overflow hidden
+      background #fff
+      z-index 10001
+      box-sizing border-box
+      max-width 100%
+      cursor default
+      display flex
+      flex-direction column
+      overscroll-behavior contain
+      -webkit-overflow-scrolling touch
+      margin-left 10px
 
       @media screen and (max-width: 600px)
-        top 0
         left 0
-        width 100%
-        background: rgba(#000, .3)
-        justify-content: flex-end
-        padding-top 60px
-        padding-left 0
+        margin-left 0
 
-        @supports(-webkit-backdrop-filter: blur(20px))
-          -webkit-backdrop-filter blur(20px)
-          background: rgba(#000, .1)
+      // 对于 Safari，若两个抽屉嵌套，外层抽屉必须变成 overflow-y: visible，否则内层抽屉将被外层抽屉裁剪
+      &.underlay
+        overflow-y visible
 
-      .close-hint
-        display none
+      @media screen and (max-width: 600px)
+        box-shadow 0 3px 12px rgba(0, 0, 0, .05)
+        height auto
 
-        @media screen and (max-width: 600px)
-          display block
-          position fixed
-          left 0
-          top 0
-          right 0
-          z-index 10002
-          text-align center
-          padding 20px 0
-          color rgba(#000, .3)
-          font-size 14px
-
-      .drawer
-        background: #fff
-        z-index: 10002
-        box-sizing: border-box
-        max-width 100%
-        cursor: default
+      .title-bar
+        flex 0 0 auto
         display: flex
-        flex-direction: column
-        padding 15px 0 10px
-        position relative
-        overflow-y scroll
-        overscroll-behavior contain
-        -webkit-overflow-scrolling touch
-        width 100%
-        height 100%
+        flex-direction: row
+        align-items: center
+        height 59px
+        border-bottom 1px solid var(--color-divider)
 
-        // 对于 Safari，若两个抽屉嵌套，外层抽屉必须变成 overflow-y: visible，否则内层抽屉将被外层抽屉裁剪
-        &.underlay
-          overflow-y visible
-
-        @media screen and (max-width: 600px)
-          box-shadow 0 3px 12px rgba(0, 0, 0, .05)
-          height auto
-
-        .title-bar
-          margin 0 30px
-          padding 10px 25px 10px 0
-          flex 0 0 auto
-          display: flex
-          flex-direction: row
-          align-items: center
-
-          .close-btn
-            width 25px
-            height 30px
-            font-size 20px
-            font-weight bold
-            color var(--color-text-bold)
-            cursor pointer
+        .close-btn
+          width 25px
+          height 30px
+          font-size 20px
+          font-weight bold
+          color var(--color-text-bold)
+          text-align center
+          cursor pointer
 
           @media screen and (max-width: 600px)
-            padding 10px 0
+            margin 0 20px
 
-            .close-btn
-              display none
+        .title
+          flex 1 1 0
+          padding 0 7px
+          text-align left
+          font-size 16px
+          font-weight bold
+          color var(--color-text-bold)
 
-          .title
-            flex 1 1 0
-            padding 0 7px
-            text-align center
-            font-size 16px
-            font-weight bold
-            color var(--color-text-bold)
-
-        .drawer-view
-          flex 0 0 auto
-          padding 15px 25px
+      .drawer-view
+        flex 1 1 0
+        padding 25px
+        overflow-x hidden
+        overflow-y scroll
 
 </style>

@@ -1,14 +1,14 @@
 <template lang='pug'>
-  #app(:class='{ webapp: webapp }')
+  #app(:class='env')
     .root
-      .header
+      .header(v-if='env != "mina"')
         router-link.live2d-wrapper(to='/')
           .live2d-container
             live2d(:showAjax='true')
           img.logo(src='static/images/logo.png')
         ul.nav
-          drawer(title='小猴偷米微信端 / App')
-            img.download(v-if='!mina' src='static/images/download.png')
+          drawer(title='小猴偷米微信端 / App') 
+            img.download(src='static/images/download.png')
             .content(slot='content')
               .hint 小猴偷米 App 是较早版本，已不再保持活跃更新，新 App 开发正在筹备中，建议使用网页版和小程序，获得更完整的体验。
               .buttons
@@ -39,23 +39,25 @@
     data() {
       return {
         user: null,
-        webapp: false,
-        mina: false
+        env: '',
       }
     },
     persist: ['user'],
     async created() {
       if (window.navigator.standalone) {
-        this.webapp = true
+        this.env = 'webapp'
       }
 
       if (window.__wxjs_environment === 'miniprogram') {
-        this.mina = true
+        this.env = 'mina'
       }
 
       // 套壳用，通过 URL 参数导入 token
       if (/importToken=([0-9a-fA-F]+)/.test(location.search)) {
         H.token = RegExp.$1
+        if (location.search) {
+          location.search = ''
+        }
       } else {
         setInterval(async () => {
           if (!this.user && H.isLogin) {
@@ -71,8 +73,10 @@
           }
         }, 500)
       }
-      if (location.search) {
-        location.search = ''
+
+      // 小程序套壳用，通过 URL 参数设置顶部 padding 值
+      if (/statusBarHeight=([0-9]+)/.test(location.search)) {
+        document.body.style['--status-bar-height'] = parseInt(RegExp.$1)
       }
     }
   }
@@ -349,5 +353,18 @@
       margin 0 auto
       padding 60px 0 0
       overflow scroll
+
+    &.mina .container
+      padding 0
+
+      &::before
+        content ''
+        position fixed
+        left 0
+        top 0
+        right 0
+        height 1px
+        z-index 100000
+        background var(--color-divider)
 
 </style>
