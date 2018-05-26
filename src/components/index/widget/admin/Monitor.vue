@@ -23,9 +23,8 @@
         .column
           .label 在线爬虫
           .content {{ this.connection.spiders.activeCount }}
-        .column
+        .column(v-if='this.connection.spiders.inactiveCount')
           .label 待审爬虫
-          .content(v-if='!this.connection.spiders.inactiveCount') 0
           .spider(v-for='spider in this.connection.spiders.inactiveList')
             .name {{ spider }}
             confirm-button.accept(@click='acceptSpider(spider)' confirm-text='确认接受') 接受
@@ -37,7 +36,7 @@
             .name {{ site.name }}
             .timeout {{ site.timeout === -1 ? '超时' : site.timeout + 'ms' }}
       .subcontainer.periods(key='daily' v-if='daily')
-        .subtitle 24 小时接口调用 / 活跃用户统计
+        .subtitle 24 小时接口调用统计
         .summary
           .example-block.result-2
           span 2xx
@@ -327,10 +326,15 @@
         // position relative
         height 400px
         transition .2s
+        overflow-x scroll
+
+        @media screen and (min-width: 1200px)
+          overflow-x: visible
 
         .period
           flex 1 1 2%
           width 2%
+          min-width 15px
           display flex
           flex-direction column
 
