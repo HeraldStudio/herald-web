@@ -81,7 +81,9 @@
 
         .summary
           display inline-block
-          margin 0 5px 15px
+          font-size 13px
+          color var(--color-text-secondary)
+          margin 0 5px 20px
 
         table
           max-width 100%

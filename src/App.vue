@@ -135,6 +135,9 @@
     @media screen and (min-width: 1000px)
       --left-column-width 400px
 
+    font-size 13px
+    color var(--color-text-regular)
+
   ::selection
     background var(--color-primary-bg)
 
