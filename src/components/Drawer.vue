@@ -15,7 +15,7 @@
 </template>
 <script>
   // 魔法代码，小心修改
-  
+
   let drawerStack = []
   export default {
     props: ['title'],
@@ -102,10 +102,10 @@
         }
       },
       updateClasses() {
-        if (drawerStack.length === 0) {
+        if (!drawerStack.length) {
           document.getElementsByTagName('html')[0].className
-            = document.getElementsByTagName('html')[0].className.replace(' drawer-shown', '')
-        } else if (drawerStack.length === 1) {
+            = document.getElementsByTagName('html')[0].className.replace(/ drawer-shown/g, '')
+        } else {
           document.getElementsByTagName('html')[0].className += ' drawer-shown'
         }
       }
