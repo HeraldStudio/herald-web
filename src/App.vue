@@ -1,10 +1,10 @@
 <template lang='pug'>
   #app(:class='env')
     .root
-      .header(v-if='env != "mina"')
+      .header(v-if='env != "mina"' v-loading='isLoading')
         router-link.live2d-wrapper(to='/')
           .live2d-container
-            live2d(:isLoading='isLoading')
+            live2d
           img.logo(src='static/images/logo.png')
         ul.nav
           drawer(title='小猴偷米微信端 / App') 
@@ -24,10 +24,10 @@
 </template>
 
 <script>
-  // import Vue from 'vue'
-  // import { Loading } from 'element-ui'
-  // import 'element-ui/lib/theme-chalk/index.css'
-  // Vue.use(Loading)
+  import Vue from 'vue'
+  import { Loading } from 'element-ui'
+  import 'element-ui/lib/theme-chalk/index.css'
+  Vue.use(Loading)
 
   import logger from './logger'
   import H from './api'
@@ -217,16 +217,8 @@
   ::-webkit-scrollbar
     display none !important
 
-  .el-loading-mask
-    position fixed !important
-    top 60px !important
-    z-index 999999
-
-    .mina &
-      top 0 !important
-
-    .el-loading-spinner .path
-      stroke var(--color-primary) !important
+  .el-loading-spinner .path
+    stroke var(--color-primary) !important
 
   .toasted-container.top-center
     // 覆盖vendor原有属性，由于webpack资源重排，不加important覆盖不上
