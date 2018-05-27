@@ -1,14 +1,14 @@
 <template lang='pug'>
   #app(:class='env')
     .root
-      .header
+      .header(v-if='env != "mina"')
         router-link.live2d-wrapper(to='/')
           .live2d-container
             live2d
           img.logo(src='static/images/logo.png')
         ul.nav
           drawer(title='小猴偷米微信端 / App') 
-            img.download(v-if='env != "mina"' src='static/images/download.png')
+            img.download(src='static/images/download.png')
             .content(slot='content')
               .hint 小猴偷米 App 是较早版本，已不再保持活跃更新，新 App 开发正在筹备中，建议使用网页版和小程序，获得更完整的体验。
               .buttons
@@ -219,7 +219,7 @@
 
   .el-loading-mask
     position fixed !important
-    top 80px !important
+    top 60px !important
     z-index 999999
 
     .mina &
@@ -370,10 +370,16 @@
       overflow scroll
 
     &.mina .container
-      padding 80px 0 0
+      padding 0
 
-    &.mina .header
-      padding-top 20px
-      height 80px
+      &::before
+        content ''
+        position fixed
+        left 0
+        top 0
+        right 0
+        bottom 0
+        z-index -999
+        background #fff
 
 </style>
