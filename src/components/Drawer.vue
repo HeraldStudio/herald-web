@@ -116,15 +116,13 @@
 
   // PC 和 Pad 环境下，mask 为右侧栏，仍需要允许滚动
   // 手机环境下，mask 覆盖了整个页面，不能允许滚动，否则体验不好
-  html.drawer-shown, html.drawer-shown body
-    overflow visible 
-
-    @media screen and (max-width: 600px)
-      overflow hidden !important
+  html, body
+    height 100%
+    overflow auto
 
   .slide-left-enter-active, .slide-left-leave-active
-    transition .3s
-    box-shadow 0 0 20px #000
+    transition transform .3s
+    box-shadow 0 0 10px rgba(#000, .2)
 
   .slide-left-enter, .slide-left-leave-to
     transform translateX(100%)
@@ -174,7 +172,7 @@
         border-bottom 1px solid var(--color-divider)
 
         .close-btn
-          width 25px
+          width 35px
           height 30px
           font-size 20px
           font-weight bold
