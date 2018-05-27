@@ -51,9 +51,6 @@
             k.underlay = i < drawerStack.length - 1
           })
 
-          // 更新 html 的总 class 以便控制页面的可滚动性
-          this.updateClasses()
-
           // 启动打开抽屉的动画效果
           this.drawer = true
 
@@ -62,6 +59,9 @@
 
           // 等待打开的动画效果结束
           await this.waitForAnimation()
+
+          // 更新 html 的总 class 以便控制页面的可滚动性
+          this.updateClasses()
         }
       },
       async close () {
@@ -114,11 +114,11 @@
 </script>
 <style lang="stylus">
 
-  // PC 和 Pad 环境下，mask 为右侧栏，仍需要允许滚动
-  // 手机环境下，mask 覆盖了整个页面，不能允许滚动，否则体验不好
-  html, body
-    overflow auto
-    height 100%
+  html.drawer-shown, html.drawer-shown body
+    pointer-events none
+
+    .drawer-wrapper
+      pointer-events auto
 
   .slide-left-enter-active, .slide-left-leave-active
     transition transform .3s
@@ -147,8 +147,6 @@
       cursor default
       display flex
       flex-direction column
-      overscroll-behavior contain
-      -webkit-overflow-scrolling touch
       margin-left 10px
 
       @media screen and (max-width: 600px)
@@ -195,6 +193,8 @@
         flex 1 1 0
         padding 25px
         overflow-x hidden
-        overflow-y scroll
+        overflow-y auto
+        overscroll-behavior contain
+        -webkit-overflow-scrolling touch
 
 </style>
