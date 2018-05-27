@@ -55,10 +55,10 @@
 
       if (window.navigator.standalone) {
         window.__herald_env = this.env = 'webapp'
-      }
-
-      if (window.__wxjs_environment === 'miniprogram') {
+      } else if (window.__wxjs_environment === 'miniprogram') {
         window.__herald_env = this.env = 'mina'
+      } else if (window.__wxjs_environment) {
+        window.__herald_env = this.env = 'wx'
       }
 
       // 套壳用，通过 URL 参数导入 token
@@ -372,14 +372,15 @@
     &.mina .container
       padding 0
 
-      &::before
-        content ''
-        position fixed
-        left 0
-        top 0
-        right 0
-        bottom 0
-        z-index -999
-        background #fff
+    // 强制加固定白底，尤其在微信和小程序中用于屏蔽黑底和微信的提示文字
+    &::before
+      content ''
+      position fixed
+      left 0
+      top 0
+      right 0
+      bottom 0
+      z-index -999
+      background #fff
 
 </style>
