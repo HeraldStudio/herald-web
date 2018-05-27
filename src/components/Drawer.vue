@@ -119,6 +119,8 @@
   html, body
     height 100%
     overflow auto
+    overscroll-behavior contain
+    -webkit-overflow-scrolling touch
 
   .slide-left-enter-active, .slide-left-leave-active
     transition transform .3s
