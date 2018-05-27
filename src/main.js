@@ -6,6 +6,12 @@ import router from './router'
 import interceptor from './util/interceptor'
 import Toasted from 'vue-toasted'
 import Persist from 'vue-persist'
+import offline from 'offline-plugin/runtime'
+
+offline.install({
+  responseStrategy: 'network-first',
+  autoUpdate: true
+})
 
 Vue.config.productionTip = false
 

@@ -32,7 +32,6 @@
   import logger from './logger'
   import H from './api'
   import drawer from '@/components/Drawer.vue'
-  import offline from 'offline-plugin/runtime'
   import live2d from './components/Live2D.vue'
   import status from './components/Status.vue'
 
