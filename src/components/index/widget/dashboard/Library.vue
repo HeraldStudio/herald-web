@@ -11,7 +11,7 @@
             .left {{ item.author }}
             button.right(v-if='!item.renewCount' @click='renew(item.bookId)') 续借
             .right(v-else) 已续借
-        li.empty(v-if='!books.length') 暂无已借图书
+        li.empty(v-if='!books || !books.length') 暂无已借图书
 
 </template>
 <script>
@@ -30,7 +30,9 @@
     created() {
       this.reload()
     },
-    persist: ['books'],
+    persist: {
+      books: 'library-books'
+    },
     methods: {
       ...formatter,
       async reload() {

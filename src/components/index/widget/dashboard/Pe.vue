@@ -48,7 +48,9 @@
         curDate: 0
       }
     },
-    persist: ['pe'],
+    persist: {
+      pe: 'herald-default-pe'
+    },
     created() {
       this.reload()
     },

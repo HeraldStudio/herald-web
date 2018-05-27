@@ -44,7 +44,9 @@
         gpa: null
       }
     },
-    persist: ['gpa'],
+    persist: {
+      gpa: 'herald-default-gpa'
+    },
     created() {
       this.reload()
     },

@@ -29,7 +29,9 @@
         activities: []
       }
     },
-    persist: ['activities'],
+    persist: {
+      activities: 'herald-default-activities'
+    },
     created() {
       this.reload()
     },

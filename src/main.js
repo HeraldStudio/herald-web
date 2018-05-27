@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import interceptor from './util/interceptor'
 import Toasted from 'vue-toasted'
-import Persist from 'vue-persist'
+import Persist from 'vue-component-persist'
 import offline from 'offline-plugin/runtime'
 
 offline.install({
@@ -20,9 +20,7 @@ Vue.use(Toasted, {
   position: 'top-center'
 })
 
-Vue.use(Persist, {
-  name: 'herald-default-persist'
-})
+Vue.use(Persist)
 
 // Toast 去重
 let lastToastText = null

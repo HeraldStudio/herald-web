@@ -47,7 +47,9 @@
         isLoading: false
       }
     },
-    persist: ['user'],
+    persist: {
+      user: 'herald-default-user'
+    },
     async created() {
       logger.openListeners.push(() => this.isLoading = true)
       logger.doneListeners.push(() => this.isLoading = false)

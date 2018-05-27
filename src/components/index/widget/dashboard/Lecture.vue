@@ -31,7 +31,9 @@
         lecture: null
       }
     },
-    persist: ['lecture'],
+    persist: {
+      lecture: 'herald-default-lecture'
+    },
     created() {
       this.reload()
     },

@@ -38,7 +38,9 @@
         currentSite: null,
       }
     },
-    persist: ['notice'],
+    persist: {
+      notice: 'herald-default-notice'
+    },
     created() {
       this.reload()
       if (/[?&]nid=(\d+)/.test(window.location.search)) {

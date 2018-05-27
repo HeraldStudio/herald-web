@@ -24,6 +24,9 @@
         experiment: []
       }
     },
+    persist: {
+      experiment: 'herald-default-experiment'
+    },
     created() {
       this.reload()
     },

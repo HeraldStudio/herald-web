@@ -29,7 +29,9 @@
         banner: []
       }
     },
-    persist: ['banner'],
+    persist: {
+      banner: 'herald-default-banner'
+    },
     created() {
       this.reload()
     },

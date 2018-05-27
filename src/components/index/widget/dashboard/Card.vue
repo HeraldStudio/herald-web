@@ -56,7 +56,9 @@
         }
       }
     },
-    persist: ['card'],
+    persist: {
+      card: 'herald-default-card'
+    },
     created() {
       this.oldestDate = new Date().getTime()
       this.reload()

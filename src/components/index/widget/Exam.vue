@@ -24,6 +24,9 @@
         exams: null
       }
     },
+    persist: {
+      exams: 'herald-default-exams'
+    },
     created() {
       this.reload()
     },

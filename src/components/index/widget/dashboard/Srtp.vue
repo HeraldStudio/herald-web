@@ -33,7 +33,9 @@
         srtp: null
       }
     },
-    persist: ['srtp'],
+    persist: {
+      srtp: 'herald-default-srtp'
+    },
     created() {
       this.reload()
     },

@@ -6169,6 +6169,10 @@ void-elements@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
 
+vue-component-persist@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vue-component-persist/-/vue-component-persist-1.0.0.tgz#453f324d1d91e56d754f1719c6cf0c4caf1a762b"
+
 vue-datetime@^1.0.0-beta.3:
   version "1.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/vue-datetime/-/vue-datetime-1.0.0-beta.3.tgz#26522e6589b29c5327726435b770e2bdc1f85b86"
@@ -6200,10 +6204,6 @@ vue-loader@^12.1.0:
     vue-hot-reload-api "^2.1.0"
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.2.2"
-
-vue-persist@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/vue-persist/-/vue-persist-0.4.0.tgz#88aeabcdf5c65704363f585e03ba7a591783052c"
 
 vue-router@^2.6.0:
   version "2.8.1"

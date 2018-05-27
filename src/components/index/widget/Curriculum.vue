@@ -52,7 +52,10 @@
         currentDayOfWeek: 1
       }
     },
-    persist: ['curriculum', 'term'],
+    persist: {
+      curriculum: 'herald-default-curriculum', 
+      term: 'herald-default-term'
+    },
     created() {
       this.reload()
     },
