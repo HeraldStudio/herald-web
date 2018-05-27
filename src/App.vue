@@ -363,6 +363,7 @@
         img.download
           width 24px
           height 24px
+          margin-right 10px
 
         img.qr
           filter hue-rotate(-15deg)
