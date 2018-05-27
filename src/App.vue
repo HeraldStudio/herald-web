@@ -220,7 +220,7 @@
   .el-loading-mask
     position fixed !important
     top 60px !important
-    z-index 99999
+    z-index 999999
 
     .el-loading-spinner .path
       stroke var(--color-primary) !important
