@@ -1,7 +1,7 @@
 <template lang='pug'>
-  #app(:class='env')
+  #app(:class='env' v-loading='isLoading')
     .root
-      .header(v-loading='isLoading')
+      .header
         router-link.live2d-wrapper(to='/')
           .live2d-container
             live2d
@@ -217,8 +217,19 @@
   ::-webkit-scrollbar
     display none !important
 
-  .el-loading-spinner .path
-    stroke var(--color-primary) !important
+  .el-loading-mask
+    position fixed !important
+    top 0 !important
+    right 10px !important
+    left auto !important
+    bottom auto !important
+    width 59px !important
+    height 59px !important
+    z-index 9999999 !important
+    background #fff !important
+
+    .el-loading-spinner .path
+      stroke var(--color-primary) !important
 
   .toasted-container.top-center
     // 覆盖vendor原有属性，由于webpack资源重排，不加important覆盖不上
