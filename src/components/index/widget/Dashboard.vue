@@ -78,7 +78,6 @@
       display: block
       white-space: nowrap
       overflow-x: scroll
-      -webkit-overflow-scrolling touch
       box-sizing: border-box
       text-align: center
 
