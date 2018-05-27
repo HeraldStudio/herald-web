@@ -1,7 +1,7 @@
 <template lang='pug'>
   #app(:class='env')
     .root
-      .header(v-if='env != "mina"' v-loading='isLoading')
+      .header(v-loading='isLoading')
         router-link.live2d-wrapper(to='/')
           .live2d-container
             live2d
@@ -360,9 +360,6 @@
       margin 0 auto
       padding 60px 0 0
       overflow scroll
-
-    &.mina .container
-      padding 0
 
     // 强制加固定白底，尤其在微信和小程序中用于屏蔽黑底和微信的提示文字
     &::before
