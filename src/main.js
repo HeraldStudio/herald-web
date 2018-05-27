@@ -28,7 +28,7 @@ Vue.toasted.__show = Vue.toasted.show
 Vue.toasted.show = (text, ...args) => {
   if (text !== lastToastText) {
     lastToastText = text
-    setTimeout(() => lastToastText = null, 5000)
+    setTimeout(() => lastToastText = null, 10000)
     return Vue.toasted.__show(text, ...args)
   }
 }

@@ -86,7 +86,7 @@ module.exports = (conf) => {
         res = {
           success: false,
           code: 599,
-          reason: '请求超时'
+          reason: e
         }
       }
 
