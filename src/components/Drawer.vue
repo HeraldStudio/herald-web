@@ -114,8 +114,10 @@
 </script>
 <style lang="stylus">
 
-  html.drawer-shown body
-    overflow hidden !important
+  html.drawer-shown, html.drawer-shown body
+    overflow hidden
+    position relative
+    height 100%
 
   .slide-left-enter-active, .slide-left-leave-active
     transition transform .3s
