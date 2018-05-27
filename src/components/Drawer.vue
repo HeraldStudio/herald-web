@@ -114,11 +114,8 @@
 </script>
 <style lang="stylus">
 
-  html.drawer-shown, html.drawer-shown body
-    pointer-events none
-
-    .drawer-wrapper
-      pointer-events auto
+  html.drawer-shown body
+    overflow hidden !important
 
   .slide-left-enter-active, .slide-left-leave-active
     transition transform .3s
