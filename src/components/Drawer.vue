@@ -118,8 +118,9 @@
   // 手机环境下，mask 覆盖了整个页面，不能允许滚动，否则体验不好
   html, body
     height 100%
+    
+  html.drawer-shown, html.drawer-shown body
     overflow auto
-    -webkit-overflow-scrolling touch
 
   .slide-left-enter-active, .slide-left-leave-active
     transition transform .3s
