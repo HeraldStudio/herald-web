@@ -219,7 +219,7 @@
 
   .el-loading-mask
     position fixed !important
-    top 60px !important
+    top 80px !important
     z-index 999999
 
     .mina &
