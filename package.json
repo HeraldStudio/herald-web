@@ -5,10 +5,8 @@
   "author": "Vhyme <vhyme@live.cn>",
   "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
-    "start": "node build/dev-server.js",
-    "build": "node build/build.js && rm -rf dist && mv dist-tmp dist",
-    "lint": "eslint --ext .js,.vue src"
+    "dev": "yarn; node build/dev-server.js",
+    "build": "yarn; node build/build.js && rm -rf dist && mv dist-tmp dist"
   },
   "dependencies": {
     "assert": "^1.4.1",
