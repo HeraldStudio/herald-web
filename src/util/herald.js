@@ -83,7 +83,6 @@ module.exports = (conf) => {
       try {
         res = await config.requestDelegate(url, method.toUpperCase(), headers, body)
       } catch (e) {
-        console.error(e)
         res = {
           success: false,
           code: 599,

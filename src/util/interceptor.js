@@ -20,7 +20,6 @@ window.open = (href, target) => {
 
 // 所有对 a 内部的点击，截获并转换成上面的假的 window.open 函数
 document.addEventListener('click', ({ target: node }) => {
-  console.log('fake a')
   while (node && node.nodeName.toLowerCase !== 'a' && node.nodeName.toLowerCase !== 'html') {
     node = node.parentNode
   }

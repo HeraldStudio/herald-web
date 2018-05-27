@@ -121,7 +121,6 @@
 
   .slide-left-enter-active, .slide-left-leave-active
     transition transform .3s
-    box-shadow 0 0 10px rgba(#000, .2)
 
   .slide-left-enter, .slide-left-leave-to
     transform translateX(100%)
