@@ -222,6 +222,9 @@
     top 60px !important
     z-index 999999
 
+    .mina &
+      top 0 !important
+
     .el-loading-spinner .path
       stroke var(--color-primary) !important
 

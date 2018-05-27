@@ -124,10 +124,9 @@
 
   .slide-left-enter-active, .slide-left-leave-active
     transition .3s
+    box-shadow 0 0 20px #000
 
   .slide-left-enter, .slide-left-leave-to
-    opacity 0
-    -webkit-backdrop-filter none
     transform translateX(100%)
 
   .drawer-wrapper
