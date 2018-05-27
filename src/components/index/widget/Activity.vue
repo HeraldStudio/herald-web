@@ -8,7 +8,8 @@
           .tag.upcoming(v-if='activity.startTime > now') 未开始
           .tag.ended(v-if='activity.endTime <= now') 已结束
           span {{ activity.title }}
-        img(:src='activity.pic' ondragstart="return false")
+        .img-container
+          img(:src='activity.pic' ondragstart="return false")
         .activity-content {{ activity.content }}
 
 </template>
@@ -125,14 +126,33 @@
           &.ended
             background #ccc
 
-        img
-          border-radius 3px
-          width 100%
-          object-fit cover
-          -webkit-user-select: none
-          -moz-user-select: none
-          -ms-user-select: none
-          user-select: none
+        .img-container
+          position relative
+          margin 20px 0 0
+          // overflow hidden
+
+          &::after
+            display block
+            content ' '
+            width 100%
+            padding-top 40%
+
+          img
+            position absolute
+            left 0
+            right 0
+            top 0
+            bottom 0
+            width 100%
+            height 100%
+            object-fit cover
+            -webkit-user-select: none
+            -moz-user-select: none
+            -ms-user-select: none
+            user-select: none
+            cursor pointer
+            border-radius 3px
+            box-shadow 0 10px 15px rgba(#000, .1)
 
         .activity-content
           color var(--color-text-regular)

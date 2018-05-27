@@ -118,7 +118,7 @@
         .img-container
           position relative
           margin 20px 20px 0
-          overflow hidden
+          // overflow hidden
 
           &::after
             display block
@@ -141,6 +141,7 @@
             user-select: none
             cursor pointer
             border-radius 3px
+            box-shadow 0 10px 15px rgba(#000, .1)
 
         .text-container
           display flex
