@@ -1,7 +1,10 @@
 import herald from './util/herald.js'
-import isOnline from 'is-online'
 import { Log } from './logger'
+import axios from 'axios'
 import Vue from 'vue'
+
+const isOnline = () => axios.get('https://myseu.cn/', { timeout: 1000 })
+  .then(() => true, () => false)
 
 const H = herald({
   onLogin (token) {},
