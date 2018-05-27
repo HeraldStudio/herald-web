@@ -42,7 +42,7 @@
         if (hasUrl) {
 
           // iOS WebApp 端，需要用 location.href 赋值才能在 Safari 中打开，否则将会在 WebApp 中打开，导致无法返回
-          if (window.__herald_env === 'webapp') {
+          if (window.__herald_env === 'webapp' || window.__herald_env === 'wx') {
             window.location.href = await H.api.activity.put({ aid })
           }
           
@@ -152,7 +152,7 @@
             user-select: none
             cursor pointer
             border-radius 3px
-            box-shadow 0 10px 15px rgba(#000, .1)
+            box-shadow 0 5px 15px rgba(#000, .1)
 
         .activity-content
           color var(--color-text-regular)
