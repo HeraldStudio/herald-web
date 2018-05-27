@@ -21,7 +21,7 @@
                 .amount(v-for='amount in [50, 100, 200, 300, 500]' :class='{ selected: charge.amount === amount }' @click='charge.amount = amount') {{ amount }}
               input(placeholder='金额' v-model='charge.amount')
               input.password(placeholder='六位查询密码' type='password' v-model='charge.password')
-              button(@click.stop='confirmCharge()') 确认充值
+              button(@click='confirmCharge()') 确认充值
       ul.detail-list
         li(v-for='item in card.detail')
           .top
@@ -31,7 +31,7 @@
             .right {{ formatTimeNatural(item.time) }}
         li.prev-day
           .hint {{ formatDateNatural(oldestDate) }}至今 总支出 {{ totalPayments.toFixed(2) }}
-          button(@click.stop='loadPrevDay()' :class='{ loading: loading }') {{ loading ? '...' : '加载前一天' }}
+          button(@click='loadPrevDay()' :class='{ loading: loading }') {{ loading ? '...' : '加载前一天' }}
 
 </template>
 <script>

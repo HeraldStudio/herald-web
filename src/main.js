@@ -3,9 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import interceptor from './util/interceptor'
 import Toasted from 'vue-toasted'
 import Persist from 'vue-persist'
-import interceptor from './util/interceptor'
 
 Vue.config.productionTip = false
 

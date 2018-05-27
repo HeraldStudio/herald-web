@@ -2,7 +2,6 @@
 
   .markdown-container
     .markdown(v-if='html' v-html='html')
-    .markdown(v-else) 加载中…
 
 </template>
 <script>
@@ -26,7 +25,7 @@
     },
     methods: {
       render() {
-        this.html = marked(this.markdown.replace(/\*\*/g, ' ** '))
+        this.html = this.markdown && marked(this.markdown.replace(/\*\*/g, ' ** '))
       }
     }
   }

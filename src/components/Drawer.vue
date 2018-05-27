@@ -1,13 +1,13 @@
 <template lang="pug">
 
   .drawer-wrapper
-    .click-area(@click.stop='toggle()')
+    .click-area(@click='toggle()')
       slot
     transition(name="slide-left")
       //- 这里的空点击事件是防止 drawer 里面的点击事件被冒泡上来导致关闭 drawer
-      .drawer(v-if='drawer' @click.stop='' :class='{ underlay: underlay }' :style='"z-index: " + (10000 + index)')
+      .drawer(v-if='drawer' @click='' :class='{ underlay: underlay }' :style='"z-index: " + (10000 + index)')
         .title-bar
-          .close-btn(@click.stop='close()') ‹
+          .close-btn(@click='close()') ‹
           .title {{ title }}
         .drawer-view
           slot(name='content')
@@ -117,10 +117,10 @@
   // PC 和 Pad 环境下，mask 为右侧栏，仍需要允许滚动
   // 手机环境下，mask 覆盖了整个页面，不能允许滚动，否则体验不好
   html.drawer-shown, html.drawer-shown body
-    overflow visible
+    overflow visible 
 
     @media screen and (max-width: 600px)
-      overflow hidden
+      overflow hidden !important
 
   .slide-left-enter-active, .slide-left-leave-active
     transition .3s

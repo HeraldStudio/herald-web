@@ -1,7 +1,7 @@
 <template>
   <button
     class='confirm-button' :class='{ confirming: confirm }'
-    @click.stop='onClick()'
+    @click='onClick()'
     @mouseleave='cancel()'>
     <slot v-if='!confirm'></slot>
     <span v-else>{{ confirmText }}</span>

@@ -4,7 +4,7 @@
       .header(v-if='env != "mina"')
         router-link.live2d-wrapper(to='/')
           .live2d-container
-            live2d(:isLoading='isLoading')
+            live2d
           img.logo(src='static/images/logo.png')
         ul.nav
           drawer(title='小猴偷米微信端 / App') 
@@ -19,11 +19,16 @@
                   button iOS 8.0+
               hr
               img.qr(src='static/images/qrcode.jpg')
-      .container
+      .container(v-loading='isLoading')
         router-view(:user='user')
 </template>
 
 <script>
+  import Vue from 'vue'
+  import { Loading } from 'element-ui'
+  import 'element-ui/lib/theme-chalk/index.css'
+  Vue.use(Loading)
+
   import logger from './logger'
   import H from './api'
   import drawer from '@/components/Drawer.vue'
@@ -33,7 +38,7 @@
 
   export default {
     name: 'app',
-    components: {
+    components: { 
       live2d, drawer, status
     },
     data() {
@@ -41,16 +46,6 @@
         user: null,
         env: '',
         isLoading: false
-      }
-    },
-    watch: {
-      isLoading() {
-        // 将 Ajax 状态发送给小程序端显示
-        if (this.env === 'mina') {
-          wx.miniProgram.postMessage({
-            data: this.isLoading ? 'showNavigationBarLoading' : 'hideNavigationBarLoading'
-          })
-        }
       }
     },
     persist: ['user'],
@@ -221,6 +216,14 @@
 
   ::-webkit-scrollbar
     display none !important
+
+  .el-loading-mask
+    position fixed !important
+    top 60px !important
+    z-index 99999
+
+    .el-loading-spinner .path
+      stroke var(--color-primary) !important
 
   .toasted-container.top-center
     // 覆盖vendor原有属性，由于webpack资源重排，不加important覆盖不上

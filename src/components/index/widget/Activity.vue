@@ -38,18 +38,28 @@
         this.activities = await H.api.activity({ pagesize: 20 })
       },
       async click({ hasUrl, aid }) {
-        // 根据 Safari 安全机制，不允许异步打开窗口，必须先打开，然后异步设置 URL
-        // https://blog.csdn.net/wgrzhuaq/article/details/7821725
         if (hasUrl) {
-          let win = window.open('about:blank', '_blank')
-          let url = await H.api.activity.put({ aid })
 
-          // 由于 interceptor.js 的 hook，window.open 可能返回 null（小程序情况）
-          // 此时，直接调用 window.open 来触发 hook 中的复制链接
-          if (win) {
-            win.location = url
-          } else {
-            window.open(url)
+          // iOS WebApp 端，需要用 location.href 赋值才能在 Safari 中打开，否则将会在 WebApp 中打开，导致无法返回
+          if (window.__herald_env === 'webapp') {
+            window.location.href = await H.api.activity.put({ aid })
+          }
+          
+          // 其他情况下，需要用 window.open 在新窗打开
+          // 根据 WS3 API，必须 PUT 才能拿到链接，因此需要先获取到链接再异步打开窗口
+          // 根据 Safari 安全机制，不允许异步打开窗口，必须先打开，然后异步设置 URL
+          // https://blog.csdn.net/wgrzhuaq/article/details/7821725
+          else {
+            let win = window.open('about:blank', '_blank')
+            let url = await H.api.activity.put({ aid })
+
+            // 由于 interceptor.js 的 hook，window.open 可能返回 null（小程序情况）
+            // 此时，直接调用 window.open 来触发 hook 中的复制链接
+            if (win) {
+              win.location = url
+            } else {
+              window.open(url)
+            }
           }
         } else {
           this.$toasted.show('该活动没有详情页面')
