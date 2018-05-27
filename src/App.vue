@@ -4,7 +4,7 @@
       .header(v-if='env != "mina"')
         router-link.live2d-wrapper(to='/')
           .live2d-container
-            live2d
+            live2d(:isLoading='isLoading')
           img.logo(src='static/images/logo.png')
         ul.nav
           drawer(title='小猴偷米微信端 / App') 
@@ -19,15 +19,15 @@
                   button iOS 8.0+
               hr
               img.qr(src='static/images/qrcode.jpg')
-      .container(v-loading='isLoading')
+      .container
         router-view(:user='user')
 </template>
 
 <script>
-  import Vue from 'vue'
-  import { Loading } from 'element-ui'
-  import 'element-ui/lib/theme-chalk/index.css'
-  Vue.use(Loading)
+  // import Vue from 'vue'
+  // import { Loading } from 'element-ui'
+  // import 'element-ui/lib/theme-chalk/index.css'
+  // Vue.use(Loading)
 
   import logger from './logger'
   import H from './api'
