@@ -10,8 +10,7 @@ import offline from 'offline-plugin/runtime'
 
 offline.install({
   responseStrategy: 'network-first',
-  autoUpdate: true,
-  AppCache: false
+  autoUpdate: true
 })
 
 Vue.config.productionTip = false
