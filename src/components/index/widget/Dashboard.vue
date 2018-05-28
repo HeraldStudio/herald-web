@@ -5,6 +5,7 @@
       .name {{ user ? user.name : '加载中' }}
       .identity {{ user ? user.identity : '…' }}
       img.icon(@click='logout()' src='static/images/logout.png')
+    admin(v-if='user && user.admin' :user='user')
     .dashboard-container(v-if='user')
       card
       pe(v-if='/本科/.test(user.identity)')
@@ -17,6 +18,7 @@
 
 <script>
   import widget from './Widget.vue'
+  import admin from './dashboard/Admin.vue'
   import card from './dashboard/Card.vue'
   import pe from './dashboard/Pe.vue'
   import lecture from './dashboard/Lecture.vue'
@@ -28,6 +30,7 @@
   export default {
     props: ['user'],
     components: {
+      admin,
       card, pe, lecture, srtp, grade, library,
       widget,
     },
@@ -47,8 +50,7 @@
 
     .info-container
       padding 0 5px 15px
-      border-bottom 1px solid var(--color-divider)
-      margin 0 10px 20px
+      margin 0 10px
       display flex
       flex-direction row
       align-items: center
@@ -80,6 +82,8 @@
       overflow-x: scroll
       box-sizing: border-box
       text-align: center
+      border-top 1px solid var(--color-divider)
+      padding-top 20px
 
       > *
         display: inline-block

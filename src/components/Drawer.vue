@@ -114,10 +114,11 @@
 </script>
 <style lang="stylus">
 
-  html.drawer-shown, html.drawer-shown body
-    overflow hidden
-    position relative
-    height 100%
+  @media screen and (max-width: 600px)
+    html.drawer-shown, html.drawer-shown body
+      overflow hidden
+      position relative
+      height 100%
 
   .slide-left-enter-active, .slide-left-leave-active
     transition transform .3s

@@ -1,7 +1,7 @@
 <template lang='pug'>
   .admin-page#monitor
     transition-group(name='slide')
-      .subcontainer.dashboard(key='connection' v-if='connection && redis')
+      .subcontainer.dashboard(key='connection' v-if='connection && redis' :class='{ stale: connection && connection.isStale || redis && redis.isStale }')
         .column
           .label 系统开机
           .content {{ this.redis.server.uptimeInDays }}天
@@ -29,13 +29,13 @@
             .name {{ spider }}
             confirm-button.accept(@click='acceptSpider(spider)' confirm-text='确认接受') 接受
             confirm-button.reject(@click='rejectSpider(spider)' confirm-text='确认拒绝') 拒绝
-      .subcontainer.upstream(key='upstream' v-if='upstream')
+      .subcontainer.upstream(key='upstream' v-if='upstream' :class='{ stale: upstream && upstream.isStale }')
         .subtitle 上游健康状况
         .upstreams
           a.upstream(v-for='site in upstream' :class='{ healthy: site.health }' :href='site.url' target='_blank')
             .name {{ site.name }}
             .timeout {{ site.timeout === -1 ? '超时' : site.timeout + 'ms' }}
-      .subcontainer.periods(key='daily' v-if='daily')
+      .subcontainer.periods(key='daily' v-if='daily' :class='{ stale: daily && daily.isStale }')
         .subtitle 24 小时接口调用统计
         .summary
           .example-block.result-2
@@ -59,7 +59,7 @@
             //- .users-container
             //-   .users(:style='{ height: period.userCount / maxUserCount * 100 + "%" }')
             //- .user-count {{ period.userCount || '' }}
-      .subcontainer.users(key='user' v-if='user')
+      .subcontainer.users(key='user' v-if='user' :class='{ stale: user && user.isStale }')
         .subtitle 用户统计
         table
           tr
@@ -110,9 +110,15 @@
         upstream: null,
         daily: null,
         user: null,
-        interval: null,
-        pulling: false
+        interval: null
       }
+    },
+    persist: {
+      connection: 'herald-default-monitor-connection',
+      redis: 'herald-default-monitor-redis',
+      upstream: 'herald-default-monitor-upstream',
+      daily: 'herald-default-monitor-daily',
+      user: 'herald-default-monitor-user'
     },
     computed: {
       totalConnections () {
@@ -154,15 +160,6 @@
         this.user = await H.api.admin.maintenance.user()
         this.daily = await H.api.admin.maintenance.daily()
         this.upstream = await H.api.health()
-      },
-      async pull () {
-        this.$toasted.show('正在请求更新代码…')
-        try {
-          await H.api.admin.maintenance.pull()
-        } finally {
-          this.$toasted.show('代码已更新，请稍等片刻后刷新页面')
-          this.pulling = false
-        }
       },
       generateDescription(route, result) {
         return [
