@@ -5867,9 +5867,9 @@ void-elements@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
 
-vue-component-persist@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/vue-component-persist/-/vue-component-persist-1.0.0.tgz#453f324d1d91e56d754f1719c6cf0c4caf1a762b"
+vue-component-persist@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/vue-component-persist/-/vue-component-persist-1.1.2.tgz#51cf81c439e64edc97ebbbf754c0d560e3524719"
 
 vue-datetime@^1.0.0-beta.3:
   version "1.0.0-beta.3"

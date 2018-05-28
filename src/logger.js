@@ -1,6 +1,8 @@
 export class Log {
-  format = ''
-  objects = []
+  constructor() {
+    this.format = ''
+    this.objects = []
+  }
 
   str(str) {
     this.format += ' %s '

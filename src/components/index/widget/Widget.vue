@@ -1,7 +1,7 @@
 <template lang="pug">
 
   transition(name='slide')
-    .widget(v-if='show')
+    .widget(v-if='show' :class='{ stale: isStale }')
       slot
 
 </template>
@@ -12,7 +12,8 @@
       show: {
         default: true
       },
-      title: String
+      title: String, 
+      isStale: Boolean
     },
     data: () => ({})
   }

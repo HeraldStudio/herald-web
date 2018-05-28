@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  widget.exam(title='考试' :show='exams && exams.length')
+  widget.exam(title='考试' :show='exams && exams.length' :isStale='exams && exams.isStale')
     ul.detail-list
       li(v-for='item in exams')
         .top

@@ -1,6 +1,7 @@
 import herald from './util/herald.js'
 import { Log } from './logger'
 import axios from 'axios'
+import Vue from 'vue'
 
 const H = herald({
   onLogin (token) {},

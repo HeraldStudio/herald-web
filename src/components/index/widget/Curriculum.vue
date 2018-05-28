@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  widget.curriculum(title='课程表' :show='curriculum')
+  widget.curriculum(title='课程表' :show='curriculum' :isStale='curriculum && curriculum.isStale')
     .week-picker
       .prev(@click='prevTerm()') ‹
       .cur(title='点击回到本学期' @click='reload()') {{ curriculum.term && curriculum.term.code || '…' }}

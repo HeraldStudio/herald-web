@@ -20,7 +20,15 @@ Vue.use(Toasted, {
   position: 'top-center'
 })
 
-Vue.use(Persist)
+Vue.use(Persist, {
+  read: k => {
+    let data = JSON.parse(localStorage.getItem(k))
+    try {
+      data.data.isStale = true
+    } catch (e) {}
+    return data
+  }
+})
 
 // Toast 去重
 let lastToastText = null

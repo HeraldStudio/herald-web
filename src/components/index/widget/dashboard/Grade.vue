@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  item(title='成绩' :name='isGraduate ? "成绩" : "绩点"' :value='gpa && (gpa.gpa || gpa.score || "暂无")')
+  item(title='成绩' :name='isGraduate ? "成绩" : "绩点"' :value='gpa && (gpa.gpa || gpa.score || "暂无")' :isStale='gpa && gpa.isStale')
     div(v-if='gpa')
       ul.info-bar
         li.info(v-if="!isGraduate")

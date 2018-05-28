@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  item(title='图书馆' name='借书' :value='books && books.length')
+  item(title='图书馆' name='借书' :value='books && books.length' :isStale='books && books.isStale')
     .library
       ul.detail-list
         li(v-for='item in books')

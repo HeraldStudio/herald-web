@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  .dashboard-item-wrapper
+  .dashboard-item-wrapper(:class='{ stale: isStale }')
     drawer(:title='title' @open='$emit("drawerOpen")')
       .dashboard-item
         .name {{ name }}
@@ -15,7 +15,7 @@
 
   export default {
     components: { drawer },
-    props: ['name', 'value', 'title'],
+    props: ['name', 'value', 'title', 'isStale'],
     data() {
       return {}
     }

@@ -218,6 +218,38 @@
   ::-webkit-scrollbar
     display none !important
 
+  .stale
+    position relative
+
+  .stale::after
+    content ''
+    display block
+    position absolute
+    right 3px
+    top 3px
+    min-width 6px
+    max-width 6px
+    min-height 6px
+    max-height 6px
+    border-radius 3px
+    box-sizing border-box
+    background var(--color-warning-light)
+    padding 0
+    color var(--color-warning-dark)
+    font-size 10px
+    transition .5s
+    transition-property max-width, max-height
+    overflow hidden
+
+  .stale:hover::after
+    border-left-width 0
+    border-top-width 0
+    padding 0 3px
+    background var(--color-warning-light)
+    content '缓存'
+    max-width 100px 
+    max-height 30px
+
   .el-loading-mask
     position fixed !important
     top 0 !important

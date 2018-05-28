@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  item(title='跑操和体测' name='跑操' :value='pe && pe.count')
+  item(title='跑操和体测' name='跑操' :value='pe && pe.count' :isStale='pe && pe.isStale')
     div(v-if='pe')
       ul.info-bar
         li.info
