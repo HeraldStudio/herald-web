@@ -67,17 +67,14 @@
 
   .widget.login
     align-items center
-    padding 50px 0
+    padding 150px 0
 
     .live2d-container
       position relative
       width 100px
       height 100px
       filter hue-rotate(-15deg)
-      margin-bottom 10px
-
-      @media screen and (max-width: 600px)
-        margin 50px 0
+      margin-bottom 25px
 
     .hint
       margin-bottom 30px

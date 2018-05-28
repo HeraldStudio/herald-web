@@ -2,13 +2,14 @@
 
   widget.curriculum(title='课程表' :show='curriculum' :isStale='curriculum && curriculum.isStale')
     .week-picker
+      .switch(@click='listView = !listView') {{ listView ? '列表视图' : '周视图' }}
       .prev(@click='prevTerm()') ‹
-      .cur(title='点击回到本学期' @click='reload()') {{ curriculum.term && curriculum.term.code || '…' }}
+      button.cur(title='点击回到本学期' @click='reload()') {{ curriculum.term && curriculum.term.code || '…' }}
       .next(@click='nextTerm()') ›
-      .prev(@click='prevWeek()') ‹
-      .cur(title='点击回到本周' @click='displayWeek = currentWeek') 第 {{ displayWeek }} 周
-      .next(@click='nextWeek()') ›
-    div.curriculum-container
+      .prev(v-if='!listView' @click='prevWeek()') ‹
+      button.cur(v-if='!listView' title='点击回到本周' @click='displayWeek = currentWeek') 第 {{ displayWeek }} 周
+      .next(v-if='!listView' @click='nextWeek()') ›
+    div.curriculum-container(v-if='!listView')
       .week-header(v-if='fixedClasses.length || !floatClasses.length')
         .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount" :class='{ current: displayWeek == currentWeek && i + 1 == currentDayOfWeek }') {{ item }}
       .curriculum-list(v-if='fixedClasses.length || !floatClasses.length' :class='{ empty: !fixedClasses.length }')
@@ -21,7 +22,15 @@
           .teacher {{ item.teacherName }}
           .place {{ item.location }}
         .empty(v-if='!fixedClasses.length') 暂无课程
-    ul.detail-list(v-if='floatClasses && floatClasses.length')
+    ul.detail-list(v-if='listView')
+      li(v-for='item in upcomingClasses')
+        .top
+          .left {{ item.courseName }}
+          .right {{ item.teacherName }}
+        .bottom
+          .left {{ formatPeriodNatural(item.startTime, item.endTime) }}
+          .right {{ item.location }}
+    ul.detail-list(v-if='!listView && floatClasses && floatClasses.length')
       .hint 以下课程无法确定上课时间：
       li(v-for='item in floatClasses')
         .top
@@ -35,6 +44,7 @@
 <script>
 
   import H from '@/api'
+  import formatter from '@/util/formatter'
   import widget from './Widget.vue'
   import drawer from '@/components/Drawer.vue'
 
@@ -49,7 +59,8 @@
         },
         displayWeek: 1,
         currentWeek: 1,
-        currentDayOfWeek: 1
+        currentDayOfWeek: 1,
+        listView: false
       }
     },
     persist: {
@@ -81,6 +92,7 @@
       }
     },
     methods: {
+      ...formatter,
       async reload(preferredTerm = '') {
         this.term = await H.api.term()
         this.curriculum = await H.api.curriculum({ term: preferredTerm })
@@ -112,6 +124,20 @@
           this.displayWeek % 2 !== ['odd', 'even'].indexOf(k.flip)
         )
       },
+      upcomingClasses() {
+        let now = Date.now()
+        console.log(this.curriculum.curriculum)
+        return this.curriculum.curriculum
+          .filter(k => k.events)
+          .map(k => k.events.map(e => {
+            e = Object.assign(e, k)
+            delete e.events
+            return e
+          }))
+          .reduce((a, b) => a.concat(b), [])
+          .sort((a, b) => a.startTime - b.startTime)
+          .filter(k => k.endTime > now)
+      },
       weekdayCount() {
         return Math.max(5, this.fixedClasses.map(k => k.dayOfWeek).reduce((a, b) => Math.max(a, b), 0))
       },
@@ -137,13 +163,20 @@
     .week-picker
       display flex
       flex-direction row
-      justify-content space-around
+      justify-content center
       -webkit-user-select: none
       -moz-user-select: none
       -ms-user-select: none
       user-select: none
-      padding 20px 15px
+      padding 10px 10px 20px 25px
       align-items center
+
+      .switch
+        flex 1 1 0
+        text-align left
+        font-size 15px
+        font-weight bold
+        color var(--color-text-bold)
 
       .cur
         cursor pointer
@@ -159,6 +192,7 @@
         color #ccc
         font-size 16px
         font-weight bold
+        padding 0 10px
 
     .curriculum-container
       width 100%

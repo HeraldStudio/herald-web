@@ -45,6 +45,9 @@
     padding 20px 15px
     border-bottom 1px solid var(--color-divider)
 
+    @media screen and (max-width: 600px)
+      border-bottom-width 10px
+
     .empty
       display block
       text-align center
@@ -133,7 +136,7 @@
         .top .right, .bottom .left
           font-size 13px
 
-        .bottom .left
+        .top .right
           font-weight bold
 
         .bottom .right

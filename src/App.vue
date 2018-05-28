@@ -403,7 +403,7 @@
 
     .container
       margin 0 auto
-      padding 60px 0 0
+      border-top 60px solid var(--color-divider)
       overflow scroll
 
     // 强制加固定白底，尤其在微信和小程序中用于屏蔽黑底和微信的提示文字
@@ -415,6 +415,12 @@
       right 0
       bottom 0
       z-index -999
-      background #fff
+      background var(--color-divider)
+
+    &.wx .header
+      display none
+
+    &.wx .container
+      border-top 0
 
 </style>

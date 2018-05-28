@@ -5,7 +5,7 @@
       li(v-for='item in exams')
         .top
           .left {{ item.courseName }}
-          .right {{ item.daysLeft ? '还有 ' + item.daysLeft + ' 天' : '今日考试' }}
+          .right {{ item.daysLeft ? item.daysLeft + ' 天后考试' : '今日考试' }}
         .bottom
           .left {{ formatPeriodNatural(item.startTime, item.endTime) }}
           .right {{ item.location }}

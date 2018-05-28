@@ -46,7 +46,7 @@
 <style lang="stylus">
 
   .admin-container
-    padding 0 15px 15px
+    padding 0 10px 15px
     display flex
     flex-direction row
     align-items center

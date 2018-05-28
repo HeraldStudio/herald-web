@@ -53,7 +53,7 @@
     display flex
     flex-direction column
     align-items stretch
-    margin-bottom 50px
+    border-bottom 50px solid var(--color-divider)
 
     &::before
       content '从左侧选择功能进行查看'
@@ -66,6 +66,7 @@
       display flex
       align-items center
       justify-content center
+      background #fff
       color var(--color-divider)
       font-size 20px
 

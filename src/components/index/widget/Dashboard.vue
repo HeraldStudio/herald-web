@@ -46,10 +46,10 @@
 <style lang="stylus">
 
   .widget.dashboard
-    padding 20px 10px
+    padding 20px 15px
 
     .info-container
-      padding 0 5px 15px
+      padding 0 0 15px
       margin 0 10px
       display flex
       flex-direction row

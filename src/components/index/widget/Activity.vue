@@ -89,9 +89,6 @@
       transition .5s
       border-bottom 1px solid var(--color-divider)
 
-      @media screen and (max-width: 600px)
-        border-bottom 10px solid var(--color-divider)
-
       .activity-container
         display flex
         flex-direction column

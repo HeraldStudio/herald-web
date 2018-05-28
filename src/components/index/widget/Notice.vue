@@ -111,7 +111,9 @@
       &:not(.selected)
         background none
         color var(--color-text-bold)
-        font-weight normal
+
+        .title
+          font-weight normal
 
     .important .top .left
       font-weight bold
