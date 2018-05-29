@@ -27,8 +27,7 @@
         form: {
           cardnum: '',
           password: '',
-          gpassword: '',
-          platform: 'web'
+          gpassword: ''
         },
         loading: false
       }
@@ -47,10 +46,15 @@
         }
 
         this.loading = true
+        this.form.platform = 'web'
+
         if (!await H.auth.post(this.form)) {
           this.$toasted.show('登录出现错误，请重试')
           this.form.password = ''
           this.form.gpassword = ''
+        } else {
+          localStorage.setItem('herald-wlan-username', this.form.cardnum)
+          localStorage.setItem('herald-wlan-password', new Buffer(this.form.password).toString('base64'))
         }
         this.loading = false
       }

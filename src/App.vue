@@ -20,6 +20,7 @@
               hr
               img.qr(src='static/images/qrcode.jpg')
       .container
+        seuLogin(:isLoading='isLoading')
         router-view(:user='user')
 </template>
 
@@ -34,11 +35,12 @@
   import drawer from '@/components/Drawer.vue'
   import live2d from './components/Live2D.vue'
   import status from './components/Status.vue'
+  import seuLogin from './components/SeuLogin.vue'
 
   export default {
     name: 'app',
     components: { 
-      live2d, drawer, status
+      live2d, drawer, status, seuLogin
     },
     data() {
       return {
