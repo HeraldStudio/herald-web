@@ -136,7 +136,7 @@
           }))
           .reduce((a, b) => a.concat(b), [])
           .sort((a, b) => a.startTime - b.startTime)
-          .filter(k => k.endTime > now)
+          .filter(k => k.endTime > now && k.endTime < now + 3 * 24 * 60 * 60 * 1000)
       },
       weekdayCount() {
         return Math.max(5, this.fixedClasses.map(k => k.dayOfWeek).reduce((a, b) => Math.max(a, b), 0))
