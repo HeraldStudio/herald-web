@@ -20,7 +20,7 @@
           .content {{ gpa.credits.total }}
         li.info(v-if="isGraduate")
           .title 应修学分
-          .content {{ gpa.credits.total }}
+          .content {{ gpa.credits.required }}
       ul.info-bar.predict(v-if="!isGraduate")
         li.info
           .title 校内估算
@@ -35,6 +35,13 @@
           .info
             .name {{ k.courseName }}
             .grade {{ k.score }} ({{ k.courseType + k.credit + '学分' }})
+          .tube(:style='"width: " + percentageScore(k) + "%"')
+      ul.detail-list(v-if="isGraduate" v-for='item in gpa.detail')
+        .section 第 {{ item.semester }} 学期
+        li.active(v-for='k in item.courses')
+          .info
+            .name {{ k.courseName }}
+            .grade {{ k.score }} ({{ k.scoreType + k.credit + '学分' }})
           .tube(:style='"width: " + percentageScore(k) + "%"')
 
 </template>
