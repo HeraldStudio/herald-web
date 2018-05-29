@@ -134,7 +134,7 @@
           .map(k => k.credit).reduce((a, b) => a + b, 0)
       },
       predictSEU() {
-        let { weightedGpa, credit } = Object.values(this.selected).map(k => ({
+        let { weightedGpa, credit } = this.selected.map(k => ({
           weightedGpa: this.gpaSEU(k) * k.credit,
           credit: k.credit
         })).reduce((a, b) => ({
@@ -147,7 +147,7 @@
         return (credit && weightedGpa / credit).toFixed(3)
       },
       predictWES() {
-        let { weightedGpa, credit } = Object.values(this.selected).map(k => ({
+        let { weightedGpa, credit } = this.selected.map(k => ({
           weightedGpa: this.gpaWES(k) * k.credit,
           credit: k.credit
         })).reduce((a, b) => ({
