@@ -551,9 +551,6 @@
         border-top 1px solid var(--color-divider)
         padding-top 10px
 
-    .drawer-view ul.detail-list
-      padding 0
-
     ul.detail-list
       width 100%
       margin 0

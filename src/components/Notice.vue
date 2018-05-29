@@ -22,12 +22,11 @@
 
   import H from '@/api'
   import formatter from '@/util/formatter'
-  import drawer from '@/components/Drawer'
   import markdown from '@/components/Markdown'
 
   export default {
     props: ['user'],
-    components: { drawer, markdown },
+    components: { markdown },
     data() {
       return {
         notice: [],
