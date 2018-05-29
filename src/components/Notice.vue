@@ -1,12 +1,12 @@
 <template lang="pug">
 
-  widget.notice(title='通知公告')
+  .widget.notice(title='通知公告')
     ul.info-bar
       li.info(v-for='site in sites' @click='currentSite = site' :class='{ selected: currentSite == site }')
         .title {{ site }}
     ul.detail-list
       li(v-for='item in filteredNotice' :key='item.title' :class='{ important: item.isImportant }')
-        drawer(title='通知内容' @open='loadMarkdown(item)')
+        a(:href='viewLink(item)')
           .top
             .left
               .tag.important(v-if='item.isImportant') 重要
@@ -15,22 +15,19 @@
             .right {{ formatDateNatural(item.time) }}
           .bottom(v-if='item.category')
             .left {{ item.category }}
-          .content(slot='content')
-            markdown(:markdown='item.markdown')
     .empty(v-if='!filteredNotice || !filteredNotice.length') 暂无通知
 
 </template>
 <script>
 
   import H from '@/api'
-  import widget from './Widget.vue'
   import formatter from '@/util/formatter'
   import drawer from '@/components/Drawer'
   import markdown from '@/components/Markdown'
 
   export default {
     props: ['user'],
-    components: { drawer, widget, markdown },
+    components: { drawer, markdown },
     data() {
       return {
         notice: [],
@@ -86,17 +83,16 @@
           srtpId: k.id
         }))).sort((a, b) => b.time - a.time)
       },
-      async loadMarkdown(notice) {
+      viewLink(notice) {
         if (notice.isAttachment) {
-          notice.markdown = `[下载附件](${notice.url})`
-        } else if (notice.site !== 'SRTP') {
-          let res = await H.api.notice.post(notice)
-          notice.markdown = res
+          return notice.url
+        } else if (notice.site === 'SRTP') {
+          return '#/notice/competition/' + notice.srtpId
+        } else if (notice.nid != null) {
+          return '#/notice/' + notice.nid
         } else {
-          let res = await H.api.srtp.competition.post({ id: notice.srtpId })
-          notice.markdown = res
+          return '#/notice/url/' + encodeURIComponent(notice.url)
         }
-        this.notice = this.notice.slice()
       }
     }
   }

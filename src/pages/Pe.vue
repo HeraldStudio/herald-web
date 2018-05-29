@@ -1,47 +1,42 @@
 <template lang="pug">
 
-  item(title='跑操和体测' name='跑操' :value='pe && pe.count' :isStale='pe && pe.isStale')
-    div(v-if='pe')
-      ul.info-bar
-        li.info
-          .title 跑操次数
-          .content {{ pe.count }}
-        li.info
-          .title 剩余次数
-          .content {{ Math.max(0, 45 - pe.count) }}
-        li.info
-          .title 剩余天数
-          .content {{ pe.remainDays }}
-      ul.pe-list
-        li.prev
-          .btn(@click='prevWeek()') ‹
-        li(v-for='item, i in curWeek')
-          .date(:class='{ highlight: item.hasExercise }')
-            span.month(v-if='i == 0') {{ item.date.getMonth() + 1 }}/
-            span {{ item.date.getDate() }}
-        li.next
-          .btn(@click='nextWeek()') ›
-      ul.detail-list
-        li(v-for='item in pe.health')
-          .top
-            .left {{ item.name }}
+  .page(v-if='pe')
+    ul.info-bar
+      li.info
+        .title 跑操次数
+        .content {{ pe.count }}
+      li.info
+        .title 剩余次数
+        .content {{ Math.max(0, 45 - pe.count) }}
+      li.info
+        .title 剩余天数
+        .content {{ pe.remainDays }}
+    ul.pe-list
+      li.prev
+        .btn(@click='prevWeek()') ‹
+      li(v-for='item, i in curWeek')
+        .date(:class='{ highlight: item.hasExercise }')
+          span.month(v-if='i == 0') {{ item.date.getMonth() + 1 }}/
+          span {{ item.date.getDate() }}
+      li.next
+        .btn(@click='nextWeek()') ›
+    ul.detail-list
+      li(v-for='item in pe.health')
+        .top
+          .left {{ item.name }}
 
-            //- 有等级的时候显示分数，这样最符合数据实际情况
-            .right(v-if='item.grade') {{ item.score }} 分
-          .bottom
-            .left {{ item.value }}
-            .right {{ item.grade }}
+          //- 有等级的时候显示分数，这样最符合数据实际情况
+          .right(v-if='item.grade') {{ item.score }} 分
+        .bottom
+          .left {{ item.value }}
+          .right {{ item.grade }}
 
 </template>
 <script>
 
   import H from '@/api'
-  import item from '../DashboardItem.vue'
 
   export default {
-    components: {
-      item
-    },
     data() {
       return {
         pe: null,
@@ -51,8 +46,13 @@
     persist: {
       pe: 'herald-default-pe'
     },
-    created() {
-      this.reload()
+    async created() {
+      this.curDate = new Date().getTime()
+      this.pe = await H.api.pe()
+
+      if (this.pe && this.pe.detail.length) {
+        this.curDate = this.pe.detail.slice(-1)[0]
+      }
     },
     computed: {
       curWeek() {
@@ -76,14 +76,6 @@
       }
     },
     methods: {
-      async reload() {
-        this.curDate = new Date().getTime()
-        this.pe = await H.api.pe()
-
-        if (this.pe && this.pe.detail.length) {
-          this.curDate = this.pe.detail.slice(-1)[0]
-        }
-      },
       prevWeek() {
         this.curDate -= 1000 * 60 * 60 * 24 * 7
       },

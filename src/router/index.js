@@ -1,9 +1,21 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/index/Index'
-import NoticePage from '@/components/NoticePage'
-import ScreenSaver from '@/components/ScreenSaver'
-import CourseStat from '@/components/CourseStat'
+import Index from '@/pages/Index'
+import Card from '@/pages/Card'
+import CardCharge from '@/pages/CardCharge'
+import Grade from '@/pages/Grade'
+import Lecture from '@/pages/Lecture'
+import Srtp from '@/pages/Srtp'
+import Library from '@/pages/Library'
+import Pe from '@/pages/Pe'
+import NoticeView from '@/pages/NoticeView'
+import ScreenSaver from '@/pages/ScreenSaver'
+import CourseStat from '@/pages/CourseStat'
+import AdminMonitor from '@/pages/admin/Monitor'
+import AdminNotice from '@/pages/admin/Notice'
+import AdminPrivilege from '@/pages/admin/Privilege'
+import AdminBanner from '@/pages/admin/Banner'
+import AdminActivity from '@/pages/admin/Activity'
 
 Vue.use(Router)
 
@@ -15,14 +27,84 @@ export default new Router({
       component: Index
     },
     {
-      path: '/screensaver',
-      name: '屏保',
-      component: ScreenSaver
+      path: '/card',
+      name: '一卡通',
+      component: Card
+    },
+    {
+      path: '/card/charge',
+      name: '一卡通充值',
+      component: CardCharge
+    },
+    {
+      path: '/grade',
+      name: '成绩',
+      component: Grade
+    },
+    {
+      path: '/lecture',
+      name: '人文讲座',
+      component: Lecture
+    },
+    {
+      path: '/srtp',
+      name: 'SRTP',
+      component: Srtp
+    },
+    {
+      path: '/library',
+      name: '图书馆',
+      component: Library
+    },
+    {
+      path: '/pe',
+      name: '跑操及体测',
+      component: Pe
+    },
+    {
+      path: '/notice/url/:url',
+      name: '通知公告',
+      component: NoticeView
     },
     {
       path: '/notice/:nid',
       name: '通知公告',
-      component: NoticePage
+      component: NoticeView
+    },
+    {
+      path: '/notice/competition/:srtpId',
+      name: '通知公告',
+      component: NoticeView
+    },
+    {
+      path: '/admin/monitor',
+      name: '系统概况',
+      component: AdminMonitor
+    },
+    {
+      path: '/admin/notice',
+      name: '通知公告',
+      component: AdminNotice
+    },
+    {
+      path: '/admin/privilege',
+      name: '权限管理',
+      component: AdminPrivilege
+    },
+    {
+      path: '/admin/banner',
+      name: '轮播管理',
+      component: AdminBanner
+    },
+    {
+      path: '/admin/activity',
+      name: '活动管理',
+      component: AdminActivity
+    },
+    {
+      path: '/screensaver',
+      name: '屏保',
+      component: ScreenSaver
     },
     {
       path: '/course-stat',

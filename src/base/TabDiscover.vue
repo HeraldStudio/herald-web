@@ -6,8 +6,8 @@
 </template>
 
 <script>
-  import activity from './widget/Activity.vue'
-  import banner from './widget/Banner.vue'
+  import activity from '@/components/Activity.vue'
+  import banner from '@/components/Banner.vue'
 
   export default {
     props: ['user'],

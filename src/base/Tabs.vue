@@ -50,39 +50,27 @@
   // 神秘代码，同时适配 PC/Pad/Phone 三种布局，修改时请注意全面调试（Safari 开发菜单 -> 进入响应式设计模式）
 
   .tab-container
+    position absolute
+    top 0
+    left 0
+    right 0
+    bottom 0
     display flex
     flex-direction column
     align-items stretch
-    border-bottom 50px solid var(--color-divider)
-
-    &::before
-      content '从左侧选择功能进行查看'
-      position fixed
-      left var(--left-column-width)
-      top 60px
-      bottom 0
-      right 0
-      border-left 10px solid var(--color-divider)
-      display flex
-      align-items center
-      justify-content center
-      background #fff
-      color var(--color-divider)
-      font-size 20px
-
-      @media screen and (max-width: 600px)
-        display none
+    overflow hidden
 
     .tabs
+      flex 1 1 0
       display flex
       flex-direction row
       align-items flex-start
-      max-width var(--left-column-width)
-      overflow hidden
+      overflow-x hidden
+      overflow-y scroll
       position relative
-
-      @media screen and (max-width: 600px)
-        max-width none
+      padding-top 60px
+      overscroll-behavior contain
+      -webkit-overflow-scrolling touch
 
       .tab
         display flex
@@ -96,13 +84,9 @@
           display block
 
     .tab-bar
-      max-width var(--left-column-width)
-      position fixed
-      bottom 0
-      left 0
-      right 0
+      width 100%
       height 50px
-      z-index 9999
+      flex 0 0 50px
       background #fff
       border-top 1px solid var(--color-divider)
       box-shadow 0 -5px 15px rgba(0, 0, 0, .05)

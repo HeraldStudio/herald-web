@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  item(title='SRTP' name='SRTP' :value='srtp && srtp.info.points' :isStale='srtp && srtp.isStale')
+  .page
     div(v-if='srtp')
       ul.info-bar
         li.info
@@ -22,12 +22,8 @@
 
   import H from '@/api'
   import formatter from '@/util/formatter'
-  import item from '../DashboardItem.vue'
 
   export default {
-    components: {
-      item
-    },
     data() {
       return {
         srtp: null
@@ -36,13 +32,8 @@
     persist: {
       srtp: 'herald-default-srtp'
     },
-    created() {
-      this.reload()
-    },
-    methods: {
-      async reload() {
-        this.srtp = await H.api.srtp()
-      }
+    async created() {
+      this.srtp = await H.api.srtp()
     }
   }
 

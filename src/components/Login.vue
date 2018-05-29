@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  widget.login(title='统一身份认证' :show='!user')
+  .widget.login(title='统一身份认证' v-if='!user')
     .live2d-container
       live2d
     .field
@@ -16,12 +16,11 @@
 <script>
 
   import H from '@/api'
-  import widget from './Widget.vue'
   import live2d from '@/components/Live2D.vue'
 
   export default {
     props: ['user'],
-    components: { live2d, widget },
+    components: { live2d },
     data() {
       return {
         form: {

@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  widget.exam(title='考试' :show='exams && exams.length' :isStale='exams && exams.isStale')
+  .widget.exam(title='考试' v-if='exams && exams.length' :class='{ stale: exams && exams.isStale }')
     ul.detail-list
       li(v-for='item in exams')
         .top
@@ -14,11 +14,9 @@
 <script>
 
   import H from '@/api'
-  import widget from './Widget.vue'
   import formatter from '@/util/formatter'
 
   export default {
-    components: { widget },
     data() {
       return {
         exams: null

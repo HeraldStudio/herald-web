@@ -9,11 +9,11 @@
 </template>
 
 <script>
-  import exam from './widget/Exam.vue'
-  import login from './widget/Login.vue'
-  import dashboard from './widget/Dashboard.vue'
-  import curriculum from './widget/Curriculum.vue'
-  import experiment from './widget/Experiment.vue'
+  import exam from '@/components/Exam.vue'
+  import login from '@/components/Login.vue'
+  import dashboard from '@/components/Dashboard.vue'
+  import curriculum from '@/components/Curriculum.vue'
+  import experiment from '@/components/Experiment.vue'
 
   export default {
     props: ['user'],

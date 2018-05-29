@@ -19,11 +19,23 @@
       }
     },
     created() {
-      this.loadMarkdown({ nid: this.$route.params.nid })
+      if (this.$route.params.srtpId) {
+        this.loadCompetition(this.$route.params.srtpId)
+      } else {
+        let { nid, url } = this.$route.params
+        if (url) {
+          url = decodeURIComponent(url)
+        }
+        this.loadOther({ nid, url })
+      }
     },
     methods: {
-      async loadMarkdown(notice) {
+      async loadOther(notice) {
         let res = await H.api.notice.post(notice)
+        this.markdown = marked(res)
+      },
+      async loadCompetition(id) {
+        let res = await H.api.srtp.competition.post({ id })
         this.markdown = marked(res)
       }
     }

@@ -1,58 +1,64 @@
 <template lang='pug'>
   #app(:class='env' v-loading='isLoading')
-    .root
-      .header
-        router-link.live2d-wrapper(to='/')
-          .live2d-container
-            live2d
-          img.logo(src='static/images/logo.png')
-        ul.nav
-          drawer(title='小猴偷米微信端 / App') 
+    .app-container
+      //- base-page 为手机版底部界面，桌面版左侧栏
+      .base-page
+        .base-header
+          router-link.live2d-wrapper(to='/')
+            .live2d-container
+              live2d
+            img.logo(src='static/images/logo.png')
+          router-link(to='/download')
             img.download(src='static/images/download.png')
-            .content(slot='content')
-              .hint 小猴偷米 App 是较早版本，已不再保持活跃更新，新 App 开发正在筹备中，建议使用网页版和小程序，获得更完整的体验。
-              .buttons
-                p 仍要下载：
-                a(href='http://static.myseu.cn/herald-v1-final.apk' target='_blank')
-                  button Android 4.1+
-                a(href='https://itunes.apple.com/cn/app/id1378941139' target='_blank')
-                  button iOS 8.0+
-              hr
-              img.qr(src='static/images/qrcode.jpg')
-      .container
         seuLogin(:isLoading='isLoading')
-        router-view(:user='user')
+        tabs(:user='user')
+
+      //- overlay-page 为手机版上层栈，桌面版右侧栏
+      .overlay-page(:class='{ home: isHome }')
+        .overlay-header
+          transition(name='slide')
+            .title-bar(v-if='!isHome')
+              router-link.back(to='..') ‹ 
+              .current {{ title }}
+        .overlay-router
+          transition(name='slide')
+            router-view(:user='user')
 </template>
 
 <script>
   import Vue from 'vue'
+  import router from '@/router/index'
   import { Loading } from 'element-ui'
   import 'element-ui/lib/theme-chalk/index.css'
   Vue.use(Loading)
 
-  import logger from './logger'
   import H from './api'
-  import drawer from '@/components/Drawer.vue'
+  import logger from './logger'
+  import tabs from './base/Tabs.vue'
   import live2d from './components/Live2D.vue'
-  import status from './components/Status.vue'
   import seuLogin from './components/SeuLogin.vue'
 
   export default {
     name: 'app',
     components: { 
-      live2d, drawer, status, seuLogin
+      live2d, tabs, seuLogin
     },
     data() {
       return {
         user: null,
         env: '',
-        isLoading: false
+        isLoading: false,
+        title: '',
+        isHome: true,
+        transitionName: ''
       }
     },
     persist: {
       user: 'herald-default-user'
     },
     async created() {
+      this.title = this.$route.name
+      this.isHome = this.$route.path === '/'
       logger.openListeners.push(() => this.isLoading = true)
       logger.doneListeners.push(() => this.isLoading = false)
 
@@ -84,6 +90,12 @@
             location.href = '#/'
           }
         }, 500)
+      }
+    },
+    watch: {
+      '$route' (to, from) {
+        this.title = to.name
+        this.isHome = to.path === '/'
       }
     }
   }
@@ -117,14 +129,6 @@
     --color-error-bg       #ffe2de
 
     -webkit-tap-highlight-color transparent
-
-    --left-column-width 40%
-
-    @media screen and (max-width: 800px)
-      --left-column-width 320px
-
-    @media screen and (min-width: 1000px)
-      --left-column-width 400px
 
     font-size 13px
     color var(--color-text-regular)
@@ -308,105 +312,155 @@
   #app
     padding 0
 
-    .header
+    -webkit-user-select: none
+    -moz-user-select: none
+    -ms-user-select: none
+    user-select: none
+
+    .app-container
       position fixed
       top 0
       left 0
       right 0
-      z-index 10000
-      height 60px
-      box-sizing border-box
-
+      bottom 0
       margin 0 auto
-      padding 0 10px
-
       display flex
       flex-direction row
-      justify-content flex-start
 
-      background #fff
-      border-bottom 1px solid rgba(0, 0, 0, .07)
+      @media screen and (max-width: 600px)
+        display block
 
-      -webkit-user-select: none
-      -moz-user-select: none
-      -ms-user-select: none
-      user-select: none
-
-      @supports (-webkit-backdrop-filter: blur(20px))
-        background: rgba(255, 255, 255, .8)
-        -webkit-backdrop-filter: blur(20px)
-        box-shadow inset 0 30px 40px #fff
-
-      .live2d-wrapper
-        display flex
-        flex-direction row
-        align-items center
+      .base-header, .overlay-header
+        position absolute
+        top 0
+        left 0
+        right 0
+        z-index 100000
+        height 60px
+        box-sizing border-box
+        margin 0 auto
         padding 0 10px
-
-        .live2d-container
-          width 56px
-          height 56px
-          position relative
-          filter hue-rotate(-15deg)
-
-        img.logo
-          width 115px
-          height 40px
-          object-fit cover
-          object-position 100% 50%
-          pointer-events none
-
-      ul.nav
-        height 100%
-        padding 0
-        margin 0 10px
-        flex 1 1 0
         display flex
         flex-direction row
         align-items center
-        justify-content flex-end
+        justify-content flex-start
+        background #fff
+        border-bottom 1px solid rgba(0, 0, 0, .07)
 
-        .qr
-          width 100%
-          height auto
+        @supports (-webkit-backdrop-filter: blur(20px))
+          background: rgba(255, 255, 255, .8)
+          -webkit-backdrop-filter: blur(20px)
+          box-shadow inset 0 30px 40px #fff
 
-        .hint
-          display block
-          font-size 14px
-          margin-bottom 15px
-
-          &::before
-            content '!'
-            display inline-block
-            width 20px
-            height 20px
-            margin-right 5px
-            border-radius 50%
-            background var(--color-warning-light)
-            color var(--color-warning-dark)
-            text-align center
-
-        .buttons
+        .live2d-wrapper
           display flex
-          justify-content center
-          margin-top 25px
-          align-items: center;
+          flex-direction row
+          align-items center
+          padding 0 10px
 
-          * + *
-            margin-left 10px
+          .live2d-container
+            width 56px
+            height 56px
+            position relative
+            filter hue-rotate(-15deg)
 
+          img.logo
+            width 115px
+            height 40px
+            object-fit cover
+            object-position 100% 50%
+            pointer-events none
+            
         img.download
+          position absolute
+          right 20px
           width 24px
           height 24px
-          margin-right 4px
+          top calc(50% - 12px)
 
-        img.qr
-          filter hue-rotate(-15deg)
+      .base-page
+        position relative
+        width 40%
+        min-width 320px
+        max-width 400px
+        overflow hidden
+        background #fff
 
-    .container
-      margin 0 auto
-      border-top 60px solid var(--color-divider)
-      overflow scroll
+        @media screen and (max-width: 600px)
+          position absolute
+          min-width none
+          max-width none
+          width 100%
+          height 100%
+
+      .overlay-page
+        flex 1 1 0
+        position relative
+        overflow hidden
+        border-left 10px solid var(--color-divider)
+        overscroll-behavior contain
+        -webkit-overflow-scrolling touch
+        display flex
+        flex-direction column
+        background #fff
+        transition .3s
+        z-index 100000
+
+        &.home
+          @media screen and (max-width: 600px)
+            transform translateX(100%)
+
+        > *
+          pointer-events auto
+
+        .overlay-header
+          position relative
+          width 100%
+          height 60px
+
+          a.back
+            display block
+            font-size 17px
+            text-align center
+            position absolute
+            left 0
+            top 0
+            bottom 0
+            width 60px
+            line-height 60px
+            
+            &:hover
+              color var(--color-primary)
+
+          .current
+            font-size 15px
+            text-align center
+            position absolute
+            left 50px
+            right 50px
+            top 0
+            bottom 0
+            line-height 60px
+
+        .overlay-router
+          position relative
+          flex 1 1 0
+          width 100%
+          box-sizing border-box
+          background #fff
+          overflow-x hidden
+          overflow-y auto
+          overscroll-behavior contain
+          -webkit-overflow-scrolling touch
+
+          > *
+            min-height 100%
+
+        @media screen and (max-width: 600px)
+          position absolute
+          border-left 0
+          width 100%
+          height 100%
 
     // 强制加固定白底，尤其在微信和小程序中用于屏蔽黑底和微信的提示文字
     &::before
@@ -419,10 +473,193 @@
       z-index -999
       background var(--color-divider)
 
-    &.wx .header
-      display none
+    &.wx
+      .app-header
+        display none
 
-    &.wx .container
-      border-top 0
+      .base-page, .overlay-page
+        border-top 0
+
+  .slide-enter-active, .slide-leave-active
+    position absolute !important
+    top 0
+    left 0
+    right 0
+    transition .3s !important
+
+  .slide-leave-active
+    transition-delay .15s !important
+
+  .slide-enter, .slide-leave-to
+    transform translateX(100%) !important
+
+  .widget, .page, .admin-page
+    position relative
+    box-sizing border-box
+    -webkit-transition: .3s
+    -moz-transition: .3s
+    -ms-transition: .3s
+    -o-transition: .3s
+    transition: .3s
+    display flex
+    flex-direction column
+    background #fff
+    padding 20px 25px
+    border-bottom 1px solid var(--color-divider)
+
+    @media screen and (max-width: 600px)
+      border-bottom-width 10px
+
+    .empty
+      display block
+      text-align center
+      color #888
+      font-size 14px
+
+    ul.info-bar
+      width 100%
+      box-sizing border-box
+      margin 0
+      padding 5px 0 0 5px
+      display flex
+      flex-direction row
+      justify-content center
+      flex-wrap wrap
+
+      li.info
+        list-style none
+        flex 0 1 auto
+        padding 0 10px
+        margin 0 5px 5px 0
+        display flex
+        flex-direction row
+        justify-content center
+        font-size 14px
+        padding 3px 7px
+        color var(--color-primary-dark)
+        background var(--color-primary-bg)
+        border-radius 3px
+
+        .title
+          font-weight bold
+
+          + .content
+            margin-left 5px
+
+      +ul.detail-list>*:first-child
+        margin-top 15px
+        border-top 1px solid var(--color-divider)
+        padding-top 10px
+
+    .drawer-view ul.detail-list
+      padding 0
+
+    ul.detail-list
+      width 100%
+      margin 0
+      padding 0
+      box-sizing border-box
+      display flex
+      flex-direction column
+      white-space normal
+
+      > li + li
+        border-top 1px solid var(--color-divider)
+
+      > li
+        list-style none
+        flex 1 1 auto
+        padding 10px 0
+        display flex
+        flex-direction column
+        text-align justify
+        word-break break-all
+        color var(--color-text-bold)
+
+        &.section
+          border-top 1px solid var(--color-divider)
+          margin-top 10px
+          padding-top 10px !important
+          font-weight bold
+
+        .top, .bottom
+          display flex
+          flex-direction row
+          // align-items center
+
+        .top + .bottom
+          margin-top 2px
+
+        .left
+          flex 1 1 auto
+
+        .right
+          flex 0 0 auto
+          margin-left 20px
+
+        .top .left
+          font-size 15px
+          color var(--color-primary)
+
+        .top .right, .bottom .left
+          font-size 13px
+
+        .top .right
+          font-weight bold
+          color var(--color-text-bold)
+
+        .bottom .right
+          font-size 13px
+          color #888
+
+        &:last-child
+          padding-bottom 0
+
+        &:first-child
+          padding-top 0
+
+  .admin-page
+
+    .title
+      font-size 22px
+      margin-bottom 20px
+
+    .subcontainer
+      text-align center
+      overflow-x scroll
+
+      + .subcontainer
+        border-top 1px solid var(--color-divider)
+        padding-top 20px
+        margin-top 20px
+
+    .subtitle
+      padding 0 7px
+      text-align center
+      font-size 16px
+      font-weight bold
+      color var(--color-text-bold)
+      margin-bottom 20px
+
+    .summary
+      display inline-block
+      font-size 13px
+      color var(--color-text-secondary)
+      margin 0 5px 20px
+
+    table
+      max-width 100%
+
+      th, td
+        white-space nowrap
+
+        .vdatetime
+          white-space normal
+    
+    input
+      min-width 100px
+      
+      &.vdatetime-input
+        min-width 115px
 
 </style>

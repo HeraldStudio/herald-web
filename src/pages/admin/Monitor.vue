@@ -324,6 +324,8 @@
         height 400px
         transition .2s
         overflow-x scroll
+        overscroll-behavior contain
+        -webkit-overflow-scrolling touch
 
         @media screen and (min-width: 1200px)
           overflow-x: visible

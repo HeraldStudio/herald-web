@@ -4,7 +4,7 @@
 </template>
 
 <script>
-  import notice from './widget/Notice.vue'
+  import notice from '@/components/Notice.vue'
 
   export default {
     props: ['user'],
