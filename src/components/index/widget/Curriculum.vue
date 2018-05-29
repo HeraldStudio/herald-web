@@ -57,9 +57,10 @@
           curriculum: [],
           term: {}
         },
-        displayWeek: 1,
+        currentTerm: '',
         displayTerm: '',
         currentWeek: 1,
+        displayWeek: 1,
         currentDayOfWeek: 1,
         listView: false
       }
