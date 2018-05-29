@@ -420,14 +420,15 @@
 
           a.back
             display block
-            font-size 17px
+            font-size 22px
+            vertical-align middle
             text-align center
             position absolute
             left 0
             top 0
             bottom 0
             width 60px
-            line-height 60px
+            line-height 58px
             
             &:hover
               color var(--color-primary)
@@ -476,7 +477,10 @@
     &.wx
       .base-header
         display none
-        
+
+      .tab-container .tabs
+        padding-top 0
+
   .slide-enter-active, .slide-leave-active
     position absolute !important
     top 0
