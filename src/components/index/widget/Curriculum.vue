@@ -7,7 +7,7 @@
       button.cur(v-if='!listView' title='点击回到本学期' @click='reload()') {{ curriculum.term && curriculum.term.code || '…' }}
       .next(v-if='!listView' @click='nextTerm()') ›
       .prev(v-if='!listView' @click='prevWeek()') ‹
-      button.cur(v-if='!listView' title='点击回到本周' @click='displayWeek = currentWeek') 第 {{ displayWeek }} 周
+      button.cur(v-if='!listView' title='点击回到本周' @click='displayWeek = currentWeek') {{ displayWeek }} 周
       .next(v-if='!listView' @click='nextWeek()') ›
     div.curriculum-container(v-if='!listView')
       .week-header(v-if='fixedClasses.length || !floatClasses.length')

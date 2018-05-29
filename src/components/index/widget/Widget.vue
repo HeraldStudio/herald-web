@@ -118,6 +118,7 @@
           border-top 1px solid var(--color-divider)
           margin-top 10px
           padding-top 10px !important
+          font-weight bold
 
         .top, .bottom
           display flex
