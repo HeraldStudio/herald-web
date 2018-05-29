@@ -2,16 +2,16 @@
 
   widget.curriculum(title='课程表' :show='curriculum' :isStale='curriculum && curriculum.isStale')
     .week-picker
-      .switch(@click='listView = !listView && reload()') {{ listView ? '列表视图' : '周视图' }}
+      .switch(@click='listView = !listView; displayTerm = ""') {{ listView ? '列表视图' : '周视图' }}
       .prev(v-if='!listView' @click='prevTerm()') ‹
-      button.cur(v-if='!listView' title='点击回到本学期' @click='reload()') {{ curriculum.term && curriculum.term.code || '…' }}
+      button.cur(v-if='!listView' title='点击回到本学期' @click='displayTerm = ""') {{ curriculum.term && curriculum.term.code || '…' }}
       .next(v-if='!listView' @click='nextTerm()') ›
       .prev(v-if='!listView' @click='prevWeek()') ‹
       button.cur(v-if='!listView' title='点击回到本周' @click='displayWeek = currentWeek') {{ displayWeek }} 周
       .next(v-if='!listView' @click='nextWeek()') ›
     div.curriculum-container(v-if='!listView')
       .week-header(v-if='fixedClasses.length || !floatClasses.length')
-        .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount" :class='{ current: displayWeek == currentWeek && i + 1 == currentDayOfWeek }') {{ item }}
+        .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount" :class='{ current: displayTerm == currentTerm && displayWeek == currentWeek && i + 1 == currentDayOfWeek }') {{ item }}
       .curriculum-list(v-if='fixedClasses.length || !floatClasses.length' :class='{ empty: !fixedClasses.length }')
         table.block-bg
           tr(v-for='_ in 13' v-if='fixedClasses.length')
@@ -58,6 +58,7 @@
           term: {}
         },
         displayWeek: 1,
+        displayTerm: '',
         currentWeek: 1,
         currentDayOfWeek: 1,
         listView: false
@@ -67,8 +68,10 @@
       curriculum: 'herald-default-curriculum', 
       term: 'herald-default-term'
     },
-    created() {
-      this.reload()
+    async created() {
+      this.term = await H.api.term()
+      this.currentTerm = this.term.find(k => k.current).name
+      this.displayTerm = this.currentTerm
     },
     watch: {
       curriculum() {
@@ -89,14 +92,13 @@
           this.currentDayOfWeek = 0
           this.displayWeek = this.currentWeek
         }
+      },
+      async displayTerm() {
+        this.curriculum = await H.api.curriculum({ term: this.displayTerm })
       }
     },
     methods: {
       ...formatter,
-      async reload(preferredTerm = '') {
-        this.term = await H.api.term()
-        this.curriculum = await H.api.curriculum({ term: preferredTerm })
-      },
       prevWeek() {
         if (this.displayWeek > 1) {
           this.displayWeek -= 1
@@ -109,11 +111,11 @@
       },
       prevTerm() {
         let term = this.term.map(k => k.name)
-        this.reload(term[(term.indexOf(this.curriculum.term.code) - 1) % term.length])
+        this.displayTerm = term[(term.indexOf(this.curriculum.term.code) - 1) % term.length]
       },
       nextTerm() {
         let term = this.term.map(k => k.name)
-        this.reload(term[(term.indexOf(this.curriculum.term.code) + 1) % term.length])
+        this.displayTerm = term[(term.indexOf(this.curriculum.term.code) + 1) % term.length]
       }
     },
     computed: {
@@ -218,6 +220,7 @@
             color var(--color-primary)
             font-weight bold
             border-bottom 1px solid var(--color-primary)
+            box-shadow inset 0 -3px 0 var(--color-primary-bg)
 
       .curriculum-list
         height 520px
