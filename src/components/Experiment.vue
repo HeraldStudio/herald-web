@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  .widget.experiment(title='物理实验' v-if='experiment.length' :class='{ stale: experiment && experiment.isStale }')
+  .widget.experiment(v-if='experiment.length' :class='{ stale: experiment && experiment.isStale }')
     ul.detail-list
       li(v-for='k in experiment')
         .top

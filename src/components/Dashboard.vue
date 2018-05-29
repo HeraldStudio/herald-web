@@ -1,6 +1,6 @@
 <template lang='pug'>
 
-  .widget.dashboard(title='信息板')
+  .widget.dashboard
     .info-container
       .name {{ user ? user.name : '加载中' }}
       .identity {{ user ? user.identity : '…' }}

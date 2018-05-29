@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  .widget.login(title='统一身份认证' v-if='!user')
+  .widget.login(v-if='!user')
     .live2d-container
       live2d
     .field

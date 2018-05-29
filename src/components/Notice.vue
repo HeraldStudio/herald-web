@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  .widget.notice(title='通知公告')
+  .widget.notice
     ul.info-bar
       li.info(v-for='site in sites' @click='currentSite = site' :class='{ selected: currentSite == site }')
         .title {{ site }}

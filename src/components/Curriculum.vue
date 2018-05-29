@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  .widget.curriculum(title='课程表' v-if='curriculum' :class='{ stale: curriculum && curriculum.isStale }')
+  .widget.curriculum(v-if='curriculum' :class='{ stale: curriculum && curriculum.isStale }')
     .week-picker
       .switch(@click='listView = !listView; displayTerm = ""') {{ listView ? '列表视图' : '周视图' }}
       .prev(v-if='!listView' @click='prevTerm()') ‹
