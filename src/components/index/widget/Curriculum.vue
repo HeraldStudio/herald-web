@@ -2,10 +2,10 @@
 
   widget.curriculum(title='课程表' :show='curriculum' :isStale='curriculum && curriculum.isStale')
     .week-picker
-      .switch(@click='listView = !listView') {{ listView ? '列表视图' : '周视图' }}
-      .prev(@click='prevTerm()') ‹
-      button.cur(title='点击回到本学期' @click='reload()') {{ curriculum.term && curriculum.term.code || '…' }}
-      .next(@click='nextTerm()') ›
+      .switch(@click='listView = !listView && reload()') {{ listView ? '列表视图' : '周视图' }}
+      .prev(v-if='!listView' @click='prevTerm()') ‹
+      button.cur(v-if='!listView' title='点击回到本学期' @click='reload()') {{ curriculum.term && curriculum.term.code || '…' }}
+      .next(v-if='!listView' @click='nextTerm()') ›
       .prev(v-if='!listView' @click='prevWeek()') ‹
       button.cur(v-if='!listView' title='点击回到本周' @click='displayWeek = currentWeek') 第 {{ displayWeek }} 周
       .next(v-if='!listView' @click='nextWeek()') ›
@@ -169,7 +169,7 @@
       -ms-user-select: none
       user-select: none
       padding 10px 10px 20px 25px
-      align-items center
+      // align-items center
 
       .switch
         flex 1 1 0
