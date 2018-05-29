@@ -114,6 +114,11 @@
         word-break break-all
         color var(--color-text-bold)
 
+        &.section
+          border-top 1px solid var(--color-divider)
+          margin-top 10px
+          padding-top 10px !important
+
         .top, .bottom
           display flex
           flex-direction row
@@ -138,6 +143,7 @@
 
         .top .right
           font-weight bold
+          color var(--color-text-bold)
 
         .bottom .right
           font-size 13px

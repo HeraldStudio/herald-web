@@ -4,7 +4,7 @@
     div(v-if='gpa')
       ul.info-bar
         li.info(v-if="!isGraduate")
-          .title 绩点
+          .title 总平均绩点
           .content {{ gpa.gpa || '暂无' }}
         li.info(v-if="!isGraduate")
           .title 首修
@@ -21,8 +21,9 @@
         li.info(v-if="isGraduate")
           .title 应修学分
           .content {{ gpa.credits.total }}
-      ul.detail-list(v-if='gpa.detail[0]')
-        li(v-for='k in gpa.detail[0].courses')
+      ul.detail-list(v-for='item in gpa.detail')
+        li.section {{ item.semester }}
+        li(v-for='k in item.courses')
           .top
             .left {{ k.courseName }}
             .right {{ k.score }} ({{ k.courseType + k.credit + '学分' }})
