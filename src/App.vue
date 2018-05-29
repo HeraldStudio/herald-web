@@ -474,12 +474,9 @@
       background var(--color-divider)
 
     &.wx
-      .app-header
+      .base-header
         display none
-
-      .base-page, .overlay-page
-        border-top 0
-
+        
   .slide-enter-active, .slide-leave-active
     position absolute !important
     top 0
