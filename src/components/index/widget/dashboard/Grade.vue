@@ -23,10 +23,10 @@
           .content {{ gpa.credits.total }}
       ul.info-bar.predict(v-if="!isGraduate")
         li.info
-          .title 估算校内绩点
+          .title 校内估算
           .content {{ predictSEU }} / 4.8
         li.info
-          .title 估算出国绩点
+          .title 出国估算
           .content {{ predictWES }} / 4.0
       .hint(v-if="!isGraduate") 从列表中取消选择不算绩点的课程，将为你实时估算更准确的总平均绩点。
       ul.detail-list(v-if="!isGraduate" v-for='item in gpa.detail')
@@ -165,17 +165,25 @@
 </script>
 <style lang="stylus" scoped>
 
+  ul.info-bar
+    padding 0
+
   .hint
     text-align left
     color var(--color-text-secondary)
     padding 20px 0
     border-bottom 1px solid var(--color-divider)
+    white-space normal
+    line-height 1.5em
 
   .info-bar.predict
     position sticky
     position --webkit-sticky
-    top 60px
+    top 0
     z-index 99999
+    background rgba(#fff, .8)
+    padding 5px 0 0
+    --webkit-backdrop-filter blur(20px)
 
   .detail-list
     display flex
