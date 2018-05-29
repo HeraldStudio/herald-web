@@ -95,6 +95,9 @@
 
         th, td
           white-space nowrap
+
+          .vdatetime
+            white-space normal
       
       input
         min-width 100px
