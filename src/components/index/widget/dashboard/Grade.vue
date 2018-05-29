@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  item(title='成绩' :name='isGraduate ? "成绩" : "绩点"' :value='gpa && (gpa.gpa || gpa.score || "暂无")' :isStale='gpa && gpa.isStale')
+  item.gpa(title='成绩' :name='isGraduate ? "成绩" : "绩点"' :value='gpa && (gpa.gpa || gpa.score || "暂无")' :isStale='gpa && gpa.isStale')
     div(v-if='gpa')
       ul.info-bar
         li.info(v-if="!isGraduate")
@@ -163,81 +163,89 @@
   }
 
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus">
 
-  ul.info-bar
-    padding 0
+  // 去掉抽屉内部的上 padding，改为第一行 info-bar 的上 margin，从而修复 iOS Safari 的 sticky 位置受到外层 padding 影响的问题
+  .dashboard-item-wrapper.gpa
+    .drawer-view
+      padding-top 0 !important
 
-  .hint
-    text-align left
-    color var(--color-text-secondary)
-    padding 20px 0
-    border-bottom 1px solid var(--color-divider)
-    white-space normal
-    line-height 1.5em
+    ul.info-bar
+      padding 0
 
-  .info-bar.predict
-    position sticky
-    position --webkit-sticky
-    top 0
-    z-index 99999
-    background rgba(#fff, .8)
-    padding 5px 0 0
-    --webkit-backdrop-filter blur(20px)
+      &:first-child
+        margin-top 25px
 
-  .detail-list
-    display flex
-    flex-flow row wrap
-    text-align left
-    padding 20px 0 !important
-
-    &:not(:last-child)
+    .hint
+      text-align left
+      color var(--color-text-secondary)
+      padding 20px 0
       border-bottom 1px solid var(--color-divider)
+      white-space normal
+      line-height 1.5em
 
-    .section
-      width 100%
+    .info-bar.predict
+      position sticky
+      position -webkit-sticky
+      top 0
+      z-index 99999
+      background rgba(#fff, .8)
+      padding 5px 0 0
+      --webkit-backdrop-filter blur(20px)
 
-    li
-      color var(--color-text-regular)
-      cursor pointer
-      transition .3s
+    .detail-list
       display flex
-      flex-direction column
-      border none !important
-      overflow hidden
+      flex-flow row wrap
+      text-align left
+      padding 20px 0 !important
 
-      &.active
-        .name
-          font-weight bold
+      &:not(:last-child)
+        border-bottom 1px solid var(--color-divider)
 
-      &:not(.active)
-        .tube
-          transform translateX(-100%)
-          margin-top 0
+      .section
+        width 100%
 
-        .name
-          color var(--color-text-secondary)
-
-      .info
+      li
+        color var(--color-text-regular)
+        cursor pointer
+        transition .3s
         display flex
-        flex-direction row
-        align-items center
-      
-      .tube
-        min-width 4px
-        height 4px
-        background var(--color-primary)
-        border-radius 2px
-        transition .5s
-        margin-top 10px
+        flex-direction column
+        border none !important
+        overflow hidden
 
-      .name
-        font-size 15px
-        color var(--color-primary)
-        margin-right 5px
+        &.active
+          .name
+            font-weight bold
 
-      .grade
-        color var(--color-text-secondary)
-        margin-top 3px
+        &:not(.active)
+          .tube
+            transform translateX(-100%)
+            margin-top 0
+
+          .name
+            color var(--color-text-secondary)
+
+        .info
+          display flex
+          flex-direction row
+          align-items center
+        
+        .tube
+          min-width 4px
+          height 4px
+          background var(--color-primary)
+          border-radius 2px
+          transition .5s
+          margin-top 10px
+
+        .name
+          font-size 15px
+          color var(--color-primary)
+          margin-right 5px
+
+        .grade
+          color var(--color-text-secondary)
+          margin-top 3px
 </style>
 
