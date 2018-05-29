@@ -31,7 +31,7 @@
       .hint(v-if="!isGraduate") 从列表中取消选择不算绩点的课程，将为你实时估算更准确的总平均绩点。
       ul.detail-list(v-if="!isGraduate" v-for='item in gpa.detail')
         .section {{ item.semester }}
-        li(v-for='k in item.courses' :class='{ active: k.cid in selected }' @click='toggle(k)')
+        li(v-for='k in item.courses' :class='{ active: isSelected(k) }' @click='toggle(k)')
           .info
             .name {{ k.courseName }}
             .grade {{ k.score }} ({{ k.courseType + k.credit + '学分' }})
@@ -52,7 +52,7 @@
     data() {
       return {
         gpa: null,
-        selected: {}
+        selected: []
       }
     },
     persist: {
@@ -62,6 +62,8 @@
     async created() {
       let gpa = await H.api.gpa()
       gpa.detail.map(k => {
+        // 由于同一课程可能有首修和多次重修，为防止判断出错，给所有课程里面加入学期
+        k.courses.map(c => Object.assign(c, { semester: k.semester }))
         k.courses.sort((a, b) => this.percentageScore(b) - this.percentageScore(a))
       })
       this.gpa = gpa
@@ -71,24 +73,20 @@
           .map(k => k.courses)
           .reduce((a, b) => a.concat(b), [])
           .filter(k => !k.courseType)
-          .map(k => ({
-            [k.cid]: k
-          }))
-          .reduce((a, b) => Object.assign(a, b))
       }
     },
     methods: {
       ...formatter,
+      isSelected(course) {
+        let { cid, semester } = course
+        return !!this.selected.find(k => k.cid === cid && k.semester === semester)
+      },
       toggle(course) {
-        let { cid } = course
-        if (cid in this.selected) {
-          delete this.selected[cid]
-          let selected = Object.assign({}, this.selected)
-          this.selected = selected
+        let { cid, semester } = course
+        if (this.isSelected(course)) {
+          this.selected = this.selected.filter(k => k.cid !== cid || k.semester !== semester)
         } else {
-          this.selected[cid] = course
-          let selected = Object.assign({}, this.selected)
-          this.selected = selected
+          this.selected.push(course)
         }
       },
       percentageScore({ score }) {
