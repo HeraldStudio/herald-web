@@ -194,8 +194,6 @@
       --webkit-backdrop-filter blur(20px)
 
     .detail-list
-      display flex
-      flex-flow row wrap
       text-align left
       padding 20px 0 !important
 
