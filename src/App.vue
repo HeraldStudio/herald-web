@@ -276,6 +276,7 @@
     height 59px !important
     z-index 9999999 !important
     background #fff !important
+    border-radius 3px
 
     .el-loading-spinner .path
       stroke var(--color-primary) !important
@@ -349,12 +350,8 @@
         align-items center
         justify-content flex-start
         background #fff
-        border-bottom 1px solid rgba(0, 0, 0, .07)
-
-        @supports (-webkit-backdrop-filter: blur(20px))
-          background: rgba(255, 255, 255, .8)
-          -webkit-backdrop-filter: blur(20px)
-          box-shadow inset 0 30px 40px #fff
+        box-shadow 0 1px 0 rgba(0, 0, 0, .07)
+        z-index 999
 
         .live2d-wrapper
           display flex

@@ -74,11 +74,11 @@
       height 50px
       flex 0 0 50px
       background #fff
-      border-top 1px solid var(--color-divider)
-      box-shadow 0 -5px 15px rgba(0, 0, 0, .05)
+      box-shadow 0 -1px 0 rgba(0, 0, 0, .07)
       display flex
       flex-direction row
       align-items center
+      z-index 999
 
       @media screen and (max-width: 600px)
         max-width none

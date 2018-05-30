@@ -13,12 +13,12 @@
     mounted() {
       new Scroll(this.$refs.scrollView, {
         click: true,
-        bounceTime: 600,
+        bounceTime: 300,
         momentumLimitTime: 200,
         momentumLimitDistance: 20,
         swipeTime: 1000,
         deceleration: 0.003,
-        swipeBounceTime: 300,
+        swipeBounceTime: 100,
         mouseWheel: true
       })
     }
@@ -33,5 +33,5 @@
     .scroll-content
       min-height 100%
       overflow hidden
-      
+
 </style>
