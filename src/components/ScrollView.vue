@@ -33,6 +33,7 @@
 
     .scroll-content
       position relative
+      width 100%
       min-height 100%
       overflow hidden
 

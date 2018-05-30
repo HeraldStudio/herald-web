@@ -288,7 +288,8 @@
     height 59px !important
     z-index 9999999 !important
     background #fff !important
-    border-radius 3px
+    border-radius 3px !important
+    overflow hidden !important
 
     .el-loading-spinner .path
       stroke var(--color-primary) !important
