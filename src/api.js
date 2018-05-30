@@ -10,7 +10,7 @@ const H = herald({
     if (e.code === 401) {
       H.token = ''
       Vue.toasted.show('登录已失效，请重新登录')
-    } else if (e.reason.request.status === 0 && !e.reason.response) {
+    } else if (!e.reason.request || e.reason.request.status === 0 && !e.reason.response) {
       Vue.toasted.show('网络异常，已加载缓存')
     } else {
       new Log().red(e.code).yellow(path).cyan(e.reason).fire()

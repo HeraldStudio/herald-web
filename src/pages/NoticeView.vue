@@ -19,17 +19,25 @@
       }
     },
     created() {
-      if (this.$route.params.srtpId) {
-        this.loadCompetition(this.$route.params.srtpId)
-      } else {
-        let { nid, url } = this.$route.params
-        if (url) {
-          url = decodeURIComponent(url)
-        }
-        this.loadOther({ nid, url })
+      this.load()
+    },
+    watch: {
+      $route() {
+        this.load()
       }
     },
     methods: {
+      async load() {
+        if (this.$route.params.srtpId) {
+          this.loadCompetition(this.$route.params.srtpId)
+        } else {
+          let { nid, url } = this.$route.params
+          if (url) {
+            url = decodeURIComponent(url)
+          }
+          this.loadOther({ nid, url })
+        }
+      },
       async loadOther(notice) {
         let res = await H.api.notice.post(notice)
         this.markdown = marked(res)
