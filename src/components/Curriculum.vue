@@ -67,6 +67,9 @@
       term: 'herald-default-term'
     },
     async created() {
+      // term 有缓存，先为缓存数据计算一遍 displayTerm
+      this.displayTerm = this.currentTerm
+
       this.term = await H.api.term()
       this.currentTerm = this.term.find(k => k.current).name
       this.displayTerm = this.currentTerm
