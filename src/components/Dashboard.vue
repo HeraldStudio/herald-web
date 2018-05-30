@@ -149,7 +149,6 @@
       overflow-x: scroll
       box-sizing: border-box
       text-align: center
-      overscroll-behavior contain
       -webkit-overflow-scrolling touch
       border-top 1px solid var(--color-divider)
       padding-top 20px

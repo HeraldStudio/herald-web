@@ -399,7 +399,6 @@
         flex 1 1 0
         overflow hidden
         border-left 10px solid var(--color-divider)
-        overscroll-behavior contain
         -webkit-overflow-scrolling touch
         display flex
         flex-direction column
@@ -452,8 +451,8 @@
           box-sizing border-box
           overflow-x hidden
           overflow-y scroll
-          overscroll-behavior contain
           -webkit-overflow-scrolling touch
+          background var(--color-divider)
 
           > *
             position absolute

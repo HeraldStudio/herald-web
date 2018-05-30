@@ -62,7 +62,6 @@
       overflow-x hidden
       overflow-y scroll
       position relative
-      overscroll-behavior contain
       -webkit-overflow-scrolling touch
 
       .tab
