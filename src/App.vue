@@ -472,7 +472,7 @@
             transform translateX(100%) !important
 
           .push-leave-to
-            transform scale(0.95) !important
+            filter brightness(0.97)
 
           .pop-enter-active, .pop-leave-active
             transition .3s !important
@@ -484,7 +484,7 @@
             transform translateX(100%) !important
 
           .pop-enter
-            transform scale(0.8) !important
+            filter brightness(0.97)
 
         @media screen and (max-width: 600px)
           position absolute
