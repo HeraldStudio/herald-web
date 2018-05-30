@@ -1,9 +1,9 @@
 <template lang='pug'>
   .tab-container
-    .tabs
-      home(:user='user' :class='{ active: currentTab == "home" }')
-      discover(:user='user' :class='{ active: currentTab == "discover" }')
-      notice(:user='user' :class='{ active: currentTab == "notice" }')
+    scrollView.tabs(:key='currentTab')
+      home(:user='user' v-if='currentTab == "home"')
+      discover(:user='user' v-if='currentTab == "discover"')
+      notice(:user='user' v-if='currentTab == "notice"')
     .tab-bar
       .tab-item.tab-item-home(@click='currentTab = "home"')
         img.icon(:src='currentTab == "home" ? "static/images/tab-home-selected.png" : "static/images/tab-home.png"')
@@ -20,11 +20,12 @@
   import home from './TabHome.vue'
   import discover from './TabDiscover.vue'
   import notice from './TabNotice.vue'
+  import scrollView from '../components/ScrollView.vue'
 
   export default {
     props: ['user'],
     components: {
-      home, discover, notice
+      home, discover, notice, scrollView
     },
     data () {
       return {
@@ -59,21 +60,14 @@
       display flex
       flex-direction row
       align-items flex-start
-      overflow-x hidden
-      overflow-y scroll
+      overflow hidden
       position relative
-      -webkit-overflow-scrolling touch
 
       .tab
         display flex
         flex-direction column
-        align-items flex-start
         flex 1 1 0
         padding 0
-        display none
-          
-        &.active
-          display block
 
     .tab-bar
       width 100%

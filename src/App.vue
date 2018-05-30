@@ -21,9 +21,10 @@
             .title-bar(v-if='!isHome')
               .back(@click='$router.go(-1)') ‹ 
               .current {{ title }}
-        .overlay-router
-          transition(:name='transitionName')
-            router-view(:user='user')
+        scrollView
+          .overlay-router
+            transition(:name='transitionName')
+              router-view(:user='user')
 </template>
 
 <script>
@@ -38,11 +39,12 @@
   import tabs from './base/Tabs.vue'
   import live2d from './components/Live2D.vue'
   import seuLogin from './components/SeuLogin.vue'
+  import scrollView from './components/ScrollView.vue'
 
   export default {
     name: 'app',
     components: { 
-      live2d, tabs, seuLogin
+      live2d, tabs, seuLogin, scrollView
     },
     data() {
       return {
@@ -402,7 +404,6 @@
         overflow hidden
         border-left 10px solid var(--color-divider)
         background var(--color-divider)
-        -webkit-overflow-scrolling touch
         display flex
         flex-direction column
         transition .3s
@@ -447,23 +448,19 @@
             padding-right 60px
             line-height 60px
 
-        .overlay-router
-          position relative
+        .scroll-view
           flex 1 1 0
           width 100%
-          height 100%
           box-sizing border-box
-          overflow-x hidden
-          overflow-y scroll
-          -webkit-overflow-scrolling touch
 
-          > *
-            position absolute
-            left 0
-            right 0
-            top 0
-            min-height 100%
-            background #fff
+          .overlay-router
+            > *
+              position absolute
+              left 0
+              right 0
+              top 0
+              min-height 100%
+              background #fff
 
           .push-enter-active, .push-leave-active
             transition .3s !important
