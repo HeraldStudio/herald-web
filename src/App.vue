@@ -150,7 +150,7 @@
     margin 0
     padding 0
     background #fff
-    overflow-x hidden
+    overflow hidden
 
   p, input, textarea
     margin-top 0
@@ -282,7 +282,6 @@
     right 0
     margin-left auto
     padding 10px
-    pointer-events none
 
     .toasted
       margin 0 auto 10px
@@ -410,9 +409,6 @@
         &.home
           @media screen and (max-width: 600px)
             transform translateX(100%)
-
-        > *
-          pointer-events auto
 
         .overlay-header
           position relative
