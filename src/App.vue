@@ -331,7 +331,6 @@
       left 0
       right 0
       bottom 0
-      margin 0 auto
       display flex
       flex-direction row
       overflow hidden
@@ -450,16 +449,12 @@
 
         .scroll-view
           flex 1 1 0
-          width 100%
-          box-sizing border-box
 
           .overlay-router
             > *
-              position absolute
-              left 0
-              right 0
+              position relative
               top 0
-              min-height 100%
+              // min-height 100%
               background #fff
 
           .push-enter-active, .push-leave-active

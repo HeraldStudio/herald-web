@@ -26,6 +26,12 @@
 
 </script>
 <style lang="stylus" scoped>
-  .scroll-content
-    min-height 100%
+
+  .scroll-view
+    overflow hidden
+
+    .scroll-content
+      min-height 100%
+      overflow hidden
+      
 </style>
