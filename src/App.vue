@@ -72,6 +72,7 @@
       } else if (window.__wxjs_environment) {
         window.__herald_env = this.env = 'wx'
         router.push = router.replace
+        router.back = () => router.go('/')
       }
 
       // 套壳用，通过 URL 参数导入 token
@@ -490,7 +491,7 @@
             left 0
             right 0
             overflow-x hidden
-            overflow-y auto
+            overflow-y scroll
             overscroll-behavior contain
             -webkit-overflow-scrolling touch
 
