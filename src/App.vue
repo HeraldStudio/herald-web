@@ -101,6 +101,8 @@
           let newKey = parseFloat(history.state.key)
           this.transitionName = !this.isHome && this.historyKey < newKey ? 'push' : 'pop'
           this.historyKey = newKey
+        } else if (this.historyKey) { // 有 key 无 state，表示所有的 state 都被 pop 掉了
+          this.transitionName = 'pop'
         }
       }
     }
@@ -399,6 +401,7 @@
         flex 1 1 0
         overflow hidden
         border-left 10px solid var(--color-divider)
+        background var(--color-divider)
         -webkit-overflow-scrolling touch
         display flex
         flex-direction column
@@ -407,6 +410,7 @@
 
         @media screen and (max-width: 600px)
           position absolute
+          background #fff
           min-width none
           max-width none
           width 100%
@@ -452,7 +456,6 @@
           overflow-x hidden
           overflow-y scroll
           -webkit-overflow-scrolling touch
-          background var(--color-divider)
 
           > *
             position absolute
@@ -504,6 +507,12 @@
       .base-header
         display none
 
+  .widget
+    border-bottom 1px solid var(--color-divider)
+
+    @media screen and (max-width: 600px)
+      border-bottom-width 10px
+
   .widget, .page, .admin-page
     position relative
     box-sizing border-box
@@ -516,10 +525,6 @@
     flex-direction column
     background #fff
     padding 20px 25px
-    border-bottom 1px solid var(--color-divider)
-
-    @media screen and (max-width: 600px)
-      border-bottom-width 10px
 
     .empty
       display block
