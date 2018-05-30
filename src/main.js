@@ -8,6 +8,20 @@ import Toasted from 'vue-toasted'
 import Persist from 'vue-component-persist'
 import offline from 'offline-plugin/runtime'
 
+if (window.navigator.standalone) {
+  window.__herald_env = 'webapp'
+} else if (window.__wxjs_environment === 'miniprogram') {
+  window.__herald_env = 'mina'
+} else if (window.__wxjs_environment) {
+  window.__herald_env = 'wx'
+
+  // 微信环境下，为了隐藏前进后退按钮栏，在 router/index.js 中设置了 vue-router 的 mode 为 abstract
+  // 在这种模式下，vue-router 不会自动打开首页，需要手动调用 router.push('/') 打开首页。
+  // 注意不能用 replace，用 replace 将导致无法返回首页。
+  // 参考：https://github.com/vuejs/vue-router/issues/729
+  router.push('/')
+}
+
 offline.install({
   responseStrategy: 'network-first',
   autoUpdate: true

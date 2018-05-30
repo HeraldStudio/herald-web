@@ -47,7 +47,7 @@
     data() {
       return {
         user: null,
-        env: '',
+        env: window.__herald_env,
         isLoading: false,
         title: '',
         isHome: true,
@@ -64,19 +64,6 @@
 
       logger.openListeners.push(() => this.isLoading = true)
       logger.doneListeners.push(() => this.isLoading = false)
-
-      if (window.navigator.standalone) {
-        window.__herald_env = this.env = 'webapp'
-      } else if (window.__wxjs_environment === 'miniprogram') {
-        window.__herald_env = this.env = 'mina'
-      } else if (window.__wxjs_environment) {
-        window.__herald_env = this.env = 'wx'
-
-        // 微信环境下，为了隐藏前进后退按钮栏，在 router/index.js 中设置了 vue-router 的 mode 为 abstract
-        // 在这种模式下，vue-router 不会自动打开首页，需要手动调用 router.replace('/') 打开首页。
-        // 参考：https://github.com/vuejs/vue-router/issues/729
-        router.replace('/')
-      }
 
       // 套壳用，通过 URL 参数导入 token
       if (/importToken=([0-9a-fA-F]+)/.test(location.search)) {
@@ -108,13 +95,13 @@
         // tory API 允许获取当前所在位置的 state 对象，因此可以通过自己构造适当的 state 对象，例如放入当前页面层数或
         // 时间，来帮助以后判断是在前进还是后退。Vue Router 的 Hash 模式恰好帮我们构造了合适的 state 对象，其中包含
         // key 为时间值（从页面开启至今的毫秒数转成浮点的字符串），可根据该时间值的增加和减少来判断前进和后退。
-        if (history.state && history.state.key) {
-          let newKey = parseFloat(history.state.key)
-          this.transitionName = this.isHome || this.historyKey < newKey ? 'push' : 'pop'
-          this.historyKey = newKey
-        }
         this.title = to.name
         this.isHome = to.path === '/'
+        if (history.state && history.state.key) {
+          let newKey = parseFloat(history.state.key)
+          this.transitionName = !this.isHome && this.historyKey < newKey ? 'push' : 'pop'
+          this.historyKey = newKey
+        }
       }
     }
   }
@@ -398,7 +385,6 @@
         min-width 320px
         max-width 400px
         overflow hidden
-        background #fff
         display flex
         flex-direction column
 
@@ -417,7 +403,6 @@
         -webkit-overflow-scrolling touch
         display flex
         flex-direction column
-        background #fff
         transition .3s
         z-index 100000
 
@@ -463,8 +448,20 @@
           position relative
           flex 1 1 0
           width 100%
+          height 100%
           box-sizing border-box
-          background #fff
+          overflow-x hidden
+          overflow-y scroll
+          overscroll-behavior contain
+          -webkit-overflow-scrolling touch
+
+          > *
+            position absolute
+            left 0
+            right 0
+            top 0
+            min-height 100%
+            background #fff
 
           .push-enter-active, .push-leave-active
             transition .3s !important
@@ -473,7 +470,7 @@
             transform translateX(100%) !important
 
           .push-leave-to
-            transform scale(0.8) !important
+            transform scale(0.95) !important
 
           .pop-enter-active, .pop-leave-active
             transition .3s !important
@@ -486,17 +483,6 @@
 
           .pop-enter
             transform scale(0.8) !important
-
-          > *
-            position absolute
-            top 0
-            bottom 0
-            left 0
-            right 0
-            overflow-x hidden
-            overflow-y scroll
-            overscroll-behavior contain
-            -webkit-overflow-scrolling touch
 
         @media screen and (max-width: 600px)
           position absolute
