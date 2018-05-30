@@ -428,10 +428,12 @@
             line-height 58px
             
             &:hover
-              color var(--color-primary)
+              color var(--color-text-bold)
 
           .current
             font-size 15px
+            font-weight bold
+            color var(--color-text-bold)
             text-align center
             position absolute
             left 50px
