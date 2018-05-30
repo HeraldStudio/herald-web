@@ -1,6 +1,6 @@
 <template lang='pug'>
   .tab
-    .hint 为提升服务质量，小猴偷米正在整站升级 HTTPS，其间网页版图片可能无法加载，App 不受影响，敬请谅解。
+    //- .hint 为提升服务质量，小猴偷米正在整站升级 HTTPS，其间网页版图片可能无法加载，App 不受影响，敬请谅解。
     banner(v-if='user')
     activity
 </template>

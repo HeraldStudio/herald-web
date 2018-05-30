@@ -67,11 +67,6 @@
   border-bottom 1px solid var(--color-divider)
   display flex
   flex-direction column
-  position fixed
-  bottom 0
-  left 0
-  right 0
-  z-index 9999999
 
   input
     background rgba(#000, .1)

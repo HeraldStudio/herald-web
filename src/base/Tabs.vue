@@ -47,18 +47,12 @@
 
 <style lang="stylus">
 
-  // 神秘代码，同时适配 PC/Pad/Phone 三种布局，修改时请注意全面调试（Safari 开发菜单 -> 进入响应式设计模式）
-
   .tab-container
-    position absolute
-    top 0
-    left 0
-    right 0
-    bottom 0
     display flex
     flex-direction column
     align-items stretch
     overflow hidden
+    flex 1 1 0
 
     .tabs
       flex 1 1 0
@@ -68,7 +62,6 @@
       overflow-x hidden
       overflow-y scroll
       position relative
-      padding-top 60px
       overscroll-behavior contain
       -webkit-overflow-scrolling touch
 

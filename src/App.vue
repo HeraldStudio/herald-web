@@ -8,6 +8,7 @@
             .live2d-container
               live2d
             img.logo(src='static/images/logo.png')
+          .spacing
           router-link(to='/download')
             img.download(src='static/images/download.png')
         seuLogin(:isLoading='isLoading')
@@ -18,10 +19,10 @@
         .overlay-header
           transition(name='slide')
             .title-bar(v-if='!isHome')
-              router-link.back(to='..') ‹ 
+              .back(@click='$router.back()') ‹ 
               .current {{ title }}
         .overlay-router
-          transition(name='slide')
+          transition(:name='transitionName')
             router-view(:user='user')
 </template>
 
@@ -50,7 +51,8 @@
         isLoading: false,
         title: '',
         isHome: true,
-        transitionName: ''
+        transitionName: '',
+        historyLength: 0
       }
     },
     persist: {
@@ -59,6 +61,7 @@
     async created() {
       this.title = this.$route.name
       this.isHome = this.$route.path === '/'
+
       logger.openListeners.push(() => this.isLoading = true)
       logger.doneListeners.push(() => this.isLoading = false)
 
@@ -95,8 +98,10 @@
     },
     watch: {
       '$route' (to, from) {
+        this.transitionName = this.isHome || this.historyLength < history.length ? 'push' : 'pop'
         this.title = to.name
         this.isHome = to.path === '/'
+        this.historyLength = history.length
       }
     }
   }
@@ -331,14 +336,10 @@
         display block
 
       .base-header, .overlay-header
-        position absolute
-        top 0
-        left 0
-        right 0
-        z-index 100000
+        width 100%
         height 60px
+        flex 0 0 60px
         box-sizing border-box
-        margin 0 auto
         padding 0 10px
         display flex
         flex-direction row
@@ -370,24 +371,25 @@
             object-fit cover
             object-position 100% 50%
             pointer-events none
+
+        .spacing
+          flex 1 1 0
             
         img.download
-          position absolute
-          right 20px
+          margin-right 10px
           width 24px
           height 24px
-          top calc(50% - 12px)
 
       .base-page
-        position relative
         width 40%
         min-width 320px
         max-width 400px
         overflow hidden
         background #fff
+        display flex
+        flex-direction column
 
         @media screen and (max-width: 600px)
-          position absolute
           min-width none
           max-width none
           width 100%
@@ -395,7 +397,6 @@
 
       .overlay-page
         flex 1 1 0
-        position relative
         overflow hidden
         border-left 10px solid var(--color-divider)
         overscroll-behavior contain
@@ -410,36 +411,32 @@
           @media screen and (max-width: 600px)
             transform translateX(100%)
 
-        .overlay-header
-          position relative
-          width 100%
+        .overlay-header .title-bar
           height 60px
+          display flex
+          flex-direction row
+          align-items center
+          flex 1 1 0
 
-          a.back
+          .back
             display block
             font-size 22px
             vertical-align middle
             text-align center
-            position absolute
-            left 0
-            top 0
-            bottom 0
             width 60px
             line-height 58px
+            cursor pointer
             
             &:hover
               color var(--color-text-bold)
 
           .current
+            flex 1 1 0
             font-size 15px
             font-weight bold
             color var(--color-text-bold)
             text-align center
-            position absolute
-            left 50px
-            right 50px
-            top 0
-            bottom 0
+            padding-right 60px
             line-height 60px
 
         .overlay-router
@@ -448,13 +445,38 @@
           width 100%
           box-sizing border-box
           background #fff
-          overflow-x hidden
-          overflow-y auto
-          overscroll-behavior contain
-          -webkit-overflow-scrolling touch
+
+          .push-enter-active, .push-leave-active
+            transition .3s !important
+
+          .push-enter
+            transform translateX(100%) !important
+
+          .push-leave-to
+            transform scale(0.8) !important
+
+          .pop-enter-active, .pop-leave-active
+            transition .3s !important
+
+          .pop-leave-active
+            z-index 100000 !important
+
+          .pop-leave-to
+            transform translateX(100%) !important
+
+          .pop-enter
+            transform scale(0.8) !important
 
           > *
-            min-height 100%
+            position absolute
+            top 0
+            bottom 0
+            left 0
+            right 0
+            overflow-x hidden
+            overflow-y auto
+            overscroll-behavior contain
+            -webkit-overflow-scrolling touch
 
         @media screen and (max-width: 600px)
           position absolute
@@ -476,22 +498,6 @@
     &.wx
       .base-header
         display none
-
-      .tab-container .tabs
-        padding-top 0
-
-  .slide-enter-active, .slide-leave-active
-    position absolute !important
-    top 0
-    left 0
-    right 0
-    transition .3s !important
-
-  .slide-leave-active
-    transition-delay .15s !important
-
-  .slide-enter, .slide-leave-to
-    transform translateX(100%) !important
 
   .widget, .page, .admin-page
     position relative

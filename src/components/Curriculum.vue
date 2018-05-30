@@ -4,7 +4,7 @@
     .week-picker
       .switch(@click='listView = !listView; displayTerm = ""') {{ listView ? '列表视图' : '周视图' }}
       .prev(v-if='!listView' @click='prevTerm()') ‹
-      button.cur(v-if='!listView' title='点击回到本学期' @click='displayTerm = ""') {{ curriculum.term && curriculum.term.code || '…' }}
+      button.cur(v-if='!listView' title='点击回到本学期' @click='displayTerm = ""') {{ displayTerm }}
       .next(v-if='!listView' @click='nextTerm()') ›
       .prev(v-if='!listView' @click='prevWeek()') ‹
       button.cur(v-if='!listView' title='点击回到本周' @click='displayWeek = currentWeek') {{ displayWeek }} 周
@@ -109,11 +109,11 @@
       },
       prevTerm() {
         let term = this.term.map(k => k.name)
-        this.displayTerm = term[(term.indexOf(this.curriculum.term.code) - 1) % term.length]
+        this.displayTerm = term[(term.indexOf(this.displayTerm) - 1) % term.length]
       },
       nextTerm() {
         let term = this.term.map(k => k.name)
-        this.displayTerm = term[(term.indexOf(this.curriculum.term.code) + 1) % term.length]
+        this.displayTerm = term[(term.indexOf(this.displayTerm) + 1) % term.length]
       }
     },
     computed: {
