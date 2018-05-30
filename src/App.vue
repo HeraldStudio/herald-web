@@ -19,7 +19,7 @@
         .overlay-header
           transition(name='slide')
             .title-bar(v-if='!isHome')
-              .back(@click='$router.back()') ‹ 
+              .back(@click='$router.go(-1)') ‹ 
               .current {{ title }}
         .overlay-router
           transition(:name='transitionName')
@@ -71,6 +71,11 @@
         window.__herald_env = this.env = 'mina'
       } else if (window.__wxjs_environment) {
         window.__herald_env = this.env = 'wx'
+
+        // 微信环境下，为了隐藏前进后退按钮栏，在 router/index.js 中设置了 vue-router 的 mode 为 abstract
+        // 在这种模式下，vue-router 不会自动打开首页，需要手动调用 router.replace('/') 打开首页。
+        // 参考：https://github.com/vuejs/vue-router/issues/729
+        router.replace('/')
       }
 
       // 套壳用，通过 URL 参数导入 token
@@ -106,10 +111,10 @@
         if (history.state && history.state.key) {
           let newKey = parseFloat(history.state.key)
           this.transitionName = this.isHome || this.historyKey < newKey ? 'push' : 'pop'
-          this.title = to.name
-          this.isHome = to.path === '/'
           this.historyKey = newKey
         }
+        this.title = to.name
+        this.isHome = to.path === '/'
       }
     }
   }
