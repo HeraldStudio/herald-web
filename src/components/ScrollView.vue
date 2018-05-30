@@ -28,9 +28,11 @@
 <style lang="stylus" scoped>
 
   .scroll-view
+    position relative
     overflow hidden
 
     .scroll-content
+      position relative
       min-height 100%
       overflow hidden
 

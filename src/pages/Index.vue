@@ -3,8 +3,8 @@
 </template>
 <style lang="stylus">
   .index-hint
-    position absolute
-    top 0
+    position absolute !important
+    top 0 
     right 0
     bottom 0
     left 0

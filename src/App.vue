@@ -15,16 +15,15 @@
         tabs(:user='user')
 
       //- overlay-page 为手机版上层栈，桌面版右侧栏
-      .overlay-page(:class='{ home: isHome }')
+      .overlay-page(:class='{ home: isHome }' ref='page')
         .overlay-header
           transition(name='slide')
             .title-bar(v-if='!isHome')
               .back(@click='$router.go(-1)') ‹ 
               .current {{ title }}
-        scrollView
-          .overlay-router
-            transition(:name='transitionName')
-              router-view(:user='user')
+        scrollView.overlay-router(:style='"--mouse-x: " + mouseX + "px; --mouse-y: " + mouseY + "px"')
+          transition(name='page')
+            router-view(:user='user')
 </template>
 
 <script>
@@ -41,6 +40,25 @@
   import seuLogin from './components/SeuLogin.vue'
   import scrollView from './components/ScrollView.vue'
 
+  function getOffsetTop(obj){
+    let tmp = obj.offsetTop - obj.scrollTop;
+    let val = obj.offsetParent;
+    while (val){
+      tmp += val.offsetTop - val.scrollTop;
+      val = val.offsetParent;
+    }
+    return tmp;
+  }
+  function getOffsetLeft(obj){
+    let tmp = obj.offsetLeft - obj.scrollLeft;
+    let val = obj.offsetParent;
+    while (val){
+      tmp += val.offsetLeft - val.scrollLeft;
+      val = val.offsetParent;
+    }
+    return tmp;
+  }
+
   export default {
     name: 'app',
     components: { 
@@ -53,8 +71,8 @@
         isLoading: false,
         title: '',
         isHome: true,
-        transitionName: 'push',
-        historyKey: 0
+        mouseX: 0,
+        mouseY: 0
       }
     },
     persist: {
@@ -89,23 +107,17 @@
         }, 500)
       }
     },
+    mounted() {
+      let el = this.$refs.page;
+      ['touchstart', 'mouseup'].map(k => document.addEventListener(k, ev => {
+        this.mouseX = (ev.clientX || ev.touches[0].clientX) - getOffsetLeft(el)
+        this.mouseY = (ev.clientY || ev.touches[0].clientY) - getOffsetTop(el)
+      }))
+    },
     watch: {
       '$route' (to, from) {
-        // 检测页面切换的方向（前进或后退），此方法依赖于 Vue Router 的 Hash 模式。
-        // Vue Router 的 Hash 模式和 HTML5 History 模式均基于 History API，只是效果略有不同。根据 History API，
-        // 我们无法直接获知当前所在的 History 层数（因为从某页面后退时该页面不会出栈，history.length 不变），但 His-
-        // tory API 允许获取当前所在位置的 state 对象，因此可以通过自己构造适当的 state 对象，例如放入当前页面层数或
-        // 时间，来帮助以后判断是在前进还是后退。Vue Router 的 Hash 模式恰好帮我们构造了合适的 state 对象，其中包含
-        // key 为时间值（从页面开启至今的毫秒数转成浮点的字符串），可根据该时间值的增加和减少来判断前进和后退。
         this.title = to.name
         this.isHome = to.path === '/'
-        if (history.state && history.state.key) {
-          let newKey = parseFloat(history.state.key)
-          this.transitionName = !this.isHome && this.historyKey < newKey ? 'push' : 'pop'
-          this.historyKey = newKey
-        } else if (this.historyKey) { // 有 key 无 state，表示所有的 state 都被 pop 掉了
-          this.transitionName = 'pop'
-        }
       }
     }
   }
@@ -413,8 +425,22 @@
           width 100%
           height 100%
 
+          .overlay-header
+            transition .3s
+
+          .overlay-router
+            transition .3s
+
           &.home
-            transform translateX(100%)
+            transition .3s
+            background transparent
+            pointer-events none
+
+            .overlay-header
+              opacity 0
+
+            .overlay-router
+              background transparent
 
         .overlay-header .title-bar
           height 60px
@@ -444,36 +470,39 @@
             padding-right 60px
             line-height 60px
 
-        .scroll-view
+        .overlay-router
           flex 1 1 0
+          position relative
+          background #fff
 
-          .overlay-router
-            > *
-              position relative
-              top 0
-              // min-height 100%
-              background #fff
+          .scroll-content > *
+            position relative
+            top 0
+            width 100%
+            min-height 100%
+            box-sizing border-box
 
-          .push-enter-active, .push-leave-active
+          .page-enter-active, .page-leave-active
             transition .3s !important
+            position absolute !important
+            overflow hidden !important
+            width 100% !important
+            min-height 100% !important
+            z-index 9999 !important
+            transform translateZ(0px)
 
-          .push-enter
-            transform translateX(100%) !important
-
-          .push-leave-to
-            filter brightness(0.97)
-
-          .pop-enter-active, .pop-leave-active
+          .page-leave-active
             transition .3s !important
+            filter brightness(0.9) !important
+            opacity 0 !important
 
-          .pop-leave-active
-            z-index 100000 !important
-
-          .pop-leave-to
-            transform translateX(100%) !important
-
-          .pop-enter
-            filter brightness(0.97)
+          .page-enter
+            min-height 0
+            transform scale(0.2) translateZ(0px) !important
+            transform-origin var(--mouse-x, 50%) var(--mouse-y, 400px) !important
+            box-shadow 0 0 25px rgba(0, 0, 0, .1) !important
+            border-radius 20px !important
+            overflow hidden !important
 
         @media screen and (max-width: 600px)
           position absolute
