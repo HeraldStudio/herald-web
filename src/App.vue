@@ -71,8 +71,6 @@
         window.__herald_env = this.env = 'mina'
       } else if (window.__wxjs_environment) {
         window.__herald_env = this.env = 'wx'
-        router.push = router.replace
-        router.back = () => router.go('/')
       }
 
       // 套壳用，通过 URL 参数导入 token

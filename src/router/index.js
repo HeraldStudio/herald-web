@@ -20,6 +20,7 @@ import AdminActivity from '@/pages/admin/Activity'
 Vue.use(Router)
 
 export default new Router({
+  mode: window.__wxjs_environment && window.__wxjs_environment !== 'miniprogram' ? 'abstract' : 'hash',
   routes: [
     {
       path: '/',
