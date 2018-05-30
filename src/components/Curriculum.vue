@@ -126,7 +126,6 @@
       },
       upcomingClasses() {
         let now = Date.now()
-        console.log(this.curriculum.curriculum)
         return this.curriculum.curriculum
           .filter(k => k.events)
           .map(k => k.events.map(e => {
