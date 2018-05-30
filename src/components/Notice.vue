@@ -6,7 +6,7 @@
         .title {{ site }}
     ul.detail-list
       li(v-for='item in filteredNotice' :key='item.title' :class='{ important: item.isImportant }')
-        a(:href='viewLink(item)')
+        notice-link(:notice='item')
           .top
             .left
               .tag.important(v-if='item.isImportant') 重要
@@ -21,12 +21,31 @@
 <script>
 
   import H from '@/api'
+  import Vue from 'vue'
   import formatter from '@/util/formatter'
   import markdown from '@/components/Markdown'
 
+  const RouterLink = Vue.component('router-link')
+  const NoticeLink = {
+    props: ['notice'],
+    render() {
+      let slot = this.$slots.default
+      if (this.notice.isAttachment) {
+        return <a href={ this.notice.url }>{ slot }</a>
+      }
+      if (this.notice.site === 'SRTP') {
+        return <RouterLink to={ '/notice/competition/' + this.notice.srtpId }>{ slot }</RouterLink>
+      }
+      if (this.notice.nid != null) {
+        return <RouterLink to={ '/notice/' + this.notice.nid }>{ slot }</RouterLink>
+      }
+      return <RouterLink to={ '/notice/url/' + encodeURIComponent(this.notice.url) }>{ slot }</RouterLink>
+    }
+  }
+
   export default {
     props: ['user'],
-    components: { markdown },
+    components: { markdown, 'notice-link': NoticeLink },
     data() {
       return {
         notice: [],
@@ -84,13 +103,13 @@
       },
       viewLink(notice) {
         if (notice.isAttachment) {
-          return notice.url
+          return ''
         } else if (notice.site === 'SRTP') {
-          return '#/notice/competition/' + notice.srtpId
+          return '/notice/competition/' + notice.srtpId
         } else if (notice.nid != null) {
-          return '#/notice/' + notice.nid
+          return '/notice/' + notice.nid
         } else {
-          return '#/notice/url/' + encodeURIComponent(notice.url)
+          return '/notice/url/' + encodeURIComponent(notice.url)
         }
       }
     }
