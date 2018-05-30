@@ -170,6 +170,14 @@
 </script>
 <style lang="stylus" scoped>
 
+  // Safari 下 sticky 的粘附位置会受到父元素 padding 影响
+  // 这里去掉父元素 padding，改为首元素 margin，以消除此影响
+  .page
+    padding-top 0 !important
+
+    > :first-child
+      margin-top 20px !important
+
   .hint
     text-align left
     color var(--color-text-secondary)

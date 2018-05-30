@@ -51,8 +51,8 @@
         isLoading: false,
         title: '',
         isHome: true,
-        transitionName: '',
-        historyLength: 0
+        transitionName: 'push',
+        historyKey: 0
       }
     },
     persist: {
@@ -98,10 +98,19 @@
     },
     watch: {
       '$route' (to, from) {
-        this.transitionName = this.isHome || this.historyLength < history.length ? 'push' : 'pop'
-        this.title = to.name
-        this.isHome = to.path === '/'
-        this.historyLength = history.length
+        // 检测页面切换的方向（前进或后退），此方法依赖于 Vue Router 的 Hash 模式。
+        // Vue Router 的 Hash 模式和 HTML5 History 模式均基于 History API，只是效果略有不同。根据 History API，
+        // 我们无法直接获知当前所在的 History 层数（因为从某页面后退时该页面不会出栈，history.length 不变），但 His-
+        // tory API 允许获取当前所在位置的 state 对象，因此可以通过自己构造适当的 state 对象，例如放入当前页面层数或
+        // 时间，来帮助以后判断是在前进还是后退。Vue Router 的 Hash 模式恰好帮我们构造了合适的 state 对象，其中包含
+        // key 为时间值（从页面开启至今的毫秒数转成浮点的字符串），可根据该时间值的增加和减少来判断前进和后退。
+        if (history.state && history.state.key) {
+          let newKey = parseFloat(history.state.key)
+          this.transitionName = this.isHome || this.historyKey < newKey ? 'push' : 'pop'
+          this.title = to.name
+          this.isHome = to.path === '/'
+          this.historyKey = newKey
+        }
       }
     }
   }
@@ -316,7 +325,6 @@
 
   #app
     padding 0
-
     -webkit-user-select: none
     -moz-user-select: none
     -ms-user-select: none
@@ -331,6 +339,7 @@
       margin 0 auto
       display flex
       flex-direction row
+      overflow hidden
 
       @media screen and (max-width: 600px)
         display block
@@ -390,6 +399,7 @@
         flex-direction column
 
         @media screen and (max-width: 600px)
+          position absolute
           min-width none
           max-width none
           width 100%
@@ -407,8 +417,14 @@
         transition .3s
         z-index 100000
 
-        &.home
-          @media screen and (max-width: 600px)
+        @media screen and (max-width: 600px)
+          position absolute
+          min-width none
+          max-width none
+          width 100%
+          height 100%
+
+          &.home
             transform translateX(100%)
 
         .overlay-header .title-bar

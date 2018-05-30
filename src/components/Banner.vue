@@ -160,7 +160,7 @@
             border-radius 3px
             color #fff
             font-weight bold
-            font-size 13px
+            font-size 12px
             white-space nowrap
             overflow hidden
             cursor pointer

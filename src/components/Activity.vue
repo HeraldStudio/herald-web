@@ -108,8 +108,8 @@
           border-radius 3px
           margin-right 5px
           color #ffffff
-          font-size 13px
-          padding 1px 3px
+          font-size 12px
+          padding 3px 5px
           vertical-align baseline
 
           &.ongoing
