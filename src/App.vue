@@ -535,9 +535,11 @@
       .base-header
         display none
 
-      &::before
-        content '访问 myseu.cn 使用 PWA 版完整功能'
+      ::before
         padding 20px
+
+    &.mina::before
+      content '访问 myseu.cn 使用 PWA 版完整功能'
 
   .widget
     border-bottom 0.5px solid var(--color-divider)
