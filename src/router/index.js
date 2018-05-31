@@ -16,6 +16,7 @@ import AdminNotice from '@/pages/admin/Notice'
 import AdminPrivilege from '@/pages/admin/Privilege'
 import AdminBanner from '@/pages/admin/Banner'
 import AdminActivity from '@/pages/admin/Activity'
+import Download from '@/pages/Download'
 
 Vue.use(Router)
 
@@ -114,6 +115,11 @@ export default new Router({
       path: '/course-stat',
       name: '课表预测',
       component: CourseStat
+    },
+    {
+      path: '/download',
+      name: '小猴偷米微信 / App',
+      component: Download
     },
     {
       path: '*',
