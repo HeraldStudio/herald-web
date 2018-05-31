@@ -19,7 +19,8 @@
         swipeTime: 1000,
         deceleration: 0.003,
         swipeBounceTime: 100,
-        mouseWheel: true
+        mouseWheel: true,
+        eventPassthrough: 'horizontal'
       })
     }
   }
