@@ -20,7 +20,7 @@ import AdminActivity from '@/pages/admin/Activity'
 Vue.use(Router)
 
 // 微信环境下，为隐藏前进后退按钮栏，设置 mode 为 abstract，实现完全不产生浏览器历史
-let isWeixin = window.__wxjs_environment && window.__wxjs_environment !== 'miniprogram'
+let isWeixin = /micromessenger/.test(window.navigator.userAgent.toLowerCase()) && window.__wxjs_environment !== 'miniprogram'
 
 export default new Router({
   mode: isWeixin ? 'abstract' : 'hash',

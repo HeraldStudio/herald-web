@@ -20,6 +20,12 @@ if (window.navigator.standalone) {
   // 注意不能用 replace，用 replace 将导致无法返回首页。
   // 参考：https://github.com/vuejs/vue-router/issues/729
   router.push('/')
+
+  // 如果地址中包含某 hash，打开对应的页面，因为 abstract 模式不会处理地址 hash
+  let current = location.hash.replace(/^#/, '')
+  if (current && current !== '/') {
+    router.push(current)
+  }
 }
 
 offline.install({

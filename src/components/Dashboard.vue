@@ -152,6 +152,9 @@
       -webkit-overflow-scrolling touch
       border-top 0.5px solid var(--color-divider)
       padding-top 20px
+      
+      ::-webkit-scrollbar
+        display none
 
       > *
         display: inline-block
