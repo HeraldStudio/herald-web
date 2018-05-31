@@ -535,7 +535,7 @@
       .base-header
         display none
 
-      ::before
+      &::before
         padding 20px
 
     &.mina::before
