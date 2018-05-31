@@ -12,7 +12,7 @@ if (window.navigator.standalone) {
   window.__herald_env = 'webapp'
 } else if (window.__wxjs_environment === 'miniprogram') {
   window.__herald_env = 'mina'
-} else if (window.__wxjs_environment) {
+} else if (/weixin|wechat/.test(window.navigator.userAgent.toLowerCase())) {
   window.__herald_env = 'wx'
 
   // 微信环境下，为了隐藏前进后退按钮栏，在 router/index.js 中设置了 vue-router 的 mode 为 abstract
