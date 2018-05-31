@@ -182,7 +182,7 @@
     text-align left
     color var(--color-text-secondary)
     padding 20px 10px
-    border-bottom 1px solid var(--color-divider)
+    border-bottom 0.5px solid var(--color-divider)
     white-space normal
     line-height 1.5em
 
@@ -200,7 +200,7 @@
     padding-bottom 15px !important
 
     &:not(:last-child)
-      border-bottom 1px solid var(--color-divider)
+      border-bottom 0.5px solid var(--color-divider)
 
     .section
       width 100%

@@ -220,7 +220,7 @@
           &.current
             color var(--color-primary)
             font-weight bold
-            border-bottom 1px solid var(--color-primary)
+            border-bottom 0.5px solid var(--color-primary)
             box-shadow inset 0 -3px 0 var(--color-primary-bg)
 
       .curriculum-list
@@ -243,7 +243,7 @@
           table-layout fixed
 
           td
-            border 1px solid #f0f0f0
+            border 0.5px solid #f0f0f0
 
             &:first-child
               border-left none
@@ -261,7 +261,7 @@
           margin 0 -1px -1px 0
           line-height 1.2em
           background #fff
-          border-top 1px solid var(--color-primary)
+          border-top 0.5px solid var(--color-primary)
           box-shadow 0 1px 3px rgba(0, 0, 0, .1)
           display flex
           flex-direction column

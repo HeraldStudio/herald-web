@@ -64,7 +64,7 @@
   box-sizing border-box
   padding 10px 20px
   background var(--color-warning-bg)
-  border-bottom 1px solid var(--color-divider)
+  border-bottom 0.5px solid var(--color-divider)
   display flex
   flex-direction column
 

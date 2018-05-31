@@ -95,8 +95,8 @@
     display flex
     flex-direction row
     justify-content space-around
-    border-top 1px solid var(--color-divider)
-    border-bottom 1px solid var(--color-divider)
+    border-top 0.5px solid var(--color-divider)
+    border-bottom 0.5px solid var(--color-divider)
 
     -webkit-user-select: none
     -moz-user-select: none

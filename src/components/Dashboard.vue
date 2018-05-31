@@ -150,7 +150,7 @@
       box-sizing: border-box
       text-align: center
       -webkit-overflow-scrolling touch
-      border-top 1px solid var(--color-divider)
+      border-top 0.5px solid var(--color-divider)
       padding-top 20px
 
       > *
@@ -160,7 +160,7 @@
         max-width 80px
 
         + *
-          border-left 1px solid var(--color-divider)
+          border-left 0.5px solid var(--color-divider)
 
 
     .admin-container
@@ -176,7 +176,7 @@
 
       a + a .function
         padding-left 7px
-        border-left 1px solid var(--color-divider)
+        border-left 0.5px solid var(--color-divider)
         margin-left 7px
 
 </style>

@@ -187,7 +187,7 @@
           padding 10px 2.5px
 
         td
-          border-top 1px solid var(--color-divider)
+          border-top 0.5px solid var(--color-divider)
 
         .pic-wrapper
           width 100px

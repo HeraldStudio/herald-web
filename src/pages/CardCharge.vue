@@ -66,10 +66,10 @@
         color #333
         padding 10px 0
         border-radius 3px
-        border 1px solid var(--color-divider)
+        border 0.5px solid var(--color-divider)
 
         &.selected
-          border 1px solid var(--color-primary)
+          border 0.5px solid var(--color-primary)
           color var(--color-primary)
 
         + *

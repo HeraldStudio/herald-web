@@ -74,7 +74,7 @@
       height 50px
       flex 0 0 50px
       background #fff
-      box-shadow 0 -1px 0 rgba(0, 0, 0, .07)
+      border-top 0.5px solid var(--color-divider)
       display flex
       flex-direction row
       align-items center

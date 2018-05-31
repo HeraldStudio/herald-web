@@ -109,7 +109,7 @@
       font-weight bold
 
     .notice
-      border-top 1px solid var(--color-divider)
+      border-top 0.5px solid var(--color-divider)
 
     .notice-header, .notice
       font-size 14px

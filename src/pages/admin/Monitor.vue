@@ -230,7 +230,7 @@
           font-weight bold
           padding-bottom 7px
           margin-bottom 7px
-          border-bottom 1px solid var(--color-divider)
+          border-bottom 0.5px solid var(--color-divider)
 
         .content
           font-size 20px
@@ -375,7 +375,7 @@
           .operations-container
             flex 3 3 0
             position relative
-            border-right 1px solid var(--color-tool-bg)
+            border-right 0.5px solid var(--color-tool-bg)
             transition .3s
             overflow hidden
 
@@ -409,7 +409,7 @@
                     box-shadow inset 1px 0 0 rgba(0, 0, 0, .1)
 
                   &:hover
-                    outline 1px solid var(--color-primary)
+                    outline 0.5px solid var(--color-primary)
                     border-left none
                     z-index 999
 
@@ -429,7 +429,7 @@
           .users-container
             flex 1 1 0
             position relative
-            border-right 1px solid var(--color-tool-bg)
+            border-right 0.5px solid var(--color-tool-bg)
             transition .3s
 
             .users
@@ -461,7 +461,7 @@
           padding: 5px 0
           color var(--color-text-bold)
           font-weight bold
-          border-bottom 1px solid var(--color-divider)
+          border-bottom 0.5px solid var(--color-divider)
 
         td
           padding: 5px 20px 0 0

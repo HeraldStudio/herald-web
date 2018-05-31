@@ -367,7 +367,7 @@
         align-items center
         justify-content flex-start
         background #fff
-        box-shadow 0 1px 0 rgba(0, 0, 0, .07)
+        border-bottom 0.5px solid var(--color-divider)
         z-index 999
 
         .live2d-wrapper
@@ -540,7 +540,7 @@
         padding 20px
 
   .widget
-    border-bottom 1px solid var(--color-divider)
+    border-bottom 0.5px solid var(--color-divider)
 
     @media screen and (max-width: 600px)
       border-bottom-width 10px
@@ -596,7 +596,7 @@
 
       +ul.detail-list>*:first-child
         margin-top 15px
-        border-top 1px solid var(--color-divider)
+        border-top 0.5px solid var(--color-divider)
         padding-top 10px
 
     ul.detail-list
@@ -609,7 +609,7 @@
       white-space normal
 
       > li + li
-        border-top 1px solid var(--color-divider)
+        border-top 0.5px solid var(--color-divider)
 
       > li
         list-style none
@@ -622,7 +622,7 @@
         color var(--color-text-bold)
 
         &.section
-          border-top 1px solid var(--color-divider)
+          border-top 0.5px solid var(--color-divider)
           margin-top 10px
           padding-top 10px !important
           font-weight bold
@@ -674,7 +674,7 @@
       overflow-x scroll
 
       + .subcontainer
-        border-top 1px solid var(--color-divider)
+        border-top 0.5px solid var(--color-divider)
         padding-top 20px
         margin-top 20px
 

@@ -83,7 +83,7 @@
       background #fff
       position relative
       transition .5s
-      border-bottom 1px solid var(--color-divider)
+      border-bottom 0.5px solid var(--color-divider)
 
       .activity-container
         display flex

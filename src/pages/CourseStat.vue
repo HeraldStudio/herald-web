@@ -120,7 +120,7 @@
     padding 10px
     margin 15px 0 5px
     border-radius 3px
-    border 1px solid var(--color-divider)
+    border 0.5px solid var(--color-divider)
     box-shadow 0 5px 15px rgba(#000, .1)
 
     .hint
@@ -148,13 +148,13 @@
   
   .course
     padding 10px 0
-    border-bottom 1px solid var(--color-divider)
+    border-bottom 0.5px solid var(--color-divider)
 
     .head
       padding-top 5px
       padding-bottom 15px
       margin-bottom 10px
-      border-bottom 1px solid var(--color-divider)
+      border-bottom 0.5px solid var(--color-divider)
       font-weight bold
       font-size 13px
       color var(--color-text-bold)

@@ -165,7 +165,7 @@
         font-weight bold
 
       th, td
-        border-top 1px solid var(--color-divider)
+        border-top 0.5px solid var(--color-divider)
         padding 10px 2.5px
 
       .pic-wrapper

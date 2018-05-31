@@ -54,7 +54,7 @@
   .notice-page
 
     .markdown-container
-      border-top 1px solid transparent
+      border-top 0.5px solid transparent
       padding 15px 25px
       transition .3s
       color #555
@@ -137,6 +137,6 @@
 
       hr
         border 0 none
-        border-top 1px solid var(--color-divider)
+        border-top 0.5px solid var(--color-divider)
 
 </style>
