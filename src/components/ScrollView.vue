@@ -10,8 +10,11 @@
   import Scroll from 'better-scroll'
 
   export default {
+    props: ['horizontal'],
     mounted() {
       new Scroll(this.$refs.scrollView, {
+        scrollX: this.horizontal,
+        scrollY: !this.horizontal,
         click: true,
         bounceTime: 300,
         momentumLimitTime: 200,
@@ -20,7 +23,7 @@
         deceleration: 0.003,
         swipeBounceTime: 100,
         mouseWheel: true,
-        eventPassthrough: 'horizontal'
+        eventPassthrough: this.horizontal ? 'vertical' : 'horizontal'
       })
     }
   }

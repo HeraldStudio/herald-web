@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  router-link(:to='route')
+  router-link(:to='route' ondragstart='return false')
     .dashboard-item(:class='{ stale: isStale }')
       .name {{ name }}
       .value {{ value != null ? value : '···' }}
