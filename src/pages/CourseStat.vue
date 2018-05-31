@@ -104,13 +104,12 @@
   .title
     font-size 18px
     font-weight bold
-    margin 1em 0
     color var(--color-text-bold)
 
   .hint
     font-size 14px
     color var(--color-text-secondary)
-    margin 20px 0
+    margin 10px 0
 
     p
       line-height 1.5em
@@ -118,10 +117,9 @@
 
   .search-tools
     padding 10px
-    margin 15px 0 5px
+    margin 10px 0
     border-radius 3px
     border 0.5px solid var(--color-divider)
-    box-shadow 0 5px 15px rgba(#000, .1)
 
     .hint
       font-weight: bold
@@ -169,6 +167,7 @@
         text-align left
         color var(--color-primary)
         font-size 16px
+        margin-bottom 2px
 
       .info
         color var(--color-text-bold)
