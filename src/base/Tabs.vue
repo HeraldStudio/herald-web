@@ -102,4 +102,7 @@
           line-height 1.1em
           margin-bottom 3px
 
+  .mina .tab-bar
+    display none
+
 </style>

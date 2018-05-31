@@ -531,10 +531,12 @@
       z-index -999
       background var(--color-divider)
 
-    &.wx
+    &.wx, &.mina
       .base-header
         display none
+
       &::before
+        content '访问 myseu.cn 使用 PWA 版完整功能'
         padding 20px
 
   .widget
