@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  .live2d(:class='curState', @click='animateRandom()')
+  .live2d(:class='forceState || curState', @click='animateRandom()')
     img.bg(src='static/images/live2d.png')
     .eyes(:style='"transform: translate(" + mouseX * 2 + "%, " + mouseY * 2 + "%)"')
       .eye.left-eye
@@ -51,7 +51,8 @@
       isLoading: {
         type: Boolean,
         default: false
-      }
+      },
+      forceState: String
     },
     data() {
       return {

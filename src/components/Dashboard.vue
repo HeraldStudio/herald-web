@@ -6,7 +6,7 @@
       .identity {{ user ? user.identity : '…' }}
       img.icon(@click='logout()' src='static/images/logout.png')
     
-    .admin-container
+    .admin-container(v-if='user.admin')
       router-link(to='/admin/monitor' v-if='user.admin.maintenance')
         .function 概况
       router-link(to='/admin/privilege' v-if='user.admin.maintenance')

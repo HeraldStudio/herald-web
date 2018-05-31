@@ -110,8 +110,8 @@
     mounted() {
       let el = this.$refs.page;
       ['touchstart', 'mouseup'].map(k => document.addEventListener(k, ev => {
-        this.mouseX = (ev.clientX || ev.touches[0].clientX) - getOffsetLeft(el)
-        this.mouseY = (ev.clientY || ev.touches[0].clientY) - getOffsetTop(el)
+        this.mouseX = (ev.clientX || ev.touches && ev.touches[0].clientX) - getOffsetLeft(el)
+        this.mouseY = (ev.clientY || ev.touches && ev.touches[0].clientY) - getOffsetTop(el)
       }))
     },
     watch: {
@@ -221,10 +221,14 @@
     background var(--color-tool-bg)
     box-sizing border-box
 
+  // 密码框大圆圈改成小圆点
+  input[type="password"]
+    font-family Verdana, sans-serif
+
   input, textarea, input:focus, textarea:focus
-    // -webkit-appearance none
-    // -moz-appearance none
-    // appearance none
+    -webkit-appearance none
+    -moz-appearance none
+    appearance none
     border none
     outline none
     resize none
@@ -513,8 +517,13 @@
 
     // 强制加固定白底，尤其在微信和小程序中用于屏蔽黑底和微信的提示文字
     &::before
-      content ''
+      content '专注公益更懂你'
+      padding 80px
+      text-align center
       position fixed
+      font-size 13px
+      color #aaa
+      letter-spacing 1px
       left 0
       top 0
       right 0
@@ -525,6 +534,8 @@
     &.wx
       .base-header
         display none
+      &::before
+        padding 20px
 
   .widget
     border-bottom 1px solid var(--color-divider)

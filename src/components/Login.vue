@@ -2,14 +2,15 @@
 
   .widget.login(v-if='!user')
     .live2d-container
-      live2d
+      //- 仿 B 站，输密码闭眼睛
+      live2d(:forceState='isPasswordFocus && "sleep"')
     .field
-      input(placeholder='一卡通号' v-model='form.cardnum' @keyup.enter='login()')
+      input(placeholder='一卡通号' v-model='cardnum' @keyup.enter='login()')
     .field
-      input(type='password' placeholder='统一身份认证密码' v-model='form.password' @keyup.enter='login()')
+      input(type='password' placeholder='统一身份认证密码' ref='password' v-model='password' @keyup.enter='login()' @keydown.tab='preventTab' @focus='isPasswordFocus = true' @blur='isPasswordFocus = false')
     .field(v-if='isGraduate')
-      input(type='password' placeholder='研院密码（初始为八位生日，留空同上）' v-model='form.gpassword' @keyup.enter='login()')
-    button.primary(v-if='loading') 登录中…
+      input(type='password' placeholder='研院密码（初始为八位生日，留空同上）' v-model='gpassword' @keyup.enter='login()')
+    button.primary(v-if='loading') …
     button.primary(v-else, @click='login()') 登录
 
 </template>
@@ -23,44 +24,59 @@
     components: { live2d },
     data() {
       return {
-        form: {
-          cardnum: '',
-          password: '',
-          gpassword: ''
-        },
-        loading: false
+        cardnum: '',
+        password: '',
+        gpassword: '',
+        loading: false,
+        isPasswordFocus: false
       }
     },
     created() {},
+    watch: {
+      cardnum() { // 十分贴心的设计，一卡通输够 9 位自动聚焦密码框
+        if (this.cardnum.length === 9) {
+          this.$refs.password.focus()
+        }
+      }
+    },
     methods: {
+      preventTab(e) { // 同时，既然自动跳过去了，应该阻止用户再次按下 tab
+        if (e.keyCode === 9) {
+          e.preventDefault()
+        }
+      },
       async login() {
-        if (/^[0-9a-f]{32,}$/.test(this.form.cardnum)) {
-          H.token = this.form.cardnum
+        if (/^[0-9a-f]{32,}$/.test(this.cardnum)) {
+          H.token = this.cardnum
           return
         }
 
-        if (!/^[12]\d{8}$/.test(this.form.cardnum) || !this.form.password.trim()) {
+        if (!/^[12]\d{8}$/.test(this.cardnum) || !this.password.trim()) {
           this.$toasted.show('请填写完整')
           return
         }
 
         this.loading = true
-        this.form.platform = 'web'
 
-        if (!await H.auth.post(this.form)) {
+        if (!await H.auth.post({
+          cardnum: this.cardnum,
+          password: this.password,
+          gpassword: this.gpassword,
+          platform: 'web'
+        })) {
           this.$toasted.show('登录出现错误，请重试')
-          this.form.password = ''
-          this.form.gpassword = ''
+          this.password = ''
+          this.gpassword = ''
         } else {
-          localStorage.setItem('herald-wlan-username', this.form.cardnum)
-          localStorage.setItem('herald-wlan-password', new Buffer(this.form.password).toString('base64'))
+          localStorage.setItem('herald-wlan-username', this.cardnum)
+          localStorage.setItem('herald-wlan-password', new Buffer(this.password).toString('base64'))
         }
         this.loading = false
       }
     },
     computed: {
       isGraduate () {
-        return /^22/.test(this.form.cardnum)
+        return /^22/.test(this.cardnum)
       }
     }
   }
@@ -70,7 +86,12 @@
 
   .widget.login
     align-items center
-    padding 150px 0
+    position absolute
+    width 100%
+    height 100%
+    display flex
+    flex-direction column
+    justify-content center
 
     .live2d-container
       position relative
