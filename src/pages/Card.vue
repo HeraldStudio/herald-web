@@ -6,8 +6,8 @@
         .title 卡余额
         .content {{ card.info.balance }}
       li.info
-        .title 今日消费次数
-        .content {{ card.detail.length }}
+        .title 电子钱包余额
+        .content {{ card.info.eacc }}
       li.info.charge
         router-link(to='/card/charge')
           .title 充值
