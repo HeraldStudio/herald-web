@@ -30,3 +30,12 @@
     }
   }
 </script>
+<style lang="stylus" scoped>
+  .confirm-button
+    transition .3s
+
+    &.confirming
+      background #ffd8c4
+      color #6b402a
+</style>
+

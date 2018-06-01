@@ -219,6 +219,7 @@
   input, textarea
     color var(--color-text-bold)
     background var(--color-tool-bg)
+    width 180px
     box-sizing border-box
 
   // 密码框大圆圈改成小圆点
@@ -241,6 +242,7 @@
   hr
     border 0 none
     height 1px
+    width 100%
     background var(--color-divider)
     margin 25px 0
 
