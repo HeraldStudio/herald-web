@@ -8,8 +8,10 @@ const H = herald({
   onLogout (token) {},
   async onError (e, path) {
     if (e.code === 401) {
-      H.token = ''
-      Vue.toasted.show('登录已失效，请重新登录')
+      if (H.isLogin) {
+        H.token = ''
+        Vue.toasted.show('登录已失效，请重新登录')
+      }
     } else {
       new Log().red(e.code).yellow(path).cyan(e.reason).fire()
       Vue.toasted.show(`${e.reason}`)
