@@ -97,6 +97,9 @@ module.exports = (conf) => {
       }
 
       if (res.success) {
+        if (res.code === 203) {
+          res.result.isStale = true
+        }
         if (path === 'auth') {
           await changeToken(method === 'delete' ? null : res.result)
         }
