@@ -2,10 +2,10 @@
 
   .widget.exam(v-if='exams && exams.length' :class='{ stale: exams && exams.isStale }')
     ul.detail-list
-      li(v-for='item in exams')
+      li(v-for='item in exams' v-if='item.endTime > now')
         .top
           .left {{ item.courseName }}
-          .right {{ item.daysLeft ? item.daysLeft + ' 天后考试' : '今日考试' }}
+          .right {{ daysBefore(item) ? daysBefore(item) + ' 天后考试' : '今日考试' }}
         .bottom
           .left {{ formatPeriodNatural(item.startTime, item.endTime) }}
           .right {{ item.location }}
@@ -19,7 +19,8 @@
   export default {
     data() {
       return {
-        exams: null
+        exams: null,
+        now: Date.now()
       }
     },
     persist: {
@@ -31,11 +32,11 @@
     methods: {
       ...formatter,
       async reload() {
-        let now = new Date()
-        this.exams = (await H.api.exam()).filter(k => k.endTime > now).map(k => {
-          k.daysLeft = Math.round((k.startTime - now) / (1000 * 60 * 60 * 24))
-          return k
-        })
+        this.now = Date.now()
+        this.exams = await H.api.exam()
+      },
+      daysBefore(exam) {
+        return Math.round((exam.startTime - this.now) / (1000 * 60 * 60 * 24))
       }
     }
   }
