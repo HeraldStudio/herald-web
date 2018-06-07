@@ -88,7 +88,8 @@
     align-items center
     position absolute
     width 100%
-    height 100%
+    min-height 100%
+    bottom 0
     display flex
     flex-direction column
     justify-content center
