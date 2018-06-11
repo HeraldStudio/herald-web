@@ -53,7 +53,9 @@
         }
       },
       async check() {
-        this.needLogin = navigator.onLine && await axios.head('https://myseu.cn/ws3/').then(() => false, () => true)
+        this.needLogin = navigator.onLine && await axios.head('/', {
+          validateStatus: () => true
+        }).then(() => false, () => true)
       }
     }
   }
