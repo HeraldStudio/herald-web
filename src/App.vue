@@ -525,29 +525,30 @@
           width 100%
           height 100%
 
-    // 强制加固定白底，尤其在微信和小程序中用于屏蔽黑底和微信的提示文字
-    &::before
-      content '专注公益更懂你'
-      padding 80px 0
-      text-align center
-      position fixed
-      font-size 13px
-      color #aaa
-      letter-spacing 1px
-      top 0
-      top constant(safe-area-inset-top)
-      top env(safe-area-inset-top)
-      left 0
-      left constant(safe-area-inset-left)
-      left env(safe-area-inset-left)
-      right 0
-      right constant(safe-area-inset-right)
-      right env(safe-area-inset-right)
-      bottom 0
-      bottom constant(safe-area-inset-bottom)
-      bottom env(safe-area-inset-bottom)
-      z-index -999
-      background var(--color-divider)
+    // 强制加固定灰底，尤其在微信和小程序中用于屏蔽黑底和微信的提示文字
+    @media screen and (max-width: 600px)
+      &::before
+        content '专注公益更懂你'
+        padding 80px 0
+        text-align center
+        position fixed
+        font-size 13px
+        color #aaa
+        letter-spacing 1px
+        top 0
+        top constant(safe-area-inset-top)
+        top env(safe-area-inset-top)
+        left 0
+        left constant(safe-area-inset-left)
+        left env(safe-area-inset-left)
+        right 0
+        right constant(safe-area-inset-right)
+        right env(safe-area-inset-right)
+        bottom 0
+        bottom constant(safe-area-inset-bottom)
+        bottom env(safe-area-inset-bottom)
+        z-index -999
+        background var(--color-divider)
 
     &.wx, &.mina
       .base-header
