@@ -348,9 +348,17 @@
     .app-container
       position fixed
       top 0
+      top constant(safe-area-inset-top)
+      top env(safe-area-inset-top)
       left 0
+      left constant(safe-area-inset-left)
+      left env(safe-area-inset-left)
       right 0
+      right constant(safe-area-inset-right)
+      right env(safe-area-inset-right)
       bottom 0
+      bottom constant(safe-area-inset-bottom)
+      bottom env(safe-area-inset-bottom)
       display flex
       flex-direction row
       overflow hidden
@@ -526,10 +534,18 @@
       font-size 13px
       color #aaa
       letter-spacing 1px
-      left 0
       top 0
+      top constant(safe-area-inset-top)
+      top env(safe-area-inset-top)
+      left 0
+      left constant(safe-area-inset-left)
+      left env(safe-area-inset-left)
       right 0
+      right constant(safe-area-inset-right)
+      right env(safe-area-inset-right)
       bottom 0
+      bottom constant(safe-area-inset-bottom)
+      bottom env(safe-area-inset-bottom)
       z-index -999
       background var(--color-divider)
 
