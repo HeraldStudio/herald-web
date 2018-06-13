@@ -25,12 +25,12 @@
     <title>小猴偷米</title>
   </head>
   <body onselectstart="return false">
+    <div id="app"></div>
     <script>
       if (typeof Proxy === 'undefined') {
         document.body.innerHTML = '<p style="position:absolute;top:50%;left:20px;right:20px;margin-top:-2em;line-height:2em;font-family:sans-serif;font-size:16px;color:#bbb;text-align:center">小猴偷米为主流的现代浏览器而设计，你的浏览器版本过旧，请使用最新版本的 Chrome 或 Safari 打开<br/>如果你使用双核浏览器，请切换到极速模式</p>'
         document.getElementById('app').remove()
       }
     </script>
-    <div id="app"></div>
   </body>
 </html>
