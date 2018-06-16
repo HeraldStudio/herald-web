@@ -151,7 +151,6 @@
       text-align: center
       border-top 0.5px solid var(--color-divider)
       padding-top 20px
-      -ms-overflow-style none
       
       ::-webkit-scrollbar
         display none
