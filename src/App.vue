@@ -163,6 +163,7 @@
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    -ms-overflow-style none
 
   ::-webkit-scrollbar
     display: none
