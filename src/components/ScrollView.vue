@@ -16,8 +16,12 @@
         scrollX: this.horizontal,
         scrollY: !this.horizontal,
         click: true,
-        swipeBounceTime: 100,
+        bounceTime: 600,
+        momentumLimitTime: 200,
+        momentumLimitDistance: 20,
+        swipeTime: 1000,
         deceleration: 0.003,
+        swipeBounceTime: 300,
         mouseWheel: true,
         eventPassthrough: this.horizontal ? 'vertical' : 'horizontal'
       })
