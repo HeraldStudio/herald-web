@@ -16,6 +16,7 @@ import AdminNotice from '@/pages/admin/Notice'
 import AdminPrivilege from '@/pages/admin/Privilege'
 import AdminBanner from '@/pages/admin/Banner'
 import AdminActivity from '@/pages/admin/Activity'
+import Laundry from '@/pages/Laundry'
 import Download from '@/pages/Download'
 
 Vue.use(Router)
@@ -80,6 +81,11 @@ export default new Router({
       path: '/notice/competition/:srtpId',
       name: '通知公告',
       component: NoticeView
+    },
+    {
+      path: '/laundry',
+      name: '洗衣房',
+      component: Laundry
     },
     {
       path: '/admin/monitor',
