@@ -126,6 +126,7 @@
     margin 0
     padding 0
     position relative
+    transform translateZ(0px) // 强制 GPU 渲染
 
     // 用 padding-top 撑起使宽高相等
     &::before
