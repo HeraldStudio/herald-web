@@ -21,7 +21,7 @@
         momentumLimitDistance: 20,
         swipeTime: 1000,
         deceleration: 0.002,
-        swipeBounceTime: 200,
+        swipeBounceTime: 100,
         mouseWheel: true,
         eventPassthrough: this.horizontal ? 'vertical' : 'horizontal'
       })
