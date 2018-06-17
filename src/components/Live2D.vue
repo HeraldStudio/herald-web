@@ -122,11 +122,16 @@
       transform rotate(360deg)
 
   .live2d
-    position absolute
-    left 0
-    right 0
-    top 0
-    bottom 0
+    width 100%
+    margin 0
+    padding 0
+    position relative
+
+    // 用 padding-top 撑起使宽高相等
+    &::before
+      display block
+      content ''
+      padding-top 100%
 
     .bg
       position absolute
