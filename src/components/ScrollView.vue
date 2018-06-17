@@ -17,6 +17,7 @@
         scrollY: !this.horizontal,
         click: true,
         swipeBounceTime: 100,
+        deceleration: 0.003,
         mouseWheel: true,
         eventPassthrough: this.horizontal ? 'vertical' : 'horizontal'
       })
