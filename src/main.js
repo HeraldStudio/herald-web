@@ -30,7 +30,8 @@ if (window.navigator.standalone) {
 
 offline.install({
   responseStrategy: 'network-first',
-  autoUpdate: true
+  autoUpdate: true,
+  excludes: '**/*.html'
 })
 
 Vue.config.productionTip = false
