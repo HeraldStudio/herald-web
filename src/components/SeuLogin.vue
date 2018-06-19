@@ -30,7 +30,7 @@
       let cardnum = localStorage.getItem('herald-wlan-username')
       let password = localStorage.getItem('herald-wlan-password')
       if (password) {
-        password = new Buffer(password, 'base64').toString()
+        password = Buffer.from(password, 'base64').toString()
       }
       if ((this.form.cardnum = cardnum) && (this.form.password = password)) { // 赋值
         this.saved = true
@@ -42,13 +42,13 @@
         try {
           await axios.get('https://w.seu.edu.cn/index.php/index/login?' + qs.stringify({
             username: this.form.cardnum,
-            password: new Buffer(this.form.password).toString('base64')
+            password: Buffer.from(this.form.password).toString('base64')
           }))
         } catch (e) {}
         await this.check()
         if (!this.needLogin) {
           localStorage.setItem('herald-wlan-username', this.form.cardnum)
-          localStorage.setItem('herald-wlan-password', new Buffer(this.form.password).toString('base64'))
+          localStorage.setItem('herald-wlan-password', Buffer.from(this.form.password).toString('base64'))
           location.reload()
         }
       },

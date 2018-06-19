@@ -14,7 +14,7 @@ const H = herald({
       }
     } else {
       new Log().red(e.code).yellow(path).cyan(e.reason).fire()
-      Vue.toasted.show(`${e.reason}`)
+      Vue.toasted.show('部分接口请求失败')
     }
     throw e // 抛出异常，不覆盖已有缓存数据
   }

@@ -58,18 +58,19 @@
 
         this.loading = true
 
-        if (!await H.auth.post({
-          cardnum: this.cardnum,
-          password: this.password,
-          gpassword: this.gpassword,
-          platform: 'web'
-        })) {
+        try {
+          await H.auth.post({
+            cardnum: this.cardnum,
+            password: this.password,
+            gpassword: this.gpassword,
+            platform: 'web'
+          })
+          localStorage.setItem('herald-wlan-username', this.cardnum)
+          localStorage.setItem('herald-wlan-password', Buffer.from(this.password).toString('base64'))
+        } catch (e) {
           this.$toasted.show('登录出现错误，请重试')
           this.password = ''
           this.gpassword = ''
-        } else {
-          localStorage.setItem('herald-wlan-username', this.cardnum)
-          localStorage.setItem('herald-wlan-password', new Buffer(this.password).toString('base64'))
         }
         this.loading = false
       }
