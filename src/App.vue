@@ -104,7 +104,7 @@
             this.user = null
             location.href = '#/'
           }
-        }, 500)
+        }, 1500)
       }
     },
     mounted() {
