@@ -2,7 +2,7 @@
 
   .widget.curriculum(v-if='curriculum' :class='{ stale: curriculum && curriculum.isStale }')
     .week-picker
-      .switch(@click='listView = !listView; displayTerm = ""') {{ listView ? '列表视图' : '周视图' }}
+      .switch(@click='listView = !listView; displayTerm = currentTerm') {{ listView ? '列表视图' : '周视图' }}
       .prev(v-if='!listView' @click='prevTerm()') ‹
       button.cur(v-if='!listView' title='点击回到本学期' @click='displayTerm = currentTerm') {{ displayTerm }}
       .next(v-if='!listView' @click='nextTerm()') ›
@@ -30,6 +30,7 @@
         .bottom
           .left {{ formatPeriodNatural(item.startTime, item.endTime) }}
           .right {{ item.location }}
+      li.empty(v-if='!upcomingClasses.length') 空空如也
     ul.detail-list(v-if='!listView && floatClasses && floatClasses.length')
       .hint 以下课程无法确定上课时间：
       li(v-for='item in floatClasses')
@@ -112,7 +113,8 @@
       },
       prevTerm() {
         let term = this.term.map(k => k.name)
-        this.displayTerm = term[(term.indexOf(this.displayTerm) - 1) % term.length]
+        // JS 取模是对绝对值取模保留符号，所以要先加上 length 保证结果为正
+        this.displayTerm = term[(term.indexOf(this.displayTerm) + term.length - 1) % term.length]
       },
       nextTerm() {
         let term = this.term.map(k => k.name)
@@ -302,6 +304,12 @@
     .detail-list
       padding 20px 25px 25px !important
       box-sizing border-box
+
+      .empty
+        color #aaa
+        font-size 14px
+        text-align center
+        margin-top -10px
 
       .hint
         font-size 14px
