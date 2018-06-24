@@ -33,7 +33,7 @@
   import 'element-ui/lib/theme-chalk/index.css'
   Vue.use(Loading)
 
-  import H from './api'
+  import api from './api'
   import logger from './logger'
   import tabs from './base/Tabs.vue'
   import live2d from './components/Live2D.vue'
@@ -87,20 +87,20 @@
 
       // 套壳用，通过 URL 参数导入 token
       if (/importToken=([0-9a-fA-F]+)/.test(location.search)) {
-        H.token = RegExp.$1
+        api.token = RegExp.$1
         if (location.search) {
           location.search = ''
         }
       } else {
         setInterval(async () => {
-          if (!this.user && H.isLogin) {
-            let user = await H.api.user()
-            user.admin = await H.api.admin.admin()
+          if (!this.user && api.token) {
+            let user = await api.get('/api/user')
+            user.admin = await api.get('/api/admin/admin')
             if (user.admin && user.admin.super) {
               location.href = '#/admin'
             }
             this.user = user
-          } else if (this.user && !H.isLogin) {
+          } else if (this.user && !api.token) {
             this.user = null
             location.href = '#/'
           }

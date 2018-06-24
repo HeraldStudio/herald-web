@@ -15,7 +15,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
   import formatter from "@/util/formatter"
 
   export default {
@@ -34,14 +34,14 @@
     methods: {
       async reload() {
         let now = new Date().getTime()
-        this.activities = await H.api.activity({ pagesize: 20 })
+        this.activities = await api.get(`api/activity?pagesize=20`)
       },
       async click({ hasUrl, aid }) {
         if (hasUrl) {
 
           // iOS WebApp 端，需要用 location.href 赋值才能在 Safari 中打开，否则将会在 WebApp 中打开，导致无法返回
           if (window.__herald_env === 'webapp' || window.__herald_env === 'wx') {
-            window.location.href = await H.api.activity.put({ aid })
+            window.location.href = await api.put('/api/activity', { aid })
           }
           
           // 其他情况下，需要用 window.open 在新窗打开
@@ -50,7 +50,7 @@
           // https://blog.csdn.net/wgrzhuaq/article/details/7821725
           else {
             let win = window.open('about:blank', '_blank')
-            let url = await H.api.activity.put({ aid })
+            let url = await api.put('/api/activity', { aid })
 
             // 由于 interceptor.js 的 hook，window.open 可能返回 null（小程序情况）
             // 此时，直接调用 window.open 来触发 hook 中的复制链接
