@@ -10,7 +10,7 @@
       button.primary(v-if='!isLoading', @click='login()') 登录
 </template>
 <script>
-  import H from '@/api'
+  import api from '@/api'
   import axios from 'axios'
   import qs from 'querystring'
 

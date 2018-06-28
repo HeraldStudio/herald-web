@@ -19,7 +19,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
   import confirmButton from '@/components/ConfirmButton'
 
   export default {
@@ -48,7 +48,7 @@
         this.disabled = true
         this.charge.eacc = eacc
         try {
-          let res = await H.api.card.put(this.charge)
+          let res = await api.put('/api/card', this.charge)
         } finally {
           this.disabled = false
         }

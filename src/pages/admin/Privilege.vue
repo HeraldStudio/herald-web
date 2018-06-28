@@ -39,7 +39,7 @@
             confirm-button(v-if='domain.newAdmin.cardnum && domain.newAdmin.name && domain.newAdmin.phone' @click='addAdmin(domain.domain, domain.newAdmin)' confirm-text='确定新增') 新增管理员
 </template>
 <script>
-  import H from '@/api'
+  import api from '@/api'
   import confirmButton from '@/components/ConfirmButton.vue'
   import formatter from '@/util/formatter'
 
@@ -53,7 +53,7 @@
       }
     },
     async created() {
-      let adminObj = await H.api.admin.admin()
+      let adminObj = await api.get('/api/admin/admin')
       if (adminObj) {
         this.domains = Object.keys(adminObj).filter(k => k !== 'super').map(k => {
           let domain = adminObj[k]
@@ -61,7 +61,7 @@
           domain.domain = k
           domain.admins = []
           domain.newAdmin = { name: '', cardnum: '', phone: '' }
-          H.api.admin.admin({ domain: k }).then(k => { domain.admins = k.admins })
+          api.get('/api/admin/admin', { domain: k }).then(k => { domain.admins = k.admins })
           return domain
         })
       }
@@ -69,17 +69,17 @@
     methods: {
       ...formatter,
       async addAdmin(domain, admin) {
-        await H.api.admin.admin.post({ domain, admin })
-        this.domains.find(k => k.domain === domain).admins = (await H.api.admin.admin({ domain })).admins
+        await api.post('/api/admin/admin', { domain, admin })
+        this.domains.find(k => k.domain === domain).admins = (await api.get('/api/admin/admin', { domain })).admins
         admin.name = admin.phone = admin.cardnum = ''
       },
       async saveAdmin(domain, admin) {
-        await H.api.admin.admin.put({ domain, admin })
-        this.domains.find(k => k.domain === domain).admins = (await H.api.admin.admin({ domain })).admins
+        await api.put('/api/admin/admin', { domain, admin })
+        this.domains.find(k => k.domain === domain).admins = (await api.get('/api/admin/admin', { domain })).admins
       },
       async removeAdmin(domain, admin) {
-        await H.api.admin.admin.delete({ domain, cardnum: admin.cardnum })
-        this.domains.find(k => k.domain === domain).admins = (await H.api.admin.admin({ domain })).admins
+        await api.delete('/api/admin/admin', { domain, cardnum: admin.cardnum })
+        this.domains.find(k => k.domain === domain).admins = (await api.get('/api/admin/admin', { domain })).admins
       }
     }
   }

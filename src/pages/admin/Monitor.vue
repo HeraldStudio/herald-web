@@ -95,7 +95,7 @@
             td {{ user.monthlyInvoke }}
 </template>
 <script>
-  import H from '@/api'
+  import api from '@/api'
   import confirmButton from '@/components/ConfirmButton.vue'
   import formatter from '@/util/formatter'
 
@@ -147,19 +147,19 @@
         return date.getHours() + ':' + minute
       },
       async acceptSpider (name) {
-        await H.api.admin.maintenance.connection.post({ name })
-        this.connection = await H.api.admin.maintenance.connection()
+        await api.post('/api/admin/maintenance/connection', { name })
+        this.connection = await api.get('/api/admin/maintenance/connection')
       },
       async rejectSpider (name) {
-        await H.api.admin.maintenance.connection.delete({ name })
-        this.connection = await H.api.admin.maintenance.connection()
+        await api.delete('/api/admin/maintenance/connection', { name })
+        this.connection = await api.get('/api/admin/maintenance/connection')
       },
       async reload () {
-        this.connection = await H.api.admin.maintenance.connection()
-        this.redis = await H.api.admin.maintenance.redis()
-        this.user = await H.api.admin.maintenance.user()
-        this.daily = await H.api.admin.maintenance.daily()
-        this.upstream = await H.api.health()
+        this.connection = await api.get('/api/admin/maintenance/connection')
+        this.redis = await api.get('/api/admin/maintenance/redis')
+        this.user = await api.get('/api/admin/maintenance/user')
+        this.daily = await api.get('/api/admin/maintenance/daily')
+        this.upstream = await api.get('/api/health')
       },
       generateDescription(route, result) {
         return [

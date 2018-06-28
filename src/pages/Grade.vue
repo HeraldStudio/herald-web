@@ -47,7 +47,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
   import formatter from '@/util/formatter'
 
   export default {
@@ -62,7 +62,7 @@
       selected: 'herald-default-gpa-selected'
     },
     async created() {
-      let gpa = await H.api.gpa()
+      let gpa = await api.get('/api/gpa')
       gpa.detail.map(k => {
         // 由于同一课程可能有首修和多次重修，为防止判断出错，给所有课程里面加入学期
         k.courses.map(c => Object.assign(c, { semester: k.semester }))

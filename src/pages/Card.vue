@@ -25,7 +25,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
   import formatter from '@/util/formatter'
 
   export default {
@@ -54,7 +54,7 @@
     methods: {
       ...formatter,
       async reload() {
-        this.card = await H.api.card()
+        this.card = await api.get('/api/card')
       },
       async loadPrevDay() {
         this.loading = true
@@ -62,7 +62,7 @@
           let prevDayTimestamp = this.oldestDate - 1000 * 60 * 60 * 24
           let prevDay = new Date(prevDayTimestamp)
           let prevDayName = `${prevDay.getFullYear()}-${prevDay.getMonth() + 1}-${prevDay.getDate()}`
-          let res = await H.api.card({ date: prevDayName })
+          let res = await api.get('/api/card', { date: prevDayName })
           if (res) {
             this.card.detail = this.card.detail.concat(res.detail)
             this.oldestDate = prevDayTimestamp

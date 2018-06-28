@@ -44,7 +44,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
   import formatter from '@/util/formatter'
 
   export default {
@@ -71,7 +71,7 @@
       // term 有缓存，先为缓存数据计算一遍 displayTerm
       this.displayTerm = this.currentTerm
 
-      this.term = await H.api.term()
+      this.term = await api.get('/api/term')
       this.currentTerm = this.term.find(k => k.current).name
       this.displayTerm = this.currentTerm
     },
@@ -96,7 +96,7 @@
         }
       },
       async displayTerm() {
-        this.curriculum = await H.api.curriculum({ term: this.displayTerm })
+        this.curriculum = await api.get('/api/curriculum', { term: this.displayTerm })
       }
     },
     methods: {

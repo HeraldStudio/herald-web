@@ -8,7 +8,7 @@
     p.loading(v-else key='0') 检测中…
 </template>
 <script>
-  import H from '@/api'
+  import api from '@/api'
 
   export default {
     data () {
@@ -17,7 +17,7 @@
       }
     },
     async mounted () {
-      this.upstream = await H.api.health()
+      this.upstream = await api.get('/api/health')
     }
   }
 </script>

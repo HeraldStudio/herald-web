@@ -13,7 +13,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
   import formatter from "@/util/formatter"
   import { Carousel, CarouselItem } from 'vue-l-carousel'
 
@@ -35,14 +35,14 @@
     },
     methods: {
       async reload() {
-        this.banner = await H.api.banner()
+        this.banner = await api.get('/api/banner')
       },
       async click({ hasUrl, bid }) {
         if (hasUrl) {
 
           // iOS WebApp 端，需要用 location.href 赋值才能在 Safari 中打开，否则将会在 WebApp 中打开，导致无法返回
           if (window.__herald_env === 'webapp' || window.__herald_env === 'wx') {
-            window.location.href = await H.api.banner.put({ bid })
+            window.location.href = await api.put('/api/banner', { bid })
           }
           
           // 其他情况下，需要用 window.open 在新窗打开
@@ -51,7 +51,7 @@
           // https://blog.csdn.net/wgrzhuaq/article/details/7821725
           else {
             let win = window.open('about:blank', '_blank')
-            let url = await H.api.banner.put({ bid })
+            let url = await api.put('/api/banner', { bid })
 
             // 由于 interceptor.js 的 hook，window.open 可能返回 null（小程序情况）
             // 此时，直接调用 window.open 来触发 hook 中的复制链接

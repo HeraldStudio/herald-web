@@ -7,7 +7,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
   import marked from 'marked'
 
   marked.setOptions({ gfm: true })
@@ -39,11 +39,11 @@
         }
       },
       async loadOther(notice) {
-        let res = await H.api.notice.post(notice)
+        let res = await api.post('/api/notice', notice)
         this.markdown = marked(res)
       },
       async loadCompetition(id) {
-        let res = await H.api.srtp.competition.post({ id })
+        let res = await api.post('/api/srtp/competition', { id })
         this.markdown = marked(res)
       }
     }

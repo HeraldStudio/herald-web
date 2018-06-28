@@ -8,7 +8,7 @@
   </div>
 </template>
 <script>
-  import H from '@/api'
+  import api from '@/api'
   import qiniu from 'qiniu-js'
   import axios from 'axios'
   let id = 0
@@ -25,7 +25,7 @@
     },
     methods: {
       async upload () {
-        let { key, uptoken } = await H.api.qiniu()
+        let { key, uptoken } = await api.get('/api/qiniu')
         let form = new FormData()
         form.append('key', key)
         form.append('token', uptoken)

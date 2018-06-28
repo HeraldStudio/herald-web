@@ -43,7 +43,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
 
   export default {
     props: ['user'],
@@ -80,12 +80,12 @@
         if (this.query.schoolnum) {
           q.schoolnum = this.query.schoolnum
         }
-        this.stat = await H.api.course(q)
+        this.stat = await api.get('/api/course', q)
       },
       async loadOptional() {
         if (!this.ended) {
           this.ended = true // 先禁用加载更多按钮防止重复获取同一页
-          let nextPage = await H.api.course.optional({
+          let nextPage = await api.get('/api/course/optional', {
             pagesize: 10,
             page: Math.ceil(this.optional.length / 10) + 1
           })

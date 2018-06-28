@@ -34,7 +34,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
 
   export default {
     data() {
@@ -48,7 +48,7 @@
     },
     async created() {
       this.curDate = new Date().getTime()
-      this.pe = await H.api.pe()
+      this.pe = await api.get('/api/pe')
 
       if (this.pe && this.pe.detail.length) {
         this.curDate = this.pe.detail.slice(-1)[0]

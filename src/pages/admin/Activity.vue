@@ -57,7 +57,7 @@
           td(colspan='9' @click='loadNextPage()') 加载更多
 </template>
 <script>
-  import H from '@/api'
+  import api from '@/api'
   import confirmButton from '@/components/ConfirmButton.vue'
   import timestamp from '@/components/TimestampPicker.vue'
   import formatter from '@/util/formatter'
@@ -76,7 +76,7 @@
       }
     },
     async created() {
-      this.activities = await H.api.admin.activity()
+      this.activities = await api.get('/api/admin/activity')
       if (this.activities.length < 10) {
         this.ended = true
       }
@@ -84,7 +84,7 @@
     },
     methods: {
       async loadNextPage() {
-        let nextPage = await H.api.admin.activity({ page: this.page + 1 })
+        let nextPage = await api.get('/api/admin/activity', { page: this.page + 1 })
         if (nextPage.length < 10) {
           this.ended = true
         }
@@ -116,17 +116,17 @@
         }
       },
       async addActivity() {
-        await H.api.admin.activity.post({ activity: this.newActivity })
-        this.activities = await H.api.admin.activity()
+        await api.post('/api/admin/activity', { activity: this.newActivity })
+        this.activities = await api.get('/api/admin/activity')
         this.initNewActivity()
       },
       async saveActivity(activity) {
-        await H.api.admin.activity.put({ activity })
-        this.activities = await H.api.admin.activity()
+        await api.put('/api/admin/activity', { activity })
+        this.activities = await api.get('/api/admin/activity')
       },
       async removeActivity(aid) {
-        await H.api.admin.activity.delete({ aid })
-        this.activities = await H.api.admin.activity()
+        await api.delete('/api/admin/activity', { aid })
+        this.activities = await api.get('/api/admin/activity')
       }
     }
   }
