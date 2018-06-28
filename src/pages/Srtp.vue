@@ -20,7 +20,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
   import formatter from '@/util/formatter'
 
   export default {
@@ -33,7 +33,7 @@
       srtp: 'herald-default-srtp'
     },
     async created() {
-      this.srtp = await H.api.srtp()
+      this.srtp = await api.get('/api/srtp')
     }
   }
 

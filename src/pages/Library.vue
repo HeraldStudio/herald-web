@@ -15,7 +15,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
   import formatter from '@/util/formatter'
 
   export default {
@@ -25,7 +25,7 @@
       }
     },
     async created() {
-      this.books = await H.api.library()
+      this.books = await api.get('/api/library')
     },
     persist: {
       books: 'herald-default-library'
@@ -33,7 +33,7 @@
     methods: {
       ...formatter,
       async renew(bookId) {
-        this.$toasted.show(await H.api.library.post({ bookId }))
+        this.$toasted.show(await api.post('/api/library', { bookId }))
         await this.reload()
       }
     }

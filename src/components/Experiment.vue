@@ -13,7 +13,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
   import formatter from '@/util/formatter'
 
   export default {
@@ -32,7 +32,7 @@
       ...formatter,
       async reload() {
         let now = new Date()
-        let experiment = await H.api.phylab()
+        let experiment = await api.get('/api/phylab')
         this.experiment = experiment.filter(k => k.endDate > now || k.score.length)
       }
     }

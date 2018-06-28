@@ -58,7 +58,7 @@
 
 <script>
   import item from './DashboardItem.vue'
-  import H from '@/api'
+  import api from '@/api'
 
   export default {
     props: ['user'],
@@ -84,16 +84,16 @@
       library: 'herald-default-library'
     },
     async created() {
-      this.pe = await H.api.pe()
-      this.gpa = await H.api.gpa()
-      this.card = await H.api.card()
-      this.srtp = await H.api.srtp()
-      this.lecture = await H.api.lecture()
-      this.library = await H.api.library()
+      this.pe = await api.get('/api/pe')
+      this.gpa = await api.get('/api/gpa')
+      this.card = await api.get('/api/card')
+      this.srtp = await api.get('/api/srtp')
+      this.lecture = await api.get('/api/lecture')
+      this.library = await api.get('/api/library')
     },
     methods: {
       logout() {
-        H.token = ''
+        api.token = ''
       }
     },
     computed: {

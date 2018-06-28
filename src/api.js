@@ -1,32 +1,64 @@
-import herald from './util/herald.js'
-import { Log } from './logger'
 import cookie from 'js-cookie'
 import axios from 'axios'
 import Vue from 'vue'
+import qs from 'querystring'
 
-let api = axios.create({
-  baseURL: 'https://myseu.cn/ws3/',
-  headers: { 'Content-Type': 'application/json' },
-  withCredentials: false // 所有请求不带 Cookie
-});
-
-['get', 'post', 'put', 'delete', 'head', 'options'].map(k => {
-  api[k] = (...args) => {
-    api[k]
-  }
-})
-
-Object.defineProperty(api, 'token', {
-  get() {
-    return cookie.get('herald-default-token')
+// 用 Vue 做一个状态机来充当 api 接口
+export default new Vue({
+  data: {
+    token: null,
+    axios: axios.create({
+      baseURL: 'https://myseu.cn/ws3/',
+      headers: { 'Content-Type': 'application/json' },
+      validateStatus: () => true
+    })
   },
-  set(newValue) {
-    cookie.set('herald-default-token', newValue, { expires: 60 })
-    api.defaults.headers.token = newValue
+  created() {
+    this.axios.defaults.headers.token = this.token = cookie.get('herald-default-token')
+  },
+  watch: {
+    token() {
+      this.axios.defaults.headers.token = this.token
+      cookie.set('herald-default-token', this.token, { expires: 60 })
+    }
+  },
+  computed: {
+    isLogin() {
+      return !!this.token
+    }
+  },
+  methods: {
+    async get(route = '/', data = {}) {
+      let params = qs.stringify(data)
+      if (params) params = '?' + params
+      return this.handleResponse(await this.axios.get(route + params))
+    },
+    async post(route = '/', data = {}) {
+      return this.handleResponse(await this.axios.post(route, data))
+    },
+    async put(route = '/', data = {}) {
+      return this.handleResponse(await this.axios.put(route, data))
+    },
+    async delete(route = '/', data = {}) {
+      let params = qs.stringify(data)
+      if (params) params = '?' + params
+      return this.handleResponse(await this.axios.delete(route + params))
+    },
+    handleResponse(response) {
+      let { status, data } = response
+      if (status < 400) {
+        let { code, result } = data
+        status = code
+
+        if (status < 400) {
+          if (status === 203) {
+            result.isStale = true
+          }
+          return result
+        }
+      }
+
+      throw new Error(status)
+    }
   }
 })
-
-// 每次启动时从存储中 get 出 token，重新 set
-// 两个作用，一是把 token 设置到 headers 里，二是更新存储 token 过期时间
-api.token = api.token
-export default api

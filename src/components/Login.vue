@@ -16,7 +16,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
   import live2d from '@/components/Live2D.vue'
 
   export default {
@@ -47,7 +47,7 @@
       },
       async login() {
         if (/^[0-9a-f]{32,}$/.test(this.cardnum)) {
-          H.token = this.cardnum
+          api.token = this.cardnum
           return
         }
 
@@ -59,7 +59,7 @@
         this.loading = true
 
         try {
-          await H.auth.post({
+          api.token = await api.post('/auth', {
             cardnum: this.cardnum,
             password: this.password,
             gpassword: this.gpassword,

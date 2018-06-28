@@ -18,7 +18,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
 
   export default {
     data() {
@@ -28,7 +28,7 @@
       }
     },
     async created() {
-      this.laundry = await H.api.laundry()
+      this.laundry = await api.get('/api/laundry')
     }
   }
 

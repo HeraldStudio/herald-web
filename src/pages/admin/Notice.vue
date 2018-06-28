@@ -23,7 +23,7 @@
             confirm-button(v-if='newNotice.title && newNotice.content' @click='addNotice()' confirm-text='确定新增') 新增公告
 </template>
 <script>
-  import H from '@/api'
+  import api from '@/api'
   import confirmButton from '@/components/ConfirmButton.vue'
   import formatter from '@/util/formatter'
 
@@ -43,12 +43,12 @@
       }
     },
     async created() {
-      this.notices = await H.api.admin.notice()
+      this.notices = await api.get('/api/admin/notice')
     },
     methods: {
       async addNotice() {
-        await H.api.admin.notice.post({ notice: this.newNotice })
-        this.notices = await H.api.admin.notice()
+        await api.post('/api/admin/notice', { notice: this.newNotice })
+        this.notices = await api.get('/api/admin/notice')
         this.newNotice = {
           title: '',
           content: '',
@@ -57,12 +57,12 @@
         }
       },
       async saveNotice(notice) {
-        await H.api.admin.notice.put({ notice })
-        this.notices = await H.api.admin.notice()
+        await api.put('/api/admin/notice', { notice })
+        this.notices = await api.get('/api/admin/notice')
       },
       async removeNotice(nid) {
-        await H.api.admin.notice.delete({ nid })
-        this.notices = await H.api.admin.notice()
+        await api.delete('/api/admin/notice', { nid })
+        this.notices = await api.get('/api/admin/notice')
       }
     }
   }

@@ -54,7 +54,7 @@
             confirm-button(v-if='newBanner.pic && newBanner.title && newBanner.startTime && newBanner.endTime' @click='addBanner()' confirm-text='确定新增') 新增轮播图
 </template>
 <script>
-  import H from '@/api'
+  import api from '@/api'
   import confirmButton from '@/components/ConfirmButton.vue'
   import timestamp from '@/components/TimestampPicker.vue'
   import formatter from '@/util/formatter'
@@ -71,7 +71,7 @@
       }
     },
     async created() {
-      this.banners = await H.api.admin.banner()
+      this.banners = await api.get('/api/admin/banner')
       this.initNewBanner()
     },
     methods: {
@@ -99,17 +99,17 @@
         }
       },
       async addBanner() {
-        await H.api.admin.banner.post({ banner: this.newBanner })
-        this.banners = await H.api.admin.banner()
+        await api.post('/api/admin/banner', { banner: this.newBanner })
+        this.banners = await api.get('/api/admin/banner')
         this.initNewBanner()
       },
       async saveBanner(banner) {
-        await H.api.admin.banner.put({ banner })
-        this.banners = await H.api.admin.banner()
+        await api.put('/api/admin/banner', { banner })
+        this.banners = await api.get('/api/admin/banner')
       },
       async removeBanner(bid) {
-        await H.api.admin.banner.delete({ bid })
-        this.banners = await H.api.admin.banner()
+        await api.delete('/api/admin/banner', { bid })
+        this.banners = await api.get('/api/admin/banner')
       }
     }
   }

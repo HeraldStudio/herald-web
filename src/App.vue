@@ -92,19 +92,22 @@
           location.search = ''
         }
       } else {
-        setInterval(async () => {
-          if (!this.user && api.token) {
-            let user = await api.get('/api/user')
-            user.admin = await api.get('/api/admin/admin')
-            if (user.admin && user.admin.super) {
-              location.href = '#/admin'
-            }
-            this.user = user
-          } else if (this.user && !api.token) {
-            this.user = null
-            location.href = '#/'
+        let onLogin = async () => {
+          let user = await api.get('/api/user')
+          user.admin = await api.get('/api/admin/admin')
+          if (user.admin && user.admin.super) {
+            location.href = '#/admin'
           }
-        }, 1500)
+          this.user = user
+        }
+
+        let onLogout = async () => {
+          this.user = null
+          location.href = '#/'
+        }
+        
+        if (api.token) await onLogin()
+        api.$watch('token', token => token ? onLogin() : onLogout())
       }
     },
     mounted() {

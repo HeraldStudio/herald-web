@@ -20,7 +20,7 @@
 </template>
 <script>
 
-  import H from '@/api'
+  import api from '@/api'
   import Vue from 'vue'
   import formatter from '@/util/formatter'
   import markdown from '@/components/Markdown'
@@ -92,8 +92,8 @@
     methods: {
       ...formatter,
       async reload() {
-        let notice = await H.api.notice()
-        let competition = await H.api.srtp.competition()
+        let notice = await api.get('/api/notice')
+        let competition = await api.get('/api/srtp/competition')
         this.notice = notice.concat(competition.map(k => ({
           title: k.name,
           site: 'SRTP',
