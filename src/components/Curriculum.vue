@@ -2,7 +2,7 @@
 
   .widget.curriculum(v-if='curriculum' :class='{ stale: curriculum && curriculum.isStale }')
     .week-picker
-      .switch(@click='listView = !listView; displayTerm = currentTerm') {{ listView ? '列表视图' : '周视图' }}
+      .switch(@click='listView = !listView; displayTerm = currentTerm') {{ listView ? '近期课程' : '周视图' }}
       .prev(v-if='!listView' @click='prevTerm()') ‹
       button.cur(v-if='!listView' title='点击回到本学期' @click='displayTerm = currentTerm') {{ displayTerm }}
       .next(v-if='!listView' @click='nextTerm()') ›
@@ -30,7 +30,7 @@
         .bottom
           .left {{ formatPeriodNatural(item.startTime, item.endTime) }}
           .right {{ item.location }}
-      li.empty(v-if='!upcomingClasses.length') 空空如也
+      li.empty(v-if='!upcomingClasses.length') 三天内没有课程
     ul.detail-list(v-if='!listView && floatClasses && floatClasses.length')
       .hint 以下课程无法确定上课时间：
       li(v-for='item in floatClasses')
