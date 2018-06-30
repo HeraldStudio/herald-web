@@ -6,7 +6,7 @@ import qs from 'querystring'
 // 用 Vue 做一个状态机来充当 api 接口
 export default new Vue({
   data: {
-    token: null,
+    token: '',
     axios: axios.create({
       baseURL: 'https://myseu.cn/ws3/',
       headers: { 'Content-Type': 'application/json' },
@@ -15,6 +15,8 @@ export default new Vue({
   },
   created() {
     this.axios.defaults.headers.token = this.token = cookie.get('herald-default-token')
+    // 更新 token 失效时间
+    cookie.set('herald-default-token', this.token, { expires: 60 })
   },
   watch: {
     token() {
@@ -47,8 +49,9 @@ export default new Vue({
     handleResponse(response) {
       let { status, data } = response
       if (status < 400) {
-        let { code, result } = data
+        let { code, result, reason } = data
         status = code
+        data = reason
 
         if (status < 400) {
           if (status === 203) {
@@ -58,7 +61,17 @@ export default new Vue({
         }
       }
 
-      throw new Error(status)
+      // 出错时的处理
+      if (status === 401) {
+        if (this.isLogin) {
+          this.token = ''
+          Vue.toasted.show('登录已失效，请重新登录')
+        }
+      } else {
+        Vue.toasted.show('部分接口请求失败')
+      }
+
+      throw new Error(data)
     }
   }
 })

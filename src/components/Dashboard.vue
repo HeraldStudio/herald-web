@@ -84,12 +84,13 @@
       library: 'herald-default-library'
     },
     async created() {
-      this.pe = await api.get('/api/pe')
-      this.gpa = await api.get('/api/gpa')
-      this.card = await api.get('/api/card')
-      this.srtp = await api.get('/api/srtp')
-      this.lecture = await api.get('/api/lecture')
-      this.library = await api.get('/api/library')
+      // 下列不能用 await，否则前面的语句会阻塞后面的语句，前面的异常会阻止后面的语句
+      api.get('/api/pe').then(res => this.pe = res)
+      api.get('/api/gpa').then(res => this.gpa = res)
+      api.get('/api/card').then(res => this.card = res)
+      api.get('/api/srtp').then(res => this.srtp = res)
+      api.get('/api/lecture').then(res => this.lecture = res)
+      api.get('/api/library').then(res => this.library = res)
     },
     methods: {
       logout() {
