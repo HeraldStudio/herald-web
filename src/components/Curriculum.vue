@@ -71,6 +71,7 @@
       // term 有缓存，先为缓存数据计算一遍 displayTerm
       this.displayTerm = this.currentTerm
 
+      // 不要根据返回的 current 来判断显示哪个学期，而是找结束时间大于当前时间的最早学期来显示，这样对于假期期间的情况也适合
       let now = Date.now()
       this.term = await api.get('/api/term')
       this.term.sort((a, b) => a.endDate - b.endDate)
