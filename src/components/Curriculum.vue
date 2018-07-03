@@ -71,8 +71,10 @@
       // term 有缓存，先为缓存数据计算一遍 displayTerm
       this.displayTerm = this.currentTerm
 
+      let now = Date.now()
       this.term = await api.get('/api/term')
-      this.currentTerm = this.term.find(k => k.current).name
+      this.term.sort((a, b) => a.endDate - b.endDate)
+      this.currentTerm = this.term.find(k => k.endDate > now).name
       this.displayTerm = this.currentTerm
     },
     watch: {
