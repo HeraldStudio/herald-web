@@ -14,7 +14,7 @@ export default new Vue({
     })
   },
   created() {
-    this.axios.defaults.headers.token = this.token = cookie.get('herald-default-token')
+    this.axios.defaults.headers.token = this.token = cookie.getJSON('herald-default-token')
     // 更新 token 失效时间
     cookie.set('herald-default-token', this.token, { expires: 60 })
   },
