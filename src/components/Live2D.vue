@@ -122,11 +122,17 @@
       transform rotate(360deg)
 
   .live2d
-    width 100%
     margin 0
     padding 0
-    position relative
-    transform translateZ(0px) // 强制 GPU 渲染
+    position absolute
+
+    // 完美适配 Chrome 浏览器
+    // 画布尺寸扩大 5 倍，渲染后再缩放到 1/5，防止 Chrome 等浏览器对小元素（眼睛）等四舍五入导致变形
+    left -200%
+    top -200%
+    right -200%
+    bottom -200%
+    transform scale(0.2)
 
     // 用 padding-top 撑起使宽高相等
     &::before
