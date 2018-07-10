@@ -115,12 +115,12 @@
         }
       },
       prevTerm() {
-        let term = this.term.map(k => k.name)
+        let term = this.term.list.map(k => k.name)
         // JS 取模是对绝对值取模保留符号，所以要先加上 length 保证结果为正
         this.displayTerm = term[(term.indexOf(this.displayTerm) + term.length - 1) % term.length]
       },
       nextTerm() {
-        let term = this.term.map(k => k.name)
+        let term = this.term.list.map(k => k.name)
         this.displayTerm = term[(term.indexOf(this.displayTerm) + 1) % term.length]
       }
     },
