@@ -77,7 +77,7 @@
         this.selected = this.gpa.detail
           .map(k => k.courses)
           .reduce((a, b) => a.concat(b), [])
-          .filter(k => !k.courseType && (k.isFirstPassed || k.isHighestPassed))
+          .filter(k => !k.courseType)
       }
     },
     methods: {
