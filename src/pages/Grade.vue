@@ -7,42 +7,45 @@
           .title 总平均绩点
           .content {{ gpa.gpa || '暂无' }}
         li.info(v-if="!isGraduate")
-          .title 首修
+          .title 首修平均绩点
           .content {{ gpa.gpaBeforeMakeup || '未计算' }}
-        li.info(v-if="!isGraduate && gpa.calculationTime")
-          .title 计算时间
-          .content {{ formatTimeNatural(gpa.calculationTime) }}
         li.info(v-if="isGraduate")
           .title 规格化平均成绩
           .content {{ gpa.score }}
-        li.info(v-if="isGraduate")
-          .title 已修学分
-          .content {{ gpa.credits.total }}
+        li.info
+          .title 已获学分
+          .content {{ isGraduate ? gpa.credits.total : gpa.achievedCredits }}
         li.info(v-if="isGraduate")
           .title 应修学分
           .content {{ gpa.credits.required }}
+        li.info(v-if="!isGraduate && gpa.calculationTime")
+          .title 计算时间
+          .content {{ formatTimeNatural(gpa.calculationTime) }}
       ul.info-bar.predict(v-if="!isGraduate")
         li.info
           .title 校内估算
-          .content {{ predictSEU }} / 4.8
+          .content {{ predictSEU(false) }} / 4.8
+        li.info
+          .title 首修估算
+          .content {{ predictSEU(true) }} / 4.8
         li.info
           .title 出国估算
-          .content {{ predictWES }} / 4.0
-      .hint(v-if="!isGraduate") 从列表中取消选择不算绩点的课程，将为你实时估算更准确的总平均绩点。
+          .content {{ predictWES() }} / 4.0
+      .hint(v-if="!isGraduate") 从列表中取消选择不算绩点的课程，将实时显示更准确的估算绩点；选中补考将自动忽略首修，总绩点和出国绩点将自动取已选的最高成绩。
       ul.detail-list(v-if="!isGraduate" v-for='item in gpa.detail')
         .section {{ item.semester }}
-        li(v-for='k in item.courses' :class='{ active: isSelected(k) }' @click='toggle(k)')
+        li(v-for='k in item.courses' :class='{ active: isSelected(k), bad: k.equivalentScore < 60 }' @click='toggle(k)')
           .info
             .name {{ k.courseName }}
             .grade {{ k.score }} ({{ k.courseType + k.credit + '学分' }})
-          .tube(:style='"width: " + percentageScore(k) + "%"')
+          .tube(:style='"width: " + k.equivalentScore + "%"')
       ul.detail-list(v-if="isGraduate" v-for='item in gpa.detail')
         .section 第 {{ item.semester }} 学期
         li.active(v-for='k in item.courses')
           .info
             .name {{ k.courseName }}
             .grade {{ k.score }} ({{ k.scoreType + k.credit + '学分' }})
-          .tube(:style='"width: " + percentageScore(k) + "%"')
+          .tube(:style='"width: " + k.equivalentScore + "%"')
 
 </template>
 <script>
@@ -59,14 +62,14 @@
     },
     persist: {
       gpa: 'herald-default-gpa-sorted',
-      selected: 'herald-default-gpa-selected'
+      selected: 'herald-default-gpa-selected-new'
     },
     async created() {
       let gpa = await api.get('/api/gpa')
       gpa.detail.map(k => {
         // 由于同一课程可能有首修和多次重修，为防止判断出错，给所有课程里面加入学期
         k.courses.map(c => Object.assign(c, { semester: k.semester }))
-        k.courses.sort((a, b) => this.percentageScore(b) - this.percentageScore(a))
+        k.courses.sort((a, b) => b.equivalentScore - a.equivalentScore)
       })
       this.gpa = gpa
 
@@ -74,7 +77,7 @@
         this.selected = this.gpa.detail
           .map(k => k.courses)
           .reduce((a, b) => a.concat(b), [])
-          .filter(k => !k.courseType)
+          .filter(k => !k.courseType && k.isFirstPassed || k.isHighestPassed)
       }
     },
     methods: {
@@ -91,22 +94,14 @@
           this.selected.push(course)
         }
       },
-      percentageScore({ score }) {
-        if (/优/.test(score)) {
-          score = 95
-        } else if (/良/.test(score)) {
-          score = 85
-        } else if (/中/.test(score)) {
-          score = 75
-        } else if (/不及格/.test(score)) {
-          score = 0
-        } else if (/及格|通过/.test(score)) {
-          score = 60
-        }
-        return parseFloat(score) || 0
-      },
       gpaSEU(course) {
-        let score = this.percentageScore(course)
+        let score = course.equivalentScore
+
+        // 补考过了按 60 分计
+        if (course.scoreType === '补考' && course.equivalentScore >= 60) {
+          return 1.0
+        }
+
         if (score >= 96) { return 4.8 }
         if (score >= 93) { return 4.5 }
         if (score >= 90) { return 4.0 }
@@ -122,47 +117,55 @@
         return 0
       },
       gpaWES(course) {
-        let score = this.percentageScore(course)
+        let score = course.equivalentScore
         if (score >= 85) { return 4 }
         if (score >= 75) { return 3 }
         if (score >= 60) { return 2 }
         return 0
+      },
+      predictSEU(noMakeup = false) {
+        // 估算首修绩点时，把补考成绩算在首修上，否则过滤首修时不知道是否有补考，无法决定是否过滤
+        if (noMakeup) {
+          this.selected.filter(k => k.scoreType === '补考').map(k => {
+            // 这里我们用 makeup 表示重修，makeup exam 表示补考
+            let first = this.selected.find(m => m.cid === k.cid && m.scoreType === '首修')
+            if (first) first.hasMakeupExam = true
+          })
+        }
+        let { weightedGpa, credit } = this.selected
+          // 若估算首修绩点，有补考看补考，没补考看首修，挂了就是挂了；若估算总绩点，相同课程取最高一次成绩
+          .filter(k => noMakeup ? (k.scoreType === '首修' && !k.hasMakeupExam || k.scoreType === '补考') : k.isHighestPassed)
+          .map(k => ({
+            weightedGpa: this.gpaSEU(k) * k.credit,
+            credit: k.credit
+          })).reduce((a, b) => ({
+            weightedGpa: a.weightedGpa + b.weightedGpa,
+            credit: a.credit + b.credit
+          }), {
+            weightedGpa: 0,
+            credit: 0
+          })
+        return (credit && weightedGpa / credit).toFixed(3)
+      },
+      predictWES() {
+        let { weightedGpa, credit } = this.selected
+          .filter(k => k.isHighestPassed) // 相同课程仅最高一次通过有效
+          .map(k => ({
+            weightedGpa: this.gpaWES(k) * k.credit,
+            credit: k.credit
+          })).reduce((a, b) => ({
+            weightedGpa: a.weightedGpa + b.weightedGpa,
+            credit: a.credit + b.credit
+          }), {
+            weightedGpa: 0,
+            credit: 0
+          })
+        return (credit && weightedGpa / credit).toFixed(3)
       }
     },
     computed: {
       isGraduate() {
         return this.gpa && !!this.gpa.credits
-      },
-      totalCredits() {
-        return this.gpa.detail
-          .map(k => k.courses).reduce((a, b) => a.concat(b), [])
-          .map(k => k.credit).reduce((a, b) => a + b, 0)
-      },
-      predictSEU() {
-        let { weightedGpa, credit } = this.selected.map(k => ({
-          weightedGpa: this.gpaSEU(k) * k.credit,
-          credit: k.credit
-        })).reduce((a, b) => ({
-          weightedGpa: a.weightedGpa + b.weightedGpa,
-          credit: a.credit + b.credit
-        }), {
-          weightedGpa: 0,
-          credit: 0
-        })
-        return (credit && weightedGpa / credit).toFixed(3)
-      },
-      predictWES() {
-        let { weightedGpa, credit } = this.selected.map(k => ({
-          weightedGpa: this.gpaWES(k) * k.credit,
-          credit: k.credit
-        })).reduce((a, b) => ({
-          weightedGpa: a.weightedGpa + b.weightedGpa,
-          credit: a.credit + b.credit
-        }), {
-          weightedGpa: 0,
-          credit: 0
-        })
-        return (credit && weightedGpa / credit).toFixed(3)
       }
     }
   }
@@ -227,6 +230,10 @@
         .name
           color var(--color-text-secondary)
 
+      &.bad
+        .name
+          text-decoration line-through
+
       .info
         display flex
         flex-direction row
@@ -244,10 +251,14 @@
         font-size 15px
         color var(--color-primary)
         margin-right 5px
+        white-space nowrap
+        overflow hidden
+        text-overflow ellipsis
 
       .grade
         color var(--color-text-secondary)
         margin-top 3px
+        white-space nowrap
 
 </style>
 
