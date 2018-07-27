@@ -9,17 +9,11 @@
           .label 程序启动
           .content {{ formatTimeNatural(this.connection.startTime) }}
         .column
-          .label 总内存
-          .content {{ this.redis.memory.totalSystemMemoryHuman }}
-        .column
-          .label Redis 已用
+          .label 已用内存
           .content {{ this.redis.memory.usedMemoryHuman }}
         .column
           .label 并发量
           .content {{ this.connection.requestCount }}
-        .column
-          .label 回源数
-          .content {{ this.connection.detachedTaskCount }}
         .column
           .label 在线爬虫
           .content {{ this.connection.spiders.activeCount }}
@@ -138,14 +132,6 @@
     },
     methods: {
       ...formatter,
-      formatTime (timestamp) {
-        let date = new Date(timestamp)
-        let minute = date.getMinutes()
-        if (minute < 10) {
-          minute = '0' + minute
-        }
-        return date.getHours() + ':' + minute
-      },
       async acceptSpider (name) {
         await api.post('/api/admin/maintenance/connection', { name })
         this.connection = await api.get('/api/admin/maintenance/connection')

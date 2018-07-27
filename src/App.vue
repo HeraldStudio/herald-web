@@ -28,17 +28,17 @@
 
 <script>
   import Vue from 'vue'
-  import router from '@/router/index'
   import { Loading } from 'element-ui'
   import 'element-ui/lib/theme-chalk/index.css'
   Vue.use(Loading)
 
   import api from './api'
-  import logger from './logger'
+  import router from './router'
   import tabs from './base/Tabs.vue'
   import live2d from './components/Live2D.vue'
   import seuLogin from './components/SeuLogin.vue'
   import scrollView from './components/ScrollView.vue'
+  import xhook from 'xhook'
 
   function getOffsetTop(obj){
     let tmp = obj.offsetTop - obj.scrollTop;
@@ -81,9 +81,16 @@
     async created() {
       this.title = this.$route.name
       this.isHome = this.$route.path === '/'
-
-      logger.openListeners.push(() => this.isLoading = true)
-      logger.doneListeners.push(() => this.isLoading = false)
+      
+      // 请求计数，有请求正在处理则显示加载态
+      // 注意根据 Xhook 要求，before handler 参数个数必须是 1，after handler 参数个数必须是 2，不能省略
+      let requests = 0
+      xhook.before((req) => {
+        requests++ || (this.isLoading = true)
+      })
+      xhook.after((req, res) => {
+        --requests || (this.isLoading = false)
+      })
 
       // 套壳用，通过 URL 参数导入 token
       if (/importToken=([0-9a-fA-F]+)/.test(location.search)) {

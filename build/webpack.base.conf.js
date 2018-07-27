@@ -1,7 +1,7 @@
 var path = require('path')
 var utils = require('./utils')
-var config = require('../config')
-var vueLoaderConfig = require('./vue-loader.conf')
+var config = require('./config')
+var isProduction = process.env.NODE_ENV === 'production'
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -27,19 +27,23 @@ module.exports = {
   },
   module: {
     rules: [
-      // {
-      //   test: /\.(js|vue)$/,
-      //   loader: 'eslint-loader',
-      //   enforce: 'pre',
-      //   include: [resolve('src'), resolve('test')],
-      //   options: {
-      //     formatter: require('eslint-friendly-formatter')
-      //   }
-      // },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueLoaderConfig
+        options: {
+          loaders: utils.cssLoaders({
+            sourceMap: isProduction
+              ? config.build.productionSourceMap
+              : config.dev.cssSourceMap,
+            extract: isProduction
+          }),
+          transformToRequire: {
+            video: 'src',
+            source: 'src',
+            img: 'src',
+            image: 'xlink:href'
+          }
+        }
       },
       {
         test: /\.js$/,
