@@ -1,5 +1,24 @@
-# VueStarterProj
+# herald-web
 
-ES7支持参考：
-http://jamesknelson.com/using-es6-in-the-browser-with-babel-6-and-webpack/
-https://babeljs.io/docs/plugins/transform-runtime/
+小猴偷米 Web (PWA) 项目
+
+## 开发
+
+开发脚本将自动使用 yarn 安装依赖，并监听本地 8080 端口。
+
+```bash
+npm run dev
+```
+
+## 部署
+
+我们建议在服务器端 `git clone`，并在服务端执行部署脚本，这是比较优雅且更接近持续集成的部署方式。
+
+部署脚本将自动使用 `yarn` 安装依赖，并打包生成文件到 `dist` 目录；为了防止在生成前破坏 `dist` 目录导致线上不能访问，打包脚本将会先生成到 `dist-tmp` 目录，待生成完毕后再替换现有 `dist` 目录。
+
+## 开发规范
+
+- 请使用二空格缩进；
+- 请使用规范的 `pug`/`es7 stage-0`/`stylus` 书写；
+- 请熟悉 Chrome 或 Safari 的移动端模拟调试功能，并至少同时对 **桌面端、Pad 端、手机网页、小程序** 四种环境进行测试；
+- 项目代码 100% 面向业务逻辑，**工具函数或工具类请做成轮子再使用或找相关轮子使用，不要随地堆放工具代码**。
