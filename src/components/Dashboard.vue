@@ -21,37 +21,37 @@
     .dashboard-container(v-if='user')
       item(name='余额' 
         :value='card && card.info && card.info.balance' 
-        :isStale='card && card.isStale' 
+        :is-stale='card && card.isStale' 
         route='/card')
 
       item(name='跑操' 
         :value='pe && pe.count' 
-        :isStale='pe && pe.isStale' 
+        :is-stale='pe && pe.isStale' 
         route='/pe' 
         v-if='isUndergraduate')
 
       item(name='讲座' 
         :value='lecture && lecture.length' 
-        :isStale='lecture && lecture.isStale' 
+        :is-stale='lecture && lecture.isStale' 
         route='/lecture' 
         v-if='isUndergraduate')
 
       item(name='SRTP' 
         :value='srtp && srtp.info.points' 
-        :isStale='srtp && srtp.isStale' 
+        :is-stale='srtp && srtp.isStale' 
         route='/srtp' 
         v-if='isUndergraduate')
 
       item(:name='isGraduate ? "成绩" : "绩点"' 
         :value='gpa && (gpa.gpa || gpa.score || "暂无")' 
-        :isStale='gpa && gpa.isStale'
+        :is-stale='gpa && gpa.isStale'
         route='/grade' 
         v-if='isStudent' 
         :isGraduate='isGraduate')
 
       item(name='借书'
         :value='library && library.length'
-        :isStale='library && library.isStale'
+        :is-stale='library && library.isStale'
         route='/library') 
 
 </template>
