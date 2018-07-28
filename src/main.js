@@ -6,7 +6,6 @@ import router from './router'
 import interceptor from './util/interceptor'
 import Toasted from 'vue-toasted'
 import Persist from 'vue-component-persist'
-import offline from 'offline-plugin/runtime'
 
 if (window.navigator.standalone) {
   window.__herald_env = 'webapp'
@@ -27,12 +26,6 @@ if (window.navigator.standalone) {
     router.push(current)
   }
 }
-
-offline.install({
-  responseStrategy: 'network-first',
-  autoUpdate: true,
-  excludes: '**/*.html'
-})
 
 Vue.config.productionTip = false
 
