@@ -65,7 +65,8 @@
   // Service Worker 由 parcel-plugin-sw-cache 包自动生成
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js');
+      // 隔开字符串防止被 parcel 探测
+      navigator.serviceWorker.register('/' + 'sw.js');
     });
   }
 
