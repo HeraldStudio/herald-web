@@ -4,7 +4,7 @@
     .info-container
       .name {{ user ? user.name : '加载中' }}
       .identity {{ user ? user.identity : '…' }}
-      img.icon(@click='logout()' src='static/images/logout.png')
+      img.icon(@click='logout()' :src='logoutImg')
     
     .admin-container(v-if='user.admin')
       router-link(to='/admin/monitor' v-if='user.admin.maintenance')
@@ -59,6 +59,7 @@
 <script>
   import item from './DashboardItem.vue'
   import api from '@/api'
+  import logoutImg from 'static/images/logout.png'
 
   export default {
     props: ['user'],
@@ -72,7 +73,8 @@
         card: null,
         srtp: null,
         lecture: null,
-        library: null
+        library: null,
+        logoutImg
       }
     },
     persist: {

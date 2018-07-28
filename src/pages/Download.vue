@@ -1,7 +1,7 @@
 <template lang='pug'>
   .page
     .hint 小猴偷米 App 是较早版本，已不再保持活跃更新，新 App 开发正在筹备中，建议使用网页版和小程序，获得更完整的体验。
-    img.qr(src='static/images/qrcode.jpg')
+    img.qr(:src='qrcodeImg')
     .buttons
       p 下载旧版 App：
       a(href='http://static.myseu.cn/herald-v1-final.apk' target='_blank')
@@ -10,6 +10,13 @@
         button iOS 8.0+
 </template>
 <script>
+  import qrcodeImg from 'static/images/qrcode.jpg'
+
+  export default {
+    data() {
+      return { qrcodeImg }
+    }
+  }
 </script>
 <style lang='stylus' scoped>
 

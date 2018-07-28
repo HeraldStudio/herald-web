@@ -6,13 +6,13 @@
       notice(:user='user' v-if='currentTab == "notice"')
     .tab-bar
       .tab-item.tab-item-home(@click='currentTab = "home"')
-        img.icon(:src='currentTab == "home" ? "static/images/tab-home-selected.png" : "static/images/tab-home.png"')
+        img.icon(:src='currentTab == "home" ? tabHomeSelectedImg : tabHomeImg')
         p.title 首页
       .tab-item.tab-item-discover(@click='currentTab = "discover"')
-        img.icon(:src='currentTab == "discover" ? "static/images/tab-discover-selected.png" : "static/images/tab-discover.png"')
+        img.icon(:src='currentTab == "discover" ? tabDiscoverSelectedImg : tabDiscoverImg')
         p.title 活动
       .tab-item.tab-item-notice(@click='currentTab = "notice"')
-        img.icon(:src='currentTab == "notice" ? "static/images/tab-notice-selected.png" : "static/images/tab-notice.png"')
+        img.icon(:src='currentTab == "notice" ? tabNoticeSelectedImg : tabNoticeImg')
         p.title 通知
 </template>
 
@@ -22,6 +22,13 @@
   import notice from './TabNotice.vue'
   import scrollView from '../components/ScrollView.vue'
 
+  import tabHomeImg from 'static/images/tab-home.png'
+  import tabNoticeImg from 'static/images/tab-notice.png'
+  import tabDiscoverImg from 'static/images/tab-discover.png'
+  import tabHomeSelectedImg from 'static/images/tab-home-selected.png'
+  import tabNoticeSelectedImg from 'static/images/tab-notice-selected.png'
+  import tabDiscoverSelectedImg from 'static/images/tab-discover-selected.png'
+
   export default {
     props: ['user'],
     components: {
@@ -29,7 +36,13 @@
     },
     data () {
       return {
-        currentTab: 'home'
+        currentTab: 'home',
+        tabHomeImg,
+        tabNoticeImg,
+        tabDiscoverImg,
+        tabHomeSelectedImg,
+        tabNoticeSelectedImg,
+        tabDiscoverSelectedImg
       }
     },
     async created () {

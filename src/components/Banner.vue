@@ -71,7 +71,7 @@
 </script>
 <style>
 
-  @import "~vue-l-carousel/dist/main.css";
+  @import 'vue-l-carousel/dist/main.css';
 
   .v-carousel {
     padding-bottom: 15px

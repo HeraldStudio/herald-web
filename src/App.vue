@@ -7,10 +7,10 @@
           router-link.live2d-wrapper(to='/')
             .live2d-container
               live2d
-            img.logo(src='static/images/logo.png')
+            img.logo(:src='logoImg')
           .spacing
           router-link(to='/download')
-            img.download(src='static/images/download.png')
+            img.download(:src='downloadImg')
         seuLogin(:isLoading='isLoading')
         tabs(:user='user')
 
@@ -28,8 +28,8 @@
 
 <script>
   import Vue from 'vue'
+  import { xhook } from 'xhook'
   import { Loading } from 'element-ui'
-  import 'element-ui/lib/theme-chalk/index.css'
   Vue.use(Loading)
 
   import api from './api'
@@ -38,7 +38,9 @@
   import live2d from './components/Live2D.vue'
   import seuLogin from './components/SeuLogin.vue'
   import scrollView from './components/ScrollView.vue'
-  import xhook from 'xhook'
+
+  import logoImg from 'static/images/logo.png'
+  import downloadImg from 'static/images/download.png'
 
   function getOffsetTop(obj){
     let tmp = obj.offsetTop - obj.scrollTop;
@@ -72,7 +74,9 @@
         title: '',
         isHome: true,
         mouseX: 0,
-        mouseY: 0
+        mouseY: 0,
+        logoImg,
+        downloadImg
       }
     },
     persist: {
@@ -132,6 +136,9 @@
     }
   }
 </script>
+<style>
+  @import 'element-ui/lib/theme-chalk/index.css'
+</style>
 <style lang='stylus'>
   :root
     --color-text-regular   #333333

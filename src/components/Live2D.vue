@@ -1,7 +1,7 @@
 <template lang="pug">
 
   .live2d(:class='forceState || curState', @click='animateRandom()')
-    img.bg(src='static/images/live2d.png')
+    img.bg(:src='live2dImg')
     .eyes(:style='"transform: translate(" + mouseX * 2 + "%, " + mouseY * 2 + "%)"')
       .eye.left-eye
         .line1
@@ -16,6 +16,7 @@
 <script>
 
   import api from '../api'
+  import live2dImg from 'static/images/live2d.png'
 
   const timeout = (t) => new Promise(r => setTimeout(r, t))
 
@@ -60,7 +61,8 @@
         curState: 'curious',
         lastRandom: '',
         mouseX: 0,
-        mouseY: 0
+        mouseY: 0,
+        live2dImg
       }
     },
     created() {
