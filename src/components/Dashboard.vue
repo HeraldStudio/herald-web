@@ -47,7 +47,7 @@
         :is-stale='gpa && gpa.isStale'
         route='/grade' 
         v-if='isStudent' 
-        :isGraduate='isGraduate')
+        :is-graduate='isGraduate')
 
       item(name='借书'
         :value='library && library.length'

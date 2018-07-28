@@ -3,7 +3,7 @@
   .widget.login(v-if='!user')
     .live2d-container
       //- 仿 B 站，输密码闭眼睛
-      live2d(:forceState='isPasswordFocus ? "sleep" : ""')
+      live2d(:force-state='isPasswordFocus ? "sleep" : ""')
     .field
       input(placeholder='一卡通号' v-model='cardnum' @keyup.enter='login()')
     .field

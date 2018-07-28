@@ -11,7 +11,7 @@
           .spacing
           router-link(to='/download')
             img.download(:src='downloadImg')
-        seuLogin(:isLoading='isLoading')
+        seuLogin(:is-loading='isLoading')
         tabs(:user='user')
 
       //- overlay-page 为手机版上层栈，桌面版右侧栏
