@@ -50,17 +50,14 @@
     "plugins": [
       "transform-runtime",
       "transform-vue-jsx",
-      [
-        "module-resolver",
-        {
-          "root": "./",
-          "alias": {
-            "@": "./src",
-            "static": "./static",
-            "vue": "vue/dist/vue"
-          }
+      ["module-resolver",{
+        "root": "./",
+        "alias": {
+          "@": "./src",
+          "static": "./static",
+          "vue": "vue/dist/vue"
         }
-      ]
+      }]
     ]
   },
   "browserslist": [

@@ -22,6 +22,16 @@ npm run build
 
 部署脚本将并打包生成文件到 `dist` 目录；为了防止在生成前破坏 `dist` 目录导致线上不能访问，打包脚本将会先生成到 `dist-tmp` 目录，待生成完毕后再替换现有 `dist` 目录。
 
+## 需要注意的点
+
+1. Service Worker (`sw.js`) 是 parcel-plugin-sw-cache 在 parcel 打包后才执行的，不被 parcel 打包；
+
+2. 由于 parcel 环境与 webpack 不同，本项目 pug 中不支持使用驼峰属性名，需要手动改写成中划线，否则会变成全小写；如果要全项目排查驼峰属性名，可以用正则全文搜索 `[a-z]*[A-Z][a-z]*=['"]`；
+
+3. `package.json` 中 `babel` 的 `module-resolver` 插件可以代替 `webpack` 中的 `alias` 功能，其中设置了 `@` 代表 `src` 文件夹，`static` 代表 `static` 文件夹；之所以在那里配置 `"vue": "vue/dist/vue"` 是因为 `vue` 的 `package.json` 会默认指向 `vue/dist/vue-common`，导致运行时错误。
+
+4. `static` 文件夹并不是真的静态，其中的图片或其他资源需要 import，之后将会变成生成后的路径字符串，可以插入图片的 `src` 中使用，这一点与 React 中的使用方式类似。
+
 ## 开发规范
 
 - 请使用二空格缩进；
