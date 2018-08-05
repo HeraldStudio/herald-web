@@ -68,7 +68,11 @@
           localStorage.setItem('herald-wlan-username', this.cardnum)
           localStorage.setItem('herald-wlan-password', Buffer.from(this.password).toString('base64'))
         } catch (e) {
-          this.$toasted.show('登录出现错误，请重试')
+          if (/^21318/.test(this.cardnum)) {
+            this.$toasted.show('18级新生？过几天才能登陆哦～')
+          } else {
+            this.$toasted.show('登录出现错误，请重试')
+          }
           this.password = ''
           this.gpassword = ''
         }
