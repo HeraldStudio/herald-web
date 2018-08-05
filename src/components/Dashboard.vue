@@ -4,6 +4,7 @@
     .info-container
       .name {{ user ? user.name : '加载中' }}
       .identity {{ user ? user.identity : '…' }}
+        router-link(v-if='user.isNewbie' to='/intro') 新生指引 ＞
       img.icon(@click='logout()' :src='logoutImg')
     
     .admin-container(v-if='user.admin')
@@ -140,6 +141,9 @@
         white-space: nowrap
         color var(--color-text-secondary)
 
+        a
+          margin-left 5px
+
       .icon
         width 20px
         height 20px
@@ -178,6 +182,9 @@
         font-size 12px
         color var(--color-text-secondary)
         flex 1 1 0
+
+      .function
+        color #333
 
       a + a .function
         padding-left 7px

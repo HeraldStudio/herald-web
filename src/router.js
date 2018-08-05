@@ -8,6 +8,7 @@ import Lecture from '@/pages/Lecture'
 import Srtp from '@/pages/Srtp'
 import Library from '@/pages/Library'
 import Pe from '@/pages/Pe'
+import Intro from '@/pages/Intro'
 import NoticeView from '@/pages/NoticeView'
 import ScreenSaver from '@/pages/ScreenSaver'
 import CourseStat from '@/pages/CourseStat'
@@ -31,6 +32,11 @@ export default new Router({
       path: '/',
       name: '首页',
       component: Index
+    },
+    {
+      path: '/intro',
+      name: '新生指引',
+      component: Intro
     },
     {
       path: '/card',

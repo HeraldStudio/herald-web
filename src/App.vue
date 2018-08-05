@@ -207,7 +207,7 @@
     vertical-align middle
 
   a, a:link, a:hover, a:active, a:focus, a:visited
-    color inherit
+    color var(--color-primary)
     text-decoration none
     -webkit-appearance none
     -moz-appearance none
