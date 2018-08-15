@@ -60,7 +60,15 @@
       }]
     ]
   },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": true
+    }
+  },
   "browserslist": [
-    "> 1% in CN"
+    "ios >= 8",
+    "android >= 4.1",
+    "ie >= 10",
+    "defaults"
   ]
 }
