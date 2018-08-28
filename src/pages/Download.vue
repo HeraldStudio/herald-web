@@ -1,13 +1,16 @@
 <template lang='pug'>
   .page
-    .hint 小猴偷米 App 是较早版本，已不再保持活跃更新，新 App 开发正在筹备中，建议使用网页版和小程序，获得更完整的体验。
+    .hint 小猴偷米新 App 正在全力开发中，现提供安卓 beta 版本进行线上公测
     img.qr(:src='qrcodeImg')
     .buttons
-      p 下载旧版 App：
+      p 下载 App：
       a(href='http://static.myseu.cn/herald-v1-final.apk' target='_blank')
-        button Android 4.1+
+        button 老版本 Android 4.1+ 
+      a(href='https://hybrid.myseu.cn/herald-app-beta-1.apk' target='_blank')
+        button 新版本 Android 5.0+
       a(href='https://itunes.apple.com/cn/app/id1378941139' target='_blank')
         button iOS 8.0+
+        
 </template>
 <script>
   import qrcodeImg from 'static/images/qrcode.jpg'
