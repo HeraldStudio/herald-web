@@ -100,11 +100,9 @@
       let requests = 0, timeout = null
       xhook.before((req) => {
         requests++ || (this.isLoading = true) && timeout && clearTimeout(timeout)
-        console.log('requests', requests, this.isLoading)
       })
       xhook.after((req, res) => {
         --requests || (timeout = setTimeout(() => this.isLoading = false, 1000))
-        console.log('requests', requests, this.isLoading)
       })
 
       // 套壳用，通过 URL 参数导入 token
@@ -149,7 +147,7 @@
   }
 </script>
 <style>
-  @import 'element-ui/lib/theme-chalk/index.css'
+  @import 'element-ui/lib/theme-chalk/index.css';
 </style>
 <style lang='stylus'>
   :root
