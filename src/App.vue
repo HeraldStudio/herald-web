@@ -97,12 +97,14 @@
       
       // 请求计数，有请求正在处理则显示加载态
       // 注意根据 Xhook 要求，before handler 参数个数必须是 1，after handler 参数个数必须是 2，不能省略
-      let requests = 0
+      let requests = 0, timeout = null
       xhook.before((req) => {
-        requests++ || (this.isLoading = true)
+        requests++ || (this.isLoading = true) && timeout && clearTimeout(timeout)
+        console.log('requests', requests, this.isLoading)
       })
       xhook.after((req, res) => {
-        --requests || (this.isLoading = false)
+        --requests || (timeout = setTimeout(() => this.isLoading = false, 1000))
+        console.log('requests', requests, this.isLoading)
       })
 
       // 套壳用，通过 URL 参数导入 token
