@@ -126,8 +126,9 @@
           location.href = '#/'
         }
         
-        if (api.token) await onLogin()
-        api.$watch('token', token => token ? onLogin() : onLogout())
+        if (api.token) onLogin()
+        api.$on('login', onLogin)
+        api.$on('logout', onLogout)
       }
     },
     mounted() {

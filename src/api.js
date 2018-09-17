@@ -22,6 +22,7 @@ export default new Vue({
     token() {
       this.axios.defaults.headers.token = this.token
       cookie.set('herald-default-token', this.token || '', { expires: 60 })
+      this.$emit(this.token ? 'login' : 'logout')
     }
   },
   computed: {

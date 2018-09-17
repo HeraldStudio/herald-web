@@ -73,8 +73,8 @@
       if (this.followCursor) {
         ['touchstart', 'touchmove', 'touchend', 'mousemove'].map(k => document.addEventListener(k, (ev) => {
           let el = this.$el
-          let x = (ev.clientX || ev.touches[0].clientX) - (getOffsetLeft(el) + el.clientWidth / 2)
-          let y = (ev.clientY || ev.touches[0].clientY) - (getOffsetTop(el) + el.clientHeight / 2)
+          let x = (ev.clientX || ev.touches && ev.touches[0] && ev.touches[0].clientX) - (getOffsetLeft(el) + el.clientWidth / 2)
+          let y = (ev.clientY || ev.touches && ev.touches[0] && ev.touches[0].clientY) - (getOffsetTop(el) + el.clientHeight / 2)
           let l = Math.max(Math.sqrt(x * x + y * y), 40)
           this.mouseX = x / l
           this.mouseY = y / l
