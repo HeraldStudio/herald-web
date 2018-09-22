@@ -1,12 +1,12 @@
 <template lang='pug'>
-  #app(:class='env' v-loading='isLoading')
+  #app(:class='env')
     .app-container
       //- base-page 为手机版底部界面，桌面版左侧栏
       .base-page
         .base-header
           router-link.live2d-wrapper(to='/')
             .live2d-container
-              live2d
+              live2d(:loading='isLoading')
             img.logo(:src='logoImg')
           .spacing
           router-link(to='/download')
@@ -29,8 +29,6 @@
 <script>
   import Vue from 'vue'
   import { xhook } from 'xhook'
-  import { Loading } from 'element-ui'
-  Vue.use(Loading)
 
   import api from './api'
   import router from './router'
@@ -146,9 +144,6 @@
     }
   }
 </script>
-<style>
-  @import 'element-ui/lib/theme-chalk/index.css';
-</style>
 <style lang='stylus'>
   :root
     --color-text-regular   #333333

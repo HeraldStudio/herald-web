@@ -9,7 +9,6 @@
 </template>
 <script>
   import api from '@/api'
-  import qiniu from 'qiniu-js'
   import axios from 'axios'
   let id = 0
 
