@@ -549,15 +549,15 @@
           z-index -999
           background var(--color-divider)
 
-      &.wx, &.mina
-        .base-header
-          display none
+    &.wx, &.mina
+      .base-header
+        display none
 
-        &::before
-          padding 20px 0
+      .app-container::before
+        padding 20px 0
 
-      &.mina::before
-        content '访问 myseu.cn 使用 PWA 版完整功能'
+    &.mina .app-container::before
+      content '访问 myseu.cn 使用 PWA 版完整功能'
 
   .widget
     border-bottom 0.5px solid var(--color-divider)
