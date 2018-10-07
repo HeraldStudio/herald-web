@@ -502,7 +502,7 @@ function getFP() {
 	fpMap = {"cookie": ck, "ua": ua, "prod": prod, "vend": vend, "lan": lan, "ce": ce, "dnt": dnt, "platform": platform, "cpuclass": cpuclass, "plugins": plugins, "fontlist": fonts, "sc": sc, "tz": tz, "sr": sr, "html5": html5, "css3": css3, "noncore": noncore, "pixelhash": pixelHash, "webgl": gl};
 	//return JSON.stringify(fpMap);
 	//return fpMap;
-	console.log('adfasdfasd')
+	console.log('小猴偷米-关注公益更关心你')
 	setTimeout(function(){ 
 		//console.log(teapot.canvas.toDataURL());
 		// if (teapot != undefined) fpMap["webgl"] = murmurhash3_32_gc(teapot.canvas.toDataURL(), 31);
