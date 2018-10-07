@@ -9,7 +9,7 @@
       .eye.right-eye
         .line1
         .line2
-    .loading(:class='{ shown: isLoading }')
+    .loading(:class='{ shown: loading }')
       .inner
 
 </template>
@@ -49,7 +49,7 @@
         type: Boolean,
         default: false
       },
-      isLoading: {
+      loading: {
         type: Boolean,
         default: false
       },

@@ -5,12 +5,14 @@
     :minute-step='5' :auto='true'/>
 </template>
 <script>
-  import { Datetime } from 'vue-datetime'
   import 'vue-datetime/dist/vue-datetime.css'
 
   export default {
     components: {
-      datetime: Datetime
+      // 异步组件，由于 vue-datetime 包过大，使用异步 import 将其拆包
+      // 参见 https://parceljs.org/code_splitting.html
+      // 异步组件文档参见 https://cn.vuejs.org/v2/guide/components-dynamic-async.html
+      datetime: () => import('vue-datetime').then(k => k.Datetime)
     },
     props: {
       value: Number

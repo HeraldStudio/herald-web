@@ -1,12 +1,12 @@
 <template lang='pug'>
-  #app(:class='env' v-loading='isLoading')
+  #app(:class='env')
     .app-container
       //- base-page 为手机版底部界面，桌面版左侧栏
       .base-page
         .base-header
           router-link.live2d-wrapper(to='/')
             .live2d-container
-              live2d
+              live2d(:loading='isLoading')
             img.logo(:src='logoImg')
           .spacing
           router-link(to='/download')
@@ -29,8 +29,6 @@
 <script>
   import Vue from 'vue'
   import { xhook } from 'xhook'
-  import { Loading } from 'element-ui'
-  Vue.use(Loading)
 
   import api from './api'
   import router from './router'
@@ -146,9 +144,6 @@
     }
   }
 </script>
-<style>
-  @import 'element-ui/lib/theme-chalk/index.css';
-</style>
 <style lang='stylus'>
   :root
     --color-text-regular   #333333
@@ -311,22 +306,6 @@
     content '缓存'
     max-width 100px 
     max-height 30px
-
-  .el-loading-mask
-    position fixed !important
-    top 0 !important
-    right 10px !important
-    left auto !important
-    bottom auto !important
-    width 59px !important
-    height 59px !important
-    z-index 9999999 !important
-    background #fff !important
-    border-radius 3px !important
-    overflow hidden !important
-
-    .el-loading-spinner .path
-      stroke var(--color-primary) !important
 
   .toasted-container.top-center
     // 覆盖vendor原有属性，由于webpack资源重排，不加important覆盖不上
@@ -553,39 +532,31 @@
           width 100%
           height 100%
 
-    // 强制加固定灰底，尤其在微信和小程序中用于屏蔽黑底和微信的提示文字
-    @media screen and (max-width: 600px)
-      &::before
-        content '专注公益更懂你'
-        padding 80px 0
-        text-align center
-        position fixed
-        font-size 13px
-        color #aaa
-        letter-spacing 1px
-        top 0
-        top constant(safe-area-inset-top)
-        top env(safe-area-inset-top)
-        left 0
-        left constant(safe-area-inset-left)
-        left env(safe-area-inset-left)
-        right 0
-        right constant(safe-area-inset-right)
-        right env(safe-area-inset-right)
-        bottom 0
-        bottom constant(safe-area-inset-bottom)
-        bottom env(safe-area-inset-bottom)
-        z-index -999
-        background var(--color-divider)
+      // 强制加固定灰底，尤其在微信和小程序中用于屏蔽黑底和微信的提示文字
+      @media screen and (max-width: 600px)
+        &::before
+          content '专注公益更懂你'
+          padding 80px 0
+          text-align center
+          position fixed
+          font-size 13px
+          color #aaa
+          letter-spacing 1px
+          top 0
+          left 0
+          right 0
+          bottom 0
+          z-index -999
+          background var(--color-divider)
 
     &.wx, &.mina
       .base-header
         display none
 
-      &::before
+      .app-container::before
         padding 20px 0
 
-    &.mina::before
+    &.mina .app-container::before
       content '访问 myseu.cn 使用 PWA 版完整功能'
 
   .widget
