@@ -4005,10 +4005,6 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
 
-qiniu-js@^2.1.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/qiniu-js/-/qiniu-js-2.4.0.tgz#777c3369e9f915443412bc137bd8c48b7294dde6"
-
 query-string@^4.1.0:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-4.3.4.tgz#bbb693b9ca915c232515b228b1a02b609043dbeb"
@@ -4886,16 +4882,6 @@ vue-template-es2015-compiler@^1.6.0:
 vue-toasted@^1.1.24:
   version "1.1.24"
   resolved "https://registry.yarnpkg.com/vue-toasted/-/vue-toasted-1.1.24.tgz#715a371dfa490cc710ffedaaeae61fd8a8c4f7ad"
-
-vue2-timepicker@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/vue2-timepicker/-/vue2-timepicker-0.1.4.tgz#0809d9b07e9c8642de360044b6a14c2b7f203815"
-  dependencies:
-    vue "^2.0.1"
-
-vue@^2.0.1:
-  version "2.5.17"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.17.tgz#0f8789ad718be68ca1872629832ed533589c6ada"
 
 vue@^2.4.4:
   version "2.5.16"

@@ -259,6 +259,10 @@ export default {
       transition background .3s, color .3s
 
   .detail
+    h3.title
+      margin 22px auto
+      font-size 17px  
+
     ul.detail-list
       
       li.timetable-item
