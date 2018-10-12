@@ -19,6 +19,7 @@ import AdminBanner from '@/pages/admin/Banner'
 import AdminActivity from '@/pages/admin/Activity'
 import Laundry from '@/pages/Laundry'
 import Download from '@/pages/Download'
+import Bus from '@/pages/Bus';
 
 Vue.use(Router)
 
@@ -92,6 +93,11 @@ export default new Router({
       path: '/laundry',
       name: '洗衣房',
       component: Laundry
+    },
+    {
+      path: '/bus',
+      name: '校车',
+      component: Bus
     },
     {
       path: '/admin/monitor',
