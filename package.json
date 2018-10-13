@@ -66,6 +66,10 @@
       "autoprefixer": true
     }
   },
+  "cache": {
+    "importWorkboxFrom":"local",  
+    "clientsClaim": true
+  },
   "browserslist": [
     "ios >= 8",
     "android >= 4.1",
