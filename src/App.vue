@@ -124,7 +124,11 @@
           location.href = '#/'
         }
         
-        if (api.token) onLogin()
+        if (api.token) {
+          onLogin()
+        } else {
+          onLogout()
+        }
         api.$on('login', onLogin)
         api.$on('logout', onLogout)
       }
