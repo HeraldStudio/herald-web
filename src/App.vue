@@ -111,8 +111,15 @@
         }
       } else {
         let onLogin = async () => {
+          let token = api.token
           let user = await api.get('/api/user')
           user.admin = await api.get('/api/admin/admin')
+          if (api.token !== token) {
+            // 解决时序问题的关键，当 user 拉取回来的时候，如果用户已经退出了，就不要再 set 了
+            // 不然就会导致用户退出之后由于拉到了 user 而回到了假登录态
+            // 因为UI上判断是否登录是用 user 判断的，而不是 token
+            return
+          }
           if (user.admin && user.admin.super) {
             location.href = '#/admin'
           }
