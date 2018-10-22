@@ -125,16 +125,16 @@
       },
       getDate(dayOfWeek) {
         let { startDate } = this.curriculum.term
-        if (!startDate) return '周' + '一二三四五六日'[dayOfWeek - 1]
+        if (!startDate) return '星期' + '一二三四五六日'[dayOfWeek - 1]
         let t = startDate + ((this.displayWeek - 1) * 7 + (dayOfWeek - 1)) * (1000 * 60 * 60 * 24)
         let dt = new Date(t)
         let today = new Date()
         if (dt.getFullYear() !== today.getFullYear()) {
-          return formatter.formatTime(t, 'yyyy/M/d')
+          return formatter.formatTime(t, 'yy/M/d')
         } else if (dt.getMonth() !== today.getMonth()) {
-          return formatter.formatTime(t, 'M/d EE')
+          return formatter.formatTime(t, 'M/d E')
         } else {
-          return formatter.formatTime(t, 'd日 EE')
+          return formatter.formatTime(t, 'd E')
         }
       }
     },
