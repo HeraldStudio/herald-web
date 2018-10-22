@@ -33,6 +33,9 @@
       }
     },
     created() {},
+    mounted() {
+      this.loading = false
+    },
     watch: {
       cardnum() { // 十分贴心的设计，一卡通输够 9 位自动聚焦密码框
         if (this.cardnum.length === 9) {
@@ -68,6 +71,10 @@
           })
           localStorage.setItem('herald-wlan-username', this.cardnum)
           localStorage.setItem('herald-wlan-password', Buffer.from(this.password).toString('base64'))
+
+          // 此时还没有离开登录界面，api.token 被 set 后，会触发 user 拉取，拉取到之后才会跳转到用户界面
+          // 因此继续显示 loading 状态直到生命的最后一刻
+          // this.loading = false
         } catch (e) {
           if (/^21318/.test(this.cardnum)) {
             this.$toasted.show('18级新生？过几天才能登陆哦～')
@@ -76,8 +83,8 @@
           }
           this.password = ''
           this.gpassword = ''
+          this.loading = false
         }
-        this.loading = false
       }
     },
     computed: {
