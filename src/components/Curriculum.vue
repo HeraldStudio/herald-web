@@ -11,7 +11,7 @@
       .next(v-if='!listView' @click='nextWeek()') ›
     div.curriculum-container(v-if='!listView')
       .week-header(v-if='fixedClasses.length || !floatClasses.length')
-        .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount" :class='{ current: displayTerm == currentTerm && displayWeek == currentWeek && i + 1 == currentDayOfWeek }') {{ item }}
+        .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount" :class='{ current: displayTerm == currentTerm && displayWeek == currentWeek && i + 1 == currentDayOfWeek }') {{ getDate(i + 1) }}
       .curriculum-list(v-if='fixedClasses.length || !floatClasses.length' :class='{ empty: !fixedClasses.length }')
         table.block-bg
           tr(v-for='_ in 13' v-if='fixedClasses.length')
@@ -122,6 +122,20 @@
       nextTerm() {
         let term = this.term.list.map(k => k.name)
         this.displayTerm = term[(term.indexOf(this.displayTerm) + 1) % term.length]
+      },
+      getDate(dayOfWeek) {
+        let { startDate } = this.curriculum.term
+        if (!startDate) return '周' + '一二三四五六日'[dayOfWeek - 1]
+        let t = startDate + ((this.displayWeek - 1) * 7 + (dayOfWeek - 1)) * (1000 * 60 * 60 * 24)
+        let dt = new Date(t)
+        let today = new Date()
+        if (dt.getFullYear() !== today.getFullYear()) {
+          return formatter.formatTime(t, 'yyyy/M/d')
+        } else if (dt.getMonth() !== today.getMonth()) {
+          return formatter.formatTime(t, 'M/d EE')
+        } else {
+          return formatter.formatTime(t, 'd日 EE')
+        }
       }
     },
     computed: {
@@ -217,7 +231,7 @@
           color var(--color-text-bold)
           background var(--curriculum-background-color)
           font-size 12px
-          padding 5px
+          padding 5px 0
 
           +.weekday
             margin-left 1px
