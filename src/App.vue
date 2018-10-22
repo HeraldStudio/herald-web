@@ -234,6 +234,12 @@
     color var(--color-primary-dark)
     cursor pointer
 
+    &:hover
+      filter: brightness(1.1)
+
+    &:active
+      filter: brightness(.8)
+
   button.primary
     background var(--color-primary)
     color #fff
