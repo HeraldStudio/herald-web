@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  .widget.toutiao
+  .widget.toutiao(v-if='notice')
     span.title 小猴提醒
     span.notice(@click='showNotice') {{notice}}
 
@@ -12,7 +12,7 @@ import formatter from "@/util/formatter";
 export default {
   data() {
     return {
-      notice: "",
+      notice: false,
       nid: 0
     };
   },
