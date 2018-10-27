@@ -20,6 +20,7 @@ import AdminActivity from '@/pages/admin/Activity'
 import Laundry from '@/pages/Laundry'
 import Download from '@/pages/Download'
 import Bus from '@/pages/Bus';
+import Curriculum from '@/pages/Curriculum'
 
 Vue.use(Router)
 
@@ -138,6 +139,11 @@ export default new Router({
       path: '/download',
       name: '小猴偷米微信 / App',
       component: Download
+    },
+    {
+      path: '/curriculum',
+      name: '课表概览',
+      component: Curriculum
     },
     {
       path: '*',

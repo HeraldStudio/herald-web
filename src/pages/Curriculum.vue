@@ -1,46 +1,18 @@
 <template lang="pug">
 
-  .widget.curriculum(v-if='curriculum' :class='{ stale: curriculum && curriculum.isStale }')
+  .page.curriculum.curriculum-page(v-if='curriculum' :class='{ stale: curriculum && curriculum.isStale }')
     .week-picker
-      .switch(@click='listView = !listView; displayTerm = currentTerm') {{ listView ? '近期课程' : '周视图' }}
-      .prev(v-if='!listView' @click='prevTerm()') ‹
-      button.cur(v-if='!listView' title='点击回到本学期' @click='displayTerm = currentTerm') {{ displayTerm }}
+      .prev(@click='prevTerm()') ‹
+      button.cur(title='点击回到本学期' @click='displayTerm = currentTerm') {{ `${displayTerm} 学期` }}
       .next(v-if='!listView' @click='nextTerm()') ›
-      .prev(v-if='!listView' @click='prevWeek()') ‹
-      button.cur(v-if='!listView' title='点击回到本周' @click='displayWeek = currentWeek') {{ displayWeek }} 周
-      .next(v-if='!listView' @click='nextWeek()') ›
-    div.curriculum-container(v-if='!listView')
-      .week-header(v-if='fixedClasses.length || !floatClasses.length')
-        .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount" :class='{ current: displayTerm == currentTerm && displayWeek == currentWeek && i + 1 == currentDayOfWeek }') {{ getDate(i + 1) }}
-      .curriculum-list(v-if='fixedClasses.length || !floatClasses.length' :class='{ empty: !fixedClasses.length }' @click="allCourse")
-        table.block-bg
-          tr(v-for='_ in 13' v-if='fixedClasses.length')
-            td(v-for='_ in weekdayCount')
-        .block(v-for='item in fixedClasses' v-if='item.dayOfWeek'
-          :style="'width: ' + 1 / weekdayCount * 99 + '%; left: ' + ((item.dayOfWeek - 1) / weekdayCount * 100 + 0.1) + '%; top: ' + (item.beginPeriod - 1) / 13 * 99.8 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 99.8 + '%'")
-          .name {{ item.courseName }}
-          .teacher {{ item.teacherName }}
-          .place {{ item.location }}
-        .empty(v-if='!fixedClasses.length') 暂无课程
-    ul.detail-list(v-if='listView')
-      li(v-for='item in upcomingClasses')
+    ul.detail-list
+      li(v-for='item in allClasses')
         .top
           .left {{ item.courseName }}
           .right {{ item.teacherName }}
         .bottom
-          .left {{ formatPeriodNatural(item.startTime, item.endTime) }}
+          .left {{ item.credit ? `${item.credit} 学分` : '' }}
           .right {{ item.location }}
-      li.empty(v-if='!upcomingClasses.length') 三天内没有课程
-    ul.detail-list(v-if='!listView && floatClasses && floatClasses.length')
-      .hint 以下课程无法确定上课时间：
-      li(v-for='item in floatClasses')
-        .top
-          .left {{ item.courseName }}
-          .right {{ item.teacherName }}
-        .bottom
-          .left {{ item.beginWeek }}-{{ item.endWeek }}周
-          .right(v-if='item.credit') {{ item.credit }} 学分
-
 </template>
 <script>
 
@@ -103,17 +75,6 @@
       }
     },
     methods: {
-      ...formatter,
-      prevWeek() {
-        if (this.displayWeek > 1) {
-          this.displayWeek -= 1
-        }
-      },
-      nextWeek() {
-        if (this.displayWeek < this.curriculum.term.maxWeek) {
-          this.displayWeek += 1
-        }
-      },
       prevTerm() {
         let term = this.term.list.map(k => k.name)
         // JS 取模是对绝对值取模保留符号，所以要先加上 length 保证结果为正
@@ -122,45 +83,20 @@
       nextTerm() {
         let term = this.term.list.map(k => k.name)
         this.displayTerm = term[(term.indexOf(this.displayTerm) + 1) % term.length]
-      },
-      getDate(dayOfWeek) {
-        let { startDate } = this.curriculum.term
-        if (!startDate) return '星期' + '一二三四五六日'[dayOfWeek - 1]
-        let t = startDate + ((this.displayWeek - 1) * 7 + (dayOfWeek - 1)) * (1000 * 60 * 60 * 24)
-        let dt = new Date(t)
-        let today = new Date()
-        if (dt.getFullYear() !== today.getFullYear()) {
-          return formatter.formatTime(t, 'yy/M/d')
-        } else if (dt.getMonth() !== today.getMonth()) {
-          return formatter.formatTime(t, 'M/d E')
-        } else {
-          return formatter.formatTime(t, 'd E')
-        }
-      },
-      allCourse(){
-        this.$router.push('/curriculum')
       }
     },
     computed: {
-      displayClasses() {
-        return this.curriculum.curriculum.filter(k =>
-          k.beginWeek <= this.displayWeek &&
-          k.endWeek >= this.displayWeek &&
-          this.displayWeek % 2 !== ['odd', 'even'].indexOf(k.flip)
-        )
-      },
-      upcomingClasses() {
+      allClasses() {
         let now = Date.now()
-        return this.curriculum.curriculum
-          .filter(k => k.events)
-          .map(k => k.events.map(e => {
-            e = Object.assign(e, k)
-            delete e.events
-            return e
-          }))
-          .reduce((a, b) => a.concat(b), [])
-          .sort((a, b) => a.startTime - b.startTime)
-          .filter(k => k.endTime > now && k.endTime < now + 3 * 24 * 60 * 60 * 1000)
+        let allClasses = {}
+        this.curriculum.curriculum.forEach(k => {
+            allClasses[`${k.courseName}-${k.teacherName}`] = k
+        })
+        let result = []
+        Object.keys(allClasses).forEach( k=> {
+            result.push(allClasses[k])
+        })
+        return result
       },
       weekdayCount() {
         return Math.max(5, this.fixedClasses.map(k => k.dayOfWeek).reduce((a, b) => Math.max(a, b), 0))
@@ -180,7 +116,7 @@
 </script>
 <style lang="stylus" scoped>
 
-  .widget
+  .curriculum-page
     padding 15px 0 0 !important
     --curriculum-background-color #fff
 
@@ -195,13 +131,11 @@
       padding 10px 10px 20px 25px
       // align-items center
 
-      .switch
-        flex 1 1 0
+      .term-hint
         text-align left
         font-size 15px
         font-weight bold
         color var(--color-text-bold)
-        cursor pointer
 
       .cur
         cursor pointer
