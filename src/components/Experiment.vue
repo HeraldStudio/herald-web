@@ -1,5 +1,5 @@
 <template lang="pug">
-
+  
   .widget.experiment(v-if='experiment.length' :class='{ stale: experiment && experiment.isStale }')
     ul.detail-list
       li(v-for='k in experiment')
@@ -7,7 +7,7 @@
           .left {{ k.labName }}
           .right {{ k.score ? '成绩：' + k.score : k.teacherName }}
         .bottom(v-if='!k.score')
-          .left {{ formatPeriodNatural(k.startDate, k.endDate) }}
+          .left {{ formatPeriodNatural(k.startTime, k.endTime) }}
           .right {{ k.location + '室' }}
 
 </template>
@@ -17,9 +17,9 @@
   import formatter from '@/util/formatter'
 
   export default {
-    data() {
+    data(){
       return {
-        experiment: []
+        experiment:[]
       }
     },
     persist: {
@@ -33,7 +33,7 @@
       async reload() {
         let now = new Date()
         let experiment = await api.get('/api/phylab')
-        this.experiment = experiment.filter(k => k.endDate > now || k.score.length)
+        this.experiment = experiment.filter(k => k.endTime > now.getTime() || k.score.length)
       }
     }
   }
