@@ -34,8 +34,8 @@ npm run build
 
 ## 开发规范
 
-- 请使用二空格缩进；
-- 请使用规范的 `pug`/`es7 stage-0`/`stylus` 书写；
+- 请使用 [JavaScript Standard 代码规范](https://standardjs.com/rules-zhcn.html#javascript-standard-style)；
+- 请使用规范的 `pug`/`es2015+stage-0`/`stylus` 书写；
 - 请熟悉 Chrome 或 Safari 的移动端模拟调试功能，并至少同时对 **桌面端、Pad 端、手机网页、小程序** 四种环境进行测试；
 - 项目代码 100% 面向业务逻辑，**工具函数或工具类请做成轮子再使用或找相关轮子使用，不要随地堆放工具代码**。
 
