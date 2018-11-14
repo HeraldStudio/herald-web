@@ -161,7 +161,7 @@
     --color-text-bold      #555555
     --color-text-secondary #888888
     --color-divider        #f0f0f0
-    --color-tool-bg        #fafafa
+    --color-tool-bg        #f7f7f7
 
     --color-primary-dark   #237a86
     --color-primary        #00abc3
@@ -696,6 +696,12 @@
 
         &:last-child
           padding-bottom 0
+
+        &.empty
+          display block
+          text-align center
+          color #888
+          font-size 14px
 
         &:first-child
           padding-top 0

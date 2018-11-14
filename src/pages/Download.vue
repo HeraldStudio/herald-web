@@ -44,9 +44,13 @@
 
     .buttons
       display flex
+      flex-wrap wrap
       justify-content center
       margin-top 25px
-      align-items: center;
+      align-items center
+
+      button
+        margin 5px 0
 
       * + *
         margin-left 10px

@@ -14,6 +14,7 @@
           .top
             .left {{ formatTimeNatural(item.time) }}
             .right {{ item.location }}
+        li.empty(v-if='!lecture.length') 暂无讲座记录
 
 </template>
 <script>

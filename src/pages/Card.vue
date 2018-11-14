@@ -18,6 +18,7 @@
         .bottom
           .left {{ item.amount.toFixed(2) }}
           .right {{ formatTimeNatural(item.time) }}
+      li.empty(v-if='!card.detail.length') 暂无消费数据
       li.prev-day
         .hint {{ formatDateNatural(oldestDate) }}至今 总支出 {{ totalPayments.toFixed(2) }}
         button(@click='loadPrevDay()' :class='{ loading: loading }') {{ loading ? '...' : '加载前一天' }}
