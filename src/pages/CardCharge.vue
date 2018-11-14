@@ -18,7 +18,7 @@
       .line 3. 查询密码将自动保存在本地浏览器，请勿在公共设备上使用此功能；
       .line 4. 充值电子钱包后可直接在<a href="https://selfservice.seu.edu.cn/selfservice/service_recharge_rfid.php">网络与信息中心自助服务区</a> (需内网，无需登录 seu-wlan 认证) 用一卡通充值校园网账户。
 
-</template>x
+</template>
 <script>
 
   import api from '@/api'
@@ -35,13 +35,12 @@
           custom: false,
           customAmount: '',
           password: '',
-          disabled: false,
           eacc: false
         }
       }
     },
     persist: {
-      password: 'herald-card-charge-password'
+      charge: 'herald-card-charge-obj'
     },
     methods: {
       onSelectAmount(amount) {
@@ -51,13 +50,12 @@
       },
       onInputAmount(ev) {
         let amount = parseFloat(ev.target.value)
+        this.charge.customAmount = ev.target.value
         if (amount) {
           this.charge.custom = true
-          this.charge.customAmount = ev.target.value
           this.charge.amount = amount
         } else {
           this.charge.custom = false
-          this.charge.customAmount = ''
           this.charge.amount = 100
         }
       },
