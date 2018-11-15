@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "parcel index.html --port 8080",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html",
+    "test": "parcel build index.html"
   },
   "dependencies": {
     "axios": "^0.16.2",
