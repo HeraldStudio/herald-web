@@ -35,11 +35,11 @@
       },
       daysBefore(exam) {
         let now = Date.now()
-        if (exam.startTime < now) {
+        if (exam.startTime > now) {
           let days = Math.round((exam.startTime - now) / (1000 * 60 * 60 * 24))
           return days ? days + ' 天后考试' : '今日考试'
         }
-        if (exam.endTime < now) {
+        if (exam.endTime > now) {
           return '正在考试'
         }
         return '考试已结束'
