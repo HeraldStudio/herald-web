@@ -76,8 +76,8 @@
           // 因此继续显示 loading 状态直到生命的最后一刻
           // this.loading = false
         } catch (e) {
-          if (/^21318/.test(this.cardnum)) {
-            this.$toasted.show('18级新生？过几天才能登陆哦～')
+          if (this.password.length === 6) {
+            this.$toasted.show('不要用一卡通充值密码登录小猴！')
           } else {
             this.$toasted.show('登录出现错误，请重试')
           }
