@@ -24,6 +24,7 @@ import Curriculum from '@/pages/Curriculum'
 import Schedule from '@/pages/Schedule'
 import Activity from '@/pages/Activity'
 import Notice from '@/pages/Notice'
+import CET from '@/pages/CET'
 
 Vue.use(Router)
 
@@ -164,8 +165,13 @@ export default new Router({
       component: Notice
     },
     {
+      path: '/cet',
+      name: 'CET 查询',
+      component: CET
+    },
+    {
       path: '*',
       redirect: '/'
     }
   ]
-});
+})

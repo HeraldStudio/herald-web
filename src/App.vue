@@ -124,6 +124,7 @@
         let onLogout = async () => {
           this.user = null
           location.href = '#/'
+          localStorage.clear()
         }
         
         if (api.token) {

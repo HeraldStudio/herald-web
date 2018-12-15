@@ -63,7 +63,7 @@
         route='/bus' value='›')
 
       item.cols-3(name='活动'
-        route='/activity' :value='activities.filter(k => k.endTime > Date.now()).length')
+        route='/activity' :value='activities && activities.filter(k => k.endTime > Date.now()).length')
 
       item.cols-3(name='洗衣' v-if='!tidyMode'
         route='/laundry' value='›')
@@ -71,8 +71,8 @@
       item.cols-3(name='App' v-if='!tidyMode'
         route='/download' value='›')
 
-      item.cols-3(name='课表预测' v-if='!tidyMode'
-        route='/course-stat' value='›')
+      item.cols-3(name='CET' v-if='!tidyMode'
+        route='/cet' value='›')
 
       item.cols-1(name='通知'
         route='/notice' :value='curNotice.title || "暂无通知"')
