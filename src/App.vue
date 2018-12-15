@@ -156,8 +156,8 @@
     --color-text-regular   #333333
     --color-text-bold      #555555
     --color-text-secondary #888888
-    --color-divider        #f7f7f7
-    --color-tool-bg        #f7f7f7
+    --color-divider        #f0f0f0
+    --color-tool-bg        #f0f0f0
 
     --color-primary-dark   #237a86
     --color-primary        #00abc3
@@ -200,7 +200,7 @@
   html, body
     margin 0
     padding 0
-    background var(--color-divider)
+    background var(--color-tool-bg)
     overflow hidden
 
   p, input, textarea
