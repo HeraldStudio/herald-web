@@ -1,8 +1,10 @@
 <template lang="pug">
 
-  .notice-page
+  .page.notice-page
     .markdown-container(v-if='markdown' v-html='markdown')
     .markdown-container(v-else) 加载中…
+    .original(v-if='$route.params.url') 页面由小猴偷米引擎转码，可能丢失部分信息。
+      a(:href='$route.params.url' target='_blank') 查看原文
 
 </template>
 <script>
@@ -51,7 +53,9 @@
 
 </script>
 <style lang="stylus">
-  .notice-page
+
+  .page.notice-page
+    padding 0
 
     .markdown-container
       border-top 0.5px solid transparent
@@ -138,5 +142,9 @@
       hr
         border 0 none
         border-top 0.5px solid var(--color-divider)
+
+    .original
+      padding 0 15px 20px
+      text-align center
 
 </style>

@@ -11,8 +11,7 @@
     display flex
     align-items center
     justify-content center
-    background #fff
-    color var(--color-divider)
+    color #ddd
     font-size 20px
 
     @media screen and (max-width: 600px)

@@ -166,7 +166,6 @@
           flex 1 1 0
           text-align center
           color var(--color-text-bold)
-          background var(--curriculum-background-color)
           font-size 12px
           padding 5px 0
 
@@ -195,7 +194,6 @@
           width 100%
           height 100%
           box-sizing border-box
-          background var(--color-tool-bg)
           table-layout fixed
 
           td
@@ -256,7 +254,7 @@
           text-align center
 
     .detail-list
-      padding 20px 25px 25px !important
+      padding 20px 20px 25px !important
       box-sizing border-box
 
       .empty

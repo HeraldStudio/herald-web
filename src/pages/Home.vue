@@ -1,17 +1,14 @@
 <template lang='pug'>
-  .tab
+  .home
     dashboard(v-if='user' :user='user')
-    login(v-else)
-    .todo(v-if='user')
-      toutiao
-      exam(v-if='/^21/.test(user.cardnum)')
-      curriculum
-      experiment(v-if='/^21/.test(user.cardnum)')
+    toutiao(v-if='user')
+    exam(v-if='user && /^21/.test(user.cardnum)')
+    curriculum(v-if='user')
+    experiment(v-if='user && /^21/.test(user.cardnum)')
 </template>
 
 <script>
   import exam from '@/components/Exam.vue'
-  import login from '@/components/Login.vue'
   import dashboard from '@/components/Dashboard.vue'
   import curriculum from '@/components/Curriculum.vue'
   import experiment from '@/components/Experiment.vue'
@@ -21,7 +18,7 @@
   export default {
     props: ['user'],
     components: {
-      login, dashboard, curriculum, experiment, exam, toutiao
+      dashboard, curriculum, experiment, exam, toutiao
     }
   }
 </script>

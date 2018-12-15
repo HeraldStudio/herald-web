@@ -102,6 +102,7 @@
     position absolute
     width 100%
     min-height 100%
+    margin 0
     bottom 0
     display flex
     flex-direction column

@@ -2,12 +2,12 @@
 
   .widget.curriculum(v-if='curriculum' :class='{ stale: curriculum && curriculum.isStale }')
     .week-picker
-      .switch(@click='listView = !listView; displayTerm = currentTerm') {{ listView ? '近期课程' : '周视图' }}
       .prev(v-if='!listView' @click='prevTerm()') ‹
-      button.cur(v-if='!listView' title='点击回到本学期' @click='displayTerm = currentTerm') {{ displayTerm }}
+      .cur(v-if='!listView' title='点击回到本学期' @click='displayTerm = currentTerm') {{ displayTerm || '...' }}
       .next(v-if='!listView' @click='nextTerm()') ›
+      .switch(@click='listView = !listView; displayTerm = currentTerm') {{ listView ? '近期课程' : '周视图' }}
       .prev(v-if='!listView' @click='prevWeek()') ‹
-      button.cur(v-if='!listView' title='点击回到本周' @click='displayWeek = currentWeek') {{ displayWeek }} 周
+      .cur(v-if='!listView' title='点击回到本周' @click='displayWeek = currentWeek') {{ displayWeek }} 周
       .next(v-if='!listView' @click='nextWeek()') ›
     div.curriculum-container(v-if='!listView')
       .week-header(v-if='fixedClasses.length || !floatClasses.length')
@@ -187,37 +187,59 @@
     .week-picker
       display flex
       flex-direction row
+      align-items center
       justify-content center
       -webkit-user-select: none
       -moz-user-select: none
       -ms-user-select: none
       user-select: none
-      padding 10px 10px 20px 25px
+      padding 10px 20px 15px
       // align-items center
+
+      *:not(.prev) + *:not(.next)
+        margin-left 10px
 
       .switch
         flex 1 1 0
         text-align left
-        font-size 15px
-        font-weight bold
-        color var(--color-text-bold)
-        cursor pointer
-
-      .cur
-        cursor pointer
         font-size 14px
-        font-weight bold
-        padding 3px 7px
-        border-radius 3px
-        color var(--color-primary-dark)
-        background var(--color-primary-bg)
-
-      .prev, .next
+        height 14px
+        line-height 14px
         cursor pointer
-        color #ccc
-        font-size 16px
-        font-weight bold
-        padding 0 10px
+        padding 10px
+        flex 1 1 0
+        border-radius 5px
+        background #f7f7f7
+        color var(--color-text-secondary)
+        text-align center
+        transition .2s
+        white-space nowrap
+
+        &:active
+          filter brightness(0.95)
+
+      .cur, .prev, .next
+        font-size 14px
+        cursor pointer
+        padding 10px
+        color var(--color-text-secondary)
+        background #f7f7f7
+        height 14px
+        line-height 14px
+        transition .2s
+        white-space nowrap
+
+        &:active
+          filter brightness(0.95)
+      
+      .cur
+        font-size 14px
+
+      .prev
+        border-radius 5px 0 0 5px
+
+      .next
+        border-radius 0 5px 5px 0
 
     .curriculum-container
       width 100%
@@ -261,11 +283,10 @@
           width 100%
           height 100%
           box-sizing border-box
-          background var(--color-tool-bg)
           table-layout fixed
 
           td
-            border 0.5px solid #f0f0f0
+            border 0.5px solid #f7f7f7
 
             &:first-child
               border-left none
@@ -322,7 +343,7 @@
           text-align center
 
     .detail-list
-      padding 20px 25px 25px !important
+      padding 20px 20px 25px !important
       box-sizing border-box
 
       .empty

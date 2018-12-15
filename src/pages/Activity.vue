@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  .widget.activity(v-if='activities && activities.length')
+  .page.activity(v-if='activities && activities.length')
     .activity-item(v-for='(activity, i) in activities' :key='activity.aid' :style='"z-index: " + i' :class='{ collapsed: activity.endTime <= now }')
       .activity-container(@click='click(activity)')
         .activity-title
@@ -70,7 +70,7 @@
 </script>
 <style lang="stylus" scoped>
 
-  .widget.activity
+  .page.activity
     position relative
     padding 0
 
@@ -80,7 +80,6 @@
 
     .activity-item
       overflow hidden
-      background #fff
       position relative
       transition .5s
       border-bottom 0.5px solid var(--color-divider)

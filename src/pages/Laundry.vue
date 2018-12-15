@@ -41,6 +41,9 @@
       cursor pointer
       transition .3s
 
+      &.selected
+        font-weight bold
+
       &:not(.selected)
         background none
         color var(--color-text-bold)
@@ -54,6 +57,7 @@
     color var(--color-text-bold)
 
   .hint
+    text-align justify
     font-size 14px
     color var(--color-text-secondary)
     margin 10px 0
