@@ -6,7 +6,7 @@
         .title {{ site }}
     ul.detail-list
       li(v-for='item in filteredNotice' :key='item.title' :class='{ important: item.isImportant }')
-        notice-link(:notice='item')
+        a(:href='noticeLink(item)')
           .top
             .left
               .tag.important(v-if='item.isImportant') 重要
@@ -25,28 +25,10 @@
   import markdown from '@/components/Markdown'
 
   const RouterLink = Vue.component('router-link')
-  
-  // 这个组件经常在调试环境下迷之崩掉，把文件随便改一下重新编译就好了
-  const NoticeLink = {
-    props: ['notice'],
-    render() {
-      let slot = this.$slots.default
-      if (this.notice.isAttachment) {
-        return (<a href={ this.notice.url }>{ slot }</a>) 
-      }
-      if (this.notice.site === 'SRTP') {
-        return (<RouterLink to={ '/notice/competition/' + this.notice.srtpId }>{ slot }</RouterLink>)
-      }
-      if (this.notice.nid != null) {
-        return (<RouterLink to={ '/notice/' + this.notice.nid }>{ slot }</RouterLink>)
-      }
-      return (<RouterLink to={ '/notice/url/' + encodeURIComponent(this.notice.url) }>{ slot }</RouterLink>)
-    }
-  }
 
   export default {
     props: ['user'],
-    components: { markdown, 'notice-link': NoticeLink },
+    components: { markdown },
     data() {
       return {
         notice: [],
@@ -101,6 +83,18 @@
           time: k.startTime,
           srtpId: k.id
         }))).sort((a, b) => b.time - a.time)
+      },
+      noticeLink(notice) {
+        if (notice.isAttachment) {
+          return notice.url
+        }
+        if (notice.site === 'SRTP') {
+          return '#/notice/competition/' + notice.srtpId
+        }
+        if (notice.nid != null) {
+          return '#/notice/' + notice.nid
+        }
+        return '#/notice/url/' + encodeURIComponent(notice.url)
       }
     }
   }

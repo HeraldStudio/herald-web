@@ -75,7 +75,7 @@
         route='/cet' value='›')
 
       item.cols-1(name='通知'
-        route='/notice' :value='curNotice.title || "暂无通知"')
+        route='/notice' :value='curNotice && curNotice.title || "暂无通知"')
 
 </template>
 
@@ -159,7 +159,7 @@
         })
       },
       curNotice() {
-        return this.filteredNotice[this.curNoticeIndex]
+        return this.filteredNotice && this.filteredNotice[this.curNoticeIndex]
       }
     }
   }

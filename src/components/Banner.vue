@@ -1,6 +1,7 @@
 <template lang="pug">
 
-  banner.banner(v-if='banner && banner.length' :auto="5000", :loop="true", :speed="500", :dots="false", :watch-items="banner")
+  //- 这里要用 v-show 不能用 v-if，否则会连环出错+异步死递归
+  banner.banner(v-show='banner && banner.length' :auto="5000", :loop="true", :speed="500", :dots="false", :watch-items="banner")
     banner-item.banner-item(v-for='page in banner' :key='page.bid')
       .img-container(@click='click(page)')
         img(:src='page.pic' ondragstart="return false")
