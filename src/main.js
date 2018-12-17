@@ -64,7 +64,7 @@ new Vue({
   components: { App }
 })
 
-document.addEventListener('click', (e) => {
+document.addEventListener('tap', (e) => {
   if (
     e.target.tagName === 'A' && 
     e.target.href.split('#')[0] !== location.href.split('#')[0] &&
