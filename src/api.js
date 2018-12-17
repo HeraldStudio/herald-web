@@ -69,7 +69,7 @@ export default new Vue({
           Vue.toasted.show('登录已失效，请重新登录')
         }
       } else {
-        Vue.toasted.show('部分接口请求失败')
+        Vue.toasted.show('请求失败：' + data)
       }
 
       throw new Error(data)

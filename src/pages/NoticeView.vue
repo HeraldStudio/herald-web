@@ -59,7 +59,7 @@
 
     .markdown-container
       border-top 0.5px solid transparent
-      padding 15px 25px
+      padding 15px
       transition .3s
       color #555
       text-align justify

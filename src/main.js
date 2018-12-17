@@ -63,3 +63,18 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
+
+document.addEventListener('click', (e) => {
+  if (
+    e.target.tagName === 'A' && 
+    e.target.href.split('#')[0] !== location.href.split('#')[0] &&
+    (window.__wxjs_environment === 'miniprogram' || window.navigator.standalone)
+  ) {
+    if (window.__wxjs_environment === 'miniprogram') {
+      Vue.toasted.show('小程序不支持打开站外链接，请进入小猴偷米微信公众号 PWA 主页查看。')
+    } else if (window.navigator.standalone) {
+      Vue.toasted.show('WebApp 不支持打开站外链接，请访问 myseu.cn 进行查看。')
+    }
+    e.preventDefault()
+  }
+})

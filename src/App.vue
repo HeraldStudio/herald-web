@@ -326,11 +326,11 @@
     transform none !important
     // 浮于抽屉上层
     z-index 99999 !important
-    top 60px !important
+    top 0 !important
     left 0 !important
     right 0
     margin-left auto
-    padding 10px
+    padding 15px
 
     .toasted
       margin 0 auto 10px
@@ -405,6 +405,8 @@
       bottom 0
       bottom constant(safe-area-inset-bottom)
       bottom env(safe-area-inset-bottom)
+      max-width 1200px
+      margin 0 auto
       display flex
       flex-direction row
       overflow hidden
@@ -413,10 +415,11 @@
         display block
 
       .overlay-header
-        height 60px
-        flex 0 0 60px
+        margin 15px 15px 0
+        height 40px
+        flex 0 0 40px
         box-sizing border-box
-        padding 0 10px
+        padding 0 15px
         display flex
         flex-direction row
         align-items center
@@ -495,7 +498,6 @@
               background transparent
 
         .overlay-header .title-bar
-          height 60px
           display flex
           flex-direction row
           align-items center
@@ -503,11 +505,12 @@
 
           .back
             display block
-            font-size 22px
+            font-size 26px
             vertical-align middle
             text-align center
-            width 60px
-            line-height 58px
+            width 40px
+            height 40px
+            line-height 40px
             cursor pointer
             
             &:hover
@@ -519,8 +522,8 @@
             font-weight bold
             color var(--color-text-bold)
             text-align center
-            padding-right 60px
-            line-height 60px
+            padding-right 40px
+            line-height 40px
 
         .overlay-router
           flex 1 1 0
@@ -529,7 +532,7 @@
           .scroll-content > *
             position relative
             top 0
-            min-height 100%
+            min-height 100vh
             box-sizing border-box
 
           .page-enter-active, .page-leave-active
@@ -537,9 +540,9 @@
             position absolute !important
             overflow hidden !important
             width calc(100% - 30px) !important
-            min-height 100% !important
             z-index 9999 !important
             transform translateZ(0px)
+            transform-origin var(--mouse-x, 50%) var(--mouse-y, 400px) !important
 
           .page-leave-active
             transition .3s !important
@@ -549,7 +552,6 @@
           .page-enter
             min-height 0
             transform scale(0.2) translateZ(0px) !important
-            transform-origin var(--mouse-x, 50%) var(--mouse-y, 400px) !important
             box-shadow 0 0 25px rgba(0, 0, 0, .1) !important
             border-radius 20px !important
             overflow hidden !important

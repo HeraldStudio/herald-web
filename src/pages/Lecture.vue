@@ -14,7 +14,7 @@
       ul.detail-list
         li(v-for='item in lecture')
           .top
-            .left {{ formatTimeNatural(item.time) }}
+            .left {{ formatTime(item.time, 'yyyy/M/d H:mm') }}
             .right {{ item.location }}
         li.empty(v-if='!lecture.length') 暂无讲座记录
 
@@ -34,7 +34,7 @@
       lecture: 'herald-default-lecture'
     },
     async created() {
-      this.lecture = await api.get('/api/lecture')
+      this.lecture = (await api.get('/api/lecture')).sort((a, b) => a.time - b.time)
     },
     methods: {
       ...formatter

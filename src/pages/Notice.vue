@@ -9,8 +9,9 @@
         a(:href='noticeLink(item)')
           .top
             .left
-              .tag.important(v-if='item.isImportant') 重要
-              .tag.attachment(v-if='item.isAttachment') 附件
+              .tag(v-if='item.isImportant || item.isAttachment')
+                .important(v-if='item.isImportant') 重要
+                .attachment(v-if='item.isAttachment') 附件
               span {{ item.title }}
             .right {{ formatDateNatural(item.time) }}
           .bottom(v-if='item.category')
@@ -116,9 +117,14 @@
     .tag
       display inline-block
       border-radius 3px
-      margin-right 2px
-      color var(--color-primary)
-      vertical-align baseline
+      line-height 1em
+      padding 3px
+      margin-right 3px
+      margin-bottom 2px
+      background var(--color-primary)
+      color #fff
+      font-size 12px
+      vertical-align middle
 
       &.important
         font-weight bold
