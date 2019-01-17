@@ -48,31 +48,31 @@ export default new Vue({
       return this.handleResponse(await this.axios.delete(route + params))
     },
     handleResponse(response) {
-      let { status, data } = response
-      if (status < 400) {
-        let { code, result, reason } = data
-        status = code
-        data = reason
+      let { status: httpStatus, data: jsonData } = response
+      if (httpStatus < 400) {
+        let { code, result, reason } = jsonData
 
-        if (status < 400) {
-          if (status === 203) {
+        if (code < 400) {
+          if (code === 203) {
             result.isStale = true
           }
           return result
         }
-      }
 
-      // 出错时的处理
-      if (status === 401) {
-        if (this.isLogin) {
-          this.token = ''
-          Vue.toasted.show('登录已失效，请重新登录')
+        // 出错时的处理
+        if (code === 401) {
+          if (this.isLogin) {
+            this.token = ''
+            Vue.toasted.show('登录已失效，请重新登录')
+          }
+        } else {
+          Vue.toasted.show('请求失败：' + reason)
+          throw new Error(reason)
         }
       } else {
-        Vue.toasted.show('请求失败：' + data)
+        Vue.toasted.show('请求失败：系统维护')
+        throw new Error('Request failed with status ' + httpStatus)
       }
-
-      throw new Error(data)
     }
   }
 })

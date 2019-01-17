@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import Toasted from 'vue-toasted'
 import Persist from 'vue-component-persist'
+import intercept from 'intercept-link-clicks'
 
 // 对手机屏幕（小于 480 逻辑像素宽度）应用 400px 缩放模式；对其他终端应用自适应宽度模式。
 if (window.innerWidth < 480) {
@@ -55,7 +56,7 @@ Vue.toasted.__show = Vue.toasted.show
 Vue.toasted.show = (text, ...args) => {
   if (text !== lastToastText) {
     lastToastText = text
-    setTimeout(() => lastToastText = null, 10000)
+    setTimeout(() => lastToastText = null, 5000)
     return Vue.toasted.__show(text, ...args)
   }
 }
@@ -69,18 +70,22 @@ new Vue({
   components: { App }
 })
 
-document.addEventListener('click', (e) => {
+intercept({
+  target: false,
+  sameOrigin: false
+}, (e, el) => {
+  console.log(e, el)
   if (
-    e.target.tagName === 'A' && 
-    e.target.indexOf('myseu.cn') === -1 &&
+    el.tagName === 'A' && 
+    el.href.indexOf('myseu.cn') === -1 &&
     (window.__wxjs_environment === 'miniprogram' || window.navigator.standalone)
   ) {
     if (window.__wxjs_environment === 'miniprogram') {
-      Vue.toasted.show('小程序不支持打开站外链接，请进入小猴偷米微信公众号 PWA 主页查看。')
+      Vue.toasted.show('小程序内无法跳转，请在公众号或 Web 版查看')
     } else if (window.navigator.standalone) {
-      Vue.toasted.show('WebApp 不支持打开站外链接，请访问 myseu.cn 进行查看。')
+      Vue.toasted.show('WebApp 内无法跳转，请在公众号或 Web 版查看')
     }
     e.stopPropagation()
     e.preventDefault()
   }
-})
+}, true)
