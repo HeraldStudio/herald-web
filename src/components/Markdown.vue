@@ -6,9 +6,7 @@
 </template>
 <script>
 
-  import marked from 'marked'
-
-  marked.setOptions({ gfm: true })
+  import renderMarkdown from '@/util/markdown'
 
   export default {
     props: ['markdown'],
@@ -25,7 +23,7 @@
     },
     methods: {
       render() {
-        this.html = this.markdown && marked(this.markdown.replace(/\*\*/g, ' ** '))
+        this.html = this.markdown && renderMarkdown(this.markdown)
       }
     }
   }

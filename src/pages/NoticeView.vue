@@ -10,9 +10,7 @@
 <script>
 
   import api from '@/api'
-  import marked from 'marked'
-
-  marked.setOptions({ gfm: true })
+  import renderMarkdown from '@/util/markdown'
 
   export default {
     data() {
@@ -42,11 +40,11 @@
       },
       async loadOther(notice) {
         let res = await api.post('/api/notice', notice)
-        this.markdown = marked(res)
+        this.markdown = renderMarkdown(res)
       },
       async loadCompetition(id) {
         let res = await api.post('/api/srtp/competition', { id })
-        this.markdown = marked(res)
+        this.markdown = renderMarkdown(res)
       }
     }
   }
