@@ -72,7 +72,7 @@ new Vue({
 document.addEventListener('click', (e) => {
   if (
     e.target.tagName === 'A' && 
-    e.target.href.split('#')[0] !== location.href.split('#')[0] &&
+    e.target.indexOf('myseu.cn') === -1 &&
     (window.__wxjs_environment === 'miniprogram' || window.navigator.standalone)
   ) {
     if (window.__wxjs_environment === 'miniprogram') {
@@ -80,6 +80,7 @@ document.addEventListener('click', (e) => {
     } else if (window.navigator.standalone) {
       Vue.toasted.show('WebApp 不支持打开站外链接，请访问 myseu.cn 进行查看。')
     }
+    e.stopPropagation()
     e.preventDefault()
   }
 })

@@ -9,7 +9,7 @@
         .title 电子钱包余额
         .content {{ card.info.eacc }}
       li.info.charge
-        router-link(to='/card/charge')
+        a(href='http://yktwechat.seu.edu.cn/wechat/url/redirectJkbh.html?jkbh=0006')
           .title 充值
     ul.detail-list
       li(v-for='item in card.detail')
