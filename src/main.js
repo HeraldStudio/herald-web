@@ -3,9 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import interceptor from './util/interceptor'
 import Toasted from 'vue-toasted'
 import Persist from 'vue-component-persist'
+
+// 对手机屏幕（小于 480 逻辑像素宽度）应用 400px 缩放模式；对其他终端应用自适应宽度模式。
+if (window.innerWidth < 480) {
+  let viewport = document.querySelector('meta[name="viewport"]')
+  viewport.setAttribute('content', 'width=400,user-scalable=no,viewport-fit=cover')
+}
 
 if (window.navigator.standalone) {
   window.__herald_env = 'webapp'
