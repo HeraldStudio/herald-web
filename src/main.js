@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import injectManifest from './manifest'
 
 import Toasted from 'vue-toasted'
 import Persist from 'vue-component-persist'
