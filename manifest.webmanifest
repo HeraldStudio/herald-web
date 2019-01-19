@@ -1,0 +1,15 @@
+{
+  "short_name": "小猴偷米",
+  "name": "小猴偷米",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "static/images/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}

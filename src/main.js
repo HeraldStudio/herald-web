@@ -70,22 +70,27 @@ new Vue({
   components: { App }
 })
 
+// 对于小程序，拦截跳转并显示通知
+// 对于 WebApp，强制在新窗口打开
 intercept({
   target: false,
   sameOrigin: false
 }, (e, el) => {
-  console.log(e, el)
   if (
     el.tagName === 'A' && 
-    el.href.indexOf('myseu.cn') === -1 &&
-    (window.__wxjs_environment === 'miniprogram' || window.navigator.standalone)
+    el.href.indexOf('myseu.cn') === -1
   ) {
     if (window.__wxjs_environment === 'miniprogram') {
       Vue.toasted.show('小程序内无法跳转，请在公众号或 Web 版查看')
-    } else if (window.navigator.standalone) {
-      Vue.toasted.show('WebApp 内无法跳转，请在公众号或 Web 版查看')
+      e.stopPropagation()
+      e.preventDefault()
+    } else if (
+      /* iOS */     window.navigator.standalone || 
+      /* Android */ window.matchMedia('(display-mode: standalone)').matches
+    ) {
+      window.open(el.href, '_blank')
+      e.stopPropagation()
+      e.preventDefault()
     }
-    e.stopPropagation()
-    e.preventDefault()
   }
 }, true)
