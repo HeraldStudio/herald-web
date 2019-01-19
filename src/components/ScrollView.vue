@@ -7,7 +7,7 @@
 </template>
 <script>
 
-  import AlloyTouch from 'alloytouch'
+  // import AlloyTouch from 'alloytouch'
 
   export default {
     mounted() {
