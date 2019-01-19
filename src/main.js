@@ -14,8 +14,6 @@ if (window.innerWidth < 480) {
   viewport.setAttribute('content', 'width=400,user-scalable=no,viewport-fit=cover')
 }
 
-injectManifest()
-
 if (window.navigator.standalone) {
   window.__herald_env = 'webapp'
 } else if (window.__wxjs_environment === 'miniprogram') {
