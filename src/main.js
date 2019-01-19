@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import injectManifest from './manifest'
+
 import Toasted from 'vue-toasted'
 import Persist from 'vue-component-persist'
 import intercept from 'intercept-link-clicks'
@@ -12,6 +14,8 @@ if (window.innerWidth < 480) {
   let viewport = document.querySelector('meta[name="viewport"]')
   viewport.setAttribute('content', 'width=400,user-scalable=no,viewport-fit=cover')
 }
+
+injectManifest()
 
 if (window.navigator.standalone) {
   window.__herald_env = 'webapp'
