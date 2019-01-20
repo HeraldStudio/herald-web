@@ -4,7 +4,7 @@
   "display": "standalone",
   "icons": [
     {
-      "src": "//cdn.myseu.cn/icon-192.9d8d60f1.png",
+      "src": "//myseu.cn/manifest-icon.png",
       "type": "image/png",
       "sizes": "192x192"
     }
