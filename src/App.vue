@@ -101,7 +101,11 @@ function getOffsetLeft(obj) {
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     // 隔开字符串防止被 parcel 探测
-    navigator.serviceWorker.register("/" + "sw.js");
+    //navigator.serviceWorker.register("/" + "sw.js");
+    // 卸载service-worker
+    navigator.serviceWorker.getRegistrations().then((rs)=>{
+      rs.forEach(k => k.unregister())
+    })
   });
 }
 
