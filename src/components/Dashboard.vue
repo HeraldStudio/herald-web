@@ -139,7 +139,7 @@
     },
     methods: {
       logout() {
-        api.token = ''
+        this.$store.commit('logout')
       }
     },
     computed: {

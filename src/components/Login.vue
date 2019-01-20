@@ -63,12 +63,26 @@
         this.loading = true
 
         try {
-          api.token = await api.post('/auth', {
+          let authResult = await api.post('/auth', {
             cardnum: this.cardnum,
             password: this.password,
             gpassword: this.gpassword,
             platform: 'web'
           })
+
+          // 执行到此处，/auth请求返回，判断是成功还是验证码
+          if(authResult.verifyUrl){
+            // 有验证码的情况
+            window.location.href = authResult.verifyUrl
+            // 跳转到ids认证页面
+          } else {
+            // 不需要验证码
+            this.$store.commit('setToken', authResult) // 直接设置token
+            api.token = authResult // 更新api中的token设置
+            let user = await api.get("/api/user");
+            user.admin = await api.get("/api/admin/admin");
+            this.$store.commit('setUser', user) // 获取并设置用户信息
+          }
           localStorage.setItem('herald-wlan-username', this.cardnum)
           localStorage.setItem('herald-wlan-password', Buffer.from(this.password).toString('base64'))
 
