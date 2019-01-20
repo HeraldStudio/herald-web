@@ -4,13 +4,13 @@
   "display": "standalone",
   "icons": [
     {
-      "src": "../static/images/icon-192.png",
+      "src": "//myseu.cn/manifest-icon.png",
       "type": "image/png",
       "sizes": "192x192"
     }
   ],
   "start_url": "/",
-  "theme_color": "#00a2bc",
+  "theme_color": "#ffffff",
   "background_color": "#eeeeee",
   "scope": "/"
 }

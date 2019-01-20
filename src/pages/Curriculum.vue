@@ -71,7 +71,13 @@
         }
       },
       async displayTerm() {
-        this.curriculum = await api.get('/api/curriculum', { term: this.displayTerm })
+        let displayTerm = this.displayTerm
+        let curriculum = await api.get('/api/curriculum', { term: this.displayTerm })
+
+        // 如果请求完成后，切换的学期有变化，则不显示请求的结果，防止时序问题
+        if (displayTerm === this.displayTerm) {
+          this.curriculum = curriculum
+        }
       }
     },
     methods: {
