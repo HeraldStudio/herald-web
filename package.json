@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "parcel index.html --port 8080",
-    "build": "parcel build index.html --public-url //cdn.myseu.cn/",
+    "build": "parcel build index.html --public-url //cdn.myseu.cn/; cp manifest.json dist/",
     "test": "parcel build index.html"
   },
   "dependencies": {
