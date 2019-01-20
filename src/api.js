@@ -70,7 +70,7 @@ export default new Vue({
           throw new Error(reason)
         }
       } else {
-        Vue.toasted.show('请求失败：系统维护')
+        Vue.toasted.show(`请求出错 (${ httpStatus })`)
         throw new Error('Request failed with status ' + httpStatus)
       }
     }

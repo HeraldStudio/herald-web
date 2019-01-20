@@ -59,7 +59,7 @@
           "alias": {
             "@": "./src",
             "static": "./static",
-            "vue": "vue/dist/vue.min"
+            "vue": "vue/dist/vue.common"
           }
         }
       ]

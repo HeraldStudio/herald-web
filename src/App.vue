@@ -405,7 +405,6 @@
       bottom 0
       bottom constant(safe-area-inset-bottom)
       bottom env(safe-area-inset-bottom)
-      max-width 1200px
       margin 0 auto
       display flex
       flex-direction row
