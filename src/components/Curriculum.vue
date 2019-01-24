@@ -24,7 +24,7 @@
     div.curriculum-container(v-if='type === "week"')
       .week-header(v-if='fixedClasses.length || !floatClasses.length')
         .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount" :class='{ current: displayTerm == currentTerm && displayWeek == currentWeek && i + 1 == currentDayOfWeek }') {{ getDate(i + 1) }}
-      .curriculum-list(v-if='fixedClasses.length || !floatClasses.length' :class='{ empty: !fixedClasses.length }' @click="allCourse")
+      .curriculum-list(v-if='fixedClasses.length || !floatClasses.length' :class='{ empty: !fixedClasses.length }')
         table.block-bg
           tr(v-for='_ in 13' v-if='fixedClasses.length')
             td(v-for='_ in weekdayCount')
