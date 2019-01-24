@@ -223,7 +223,7 @@
       // 每个课程的 events 是 startTime 和 endTime 的对象数组
       // 为了提高传输效率，其他字段没有在 events 中冗余出现
       // 首先将每个课程的其他字段（不含 events 本身）冗余到 events 数组中
-      // 然后对所有课程的 events 数组合并排序，取三分钟之内要开始的和已开始未结束的
+      // 然后对所有课程的 events 数组合并排序，取三天内要开始的和已开始未结束的
       upcomingClasses() {
         let now = Date.now()
         return this.curriculum.curriculum
