@@ -7,10 +7,15 @@
       .tab(:class='{ selected: type === "outline" }' @click='type = "outline"') 课程概览
       router-link.tab(to='/course-stat') 课表预测
  
+    //- 周视图/概览视图：学期和星期切换
     .week-picker(v-if='type === "week" || type === "outline"')
+
+      //- 学期切换器
       .prev(@click='prevTerm()') ‹
       .cur(title='点击回到本学期' @click='displayTerm = currentTerm') {{ displayTerm || '...' }}
       .next(@click='nextTerm()') ›
+
+      //- 星期切换器
       .prev(v-if='type === "week"' @click='prevWeek()') ‹
       .cur(v-if='type === "week"' title='点击回到本周' @click='displayWeek = currentWeek') 第 {{ displayWeek }} 周
       .next(v-if='type === "week"' @click='nextWeek()') ›
@@ -68,21 +73,38 @@
   import api from '@/api'
   import formatter from '@/util/formatter'
 
+  // 魔法组件，谨慎修改
   export default {
     data() {
       return {
+        // 'week'     周视图
+        // 'outline'  概览视图
+        // 'timeline' 时间轴视图
         type: 'week',
+
+        // 当前已知的学期列表
         term: [],
+
+        // 当前学期的课表和学期信息
         curriculum: {
           curriculum: [],
           term: {}
         },
+
+        // 今天所在学期，固定不变
         currentTerm: '',
+
+        // 当前显示的学期，可切换
         displayTerm: '',
+
+        // 今天所在周，如果处于假期，可能为负值或超过最大周数
         currentWeek: 1,
+
+        // 当前显示周，一定是范围内的自然数
         displayWeek: 1,
-        currentDayOfWeek: 1,
-        listView: false
+
+        // 今天的星期，1~7
+        currentDayOfWeek: 1
       }
     },
     persist: {
@@ -95,52 +117,76 @@
 
       // 不要根据返回的 current 来判断显示哪个学期，而是找结束时间大于当前时间的最早学期来显示，这样对于假期期间的情况也适合
       let now = Date.now()
+
+      // 拉取已知学期列表并排序
       this.term = await api.get('/api/term')
       this.term.list.sort((a, b) => a.endDate - b.endDate)
+
+      // 计算当前所在学期，如果当前处于假期，取下个学期
       this.currentTerm = this.term.list.find(k => k.endDate > now).name
+
+      // 初始情况下显示当前所在学期，这一步会触发 curriculum 拉取
       this.displayTerm = this.currentTerm
     },
     watch: {
+      // 改变显示学期时，触发课表拉取
+      async displayTerm() {
+        this.curriculum = await api.get('/api/curriculum', { term: this.displayTerm })
+      },
+      // 改变课表时，触发计算当前周次、当前星期，并初始化显示周次
       curriculum() {
         if (this.curriculum.term.startDate) {
           let now = new Date()
+
+          // 计算当前周次，可能为负或超出最大值
+          // 当前周次会用于判断当前显示的周是否需要高亮今天，因此不做边界检查，只对当前显示周次做边界检查
           this.currentWeek = Math.ceil((now.getTime() - this.curriculum.term.startDate) / (1000 * 60 * 60 * 24 * 7))
+
+          // 计算当前星期
           this.currentDayOfWeek = (now.getDay() + 6) % 7 + 1
+
+          // 将当前所在周次进行边界检查，得到初始显示周次
           this.displayWeek = Math.min(this.maxWeek, Math.max(1, this.currentWeek))
         } else {
+          // 当前学期开学日期未知时，默认展示第一周，当前星期零，以防出现高亮
           this.currentWeek = 1
           this.displayWeek = 1
           this.currentDayOfWeek = 0
         }
       },
-      async displayTerm() {
-        this.curriculum = await api.get('/api/curriculum', { term: this.displayTerm })
-      },
       type() {
-        this.displayTerm = this.currentTerm
+        // 切换显示模式时，如果切换到时间轴模式，回到当前所在学期
+        if (this.type === 'timeline') {
+          this.displayTerm = this.currentTerm
+        }
       }
     },
     methods: {
       ...formatter,
+      // 显示上一周，带边界检查
       prevWeek() {
         if (this.displayWeek > 1) {
           this.displayWeek -= 1
         }
       },
+      // 显示下一周，带边界检查
       nextWeek() {
         if (this.displayWeek < this.curriculum.term.maxWeek) {
           this.displayWeek += 1
         }
       },
+      // 显示上一学期，带边界检查
       prevTerm() {
         let term = this.term.list.map(k => k.name)
         // JS 取模是对绝对值取模保留符号，所以要先加上 length 保证结果为正
         this.displayTerm = term[(term.indexOf(this.displayTerm) + term.length - 1) % term.length]
       },
+      // 显示下一学期，带边界检查
       nextTerm() {
         let term = this.term.list.map(k => k.name)
         this.displayTerm = term[(term.indexOf(this.displayTerm) + 1) % term.length]
       },
+      // 获取当前显示周中某日的日期
       getDate(dayOfWeek) {
         let { startDate } = this.curriculum.term
         if (!startDate) return '星期' + '一二三四五六日'[dayOfWeek - 1]
@@ -154,24 +200,19 @@
         } else {
           return formatter.formatTime(t, 'd E')
         }
-      },
-      allCourse(){
-        this.$router.push('/curriculum')
       }
     },
     computed: {
+      // 概览视图用，所有课程按名称和教师去重
       allClasses() {
-        let now = Date.now()
-        let allClasses = {}
-        this.curriculum.curriculum.forEach(k => {
-            allClasses[`${k.courseName}-${k.teacherName}`] = k
-        })
-        let result = []
-        Object.keys(allClasses).forEach( k=> {
-            result.push(allClasses[k])
-        })
-        return result
+        let allClasses = this.curriculum.curriculum.map(k => ({
+            [`${k.courseName}-${k.teacherName}`]: k
+        })).reduce((a, b) => Object.assign(a, b), {})
+
+        return Object.keys(allClasses).map(k => allClasses[k])
       },
+      // 当前周需要显示的课程
+      // 条件：已开课、未结课、单双周匹配
       displayClasses() {
         return this.curriculum.curriculum.filter(k =>
           k.beginWeek <= this.displayWeek &&
@@ -179,6 +220,10 @@
           this.displayWeek % 2 !== ['odd', 'even'].indexOf(k.flip)
         )
       },
+      // 每个课程的 events 是 startTime 和 endTime 的对象数组
+      // 为了提高传输效率，其他字段没有在 events 中冗余出现
+      // 首先将每个课程的其他字段（不含 events 本身）冗余到 events 数组中
+      // 然后对所有课程的 events 数组合并排序，取三分钟之内要开始的和已开始未结束的
       upcomingClasses() {
         let now = Date.now()
         return this.curriculum.curriculum
@@ -190,17 +235,22 @@
           }))
           .reduce((a, b) => a.concat(b), [])
           .sort((a, b) => a.startTime - b.startTime)
-          .filter(k => k.endTime > now && k.endTime < now + 3 * 24 * 60 * 60 * 1000)
+          .filter(k => k.endTime > now && k.startTime < now + 3 * 24 * 60 * 60 * 1000)
       },
-      weekdayCount() {
-        return Math.max(5, this.fixedClasses.map(k => k.dayOfWeek).reduce((a, b) => Math.max(a, b), 0))
-      },
+      // 取固定课程（有具体时间的课程）
       fixedClasses() {
         return this.displayClasses.filter(k => k.dayOfWeek)
       },
+      // 取浮动课程（无具体时间的课程）
       floatClasses() {
         return this.displayClasses.filter(k => !k.dayOfWeek)
       },
+      // 计算本周需要显示几天
+      // 策略：至少显示周一到周五；如果周六有课，至少显示到周六；如果周日有课，显示到周日。
+      weekdayCount() {
+        return Math.max(5, this.fixedClasses.map(k => k.dayOfWeek).reduce((a, b) => Math.max(a, b), 0))
+      },
+      // 取当前显示学期的最大周数
       maxWeek() {
         return this.curriculum.curriculum.map(k => k.endWeek).reduce((a, b) => Math.max(a, b), 0)
       }
