@@ -1,15 +1,22 @@
 <template lang="pug">
 
   .widget.curriculum(v-if='curriculum' :class='{ stale: curriculum && curriculum.isStale }')
-    .week-picker
-      .prev(v-if='!listView' @click='prevTerm()') ‹
-      .cur(v-if='!listView' title='点击回到本学期' @click='displayTerm = currentTerm') {{ displayTerm || '...' }}
-      .next(v-if='!listView' @click='nextTerm()') ›
-      .switch(@click='listView = !listView; displayTerm = currentTerm') {{ listView ? '近期课程' : '周视图' }}
-      .prev(v-if='!listView' @click='prevWeek()') ‹
-      .cur(v-if='!listView' title='点击回到本周' @click='displayWeek = currentWeek') {{ displayWeek }} 周
-      .next(v-if='!listView' @click='nextWeek()') ›
-    div.curriculum-container(v-if='!listView')
+    .curriculum-tabs
+      .tab(:class='{ selected: type === "week" }' @click='type = "week"') 周视图
+      .tab(:class='{ selected: type === "timeline" }' @click='type = "timeline"') 时间轴
+      .tab(:class='{ selected: type === "outline" }' @click='type = "outline"') 课程概览
+      router-link.tab(to='/course-stat') 课表预测
+ 
+    .week-picker(v-if='type === "week" || type === "outline"')
+      .prev(@click='prevTerm()') ‹
+      .cur(title='点击回到本学期' @click='displayTerm = currentTerm') {{ displayTerm || '...' }}
+      .next(@click='nextTerm()') ›
+      .prev(v-if='type === "week"' @click='prevWeek()') ‹
+      .cur(v-if='type === "week"' title='点击回到本周' @click='displayWeek = currentWeek') 第 {{ displayWeek }} 周
+      .next(v-if='type === "week"' @click='nextWeek()') ›
+
+    //- 周视图：课表格子
+    div.curriculum-container(v-if='type === "week"')
       .week-header(v-if='fixedClasses.length || !floatClasses.length')
         .weekday(v-for='(item, i) in "一二三四五六日"' v-if="i < weekdayCount" :class='{ current: displayTerm == currentTerm && displayWeek == currentWeek && i + 1 == currentDayOfWeek }') {{ getDate(i + 1) }}
       .curriculum-list(v-if='fixedClasses.length || !floatClasses.length' :class='{ empty: !fixedClasses.length }' @click="allCourse")
@@ -22,16 +29,9 @@
           .teacher {{ item.teacherName }}
           .place {{ item.location }}
         .empty(v-if='!fixedClasses.length') 暂无课程
-    ul.detail-list(v-if='listView')
-      li(v-for='item in upcomingClasses')
-        .top
-          .left {{ item.courseName }}
-          .right {{ item.teacherName }}
-        .bottom
-          .left {{ formatPeriodNatural(item.startTime, item.endTime) }}
-          .right {{ item.location }}
-      li.empty(v-if='!upcomingClasses.length') 三天内没有课程
-    ul.detail-list(v-if='!listView && floatClasses && floatClasses.length')
+
+    //- 周视图：浮动课程
+    ul.detail-list(v-if='type === "week" && floatClasses && floatClasses.length')
       .hint 以下课程无法确定上课时间：
       li(v-for='item in floatClasses')
         .top
@@ -40,6 +40,27 @@
         .bottom
           .left {{ item.beginWeek }}-{{ item.endWeek }}周
           .right(v-if='item.credit') {{ item.credit }} 学分
+
+    //- 时间轴视图
+    ul.detail-list(v-if='type === "timeline"')
+      li(v-for='item in upcomingClasses')
+        .top
+          .left {{ item.courseName }}
+          .right {{ item.teacherName }}
+        .bottom
+          .left {{ formatPeriodNatural(item.startTime, item.endTime) }}
+          .right {{ item.location }}
+      li.empty(v-if='!upcomingClasses.length') 三天内没有课程
+
+    //- 预览视图
+    ul.detail-list(v-if='type === "outline"')
+      li(v-for='item in allClasses')
+        .top
+          .left {{ item.courseName }}
+          .right {{ item.teacherName }}
+        .bottom
+          .left {{ item.credit ? `${item.credit} 学分` : '' }}
+          .right {{ item.location }}
 
 </template>
 <script>
@@ -50,6 +71,7 @@
   export default {
     data() {
       return {
+        type: 'week',
         term: [],
         curriculum: {
           curriculum: [],
@@ -82,24 +104,20 @@
       curriculum() {
         if (this.curriculum.term.startDate) {
           let now = new Date()
-          this.currentWeek =
-            Math.min(this.maxWeek,
-              Math.max(1,
-                Math.ceil(
-                  (now.getTime() - this.curriculum.term.startDate) / (1000 * 60 * 60 * 24 * 7)
-                )
-              )
-            )
+          this.currentWeek = Math.ceil((now.getTime() - this.curriculum.term.startDate) / (1000 * 60 * 60 * 24 * 7))
           this.currentDayOfWeek = (now.getDay() + 6) % 7 + 1
-          this.displayWeek = this.currentWeek
+          this.displayWeek = Math.min(this.maxWeek, Math.max(1, this.currentWeek))
         } else {
           this.currentWeek = 1
+          this.displayWeek = 1
           this.currentDayOfWeek = 0
-          this.displayWeek = this.currentWeek
         }
       },
       async displayTerm() {
         this.curriculum = await api.get('/api/curriculum', { term: this.displayTerm })
+      },
+      type() {
+        this.displayTerm = this.currentTerm
       }
     },
     methods: {
@@ -142,6 +160,18 @@
       }
     },
     computed: {
+      allClasses() {
+        let now = Date.now()
+        let allClasses = {}
+        this.curriculum.curriculum.forEach(k => {
+            allClasses[`${k.courseName}-${k.teacherName}`] = k
+        })
+        let result = []
+        Object.keys(allClasses).forEach( k=> {
+            result.push(allClasses[k])
+        })
+        return result
+      },
       displayClasses() {
         return this.curriculum.curriculum.filter(k =>
           k.beginWeek <= this.displayWeek &&
@@ -183,6 +213,48 @@
   .widget
     padding 15px 0 0 !important
     --curriculum-background-color #fff
+    margin-top 55px
+    
+    .curriculum-tabs
+      display flex
+      flex-direction row
+      margin-top -55px
+      margin-bottom 25px
+
+      .tab
+        flex 1 1 0
+        text-align center
+        font-size 14px
+        border-radius 5px 5px 0 0
+        padding 10px 0
+        // box-shadow inset 0 -2px 3px rgba(0, 0, 0, .03)
+        height 40px
+        line-height 20px
+        box-sizing border-box
+        color #777
+        cursor pointer
+        transition background .2s
+
+        &:hover
+          background #f8f8f8
+
+        &.selected
+          height 45px
+          background #fff
+          box-shadow none
+          color #333
+
+      .tab:not(.selected) + .tab:not(.selected)
+        position relative
+
+        &::before
+          content ''
+          position absolute
+          left 0
+          top 10px
+          bottom 10px
+          width 1px
+          background #ddd
 
     .week-picker
       display flex
@@ -193,11 +265,11 @@
       -moz-user-select: none
       -ms-user-select: none
       user-select: none
-      padding 10px 20px 15px
+      padding 0 20px 20px
       // align-items center
 
       *:not(.prev) + *:not(.next)
-        margin-left 10px
+        margin-left 20px
 
       .switch
         flex 1 1 0
