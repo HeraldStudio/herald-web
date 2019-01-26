@@ -77,7 +77,7 @@
     },
     persist: {
       gpa: 'herald-default-gpa-sorted',
-      selected: 'herald-default-gpa-selected-new',
+      selected: 'herald-default-gpa-selected-new-new',
       term: 'herald-default-term'
     },
     async created() {
@@ -95,15 +95,27 @@
     methods: {
       ...formatter,
 
-      // 初始化选中的课程
+      // 初始化选中的课程列表
       initSelection() {
-        if (this.gpa && !this.selected.length) {
-          this.selected = (this.gpa.detail || [])
-            .map(k => k.courses)
-            .reduce((a, b) => a.concat(b), [])
-            // 默认选中所有非选修
-            .filter(k => !k.courseType)
-          this.shouldShowTip = true
+        if (this.gpa) {
+          // 如果之前没有选中课程，初始化
+          if (!this.selected.length) {
+            this.selected = (this.gpa.detail || [])
+              .map(k => k.courses)
+              .reduce((a, b) => a.concat(b), [])
+              // 默认选中所有非选修
+              .filter(k => !k.courseType)
+            this.shouldShowTip = true
+          } else {
+            let courses = this.gpa.detail
+              .map(k => k.courses)
+              .reduce((a, b) => a.concat(b), [])
+
+            // 如果之前有选中的课程，需要清洗一遍，过滤掉 gpa 查询结果里面没有的
+            this.selected = this.selected.filter(k => 
+              courses.find(course => k.cid === course.cid && k.semester === course.semester)
+            )
+          }
         }
       },
 
