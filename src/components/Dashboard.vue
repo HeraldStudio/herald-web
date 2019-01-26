@@ -8,74 +8,42 @@
       img.icon.grayscale(@click='tidyMode = !tidyMode' :src='tidyMode ? expandImg : collapseImg')
       img.icon(@click='logout()' :src='logoutImg')
     banner(key='banner' v-show='!tidyMode')
-    .admin-container(key='admin' v-if='!tidyMode && user.admin')
-      router-link(to='/admin/monitor' v-if='user.admin.maintenance')
-        .function 概况
-      router-link(to='/admin/privilege' v-if='user.admin.maintenance')
-        .function 权限
-      router-link(to='/admin/notice' v-if='user.admin.maintenance')
-        .function 通知
-      router-link(to='/admin/banner' v-if='user.admin.publicity')
-        .function 轮播管理
-      router-link(to='/admin/activity' v-if='user.admin.publicity')
-        .function 活动管理
 
-    .dashboard-container(key='dashboard' v-if='user')
-      item.cols-3(name='¥' 
-        :value='card && card.info && card.info.balance' 
-        :is-stale='card && card.isStale' 
-        route='/card')
+    .dashboard-container.border-top(key='dashboard' v-if='user')
 
-      item.cols-3(name='跑操' 
-        :value='pe && pe.count' 
-        :is-stale='pe && pe.isStale' 
-        route='/pe' 
-        v-if='isUndergraduate')
+      .row
+        item(name='余额' :value='card && card.info && card.info.balance' :is-stale='card && card.isStale' route='/card')
+        item(v-if='isUndergraduate' name='人文讲座' :value='lecture && lecture.length' :is-stale='lecture && lecture.isStale' route='/lecture')
 
-      item.cols-3(name='讲座' 
-        :value='lecture && lecture.length' 
-        :is-stale='lecture && lecture.isStale' 
-        route='/lecture' 
-        v-if='isUndergraduate')
+      .row
+        item(v-if='isUndergraduate' name='SRTP' :value='srtp && srtp.info.points' :is-stale='srtp && srtp.isStale' route='/srtp')
+        item(v-if='isStudent' :name='isGraduate ? "成绩" : "总绩点"' :value='gpa && (gpa.gpa || gpa.score || "暂无")' :is-stale='gpa && gpa.isStale' route='/grade' :is-graduate='isGraduate')
 
-      item.cols-3(name='SRTP' 
-        :value='srtp && srtp.info.points' 
-        :is-stale='srtp && srtp.isStale' 
-        route='/srtp' 
-        v-if='isUndergraduate')
+      .row
+        item(v-if='isUndergraduate && pe && pe.count' name='跑操次数' :value='pe && pe.count' :is-stale='pe && pe.isStale' route='/pe')
+        item(v-if='library && library.length' name='已借图书' :value='library && library.length' :is-stale='library && library.isStale' route='/library')
 
-      item.cols-3(:name='isGraduate ? "成绩" : "绩点"' 
-        :value='gpa && (gpa.gpa || gpa.score || "暂无")' 
-        :is-stale='gpa && gpa.isStale'
-        route='/grade' 
-        v-if='isStudent' 
-        :is-graduate='isGraduate')
+      .row(v-if='!tidyMode')
+        item(name='校历' route='/schedule' value='›')
+        item(name='校车' route='/bus' value='›')
+        item(name='活动' route='/activity' :value='activities && activities.filter(k => k.endTime > Date.now()).length')
 
-      item.cols-3(name='借书'
-        :value='library && library.length'
-        :is-stale='library && library.isStale'
-        route='/library')
+      .row(v-if='!tidyMode')
+        item(name='洗衣房' route='/laundry' value='›')
+        item(name='App' route='/download' value='›')
+        item(name='CET' route='/cet' value='›')
 
-      item.cols-3(name='校历'
-        route='/schedule' value='›')
+      .row(v-if='!tidyMode && user.admin && user.admin.maintenance')
+        item(name='系统概况' route='/admin/monitor' value='›')
+        item(name='权限管理' route='/admin/privilege' value='›')
+        item(name='通知管理' route='/admin/notice' value='›')
 
-      item.cols-3(name='校车'
-        route='/bus' value='›')
+      .row(v-if='!tidyMode && user.admin && user.admin.publicity')
+        item(name='轮播管理' route='/admin/banner' value='›')
+        item(name='活动管理' route='/admin/activity' value='›')
 
-      item.cols-3(name='活动'
-        route='/activity' :value='activities && activities.filter(k => k.endTime > Date.now()).length')
-
-      item.cols-3(name='洗衣' v-if='!tidyMode'
-        route='/laundry' value='›')
-
-      item.cols-3(name='App' v-if='!tidyMode'
-        route='/download' value='›')
-
-      item.cols-3(name='CET' v-if='!tidyMode'
-        route='/cet' value='›')
-
-      item.cols-1(name='通知'
-        route='/notice' :value='curNotice && curNotice.title || "暂无通知"')
+      .row
+        item(name='通知' route='/notice' :value='curNotice && curNotice.title || "暂无通知"')
 
 </template>
 
@@ -187,7 +155,7 @@
       align-items: center
 
       * + *
-        margin-left 15px
+        margin-left 10px
 
       .name
         font-size 17px
@@ -223,13 +191,16 @@
 
     .dashboard-container
       display flex
-      flex-direction row
-      flex-wrap wrap
+      flex-direction column
       box-sizing: border-box
-      margin 0 -5px
-      
-      ::-webkit-scrollbar
-        display none
+      margin 5px -20px -15px
+
+      .row
+        display flex
+        flex-direction row
+
+        > *
+          flex 1 1 0
 
     .admin-container
       padding 0 0 15px

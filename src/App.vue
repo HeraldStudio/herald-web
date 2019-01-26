@@ -52,6 +52,7 @@ const store = new Vuex.Store({
       state.user = {},
       state.isLogin = false
       cookie.set('herald-default-token', '')
+      localStorage.clear()
     },
     setToken(state, token) {
       state.token = token;
@@ -212,7 +213,7 @@ export default {
     --color-text-regular   #333333
     --color-text-bold      #555555
     --color-text-secondary #888888
-    --color-divider        #f0f0f0
+    --color-divider        #eeeeee
     --color-tool-bg        #f0f0f0
     --color-primary-dark   #237a86
     --color-primary        #00abc3
@@ -223,11 +224,11 @@ export default {
     --color-success-light  #cafa70
     --color-success-bg     #f3ffde
     --color-warning-dark   #876b23
-    --color-warning        #c28b00
+    --color-warning        #f49c13
     --color-warning-light  #fad370
     --color-warning-bg     #fff6de
     --color-error-dark     #872f23
-    --color-error          #c23720
+    --color-error          #ed3f1f
     --color-error-light    #fa8070
     --color-error-bg       #ffe2de
     -webkit-tap-highlight-color transparent
@@ -314,13 +315,63 @@ export default {
     width 100%
     background var(--color-divider)
     margin 25px 0
+    transform scaleY(0.5)
+    transform-origin top
+  .border-top
+    position relative
+    &::after
+      content ''
+      position absolute
+      top 0
+      left 0
+      right 0
+      height 1px
+      transform scaleY(0.5)
+      transform-origin top
+      background var(--color-divider)
+  .border-bottom
+    position relative
+    &::after
+      content ''
+      position absolute
+      bottom 0
+      left 0
+      right 0
+      height 1px
+      transform scaleY(0.5)
+      transform-origin bottom
+      background var(--color-divider)
+  .border-left
+    position relative
+    &::after
+      content ''
+      position absolute
+      top 0
+      left 0
+      bottom 0
+      width 1px
+      transform scaleX(0.5)
+      transform-origin left
+      background var(--color-divider)
+  .border-left
+    position relative
+    &::after
+      content ''
+      position absolute
+      top 0
+      right 0
+      bottom 0
+      width 1px
+      transform scaleX(0.5)
+      transform-origin right
+      background var(--color-divider)
   img:not([src]), img[src=""]
     opacity 0
   ::-webkit-scrollbar
     display none !important
   .stale
     position relative
-  .stale::after
+  .stale::before
     content ''
     display block
     position absolute
@@ -339,7 +390,7 @@ export default {
     transition .5s
     transition-property max-width, max-height
     overflow hidden
-  .stale:hover::after
+  .stale:hover::before
     border-left-width 0
     border-top-width 0
     padding 0 3px
@@ -441,7 +492,6 @@ export default {
         flex-direction row
         align-items center
         justify-content center
-        border-bottom 0.5px solid var(--color-divider)
         z-index 999
         .live2d-wrapper
           display flex
@@ -452,7 +502,6 @@ export default {
             width 48px
             height 48px
             position relative
-            filter hue-rotate(-15deg)
         .spacing
           flex 1 1 0
             
@@ -591,12 +640,12 @@ export default {
     box-shadow 0 3px 1px 0 rgba(0, 0, 0, .03)
     & + .widget, .page, .admin-page
       margin-top 0
-    .empty
+    li.empty
       display block
       text-align center
       color #888
       font-size 14px
-      margin 15px 0
+      line-height 3em
     ul.info-bar
       width 100%
       box-sizing border-box
@@ -624,8 +673,8 @@ export default {
           + .content
             margin-left 5px
       +ul.detail-list>*:first-child
+        @extend .border-top
         margin-top 15px
-        border-top 0.5px solid var(--color-divider)
         padding-top 10px
     ul.detail-list
       width 100%
@@ -637,7 +686,7 @@ export default {
       white-space normal
       line-height 1.7em
       > li + li
-        border-top 0.5px solid var(--color-divider)
+        @extend .border-top
       > li
         list-style none
         flex 1 1 auto
@@ -648,10 +697,25 @@ export default {
         word-break break-all
         color var(--color-text-bold)
         &.section
-          border-top 0.5px solid var(--color-divider)
+          @extend .border-top
           margin-top 10px
           padding-top 10px !important
           font-weight bold
+        .tag
+          display inline-block
+          border-radius 3px
+          height 16px
+          line-height 16px
+          padding 3px 8px
+          border-radius 11px
+          margin-right 8px
+          margin-bottom 2px
+          background var(--color-primary)
+          color #fff
+          font-size 12px
+          font-weight bold
+          + .tag
+            margin-left -3px
         .top, .bottom
           display flex
           flex-direction row
@@ -691,7 +755,7 @@ export default {
       text-align center
       overflow-x scroll
       + .subcontainer
-        border-top 0.5px solid var(--color-divider)
+        @extend .border-top
         padding-top 20px
         margin-top 20px
     .subtitle

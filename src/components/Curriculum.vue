@@ -17,7 +17,7 @@
 
       //- 星期切换器
       .prev(v-if='type === "week"' @click='prevWeek()') ‹
-      .cur(v-if='type === "week"' title='点击回到本周' @click='displayWeek = currentWeek') 第 {{ displayWeek }} 周
+      .cur(v-if='type === "week"' title='点击回到本周' @click='Math.min(this.maxWeek, Math.max(1, this.currentWeek))') 第 {{ displayWeek }} 周
       .next(v-if='type === "week"' @click='nextWeek()') ›
 
     //- 周视图：课表格子
@@ -263,12 +263,12 @@
   .widget
     padding 15px 0 0 !important
     --curriculum-background-color #fff
-    margin-top 55px
+    margin-top 65px
     
     .curriculum-tabs
       display flex
       flex-direction row
-      margin-top -55px
+      margin-top -65px
       margin-bottom 25px
 
       .tab
@@ -276,9 +276,9 @@
         text-align center
         font-size 14px
         border-radius 5px 5px 0 0
-        padding 10px 0
+        padding 15px 0
         // box-shadow inset 0 -2px 3px rgba(0, 0, 0, .03)
-        height 40px
+        height 50px
         line-height 20px
         box-sizing border-box
         color #777
@@ -289,7 +289,7 @@
           background #f8f8f8
 
         &.selected
-          height 45px
+          height 55px
           background #fff
           box-shadow none
           color #333
@@ -305,6 +305,8 @@
           bottom 10px
           width 1px
           background #ddd
+          transform scaleX(0.5)
+          transform-origin left
 
     .week-picker
       display flex

@@ -18,7 +18,6 @@
 <style lang="stylus">
 
   .dashboard-item
-    height 36px
     display: flex
     flex-direction: row
     align-items: center
@@ -26,39 +25,30 @@
     cursor: pointer
     box-sizing border-box
     flex 0 0 auto
-    margin 5px
-    padding 7px 10px
-    background #f7f7f7
-    border-radius 5px
+    padding 15px 20px
+    position relative
     transition .2s
+    min-width 0
 
-    &.cols-1
-      width calc(100% - 10px)
-
-      .value
-        font-size 14px
-        color var(--color-text-regular)
-
-    &.cols-2
-      width calc(50% - 10px)
-
-    &.cols-3
-      width calc(33.3% - 10px)
-
-    &.cols-4
-      width calc(25% - 10px)
-
-    &.cols-5
-      width calc(20% - 10px)
+    &::after
+      content ''
+      position absolute
+      left 0
+      top 0
+      width 200%
+      height 200%
+      border-right 1px solid var(--color-divider)
+      border-bottom 1px solid var(--color-divider)
+      transform scale(0.5)
+      transform-origin top left
 
     &:active
-      filter brightness(0.95)
+      background #f8f8f8
 
     .name
-      font-size 14px
-      color var(--color-text-secondary)
+      font-size 15px
+      color var(--color-text-bold)
       margin-right 5px
-      min-width 0
       white-space nowrap
       overflow hidden
       text-overflow ellipsis
