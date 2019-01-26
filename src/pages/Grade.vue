@@ -17,7 +17,7 @@
           .top
             .tag 估算
             .left GPA {{ predictSEUWithMakeup() }}
-            .right = {{ weighedSEU().toFixed(2) }} ÷ {{ achievedCredits() }}
+            .right = {{ weighedSEU().toFixed(2) }} ÷ {{ sumCredits() }}
           .bottom
             .left 首修 {{ predictSEUWithoutMakeup() }} / WES {{ predictWES() }}
             .right 实时估算
@@ -235,8 +235,8 @@
       },
 
       // 对于给定的课程列表，对学分求和
-      sumCredits(courses) {
-        return courses.map(k => k.credit).reduce((a, b) => a + b, 0)
+      sumCredits(courses = this.selected) {
+        return this.filterFirst(courses).map(k => k.credit).reduce((a, b) => a + b, 0)
       },
 
       // 对于给定的课程列表，求出 (学分*绩点) 的加权和，其中绩点用校内算法求
@@ -278,18 +278,11 @@
         return this.calculateWES(this.filterHighest(courses))
       },
 
-      // 对于给定的课程列表，计算已获得的学分
-      // 首先取通过的课程，再对相同课程去重（任选一种去重方式即可，这里用取最高一次成绩的方式去重），然后对学分求和
-      achievedCredits(courses = this.selected) {
-        return this.filterHighest(this.filterPassed(courses))
-          .map(k => k.credit).reduce((a, b) => a + b, 0)
-      },
-
       // 取某学期已选中课程中已获得学分
       creditsInSemester(semester) {
         // 为了和总计算结果一致，这里需要首先全局去重
         // 也就是说，如果本学期选中了某个课程，但该课程被以后某个学期已选中的重修课程覆盖，那么这个课程不计入。
-        return this.achievedCredits(this.filterSemester(this.filterFirst(this.selected), semester))
+        return this.sumCredits(this.filterSemester(this.filterFirst(this.selected), semester))
       },
 
       // 取某学期已选中课程中 (学分*绩点) 的加权和
