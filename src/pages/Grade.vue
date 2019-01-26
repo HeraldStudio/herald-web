@@ -343,7 +343,7 @@
 
       // 根据已选中课程列表，计算教务处未算范围内的绩点加权和，用于增量推算
       weighedNotCoveredByJWC() {
-        return Number(this.predictSEUWithMakeup(this.filterNotCoveredByJWC(this.filterFirst(this.selected))))
+        return this.weighedSEU(this.filterNotCoveredByJWC(this.filterFirst(this.selected)))
       },
 
       // 根据上述两部分的加权和，进行增量推算，得到新的总 GPA
