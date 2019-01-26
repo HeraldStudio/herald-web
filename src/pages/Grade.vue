@@ -6,12 +6,19 @@
         li.info(v-if="!isGraduate")
           .top
             .tag 教务
-            .left GPA {{ gpa.gpa || '暂无' }}
+            .left GPA {{ Number(gpa.gpa).toFixed(3) || '暂无' }}
           .bottom
-            .left 首修 {{ gpa.gpaBeforeMakeup || '未计算' }}
-            .right 截至 {{ lastCalculateSemester }}
+            .left 首修 {{ Number(gpa.gpaBeforeMakeup).toFixed(3) || '未计算' }} / 已获学分 {{ gpa.achievedCredits }}
+            .right 计算至 {{ lastCalculateSemester }}
+          .tip(:class="{ visible: !isGraduate && shouldShowTip }") 取消选择非必修课，结果更准确。
 
-        .tip(:class="{ visible: !isGraduate && shouldShowTip }") 取消选择非必修课，结果更准确。
+        li.info(v-if="!isGraduate && shouldShowDelta")
+          .top
+            .tag 递推
+            .left GPA {{ predictByDelta() }}
+            .right = {{ (weighedCoveredByJWC() + weighedNotCoveredByJWC()).toFixed(3) }} ÷ {{ sumCredits() }}
+          .bottom
+            .left 由教务处绩点递推，更适合高年级用户
 
         li.info(v-if="!isGraduate")
           .top
@@ -19,8 +26,7 @@
             .left GPA {{ predictSEUWithMakeup() }}
             .right = {{ weighedSEU().toFixed(2) }} ÷ {{ sumCredits() }}
           .bottom
-            .left 首修 {{ predictSEUWithoutMakeup() }} / WES {{ predictWES() }} / 已获学分 {{ gpa.achievedCredits }}
-            .right 实时估算
+            .left 首修 {{ predictSEUWithoutMakeup() }} / WES {{ predictWES() }}
 
         li.info(v-if="isGraduate")
           .top
@@ -234,6 +240,16 @@
         return courses.filter(k => k.scoreType !== '重修')
       },
 
+      // 筛选已经被教务处计算的课程
+      filterCoveredByJWC(courses) {
+        return courses.filter(k => k.semester <= this.lastCalculateSemester)
+      },
+
+      // 筛选没被教务处计算的课程
+      filterNotCoveredByJWC(courses) {
+        return courses.filter(k => k.semester > this.lastCalculateSemester)
+      },
+
       // 对于给定的课程列表，对学分求和
       sumCredits(courses = this.selected) {
         return this.filterFirst(courses).map(k => k.credit).reduce((a, b) => a + b, 0)
@@ -304,6 +320,26 @@
       // 判断某学期是否有已选中课程被后续学期的重修覆盖
       hasFilteredCourse(semester) {
         return this.filterSemester(this.filterFirst(this.selected), semester).length !== this.filterFirst(this.filterSemester(this.selected, semester)).length
+      },
+
+      // 根据已选中课程列表，用教务处已算绩点反推教务处已算范围内的绩点加权和，用于增量推算
+      // 在推算的过程中，误差先放大后缩小，精确度不变
+      // 如果用户已修课程很多（尤其高年级），而且用户自己不是十分清楚哪些已经算了绩点，这个结果会比全量估算更接近准确值。
+      weighedCoveredByJWC() {
+        return this.gpa.gpa * this.sumCredits(this.filterCoveredByJWC(this.filterFirst(this.selected)))
+      },
+
+      // 根据已选中课程列表，计算教务处未算范围内的绩点加权和，用于增量推算
+      weighedNotCoveredByJWC() {
+        return Number(this.predictSEUWithMakeup(this.filterNotCoveredByJWC(this.filterFirst(this.selected))))
+      },
+
+      // 根据上述两部分的加权和，进行增量推算，得到新的总 GPA
+      // 这里有个比较神奇的特殊情况，如果教务处已算的里面包含挂科，而未算的里面包含对应的重修
+      // 这种情况下由于 sumCredits 依然是合并计算的，不会导致分母变大，而分子只多了个挂科 0，不会影响结果。
+      predictByDelta() {
+        let credits = this.sumCredits(this.selected)
+        return (credits && (this.weighedCoveredByJWC() + this.weighedNotCoveredByJWC()) / credits).toFixed(3)
       }
     },
     computed: {
@@ -311,7 +347,11 @@
       isGraduate() {
         return this.gpa && !!this.gpa.credits
       },
-      // 已知教务处绩点计算时间，求计算截止到哪个学期
+      // 求用户最新选择的成绩在哪个学期
+      latestSemester() {
+        return this.selected.map(k => k.semester).sort().slice(-1)[0]
+      },
+      // 已知教务处绩点计算时间，求教务处计算截止到哪个学期
       lastCalculateSemester() {
         if (!this.gpa) {
           return
@@ -339,6 +379,15 @@
         }
         
         return term.name
+      },
+      // 是否需要显示增量推算结果
+      shouldShowDelta() {
+        // 如果教务处已经算到最新的绩点了，就不显示
+        if (this.lastCalculateSemester === this.latestSemester) {
+          return false
+        }
+        // 如果增量推算结果更接近教务处上次计算的绩点，就展示增量推算结果
+        return Math.abs(this.gpa.gpa - this.predictByDelta()) < Math.abs(this.gpa.gpa - this.predictSEUWithMakeup())
       }
     }
   }
@@ -402,7 +451,7 @@
       align-items baseline
 
       .name
-        font-size 15px
+        font-size 16px
         flex 1 1 0
 
       .grade
