@@ -10,9 +10,9 @@
           .bottom
             .left 首修 {{ Number(gpa.gpaBeforeMakeup).toFixed(3) || '未计算' }} / 已获学分 {{ gpa.achievedCredits }}
             .right 计算至 {{ lastCalculateSemester }}
-          .tip(:class="{ visible: !isGraduate && shouldShowTip }") 取消选择非必修课，结果更准确。
 
         li.info(v-if="!isGraduate && shouldShowDelta")
+          .tip.selection(:class="{ visible: !isGraduate && shouldShowTip }") 取消选择非必修课，结果更准确。
           .top
             .tag 递推
             .left GPA {{ predictByDelta() }}
@@ -98,7 +98,7 @@
       // 初始化选中的课程
       initSelection() {
         if (this.gpa && !this.selected.length) {
-          this.selected = this.gpa.detail
+          this.selected = (this.gpa.detail || [])
             .map(k => k.courses)
             .reduce((a, b) => a.concat(b), [])
             // 默认选中所有非选修
@@ -425,11 +425,15 @@
       bottom -5px
       left 15px
 
+    &.selection
+      &.visible
+        margin-bottom 10px
+
     &.filtered
       background var(--color-warning-bg)
       color var(--color-warning-dark)
       width 100%
-      
+
       &.visible
         margin-top 15px
 
