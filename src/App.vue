@@ -483,7 +483,7 @@ export default {
       @media screen and (max-width: 600px)
         display block
       .overlay-header
-        margin 15px 15px 0
+        margin 15px
         height 40px
         flex 0 0 40px
         box-sizing border-box
@@ -581,6 +581,7 @@ export default {
           .scroll-content > *
             position relative
             top 0
+            margin-top 0
             min-height 100vh
             box-sizing border-box
           .page-enter-active, .page-leave-active

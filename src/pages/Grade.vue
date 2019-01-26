@@ -398,8 +398,8 @@
         if (this.lastCalculateSemester === this.latestSemester) {
           return false
         }
-        // 如果增量推算结果更接近教务处上次计算的绩点，就展示增量推算结果
-        return Math.abs(this.gpa.gpa - this.predictByDelta()) < Math.abs(this.gpa.gpa - this.predictSEUWithMakeup())
+        // 其余情况，高年级才显示
+        return this.gpa.detail.length > 6
       }
     }
   }
@@ -514,9 +514,18 @@
       &.makeup.active
         background var(--color-warning)
 
+      .name
+        white-space nowrap
+        overflow hidden
+        text-overflow ellipsis
+        flex 0 0 1
+        min-width 0
+
       .grade
         opacity .7
         margin-left 5px
+        white-space nowrap
+        flex 1 1 auto
 
 </style>
 
