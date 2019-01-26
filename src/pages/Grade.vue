@@ -12,7 +12,6 @@
             .right 计算至 {{ lastCalculateSemester }}
 
         li.info(v-if="!isGraduate && shouldShowDelta")
-          .tip.selection(:class="{ visible: !isGraduate && shouldShowTip }") 取消选择非必修课，结果更准确。
           .top
             .tag 递推
             .left GPA {{ predictByDelta() }}
@@ -21,6 +20,7 @@
             .left 由教务处绩点递推，更适合高年级用户
 
         li.info(v-if="!isGraduate")
+          .tip.selection(:class="{ visible: !isGraduate && shouldShowTip }") 取消选择非必修课，结果更准确。
           .top
             .tag 估算
             .left GPA {{ predictSEUWithMakeup() }}
