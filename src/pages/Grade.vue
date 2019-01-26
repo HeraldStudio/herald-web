@@ -8,7 +8,7 @@
             .tag 教务
             .left GPA {{ gpa.gpa || '暂无' }}
           .bottom
-            .left 首修 {{ gpa.gpaBeforeMakeup || '未计算' }} / 已获学分 {{ gpa.achievedCredits }}
+            .left 首修 {{ gpa.gpaBeforeMakeup || '未计算' }}
             .right 截至 {{ lastCalculateSemester }}
 
         .tip(:class="{ visible: !isGraduate && shouldShowTip }") 取消选择非必修课，结果更准确。
@@ -19,7 +19,7 @@
             .left GPA {{ predictSEUWithMakeup() }}
             .right = {{ weighedSEU().toFixed(2) }} ÷ {{ sumCredits() }}
           .bottom
-            .left 首修 {{ predictSEUWithoutMakeup() }} / WES {{ predictWES() }}
+            .left 首修 {{ predictSEUWithoutMakeup() }} / WES {{ predictWES() }} / 已获学分 {{ gpa.achievedCredits }}
             .right 实时估算
 
         li.info(v-if="isGraduate")
@@ -422,7 +422,7 @@
       height 16px
       line-height 16px
       border-radius 20px
-      padding 4px 8px
+      padding 6px 10px
       margin-right 5px
       margin-bottom 5px
       color var(--color-text-regular)
