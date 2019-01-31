@@ -501,7 +501,7 @@
       &.required
         cursor pointer
 
-      &.bad
+      &.bad, &:not(.active)
         opacity 1 !important
 
       &.active
@@ -509,7 +509,7 @@
         color #fff
       
       &.bad.active
-        background var(--color-error)
+        background #777
       
       &.makeup.active
         background var(--color-warning)

@@ -35,7 +35,6 @@
       width: 200%
       height: auto
       object-fit: contain
-      filter grayscale() contrast(1.3)
 
       &.left
         margin-left -1%

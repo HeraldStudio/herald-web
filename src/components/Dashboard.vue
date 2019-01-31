@@ -185,6 +185,7 @@
         width 20px
         height 20px
         cursor pointer
+        filter hue-rotate(180deg)
 
         &.grayscale
           filter grayscale()

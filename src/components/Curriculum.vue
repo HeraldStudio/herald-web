@@ -260,7 +260,7 @@
 </script>
 <style lang="stylus" scoped>
 
-  .widget
+  .widget.curriculum
     padding 15px 0 0 !important
     --curriculum-background-color #fff
     margin-top 65px

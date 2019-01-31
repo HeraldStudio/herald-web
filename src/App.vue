@@ -215,10 +215,10 @@ export default {
     --color-text-secondary #888888
     --color-divider        #eeeeee
     --color-tool-bg        #f0f0f0
-    --color-primary-dark   #237a86
-    --color-primary        #00abc3
-    --color-primary-light  #70eafa
-    --color-primary-bg     #ddfbff
+    --color-primary        #fe4402
+    --color-primary-dark   #bd3200
+    --color-primary-light  #ff875c
+    --color-primary-bg     #ffece5
     --color-success-dark   #648723
     --color-success        #7ec200
     --color-success-light  #cafa70
@@ -409,16 +409,17 @@ export default {
     right 0
     margin-left auto
     padding 15px
+    pointer-events none
     .toasted
       margin 0 auto 10px
       cursor default
-      border-radius 3px
+      border-radius 20px
       pointer-events all
       &.primary
         font-weight normal
         min-height 0
         line-height 1.5em
-        padding 5px 10px
+        padding 5px 12px
         font-size 14px
         font-weight normal
         text-align justify
@@ -483,7 +484,7 @@ export default {
       @media screen and (max-width: 600px)
         display block
       .overlay-header
-        margin 15px
+        margin 15px 15px -5px
         height 40px
         flex 0 0 40px
         box-sizing border-box
@@ -493,6 +494,8 @@ export default {
         align-items center
         justify-content center
         z-index 999
+        border-radius: 5px 5px 0 0
+        background #fff
         .live2d-wrapper
           display flex
           flex-direction row
@@ -526,7 +529,7 @@ export default {
         flex 1 1 0
         overflow hidden
         margin-left -15px
-        background var(--color-divider)
+        background transparent
         display flex
         flex-direction column
         transition .3s
@@ -538,6 +541,7 @@ export default {
           max-width none
           width 100%
           height 100%
+          background #eee
           .overlay-header
             transition .3s
           .overlay-router
@@ -564,14 +568,12 @@ export default {
             height 40px
             line-height 40px
             cursor pointer
-            
-            &:hover
-              color var(--color-text-bold)
+            color var(--color-primary)
           .current
             flex 1 1 0
             font-size 15px
             font-weight bold
-            color var(--color-text-bold)
+            color var(--color-primary)
             text-align center
             padding-right 40px
             line-height 40px
