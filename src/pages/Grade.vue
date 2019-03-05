@@ -365,14 +365,14 @@
       },
       // 已知教务处绩点计算时间，求教务处计算截止到哪个学期
       lastCalculateSemester() {
-        if (!this.gpa) {
+        if (!this.gpa.gpa) {
           return
         }
         // 如果还没拉到学期列表，先显示计算时间
         if (!this.term) {
           return formatter.formatTimeNatural(this.gpa.calculationTime)
         }
-
+        
         // 这里有两种情况，可能是在某个学期内计算的，也可能是在某个学期结束后的假期里计算的
         // 这两种情况下都认为计算截止到那个学期
         // 换句话说，计算时间跟计算截止学期之间的关系是不确定的，可能那个学期还没结束，但也可能结束了
@@ -381,7 +381,6 @@
         let term = this.term.list
           .sort((a, b) => a.endDate - b.endDate)
           .find(k => k.startDate >= this.gpa.calculationTime)
-
         if (term) {
           // 如果找到了下个学期，反推上一个学期，作为计算截止学期
           term = this.term.list[this.term.list.indexOf(term) - 1]
@@ -389,7 +388,6 @@
           // 如果找不到这个“下个学期”，说明要找的就是最后一个学期，下个学期还没有收录
           term = this.term.list.slice(-1)[0]
         }
-        
         return term.name
       },
       // 是否需要显示增量推算结果
