@@ -31,12 +31,24 @@ export default {
         {
           active:false,
           start:'7:10',
-          end:'10:00',
+          end:'7:40',
           interval:'每 10min 一班'
         },
         {
           active:false,
-          start:'10:00',
+          start:'7:40',
+          end:'8:40',
+          interval:'每 5min 一班'
+        },
+        {
+          active:false,
+          start:'8:40',
+          end:'10:00',
+          interval:'每 5min 一班'
+        },
+        {
+          active:false,
+          start:'10:30',
           end:'11:30',
           interval:'每 30min 一班'
         },
@@ -54,9 +66,9 @@ export default {
         },
         {
           active:false,
-          start:'16:00',
-          end:'17:00',
-          interval:'16:00'
+          start:'15:00',
+          end:'16:00',
+          interval:'每 10min 一班'
         },
         {
           active:false,
@@ -67,7 +79,7 @@ export default {
         {
           active:false,
           start:'18:30',
-          end:'22:00',
+          end:'22:04',
           interval:'每 30min 一班(20:30 没有班车)',
         }
       ],
@@ -80,13 +92,13 @@ export default {
         },
         {
           active:false,
-          start:'9:30',
+          start:'10:30',
           end:'11:30',
-          interval:'每 1h 一班'
+          interval:'10:30，11:30'
         },
         {
           active:false,
-          start:'11:30',
+          start:'12:00',
           end:'13:30',
           interval:'每 30min 一班'
         },
@@ -98,7 +110,7 @@ export default {
         },
         {
           active:false,
-          start:'17:00',
+          start:'16:30',
           end:'19:00',
           interval:'每 30min 一班'
         },
