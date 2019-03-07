@@ -34,14 +34,14 @@
     &::after
       content ''
       position absolute
-      left 0
-      top 0
-      width 200%
-      height 200%
+      left -100%
+      top -100%
+      right 0
+      bottom 0
       border-right 1px solid var(--color-divider)
       border-bottom 1px solid var(--color-divider)
       transform scale(0.5)
-      transform-origin top left
+      transform-origin bottom right
 
     &:active
       background #f8f8f8

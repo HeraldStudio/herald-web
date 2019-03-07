@@ -440,8 +440,7 @@ export default {
       pointer-events all
       font-weight normal
       min-height 0
-      line-height 18px
-      padding 2px 10px
+      padding 4px 10px
       font-size 13px
       font-weight bold
       text-align justify
