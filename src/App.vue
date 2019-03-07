@@ -278,12 +278,11 @@ export default {
     border-radius 15px
     margin 0
     font-size 13px
-    height 24px
-    line-height 18px
+    line-height 13px
     box-sizing border-box
     vertical-align middle
   button
-    padding 2px 10px
+    padding 5px 10px
     background var(--color-primary)
     color #fff
     font-size 13px
@@ -294,7 +293,7 @@ export default {
     border 1px solid var(--color-primary)
     box-shadow 0 10px 10px -10px var(--color-primary)
     transition .3s
-    line-height 18px
+    line-height 13px
     &:active
       filter brightness(.8)
     &.info, &.disabled
