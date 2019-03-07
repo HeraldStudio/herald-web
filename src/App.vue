@@ -216,7 +216,7 @@ export default {
     --color-divider        #eeeeee
     --color-tool-bg        #f0f0f0
     --color-primary-dark   #237a86
-    --color-primary        #00abc3
+    --color-primary        #00a4ca
     --color-primary-light  #70eafa
     --color-primary-bg     #ddfbff
     --color-success-dark   #648723
@@ -268,17 +268,27 @@ export default {
     margin 0
     font-size 14px
   button
-    font-weight bold
-    background var(--color-primary-bg)
-    color var(--color-primary-dark)
-    cursor pointer
-    &:hover
-      filter: brightness(1.1)
-    &:active
-      filter: brightness(.8)
-  button.primary
+    padding 2px 10px
     background var(--color-primary)
+    border-radius 50px
     color #fff
+    font-size 13px
+    font-weight bold
+    white-space nowrap
+    overflow hidden
+    cursor pointer
+    border 1px solid var(--color-primary)
+    box-shadow 0 10px 10px -10px var(--color-primary)
+    transition .3s
+    line-height 18px
+    &:active
+      filter brightness(.8)
+    &.info, &.disabled
+      background none 
+      color var(--color-primary)
+      border 1px solid var(--color-primary)
+    &+button
+      margin-left 5px
   .bubble
     padding 0 7px
     text-align left
@@ -408,22 +418,24 @@ export default {
     left 0 !important
     right 0
     margin-left auto
-    padding 15px
+    padding 25px 0
+    pointer-events none
     .toasted
       margin 0 auto 10px
       cursor default
-      border-radius 3px
+      border-radius 20px
       pointer-events all
-      &.primary
-        font-weight normal
-        min-height 0
-        line-height 1.5em
-        padding 5px 10px
-        font-size 14px
-        font-weight normal
-        text-align justify
-        background var(--color-primary)
-        box-shadow none
+      font-weight normal
+      min-height 0
+      line-height 18px
+      padding 2px 10px
+      font-size 13px
+      font-weight bold
+      text-align justify
+      background var(--color-primary)
+      box-shadow none
+      border 1px solid var(--color-primary)
+      box-shadow 0 8px 10px -10px var(--color-primary)
       .action
         color #fff
         white-space nowrap
@@ -432,6 +444,7 @@ export default {
         margin 0
         font-weight bold
         font-size inherit
+        pointer-events auto
   #app
     padding 0
     -webkit-user-select: none
@@ -638,7 +651,7 @@ export default {
     margin 15px
     border-radius 5px
     background #fff
-    box-shadow 0 3px 1px 0 rgba(0, 0, 0, .03)
+    box-shadow 0 0 1px rgba(0, 0, 0, .05)
     & + .widget, .page, .admin-page
       margin-top 0
     li.empty
@@ -647,7 +660,7 @@ export default {
       color #888
       font-size 14px
       line-height 3em
-    ul.info-bar
+    .info-bar
       width 100%
       box-sizing border-box
       margin 0
@@ -656,19 +669,12 @@ export default {
       flex-direction row
       justify-content center
       flex-wrap wrap
-      li.info
-        list-style none
+      button.info
         flex 0 1 auto
-        padding 0 10px
-        margin 0 5px 5px 0
         display flex
         flex-direction row
+        align-items baseline
         justify-content center
-        font-size 14px
-        padding 3px 7px
-        color var(--color-primary-dark)
-        background var(--color-primary-bg)
-        border-radius 3px
         .title
           font-weight bold
           + .content

@@ -1,6 +1,7 @@
 <template lang="pug">
 
   router-link.dashboard-item(:class='{ stale: isStale }' :to='route' ondragstart='return false')
+    img.icon(v-if='icon' :src='icon')
     .name {{ name }}
     .value {{ value != null ? value : '···' }}
 
@@ -8,7 +9,7 @@
 <script>
 
   export default {
-    props: ['name', 'value', 'isStale', 'route'],
+    props: ['name', 'value', 'isStale', 'route', 'icon'],
     data() {
       return {}
     }
@@ -45,8 +46,14 @@
     &:active
       background #f8f8f8
 
+    .icon
+      width 16px
+      height 16px
+      object-fit contain
+      margin-right 10px
+
     .name
-      font-size 15px
+      font-size 14px
       color var(--color-text-bold)
       margin-right 5px
       white-space nowrap

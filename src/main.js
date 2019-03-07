@@ -8,6 +8,9 @@ import Toasted from 'vue-toasted'
 import Persist from 'vue-component-persist'
 import intercept from 'intercept-link-clicks'
 
+// 让模板中可以使用 window
+Vue.prototype.window = window
+
 // 对手机屏幕（小于 480 逻辑像素宽度）应用 400px 缩放模式；对其他终端应用自适应宽度模式。
 if (window.innerWidth < 480) {
   let viewport = document.querySelector('meta[name="viewport"]')

@@ -1,20 +1,18 @@
 <template lang="pug">
-  .page
+  .page.bus
     ul.info-bar
-      li.info(:class="{ selected : iswork }" @click="switchDay") 工作日
-      li.info(:class="{ selected : !iswork }" @click="switchDay") 休息日
-    div.detail(v-if="iswork")
-      ul.detail-list 
-        li.timetable-item(:class="{active: item.active}" v-for='item in workday')
-          .top
-            .left.time {{item.start}}-{{item.end}}
-            .right.tip {{item.interval}}
-    div.detail(v-else)
-      ul.detail-list  
-        li.timetable-item(:class="{active: item.active}" v-for='item in holiday')
-         .top
-            .left.time {{item.start}}-{{item.end}}
-            .right.tip {{item.interval}}
+      button(:class='{ disabled: !iswork }' @click="!iswork && switchDay()") 工作日
+      button(:class='{ disabled: iswork }' @click="iswork && switchDay()") 休息日
+    ul.detail-list(v-if="iswork")
+      li.info(:class="{active: item.active}" v-for='item in workday')
+        .top
+          .left.time {{item.start}}-{{item.end}}
+          .right.tip {{item.interval}}
+    ul.detail-list(v-else)
+      li.info(:class="{active: item.active}" v-for='item in holiday')
+        .top
+          .left.time {{item.start}}-{{item.end}}
+          .right.tip {{item.interval}}
 </template>
 <script>
 import api from "@/api";
@@ -161,27 +159,14 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>  
-  .info-bar
-    li.info
-
-      &.selected
-        font-weight bold
-
-      &:not(.selected)
-        background none
-        color var(--color-text-bold)
-
-        .title
-          font-weight normal
-
-  .detail
+  .page.bus
     .title
       margin 20px auto
       font-size 16px
       color var(--color-text-bold)
 
     ul.detail-list
-      li.timetable-item
+      li.info
         .time
           font-size 16px
           color var(--color-primary)

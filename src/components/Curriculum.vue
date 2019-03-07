@@ -28,8 +28,7 @@
         table.block-bg
           tr(v-for='_ in 13' v-if='fixedClasses.length')
             td(v-for='_ in weekdayCount')
-        .block(v-for='item in fixedClasses' v-if='item.dayOfWeek'
-          :style="'width: ' + 1 / weekdayCount * 99 + '%; left: ' + ((item.dayOfWeek - 1) / weekdayCount * 100 + 0.1) + '%; top: ' + (item.beginPeriod - 1) / 13 * 99.8 + '%; height: ' + (item.endPeriod - item.beginPeriod + 1) / 13 * 99.8 + '%'")
+        .block(v-for='item in fixedClasses' v-if='item.dayOfWeek' :style="`width: ${ 1 / weekdayCount * 99 }%; left: ${ ((item.dayOfWeek - 1) / weekdayCount * 100 + 0.1) }%; top: ${ (item.beginPeriod - 1) / 13 * 99.8 }%; height: ${ (item.endPeriod - item.beginPeriod + 1) / 13 * 99.8 }%`")
           .name {{ item.courseName }}
           .teacher {{ item.teacherName }}
           .place {{ item.location }}

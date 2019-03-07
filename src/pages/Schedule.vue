@@ -30,12 +30,13 @@
   .page.schedule
     overflow hidden
     padding 0
+    margin 0
+    border-radius 0
 
     img
       width: 200%
       height: auto
       object-fit: contain
-      filter grayscale() contrast(1.3)
 
       &.left
         margin-left -1%

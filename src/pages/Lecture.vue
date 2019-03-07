@@ -2,11 +2,11 @@
 
   .page.lecture
     div(v-if='lecture')
-      ul.info-bar
-        li.info
+      .info-bar
+        button.info
           .title 已听讲座次数
           .content {{ lecture.length }}
-        li.info
+        button.info
           .title 剩余讲座次数
           .content {{ Math.max(0, 8 - lecture.length) }}
       .hint

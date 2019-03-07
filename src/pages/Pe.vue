@@ -1,14 +1,14 @@
 <template lang="pug">
 
   .page(v-if='pe')
-    ul.info-bar
-      li.info
+    .info-bar
+      button.info
         .title 跑操次数
         .content {{ pe.count }}
-      li.info
+      button.info
         .title 剩余次数
         .content {{ Math.max(0, 45 - pe.count) }}
-      li.info
+      button.info
         .title 剩余天数
         .content {{ pe.remainDays }}
     ul.pe-list

@@ -6,9 +6,9 @@
       .img-container(@click='click(page)')
         img(:src='page.pic' ondragstart="return false")
       .text-container
-        .banner-hint(v-if='page.schoolnumPrefix && page.schoolnumPrefix.indexOf("guest") === -1') 专属推荐
+        button.banner-hint(v-if='page.schoolnumPrefix && page.schoolnumPrefix.indexOf("guest") === -1') 专属推荐
         .banner-title {{ page.title }}
-        .banner-link(v-if='page.hasUrl' @click='click(page)') 详情 >
+        button.banner-link(v-if='page.hasUrl' @click='click(page)') 详情
 
 </template>
 <script>
@@ -131,7 +131,7 @@
           user-select: none
           cursor pointer
           border-radius 3px
-          box-shadow 0 3px 1px 0 rgba(#000, .05)
+          box-shadow 0 2px 10px 0 rgba(#000, .05)
 
       .text-container
         display flex
@@ -144,19 +144,9 @@
         * + *
           margin-left 10px
 
-        .banner-hint, .banner-link
-          padding 3px 7px
-          background var(--color-primary)
-          border-radius 3px
-          color #fff
-          font-size 12px
-          white-space nowrap
-          overflow hidden
-          cursor pointer
-
         .banner-title
           color var(--color-text-regular)
-          font-size 15px
+          font-size 14px
           // white-space nowrap
           overflow hidden
           text-overflow ellipsis

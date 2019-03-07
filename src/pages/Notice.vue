@@ -1,8 +1,8 @@
 <template lang="pug">
 
   .page.notice
-    ul.info-bar
-      li.info(v-for='site in sites' @click='currentSite = site' :class='{ selected: currentSite == site }')
+    .info-bar
+      button.info(v-for='site in sites' @click='currentSite = site' :class='{ disabled: currentSite == site }')
         .title {{ site }}
     ul.detail-list
       li(v-for='item in filteredNotice' :key='item.title' :class='{ important: item.isImportant }')
@@ -100,17 +100,3 @@
   }
 
 </script>
-<style lang="stylus">
-  .page.notice
-    li.info
-      cursor pointer
-      transition .3s
-
-      &:not(.selected)
-        background none
-        color var(--color-text-bold)
-
-        .title
-          font-weight normal
-
-</style>

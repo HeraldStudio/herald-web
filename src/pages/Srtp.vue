@@ -2,11 +2,11 @@
 
   .page
     div(v-if='srtp')
-      ul.info-bar
-        li.info
+      .info-bar
+        button.info
           .title SRTP学分
           .content {{ srtp.info.points }}
-        li.info
+        button.info
           .title SRTP状态
           .content {{ srtp.info.grade }}
       ul.detail-list

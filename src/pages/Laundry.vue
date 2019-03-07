@@ -1,8 +1,8 @@
 <template lang="pug">
 
   .page
-    ul.info-bar
-      li.info(v-for='(area, i) in laundry' @click='currentArea = i' :class='{ selected: currentArea == i }')
+    .info-bar
+      button.info(v-for='(area, i) in laundry' @click='currentArea = i' :class='{ disabled: currentArea == i }')
         .name {{ area.area }}
     .hint(v-if='laundry')
       p 扫描空闲洗衣机右上角的二维码可使用洗衣机；部分空闲机器可能有故障，请谨慎使用。企鹅共享洗衣服务由学校和第三方提供。
@@ -34,22 +34,6 @@
 
 </script>
 <style lang="stylus" scoped>
-
-  ul.info-bar
-
-    li.info
-      cursor pointer
-      transition .3s
-
-      &.selected
-        font-weight bold
-
-      &:not(.selected)
-        background none
-        color var(--color-text-bold)
-
-        .title
-          font-weight normal
 
   .title
     font-size 18px

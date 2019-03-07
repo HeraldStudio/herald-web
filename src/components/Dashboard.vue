@@ -12,12 +12,12 @@
     .dashboard-container.border-top(key='dashboard' v-if='user')
 
       .row
-        item(name='余额' :value='card && card.info && card.info.balance' :is-stale='card && card.isStale' route='/card')
-        item(v-if='isUndergraduate' name='人文讲座' :value='lecture && lecture.length' :is-stale='lecture && lecture.isStale' route='/lecture')
+        item(:icon='iconCard' name='余额' :value='card && card.info && card.info.balance' :is-stale='card && card.isStale' route='/card')
+        item(v-if='isUndergraduate' :icon='iconLecture' name='人文讲座' :value='lecture && lecture.length' :is-stale='lecture && lecture.isStale' route='/lecture')
 
       .row
-        item(v-if='isUndergraduate' name='SRTP' :value='srtp && srtp.info.points' :is-stale='srtp && srtp.isStale' route='/srtp')
-        item(v-if='isStudent' :name='isGraduate ? "成绩" : "总绩点"' :value='gpa && (gpa.gpa || gpa.score || "暂无")' :is-stale='gpa && gpa.isStale' route='/grade' :is-graduate='isGraduate')
+        item(v-if='isUndergraduate' :icon='iconSrtp' name='SRTP' :value='srtp && srtp.info.points' :is-stale='srtp && srtp.isStale' route='/srtp')
+        item(v-if='isStudent' :icon='iconGrade' :name='isGraduate ? "成绩" : "总绩点"' :value='gpa && (gpa.gpa || gpa.score || "暂无")' :is-stale='gpa && gpa.isStale' route='/grade' :is-graduate='isGraduate')
 
       .row
         item(v-if='isUndergraduate && pe && pe.count' name='跑操次数' :value='pe && pe.count' :is-stale='pe && pe.isStale' route='/pe')
@@ -53,6 +53,10 @@
   import logoutImg from 'static/images/logout.png'
   import collapseImg from 'static/images/collapse.png'
   import expandImg from 'static/images/expand.png'
+  import iconCard from 'static/images/card.svg'
+  import iconLecture from 'static/images/lecture.svg'
+  import iconSrtp from 'static/images/srtp.svg'
+  import iconGrade from 'static/images/grade.svg'
   import banner from './Banner.vue'
   import moment from 'moment'
 
@@ -76,6 +80,10 @@
         logoutImg,
         collapseImg,
         expandImg,
+        iconCard,
+        iconLecture,
+        iconSrtp,
+        iconGrade,
         tidyMode: false
       }
     },

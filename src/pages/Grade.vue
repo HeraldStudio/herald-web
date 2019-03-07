@@ -43,12 +43,12 @@
             .select-all(@click='toggleSelectAllInSemester(item)') {{ hasSelectAllInSemester(item) ? '全不选' : '全选' }}
           
           //- 先放非选修，可以选择
-          .check-box.required(v-for='k in item.courses' v-if='!k.courseType' :class='{ active: isSelected(k), bad: !k.isPassed, makeup: k.scoreType !== "首修" }' :style='{ opacity: k.equivalentScore / 100 }' @click='toggle(k)')
+          button.check-box.required(v-for='k in item.courses' v-if='!k.courseType' :class='{ disabled: !isSelected(k), bad: !k.isPassed, makeup: k.scoreType !== "首修" }' :style='{ opacity: k.equivalentScore / 100 }' @click='toggle(k)')
             .name {{ k.courseName }}{{ k.scoreType !== '首修' ? ' (' + k.scoreType + ')' : '' }}
             .grade {{ k.equivalentScore }}{{ k.score != k.equivalentScore ? ' (' + k.score + ')' : '' }} × {{ k.credit }}
 
           //- 然后放选修
-          .check-box.optional(v-for='k in item.courses' v-if='k.courseType' :class='{ bad: !k.isPassed, makeup: k.scoreType !== "首修" }')
+          button.check-box.optional(v-for='k in item.courses' v-if='k.courseType' :class='{ disabled: true, bad: !k.isPassed, makeup: k.scoreType !== "首修" }')
             .name {{ k.courseName }}{{ k.scoreType !== '首修' ? '(' + k.scoreType + ')' : '' }}
             .grade {{ k.equivalentScore }} ({{ k.courseType }} {{ k.credit }} 学分)
 
@@ -481,36 +481,38 @@
         cursor pointer
 
     .check-box
-      background #f7f7f7
-      height 16px
-      line-height 16px
-      border-radius 20px
-      padding 6px 10px
-      margin-right 5px
-      margin-bottom 5px
-      color var(--color-text-regular)
+      background var(--color-primary)
+      box-shadow 0 5px 10px -5px var(--color-primary)
+      color #fff
+      margin-left 0 !important
+      margin-right 7px
+      margin-bottom 7px
       transition .3s
       display flex
       flex-direction row
-      border none !important
       overflow hidden
       position relative
 
       &.required
         cursor pointer
-
+      
       &.bad
-        opacity 1 !important
-
-      &.active
-        background var(--color-primary)
-        color #fff
-      
-      &.bad.active
+        opacity 0.6 !important
         background var(--color-error)
+        border-color var(--color-error)
+        box-shadow 0 5px 10px -5px var(--color-error)
       
-      &.makeup.active
+      &.makeup
         background var(--color-warning)
+        border-color var(--color-warning)
+        box-shadow 0 5px 10px -5px var(--color-warning)
+
+      &.disabled
+        background var(--color-tool-bg)
+        border-color var(--color-tool-bg)
+        box-shadow none
+        color var(--color-text-bold)
+        opacity 1 !important
 
       .name
         white-space nowrap
@@ -518,12 +520,14 @@
         text-overflow ellipsis
         flex 0 0 1
         min-width 0
+        text-align justify
 
       .grade
         opacity .7
         margin-left 5px
         white-space nowrap
         flex 1 1 auto
+        font-weight normal
 
 </style>
 
