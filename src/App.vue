@@ -177,10 +177,22 @@ export default {
         // 将 token 更新到 Vuex 中
         window.store.commit('setToken', token)
       }
+      // 有 Token 时，先暂时使用缓存的用户信息渲染页面
       if(this.$store.state.token) {
-        let user = await api.get("/api/user");
-        user.admin = await api.get("/api/admin/admin");
-        this.$store.commit('setUser', user)
+        // 取出缓存的用户信息，渲染界面为登录状态
+        let key = 'herald-cached-user-' + this.$store.state.token;
+        let user = JSON.parse(localStorage.getItem(key) || '{}');
+        this.$store.commit('setUser', user);
+        // 更新 user 信息，同时用于检查登录态，若检查失败，应立即退出，允许用户重新登录
+        try {
+          user = await api.get("/api/user");
+          user.admin = await api.get("/api/admin/admin");
+          localStorage.setItem(key, JSON.stringify(user));
+          this.$store.commit('setUser', user);
+        } catch (e) {
+          this.$toasted.show('登录态检查失败，请重新登录');
+          this.$store.commit('logout', user);
+        }
       }
       // 更新 token 以及失效时间
       cookie.set('herald-default-token', token || '', { expires: 60 })
@@ -263,14 +275,16 @@ export default {
   button, input
     outline none
     border none
-    border-radius 3px
-    padding 3px 7px
+    border-radius 15px
     margin 0
-    font-size 14px
+    font-size 13px
+    height 24px
+    line-height 18px
+    box-sizing border-box
+    vertical-align middle
   button
     padding 2px 10px
     background var(--color-primary)
-    border-radius 50px
     color #fff
     font-size 13px
     font-weight bold
@@ -305,6 +319,8 @@ export default {
     background var(--color-tool-bg)
     width 180px
     box-sizing border-box
+    padding 6px 10px
+    border-radius 15px
   // 密码框大圆圈改成小圆点
   input[type="password"]
     font-family Verdana, sans-serif

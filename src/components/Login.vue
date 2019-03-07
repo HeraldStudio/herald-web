@@ -10,7 +10,7 @@
       input(type='password' placeholder='统一身份认证密码' ref='password' v-model='password' @keyup.enter='login()' @keydown.tab='preventTab' @focus='isPasswordFocus = true' @blur='isPasswordFocus = false')
     .field(v-if='isGraduate')
       input(type='password' placeholder='研院密码（初始为八位生日，留空同上）' v-model='gpassword' @keyup.enter='login()')
-    button.primary(v-if='loading' disabled) 正在登录…
+    button.primary.disabled(v-if='loading') 正在登录…
     button.primary(v-else, @click='login()') 登录
     .tips 小猴偷米使用业界公认标准加密你的所有隐私数据，使用只有你知道的统一身份认证密码和只有你的设备保存的会话标识符 (token) 作为数据解密的密钥。
 
@@ -137,17 +137,16 @@
 
     input
       width 260px
+      height 30px
       margin-bottom 10px
 
     button
       width 260px
-      padding 5px 10px
-      margin-top 10px
+      height 30px
       font-size 16px
-      line-height 1.3em
 
-      &[disabled]
-        background #ccc
+      &.disabled
+        pointer-events none
 
     .error
       font-size 14px
