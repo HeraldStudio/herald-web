@@ -264,7 +264,7 @@ export default {
   p, input, textarea
     margin-top 0
     margin-bottom 0
-    line-height 1.75em
+    line-height 1.65em
     vertical-align middle
   a, a:link, a:hover, a:active, a:focus, a:visited
     color var(--color-primary)
@@ -278,11 +278,10 @@ export default {
     border-radius 15px
     margin 0
     font-size 13px
-    line-height 13px
     box-sizing border-box
     vertical-align middle
   button
-    padding 5px 10px
+    padding 2px 10px
     background var(--color-primary)
     color #fff
     font-size 13px
@@ -293,7 +292,6 @@ export default {
     border 1px solid var(--color-primary)
     box-shadow 0 10px 10px -10px var(--color-primary)
     transition .3s
-    line-height 13px
     &:active
       filter brightness(.8)
     &.info, &.disabled

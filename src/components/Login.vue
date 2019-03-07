@@ -139,12 +139,11 @@
     input
       width 260px
       margin-bottom 10px
-      padding 7px 10px
 
     button
       width 260px
       font-size 16px
-      padding 8px 10px
+      padding 4px 10px
 
       &.disabled
         pointer-events none

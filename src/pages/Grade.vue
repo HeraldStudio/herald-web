@@ -490,6 +490,7 @@
       transition .3s
       display flex
       flex-direction row
+      align-items baseline
       overflow hidden
       position relative
 
