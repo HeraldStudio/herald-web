@@ -2,8 +2,10 @@
 
   .scroll-view(ref='scrollView')
     .scroll-wrapper(ref='scrollWrapper')
-      .pull-to-refresh(:style='pullRefreshStyles')
-        svg.ptr-svg(width=40 height=40 viewPort='0 0 40 40' :class='{ refreshing: refreshing }')
+      .pull-to-refresh(:style='pullRefreshStyles' :class='{ refreshing: refreshing }')
+        //- 切记 parcel vue 在生产环境无法为 svg 及内部节点注入任何属性，也无法拿到 svg 及内部节点的 ref
+        //- 对 svg 的任何动态更改，需要通过注入 .pull-to-refresh 的 CSS 变量来实现
+        svg.ptr-svg(width=40 height=40 viewPort='0 0 40 40')
           circle.ptr-circle(r=10 cx=20 cy=20 fill='transparent')
       .scroll-content(ref='scrollContent')
         slot
@@ -104,9 +106,8 @@
           from { transform: rotate(0deg) }
           to { transform: rotate(-360deg) }
 
-        .ptr-svg
-          &.refreshing
-            animation rotate 1s linear infinite
+        &.refreshing
+          animation rotate 1s linear infinite
 
         .ptr-circle
           margin 5px
@@ -115,6 +116,7 @@
           stroke-linecap round
           stroke-dasharray var(--circle-dash)
           transform var(--circle-transform)
+          animation var(--circle-animation)
           transform-origin center
 
       .scroll-content
