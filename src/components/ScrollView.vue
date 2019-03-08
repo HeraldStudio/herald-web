@@ -40,7 +40,13 @@
           if (this.value > 60) {
             this.refreshing = true
             setTimeout(() => {
-              window.location.reload()
+              if (window.__wxjs_environment === 'miniprogram') {
+                window.wx.miniProgram.relaunch({
+                  url: '/pages/index/index'
+                })
+              } else {
+                window.location.reload()
+              }
             }, 1000)
           }
         }
@@ -67,6 +73,9 @@
         let length = 20 * Math.PI
         let progress = this.pullRefreshProgress
         let progressBounded = this.pullRefreshProgressBounded
+        if (this.refreshing) {
+          progress = progressBounded = 1
+        }
         return {
           opacity: progressBounded,
           margin: '0 ' + maxMargin * progressBounded + 'px',
