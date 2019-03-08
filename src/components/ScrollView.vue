@@ -40,13 +40,10 @@
           if (this.value > 60) {
             this.refreshing = true
             setTimeout(() => {
-              if (window.__wxjs_environment === 'miniprogram') {
-                window.wx.miniProgram.relaunch({
-                  url: '/pages/index/index'
-                })
-              } else {
-                window.location.reload()
-              }
+              window.location.reload()
+              window.wx.miniProgram.relaunch({
+                url: '/pages/index/index'
+              })
             }, 1000)
           }
         }
