@@ -15,7 +15,7 @@
             .title-bar(v-if='!isHome')
               .back(@click='$router.go(-1)') ‹ 
               .current {{ title }}
-        scrollView.overlay-router(:style='"--mouse-x: " + mouseX + "px; --mouse-y: " + mouseY + "px"')
+        scrollView.overlay-router(:scrollToTopKey='$route.path' :style='"--mouse-x: " + mouseX + "px; --mouse-y: " + mouseY + "px"')
           transition(name='page')
             router-view(:user='user')
 </template>
@@ -605,9 +605,8 @@ export default {
           position relative
           .scroll-content > *
             position relative
-            top 0
-            margin-top 0
             min-height 100vh
+            min-height calc(100vh - 100px)
             box-sizing border-box
           .page-enter-active, .page-leave-active
             transition .3s !important
