@@ -74,7 +74,7 @@
         let progress = this.pullRefreshProgress
         let progressBounded = this.pullRefreshProgressBounded
         return {
-          strokeDasharray: length * 5 / 6 * progressBounded + ' ' + length,
+          'stroke-dasharray': length * 5 / 6 * progressBounded + ' ' + length,
           transform: `rotate(${ progress * 160 }deg)`
         }
       }
