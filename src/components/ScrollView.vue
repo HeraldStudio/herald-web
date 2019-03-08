@@ -4,7 +4,7 @@
     .scroll-wrapper(ref='scrollWrapper')
       .pull-to-refresh(:style='pullRefreshStyles')
         svg.ptr-svg(width=40 height=40 viewPort='0 0 40 40' :class='{ refreshing: refreshing }')
-          circle.ptr-circle(ref='circle' r=10 cx=20 cy=20 fill='transparent' :style='circleStyles')
+          circle.ptr-circle(r=10 cx=20 cy=20 fill='transparent')
       .scroll-content(ref='scrollContent')
         slot
 
@@ -51,11 +51,6 @@
     watch: {
       scrollToTopKey() {
         this.touch && this.touch.to(0)
-      },
-      value() {
-        // 这个属性不能使用 vue 的注入来做，用 parcel 编译生产环境的时候会崩
-        // 只能通过 js 动态设置
-        this.$refs.circle.style.strokeDasharray = this.circleDashArray
       }
     },
     computed: {
@@ -67,22 +62,15 @@
       },
       pullRefreshStyles() {
         let maxMargin = this.$refs.scrollView ? (this.$refs.scrollView.clientWidth - 30 - 40) / 2 : 0
-        let progress = this.pullRefreshProgressBounded
-        return {
-          opacity: progress,
-          margin: '0 ' + maxMargin * progress + 'px',
-          borderRadius: 20 * progress + 'px'
-        }
-      },
-      circleDashArray() {
         let length = 20 * Math.PI
-        let progress = this.pullRefreshProgressBounded
-        return length * 5 / 6 * progress + ' ' + length
-      },
-      circleStyles() {
         let progress = this.pullRefreshProgress
+        let progressBounded = this.pullRefreshProgressBounded
         return {
-          transform: `rotate(${ progress * 160 }deg)`
+          opacity: progressBounded,
+          margin: '0 ' + maxMargin * progressBounded + 'px',
+          borderRadius: 20 * progressBounded + 'px',
+          '--circle-dash': length * 5 / 6 * progressBounded + ' ' + length,
+          '--circle-transform': `rotate(${ progress * 160 }deg)`
         }
       }
     }
@@ -125,6 +113,8 @@
           stroke var(--color-primary)
           stroke-width 3px
           stroke-linecap round
+          stroke-dasharray var(--circle-dash)
+          transform var(--circle-transform)
           transform-origin center
 
       .scroll-content
