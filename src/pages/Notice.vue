@@ -2,7 +2,7 @@
 
   .page.notice
     .info-bar
-      button.info(v-for='site in sites' @click='currentSite = site' :class='{ disabled: currentSite == site }')
+      button.info(v-for='site in sites' @click='currentSite = site' :class='{ selected: currentSite == site }')
         .title {{ site }}
     ul.detail-list
       li(v-for='item in filteredNotice' :key='item.title' :class='{ important: item.isImportant }')

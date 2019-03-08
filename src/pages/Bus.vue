@@ -1,8 +1,8 @@
 <template lang="pug">
   .page.bus
     ul.info-bar
-      button(:class='{ disabled: !iswork }' @click="!iswork && switchDay()") 工作日
-      button(:class='{ disabled: iswork }' @click="iswork && switchDay()") 休息日
+      button.info(:class='{ selected: iswork }' @click="!iswork && switchDay()") 工作日
+      button.info(:class='{ selected: !iswork }' @click="iswork && switchDay()") 休息日
     ul.detail-list(v-if="iswork")
       li.info(:class="{active: item.active}" v-for='item in workday')
         .top

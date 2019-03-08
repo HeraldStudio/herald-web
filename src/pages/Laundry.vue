@@ -2,7 +2,7 @@
 
   .page
     .info-bar
-      button.info(v-for='(area, i) in laundry' @click='currentArea = i' :class='{ disabled: currentArea == i }')
+      button.info(v-for='(area, i) in laundry' @click='currentArea = i' :class='{ selected: currentArea == i }')
         .name {{ area.area }}
     .hint(v-if='laundry')
       p 扫描空闲洗衣机右上角的二维码可使用洗衣机；部分空闲机器可能有故障，请谨慎使用。企鹅共享洗衣服务由学校和第三方提供。

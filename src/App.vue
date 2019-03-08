@@ -294,7 +294,7 @@ export default {
     transition .3s
     &:active
       filter brightness(.8)
-    &.info, &.disabled
+    &.info:not(.selected), &.disabled
       background none 
       color var(--color-primary)
       border 1px solid var(--color-primary)
