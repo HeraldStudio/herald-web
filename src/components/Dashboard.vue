@@ -17,21 +17,18 @@
 
       .row
         item(v-if='isUndergraduate' :icon='iconSrtp' name='SRTP' :value='srtp && srtp.info.points' :is-stale='srtp && srtp.isStale' route='/srtp')
-        item(v-if='isStudent' :icon='iconGrade' :name='isGraduate ? "成绩" : "总绩点"' :value='gpa && (gpa.gpa || gpa.score || "暂无")' :is-stale='gpa && gpa.isStale' route='/grade' :is-graduate='isGraduate')
+        item(v-if='isStudent' :icon='iconGrade' :name='(isGraduate ? "成绩" : "总绩点")' :value='gpa && (gpa.gpa || gpa.score || "暂无")' :is-stale='gpa && gpa.isStale' route='/grade' :is-graduate='isGraduate')
 
-      .row
-        item(v-if='isUndergraduate && pe && pe.count' name='跑操次数' :value='pe && pe.count' :is-stale='pe && pe.isStale' route='/pe')
-        item(v-if='library && library.length' name='已借图书' :value='library && library.length' :is-stale='library && library.isStale' route='/library')
+      .row(v-if='!tidyMode')
+        item(v-if='isUndergraduate' name='跑操' :value='pe && pe.count' :is-stale='pe && pe.isStale' route='/pe')
+        item(name='借书' :value='library && library.length' :is-stale='library && library.isStale' route='/library')
+        item(v-if='isUndergraduate' name='CET' route='/cet' value='›')
 
       .row(v-if='!tidyMode')
         item(name='校历' route='/schedule' value='›')
         item(name='校车' route='/bus' value='›')
-        item(name='活动' route='/activity' :value='activities && activities.filter(k => k.endTime > Date.now()).length')
-
-      .row(v-if='!tidyMode')
-        item(name='洗衣房' route='/laundry' value='›')
+        //- item(name='洗衣房' route='/laundry' value='›')
         item(name='App' route='/download' value='›')
-        item(name='CET' route='/cet' value='›')
 
       .row(v-if='!tidyMode && user.admin && user.admin.maintenance')
         item(name='系统概况' route='/admin/monitor' value='›')

@@ -31,7 +31,7 @@
         touch: scrollView,
         target: scrollWrapper,
         property: 'translateY',
-        min: () => scrollView.clientHeight - scrollContent.clientHeight,
+        min: () => Math.min(0, scrollView.clientHeight - scrollContent.clientHeight),
         max: () => this.refreshing ? 60 : 0,
         change: (value) => {
           this.value = value
