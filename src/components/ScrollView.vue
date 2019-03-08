@@ -4,7 +4,7 @@
     .scroll-wrapper(ref='scrollWrapper')
       .pull-to-refresh(:style='pullRefreshStyles')
         svg.ptr-svg(width=40 height=40 viewPort='0 0 40 40' :class='{ refreshing: refreshing }')
-          circle.ptr-circle(r=10 cx=20 cy=20 fill='transparent' :style='circleStyles')
+          circle.ptr-circle(ref='circle' r=10 cx=20 cy=20 fill='transparent' :style='circleStyles')
       .scroll-content(ref='scrollContent')
         slot
 
@@ -51,6 +51,11 @@
     watch: {
       scrollToTopKey() {
         this.touch && this.touch.to(0)
+      },
+      value() {
+        // 这个属性不能使用 vue 的注入来做，用 parcel 编译生产环境的时候会崩
+        // 只能通过 js 动态设置
+        this.$refs.circle.style.strokeDasharray = this.circleDashArray
       }
     },
     computed: {
@@ -69,12 +74,14 @@
           borderRadius: 20 * progress + 'px'
         }
       },
-      circleStyles() {
+      circleDashArray() {
         let length = 20 * Math.PI
+        let progress = this.pullRefreshProgressBounded
+        return length * 5 / 6 * progress + ' ' + length
+      },
+      circleStyles() {
         let progress = this.pullRefreshProgress
-        let progressBounded = this.pullRefreshProgressBounded
         return {
-          'stroke-dasharray': length * 5 / 6 * progressBounded + ' ' + length,
           transform: `rotate(${ progress * 160 }deg)`
         }
       }
