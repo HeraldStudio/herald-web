@@ -41,7 +41,7 @@
             this.refreshing = true
             setTimeout(() => {
               window.location.reload()
-              window.wx.miniProgram.relaunch({
+              window.wx.miniProgram.reLaunch({
                 url: '/pages/index/index'
               })
             }, 1000)
