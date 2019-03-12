@@ -27,6 +27,7 @@
       .row(v-if='!tidyMode')
         item(name='校历' route='/schedule' value='›')
         item(name='校车' route='/bus' value='›')
+        item(name='空教室' route='/classroom' value='›')
         //- item(name='洗衣房' route='/laundry' value='›')
         item(name='App' route='/download' value='›')
 
