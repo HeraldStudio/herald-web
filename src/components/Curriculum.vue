@@ -446,7 +446,7 @@
           margin 0 -1px -1px 0
           line-height 1.2em
           background rgba(#fff, .8)
-          border 0.5px solid transparent
+          border 1px solid #fff
           border-top-color var(--color-primary)
           box-shadow 0 1px 3px rgba(0, 0, 0, .1)
           display flex
