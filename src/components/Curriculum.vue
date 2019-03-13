@@ -28,7 +28,7 @@
         table.block-bg
           tr(v-for='_ in 13' v-if='fixedClasses.length')
             td(v-for='_ in weekdayCount')
-        .block(v-for='item in fixedClasses' v-if='item.dayOfWeek' :style="`width: ${ 1 / weekdayCount * 99 }%; left: ${ ((item.dayOfWeek - 1) / weekdayCount * 100 + 0.1) }%; top: ${ (item.beginPeriod - 1) / 13 * 99.8 }%; height: ${ (item.endPeriod - item.beginPeriod + 1) / 13 * 99.8 }%`")
+        .block(v-for='item in fixedClasses' v-if='item.dayOfWeek' :class='{ selected: item === selected }' :style='getBlockStyle(item)' @click='select(item)')
           .name {{ item.courseName }}
           .teacher {{ item.teacherName }}
           .place {{ item.location }}
@@ -103,7 +103,10 @@
         displayWeek: 1,
 
         // 今天的星期，1~7
-        currentDayOfWeek: 1
+        currentDayOfWeek: 1,
+
+        // 当前点选的课程，如果课程被点选，需要偏移一定距离，以便看到后面被覆盖的课程
+        selected: null,
       }
     },
     persist: {
@@ -131,6 +134,7 @@
       // 改变显示学期时，触发课表拉取
       async displayTerm() {
         this.curriculum = await api.get('/api/curriculum', { term: this.displayTerm })
+        this.selected = null
       },
       // 改变课表时，触发计算当前周次、当前星期，并初始化显示周次
       curriculum() {
@@ -199,6 +203,22 @@
         } else {
           return formatter.formatTime(t, 'd E')
         }
+      },
+      // 获取课程绘制的位置
+      getBlockStyle(course) {
+        return {
+          top: (course.beginPeriod - 1) / 13 * 99.8 + '%',
+          left: ((course.dayOfWeek - 1) / this.weekdayCount * 100 + 0.1) + '%',
+          width: 1 / this.weekdayCount * 99 + '%',
+          height: (course.endPeriod - course.beginPeriod + 1) / 13 * 99.8 + '%'
+        }
+      },
+      select(course) {
+        if (this.deselectTimeout) {
+          clearTimeout(this.deselectTimeout)
+        }
+        this.selected = course
+        this.deselectTimeout = setTimeout(() => this.selected = null, 2000)
       }
     },
     computed: {
@@ -394,7 +414,6 @@
         height 520px
         margin 0
         position relative
-        overflow hidden
         -webkit-transition: .3s
         -moz-transition: .3s
         -ms-transition: .3s
@@ -426,8 +445,8 @@
           box-sizing border-box
           margin 0 -1px -1px 0
           line-height 1.2em
-          background #fff
-          border-top 0.5px solid var(--color-primary)
+          background rgba(#fff, .8)
+          border-top 1px solid var(--color-primary)
           box-shadow 0 1px 3px rgba(0, 0, 0, .1)
           display flex
           flex-direction column
@@ -436,6 +455,15 @@
           text-align center
           font-size 12px
           color var(--color-text-regular)
+          transition .3s
+
+          &.selected
+            transform translate(-15px, -15px)
+            z-index 1
+            background #fff
+            border 1px solid var(--color-primary)
+            box-shadow 5px 5px 15px -8px var(--color-primary)
+            border-radius 2px
 
           .name
             flex 0 1 auto
