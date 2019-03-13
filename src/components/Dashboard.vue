@@ -6,6 +6,8 @@
       .identity {{ user ? user.identity : '…' }}
         router-link(v-if='user.isNewbie' to='/intro') 新生指引 ＞
       img.icon.grayscale(@click='tidyMode = !tidyMode' :src='tidyMode ? expandImg : collapseImg')
+      router-link(to='/download')
+        img.icon(:src='downloadImg')
       img.icon(@click='logout()' :src='logoutImg')
     banner(key='banner' v-show='!tidyMode')
 
@@ -29,7 +31,7 @@
         item(name='校车' route='/bus' value='›')
         item(name='空教室' route='/classroom' value='›')
         //- item(name='洗衣房' route='/laundry' value='›')
-        item(name='App' route='/download' value='›')
+        //- item(name='App' route='/download' value='›')
 
       .row(v-if='!tidyMode && user.admin && user.admin.maintenance')
         item(name='系统概况' route='/admin/monitor' value='›')
@@ -48,6 +50,7 @@
 <script>
   import item from './DashboardItem.vue'
   import api from '@/api'
+  import downloadImg from 'static/images/download.png'
   import logoutImg from 'static/images/logout.png'
   import collapseImg from 'static/images/collapse.png'
   import expandImg from 'static/images/expand.png'
@@ -75,6 +78,7 @@
         notice: null,
         activities: null,
         curNoticeIndex: 0,
+        downloadImg,
         logoutImg,
         collapseImg,
         expandImg,
