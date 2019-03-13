@@ -446,11 +446,10 @@
           margin 0 -1px -1px 0
           line-height 1.2em
           background rgba(#fff, .8)
-          border 1px solid #fff
-          border-top-color var(--color-primary)
-          border-left-color #fff
-          border-right-color #fff
-          border-bottom-color #fff
+          border-top 1px solid var(--color-primary)
+          border-left 1px solid #fff
+          border-right 1px solid #fff
+          border-bottom 1px solid #fff
           box-shadow 0 1px 3px rgba(0, 0, 0, .1)
           display flex
           flex-direction column
