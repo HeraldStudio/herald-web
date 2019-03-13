@@ -37,15 +37,13 @@
           .cur 第{{ startSequence }}节
           .next(@click='nextStartSeq()') ›
 
-          .cur(style='') -
+          .cur(style='margin-left:15px') -
 
           .prev(@click='prevEndSeq()') ‹
           .cur 第{{ endSequence }}节
           .next(@click='nextEndSeq()') ›
-
-
       li
-        button(@click='search') 查询
+        button(style='margin-top:5px' @click='search') 查询
 
     ul.detail-list
       li(v-for='item in classroom')
@@ -96,9 +94,9 @@
       // 查询到的学期数据里面，“2018-19暑假”的起始时间错误，暂时删除这一项
       this.term = (await api.get('api/classroom/term')).reverse().slice(1)
 
-      this.currentTerm = this.term.findIndex(k => k.endDate.time > now.getTime() && k.startDate.time < now)
-      this.currentWeek = Math.ceil((now.getTime() - this.term[this.currentTerm].startDate.time) / (1000 * 60 * 60 * 24 * 7))
-      this.currentDay = (now.getDay() + 6) % 7 + 1
+      this.displayTerm = this.currentTerm = this.term.findIndex(k => k.endDate.time > now.getTime() && k.startDate.time < now)
+      this.displayWeek = this.currentWeek = Math.ceil((now.getTime() - this.term[this.currentTerm].startDate.time) / (1000 * 60 * 60 * 24 * 7))
+      this.displayDay = this.currentDay = (now.getDay() + 6) % 7 + 1
     },
     methods: {
       ...formatter,
@@ -191,11 +189,10 @@
     -moz-user-select: none
     -ms-user-select: none
     user-select: none
-    padding 0 20px 20px
-    // align-items center
+    padding 0 20px 15px 20px
 
     *:not(.prev) + *:not(.next)
-      margin-left 20px
+      margin-left 15px
 
     .switch
       flex 1 1 0
@@ -219,7 +216,7 @@
     .cur, .prev, .next
       font-size 14px
       cursor pointer
-      padding 10px
+      padding 8px
       color var(--color-text-secondary)
       background #f7f7f7
       height 14px
