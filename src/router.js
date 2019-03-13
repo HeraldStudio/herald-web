@@ -24,6 +24,7 @@ import Schedule from '@/pages/Schedule'
 import Activity from '@/pages/Activity'
 import Notice from '@/pages/Notice'
 import CET from '@/pages/CET'
+import Classroom from '@/pages/Classroom'
 
 Vue.use(Router)
 
@@ -67,6 +68,11 @@ export default new Router({
       path: '/srtp',
       name: 'SRTP',
       component: Srtp
+    },
+    {
+      path: '/classroom',
+      name: '空教室',
+      component: Classroom
     },
     {
       path: '/library',
