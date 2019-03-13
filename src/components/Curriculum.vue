@@ -461,7 +461,7 @@
             transform translate(-15px, -15px)
             z-index 1
             background #fff
-            border-color var(--color-primary)
+            border 1px solid var(--color-primary)
             box-shadow 5px 5px 15px -8px var(--color-primary)
             border-radius 2px
 
