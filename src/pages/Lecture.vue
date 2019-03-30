@@ -9,14 +9,14 @@
         button.info
           .title 剩余讲座次数
           .content {{ Math.max(0, 8 - lecture.length) }}
-      .hint
-        p 数据来自两个人文讲座专用教室的打卡记录，偶现显示为空属于正常现象，不影响讲座次数认定。请仔细甄别，剔除非讲座时间打卡，即为校方认可的有效人文讲座次数。
       ul.detail-list
         li(v-for='item in lecture')
           .top
-            .left {{ formatTime(item.time, 'yyyy/M/d H:mm') }}
+            .left {{ formatTime(item.time, 'yyyy/MM/dd H:mm') }}
             .right {{ item.location }}
         li.empty(v-if='!lecture.length') 暂无讲座记录
+      .hint
+        p 数据来自两个报告厅的打卡记录，请仔细甄别，防止无关记录干扰。具体讲座信息，可关注<b>东南大学文化素质教育中心</b>公众号，查看<b>全部消息</b>。
 
 </template>
 <script>
@@ -47,9 +47,9 @@
   .page.lecture
     .hint
       text-align justify
-      font-size 14px
+      font-size 13px
       color var(--color-text-secondary)
-      margin 10px 0
+      margin-top 25px
 
       p
         line-height 1.5em
