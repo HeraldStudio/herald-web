@@ -116,5 +116,15 @@ export default {
       }
     }
     return format.replace(/N?aN/g, '')
+  },
+
+  formatYearAndMonth: function (t) {
+    if (/[0-9]{4}年[0-9]{1,2}月/.test(t)) {
+      return t
+    }
+    //yyyy,mm => yyyy年mm月
+    if (/([0-9]{4}),([0-9]{1,2})/.test(t)) {
+      return `${RegExp.$1}年${RegExp.$2}月`
+    }
   }
 }

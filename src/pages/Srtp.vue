@@ -15,7 +15,7 @@
             .left {{ k.project }}
           .bottom
             .left {{ k.credit + (k.proportion !== 1 ? ' (' + k.proportion * 100 + '%)' : '') }}
-            .right {{ k.date + ' · ' + k.type }}
+            .right {{ formatDate(k.date) + ' · ' + k.type }}
 
 </template>
 <script>
@@ -34,6 +34,11 @@
     },
     async created() {
       this.srtp = await api.get('/api/srtp')
+    },
+    methods: {
+      formatDate(d) {
+        return formatter.formatYearAndMonth(d)
+      }
     }
   }
 
