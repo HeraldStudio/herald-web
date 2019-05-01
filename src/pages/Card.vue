@@ -8,7 +8,7 @@
       button.info
         .title 电子钱包余额
         .content {{ card.info.eacc }}
-      button.charge(@click='window.open("http://yktwechat.seu.edu.cn/wechat/url/redirectJkbh.html?jkbh=0006")') 充值
+      button.charge(@click="navigateToCharge()") 充值
     ul.detail-list
       li(v-for='item in card.detail')
         .top
@@ -69,6 +69,9 @@
         } finally {
           this.loading = false
         }
+      },
+      navigateToCharge() {
+        this.$router.push("/card/charge")
       }
     }
   }
