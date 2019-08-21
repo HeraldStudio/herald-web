@@ -64,7 +64,7 @@ export default new Vue({
           }
           window.store.commit('logout')
         } else {
-          Vue.toasted.show('请求失败：' + reason)
+          //Vue.toasted.show('请求失败：' + reason)
           throw new Error(reason)
         }
       } else {
