@@ -27,6 +27,9 @@
         item(v-if='isUndergraduate' name='CET' route='/cet' value='›')
 
       .row(v-if='!tidyMode')
+        item(name='失物招领&寻物启事' route='/lost-and-found' value='1条新消息')
+
+      .row(v-if='!tidyMode')
         item(name='校历' route='/schedule' value='›')
         item(name='校车' route='/bus' value='›')
         item(name='空教室' route='/classroom' value='›')

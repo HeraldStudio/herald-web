@@ -23,9 +23,10 @@
   dependencies:
     "@types/babel-types" "*"
 
-"@vue/component-compiler-utils@^2.1.0":
+"@vue/component-compiler-utils@2.1.0":
   version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@vue/component-compiler-utils/-/component-compiler-utils-2.1.0.tgz#8331eadc8acdbc35aace5a61d2153e6f6434bfe2"
+  resolved "https://registry.npm.taobao.org/@vue/component-compiler-utils/download/@vue/component-compiler-utils-2.1.0.tgz#8331eadc8acdbc35aace5a61d2153e6f6434bfe2"
+  integrity sha1-gzHq3IrNvDWqzlph0hU+b2Q0v+I=
   dependencies:
     consolidate "^0.15.1"
     hash-sum "^1.0.2"
@@ -196,6 +197,18 @@ atob@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.1.tgz#ae2d5a729477f289d60dd7f96a6314a22dd6c22a"
 
+autoprefixer@9.4.3:
+  version "9.4.3"
+  resolved "https://registry.npm.taobao.org/autoprefixer/download/autoprefixer-9.4.3.tgz#c97384a8fd80477b78049163a91bbc725d9c41d9"
+  integrity sha1-yXOEqP2AR3t4BJFjqRu8cl2cQdk=
+  dependencies:
+    browserslist "^4.3.6"
+    caniuse-lite "^1.0.30000921"
+    normalize-range "^0.1.2"
+    num2fraction "^1.2.2"
+    postcss "^7.0.6"
+    postcss-value-parser "^3.3.1"
+
 autoprefixer@^6.3.1:
   version "6.7.7"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-6.7.7.tgz#1dbd1c835658e35ce3f9984099db00585c782014"
@@ -207,17 +220,6 @@ autoprefixer@^6.3.1:
     postcss "^5.2.16"
     postcss-value-parser "^3.2.3"
 
-autoprefixer@^9.4.3:
-  version "9.4.3"
-  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-9.4.3.tgz#c97384a8fd80477b78049163a91bbc725d9c41d9"
-  dependencies:
-    browserslist "^4.3.6"
-    caniuse-lite "^1.0.30000921"
-    normalize-range "^0.1.2"
-    num2fraction "^1.2.2"
-    postcss "^7.0.6"
-    postcss-value-parser "^3.3.1"
-
 aws-sign2@~0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
@@ -226,9 +228,10 @@ aws4@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
 
-axios@^0.16.2:
+axios@0.16.2:
   version "0.16.2"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.16.2.tgz#ba4f92f17167dfbab40983785454b9ac149c3c6d"
+  resolved "https://registry.npm.taobao.org/axios/download/axios-0.16.2.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Faxios%2Fdownload%2Faxios-0.16.2.tgz#ba4f92f17167dfbab40983785454b9ac149c3c6d"
+  integrity sha1-uk+S8XFn37q0CYN4VFS5rBScPG0=
   dependencies:
     follow-redirects "^1.2.3"
     is-buffer "^1.1.5"
@@ -416,9 +419,10 @@ babel-plugin-check-es2015-constants@^6.22.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-module-resolver@^3.1.1:
+babel-plugin-module-resolver@3.1.1:
   version "3.1.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-module-resolver/-/babel-plugin-module-resolver-3.1.1.tgz#881cf67e3d4b8400d5eaaefc1be44d2dc1fe404f"
+  resolved "https://registry.npm.taobao.org/babel-plugin-module-resolver/download/babel-plugin-module-resolver-3.1.1.tgz#881cf67e3d4b8400d5eaaefc1be44d2dc1fe404f"
+  integrity sha1-iBz2fj1LhADV6q78G+RNLcH+QE8=
   dependencies:
     find-babel-config "^1.1.0"
     glob "^7.1.2"
@@ -466,9 +470,10 @@ babel-plugin-syntax-function-bind@^6.8.0:
   version "6.13.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-function-bind/-/babel-plugin-syntax-function-bind-6.13.0.tgz#48c495f177bdf31a981e732f55adc0bdd2601f46"
 
-babel-plugin-syntax-jsx@^6.18.0, babel-plugin-syntax-jsx@^6.8.0:
+babel-plugin-syntax-jsx@6.18.0, babel-plugin-syntax-jsx@^6.8.0:
   version "6.18.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-syntax-jsx/-/babel-plugin-syntax-jsx-6.18.0.tgz#0af32a9a6e13ca7a3fd5069e62d7b0f58d0d8946"
+  resolved "https://registry.npm.taobao.org/babel-plugin-syntax-jsx/download/babel-plugin-syntax-jsx-6.18.0.tgz#0af32a9a6e13ca7a3fd5069e62d7b0f58d0d8946"
+  integrity sha1-CvMqmm4Tyno/1QaeYtew9Y0NiUY=
 
 babel-plugin-syntax-object-rest-spread@^6.8.0:
   version "6.13.0"
@@ -739,9 +744,10 @@ babel-plugin-transform-regenerator@^6.22.0:
   dependencies:
     regenerator-transform "^0.10.0"
 
-babel-plugin-transform-runtime@^6.23.0:
+babel-plugin-transform-runtime@6.23.0:
   version "6.23.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-runtime/-/babel-plugin-transform-runtime-6.23.0.tgz#88490d446502ea9b8e7efb0fe09ec4d99479b1ee"
+  resolved "https://registry.npm.taobao.org/babel-plugin-transform-runtime/download/babel-plugin-transform-runtime-6.23.0.tgz#88490d446502ea9b8e7efb0fe09ec4d99479b1ee"
+  integrity sha1-iEkNRGUC6puOfvsP4J7E2ZR5se4=
   dependencies:
     babel-runtime "^6.22.0"
 
@@ -752,15 +758,17 @@ babel-plugin-transform-strict-mode@^6.24.1:
     babel-runtime "^6.22.0"
     babel-types "^6.24.1"
 
-babel-plugin-transform-vue-jsx@^3.7.0:
+babel-plugin-transform-vue-jsx@3.7.0:
   version "3.7.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-vue-jsx/-/babel-plugin-transform-vue-jsx-3.7.0.tgz#d40492e6692a36b594f7e9a1928f43e969740960"
+  resolved "https://registry.npm.taobao.org/babel-plugin-transform-vue-jsx/download/babel-plugin-transform-vue-jsx-3.7.0.tgz#d40492e6692a36b594f7e9a1928f43e969740960"
+  integrity sha1-1ASS5mkqNrWU9+mhko9D6Wl0CWA=
   dependencies:
     esutils "^2.0.2"
 
-babel-preset-env@^1.7.0:
+babel-preset-env@1.7.0, babel-preset-env@^1.7.0:
   version "1.7.0"
-  resolved "https://registry.yarnpkg.com/babel-preset-env/-/babel-preset-env-1.7.0.tgz#dea79fa4ebeb883cd35dab07e260c1c9c04df77a"
+  resolved "https://registry.npm.taobao.org/babel-preset-env/download/babel-preset-env-1.7.0.tgz#dea79fa4ebeb883cd35dab07e260c1c9c04df77a"
+  integrity sha1-3qefpOvriDzTXasH4mDBycBN93o=
   dependencies:
     babel-plugin-check-es2015-constants "^6.22.0"
     babel-plugin-syntax-trailing-function-commas "^6.22.0"
@@ -793,9 +801,10 @@ babel-preset-env@^1.7.0:
     invariant "^2.2.2"
     semver "^5.3.0"
 
-babel-preset-stage-0@^6.24.1:
+babel-preset-stage-0@6.24.1:
   version "6.24.1"
-  resolved "https://registry.yarnpkg.com/babel-preset-stage-0/-/babel-preset-stage-0-6.24.1.tgz#5642d15042f91384d7e5af8bc88b1db95b039e6a"
+  resolved "https://registry.npm.taobao.org/babel-preset-stage-0/download/babel-preset-stage-0-6.24.1.tgz#5642d15042f91384d7e5af8bc88b1db95b039e6a"
+  integrity sha1-VkLRUEL5E4TX5a+LyIsduVsDnmo=
   dependencies:
     babel-plugin-transform-do-expressions "^6.22.0"
     babel-plugin-transform-function-bind "^6.22.0"
@@ -933,6 +942,11 @@ bindings@~1.2.1:
 bluebird@^3.0.5, bluebird@^3.1.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
+
+blueimp-canvas-to-blob@^3.14.0:
+  version "3.16.0"
+  resolved "https://registry.npm.taobao.org/blueimp-canvas-to-blob/download/blueimp-canvas-to-blob-3.16.0.tgz#eb5932207f9bf23558c8bc2fbcdc5ca2cca35c36"
+  integrity sha1-61kyIH+b8jVYyLwvvNxcosyjXDY=
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"
@@ -1224,11 +1238,13 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-clean-css@^4.1.11:
-  version "4.1.11"
-  resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.1.11.tgz#2ecdf145aba38f54740f26cefd0ff3e03e125d6a"
+clean-css@^3.3.0:
+  version "3.4.28"
+  resolved "https://registry.npm.taobao.org/clean-css/download/clean-css-3.4.28.tgz#bf1945e82fc808f55695e6ddeaec01400efd03ff"
+  integrity sha1-vxlF6C/ICPVWlebd6uwBQA79A/8=
   dependencies:
-    source-map "0.5.x"
+    commander "2.8.x"
+    source-map "0.4.x"
 
 cli-cursor@^2.1.0:
   version "2.1.0"
@@ -1359,6 +1375,13 @@ command-exists@^1.2.6:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/command-exists/-/command-exists-1.2.7.tgz#16828f0c3ff2b0c58805861ef211b64fc15692a8"
 
+commander@2.8.x:
+  version "2.8.1"
+  resolved "https://registry.npm.taobao.org/commander/download/commander-2.8.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.8.1.tgz#06be367febfda0c330aa1e2a072d3dc9762425d4"
+  integrity sha1-Br42f+v9oMMwqh4qBy09yXYkJdQ=
+  dependencies:
+    graceful-readlink ">= 1.0.0"
+
 commander@^2.11.0, commander@^2.9.0, commander@~2.16.0:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.16.0.tgz#f16390593996ceb4f3eeb020b31d78528f7f8a50"
@@ -1411,9 +1434,10 @@ consolidate@^0.15.1:
   dependencies:
     bluebird "^3.1.1"
 
-constantinople@^3.0.1:
+constantinople@^3.0.1, constantinople@^3.1.2:
   version "3.1.2"
-  resolved "https://registry.yarnpkg.com/constantinople/-/constantinople-3.1.2.tgz#d45ed724f57d3d10500017a7d3a889c1381ae647"
+  resolved "https://registry.npm.taobao.org/constantinople/download/constantinople-3.1.2.tgz#d45ed724f57d3d10500017a7d3a889c1381ae647"
+  integrity sha1-1F7XJPV9PRBQABen06iJwTga5kc=
   dependencies:
     "@types/babel-types" "^7.0.0"
     "@types/babylon" "^6.16.2"
@@ -2276,6 +2300,11 @@ graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
+"graceful-readlink@>= 1.0.0":
+  version "1.0.1"
+  resolved "https://registry.npm.taobao.org/graceful-readlink/download/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
+  integrity sha1-TK+tdrxi8C+gObL5Tpo906ORpyU=
+
 grapheme-breaker@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/grapheme-breaker/-/grapheme-breaker-0.3.2.tgz#5b9e6b78c3832452d2ba2bb1cb830f96276410ac"
@@ -2461,6 +2490,19 @@ ignore-walk@^3.0.1:
   dependencies:
     minimatch "^3.0.4"
 
+image-compressor.js@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.npm.taobao.org/image-compressor.js/download/image-compressor.js-1.1.4.tgz#6e1683e3d9082b3e0d22c6483a4ffdda35005f3f"
+  integrity sha1-bhaD49kIKz4NIsZIOk/92jUAXz8=
+  dependencies:
+    blueimp-canvas-to-blob "^3.14.0"
+    is-blob "^1.0.0"
+
+image-compressor@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npm.taobao.org/image-compressor/download/image-compressor-1.2.0.tgz#16f4914ddd91101070f90c8ed4a7a104b1fd5331"
+  integrity sha1-FvSRTd2REBBw+QyO1KehBLH9UzE=
+
 image-size@~0.5.0:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.5.5.tgz#09dfd4ab9d20e29eb1c3e80b8990378df9e3cb9c"
@@ -2492,9 +2534,10 @@ ini@^1.3.4, ini@~1.3.0:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
 
-intercept-link-clicks@^1.0.2:
+intercept-link-clicks@1.0.2:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/intercept-link-clicks/-/intercept-link-clicks-1.0.2.tgz#dd1857badac30ef69d1a66979db4b4c95a82b057"
+  resolved "https://registry.npm.taobao.org/intercept-link-clicks/download/intercept-link-clicks-1.0.2.tgz#dd1857badac30ef69d1a66979db4b4c95a82b057"
+  integrity sha1-3RhXutrDDvadGmaXnbS0yVqCsFc=
 
 invariant@^2.2.2:
   version "2.2.4"
@@ -2535,6 +2578,11 @@ is-binary-path@^1.0.0:
   resolved "https://registry.yarnpkg.com/is-binary-path/-/is-binary-path-1.0.1.tgz#75f16642b480f187a711c814161fd3a4a7655898"
   dependencies:
     binary-extensions "^1.0.0"
+
+is-blob@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/is-blob/download/is-blob-1.0.0.tgz#a3d7d96fe1c3ff065ec7ce27c2c21e6ba92c1832"
+  integrity sha1-o9fZb+HD/wZex84nwsIea6ksGDI=
 
 is-buffer@^1.1.5:
   version "1.1.6"
@@ -2763,9 +2811,10 @@ js-beautify@^1.7.5:
     mkdirp "~0.5.0"
     nopt "~3.0.1"
 
-js-cookie@^2.2.0:
+js-cookie@2.2.0:
   version "2.2.0"
-  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.0.tgz#1b2c279a6eece380a12168b92485265b35b1effb"
+  resolved "https://registry.npm.taobao.org/js-cookie/download/js-cookie-2.2.0.tgz#1b2c279a6eece380a12168b92485265b35b1effb"
+  integrity sha1-Gywnmm7s44ChIWi5JIUmWzWx7/s=
 
 js-stringify@^1.0.1:
   version "1.0.2"
@@ -2890,9 +2939,10 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-less@^3.9.0:
-  version "3.9.0"
-  resolved "https://registry.yarnpkg.com/less/-/less-3.9.0.tgz#b7511c43f37cf57dc87dffd9883ec121289b1474"
+less@^3.10.3:
+  version "3.10.3"
+  resolved "https://registry.npm.taobao.org/less/download/less-3.10.3.tgz?cache=0&sync_timestamp=1566519978522&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fless%2Fdownload%2Fless-3.10.3.tgz#417a0975d5eeecc52cff4bcfa3c09d35781e6792"
+  integrity sha1-QXoJddXu7MUs/0vPo8CdNXgeZ5I=
   dependencies:
     clone "^2.1.2"
   optionalDependencies:
@@ -2995,9 +3045,10 @@ lru-cache@^4.0.1, lru-cache@^4.1.2:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
-luxon@^1.3.2:
+luxon@1.3.2:
   version "1.3.2"
-  resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.3.2.tgz#cf5fa6fb0adcc7a1f14c36f5a15ea21631381513"
+  resolved "https://registry.npm.taobao.org/luxon/download/luxon-1.3.2.tgz#cf5fa6fb0adcc7a1f14c36f5a15ea21631381513"
+  integrity sha1-z1+m+wrcx6HxTDb1oV6iFjE4FRM=
 
 magic-string@^0.22.4:
   version "0.22.5"
@@ -3015,9 +3066,10 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-markdown-it@^8.4.2:
+markdown-it@8.4.2:
   version "8.4.2"
-  resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-8.4.2.tgz#386f98998dc15a37722aa7722084f4020bdd9b54"
+  resolved "https://registry.npm.taobao.org/markdown-it/download/markdown-it-8.4.2.tgz#386f98998dc15a37722aa7722084f4020bdd9b54"
+  integrity sha1-OG+YmY3BWjdyKqdyIIT0Agvdm1Q=
   dependencies:
     argparse "^1.0.7"
     entities "~1.1.1"
@@ -3025,9 +3077,10 @@ markdown-it@^8.4.2:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-marked@^0.6.0:
+marked@0.6.0:
   version "0.6.0"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.6.0.tgz#a18d01cfdcf8d15c3c455b71c8329e5e0f01faa1"
+  resolved "https://registry.npm.taobao.org/marked/download/marked-0.6.0.tgz#a18d01cfdcf8d15c3c455b71c8329e5e0f01faa1"
+  integrity sha1-oY0Bz9z40Vw8RVtxyDKeXg8B+qE=
 
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
@@ -3165,9 +3218,10 @@ mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-moment@^2.23.0:
+moment@2.23.0:
   version "2.23.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
+  resolved "https://registry.npm.taobao.org/moment/download/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
+  integrity sha1-dZ6kkayX1UusWtd2mW4qWMwbwiU=
 
 ms@2.0.0:
   version "2.0.0"
@@ -3300,9 +3354,10 @@ normalize-url@^3.0.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.2.0.tgz#98d0948afc82829f374320f405fe9ca55a5f8567"
 
-normalize.css@^7.0.0:
+normalize.css@7.0.0:
   version "7.0.0"
-  resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-7.0.0.tgz#abfb1dd82470674e0322b53ceb1aaf412938e4bf"
+  resolved "https://registry.npm.taobao.org/normalize.css/download/normalize.css-7.0.0.tgz#abfb1dd82470674e0322b53ceb1aaf412938e4bf"
+  integrity sha1-q/sd2CRwZ04DIrU86xqvQSk45L8=
 
 npm-bundled@^1.0.1:
   version "1.0.3"
@@ -3497,16 +3552,18 @@ pako@~1.0.5:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.6.tgz#0101211baa70c4bca4a0f63f2206e97b7dfaf258"
 
-parcel-plugin-sw-cache@^0.2.5:
+parcel-plugin-sw-cache@0.2.5:
   version "0.2.5"
-  resolved "https://registry.yarnpkg.com/parcel-plugin-sw-cache/-/parcel-plugin-sw-cache-0.2.5.tgz#9528358714fef6a4ca47db74336c9ec0b9105ef5"
+  resolved "https://registry.npm.taobao.org/parcel-plugin-sw-cache/download/parcel-plugin-sw-cache-0.2.5.tgz#9528358714fef6a4ca47db74336c9ec0b9105ef5"
+  integrity sha1-lSg1hxT+9qTKR9t0M2yewLkQXvU=
   dependencies:
     replace-in-file "^3.1.0"
     workbox-build "^3.0.0-beta.2"
 
-parcel@^1.9.7:
+parcel@1.9.7:
   version "1.9.7"
-  resolved "https://registry.yarnpkg.com/parcel/-/parcel-1.9.7.tgz#77ca0cdb305d8e9365ded4762ee39ca760b0c219"
+  resolved "https://registry.npm.taobao.org/parcel/download/parcel-1.9.7.tgz#77ca0cdb305d8e9365ded4762ee39ca760b0c219"
+  integrity sha1-d8oM2zBdjpNl3tR2LuOcp2Cwwhk=
   dependencies:
     ansi-to-html "^0.6.4"
     babel-code-frame "^6.26.0"
@@ -4184,24 +4241,26 @@ public-encrypt@^4.0.0:
     parse-asn1 "^5.0.0"
     randombytes "^2.0.1"
 
-pug-attrs@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/pug-attrs/-/pug-attrs-2.0.3.tgz#a3095f970e64151f7bdad957eef55fb5d7905d15"
+pug-attrs@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.npm.taobao.org/pug-attrs/download/pug-attrs-2.0.4.tgz#b2f44c439e4eb4ad5d4ef25cac20d18ad28cc336"
+  integrity sha1-svRMQ55OtK1dTvJcrCDRitKMwzY=
   dependencies:
     constantinople "^3.0.1"
     js-stringify "^1.0.1"
-    pug-runtime "^2.0.4"
+    pug-runtime "^2.0.5"
 
-pug-code-gen@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/pug-code-gen/-/pug-code-gen-2.0.1.tgz#0951ec83225d74d8cfc476a7f99a259b5f7d050c"
+pug-code-gen@^2.0.0:
+  version "2.0.2"
+  resolved "https://registry.npm.taobao.org/pug-code-gen/download/pug-code-gen-2.0.2.tgz#ad0967162aea077dcf787838d94ed14acb0217c2"
+  integrity sha1-rQlnFirqB33PeHg42U7RSssCF8I=
   dependencies:
-    constantinople "^3.0.1"
+    constantinople "^3.1.2"
     doctypes "^1.1.0"
     js-stringify "^1.0.1"
-    pug-attrs "^2.0.3"
-    pug-error "^1.3.2"
-    pug-runtime "^2.0.4"
+    pug-attrs "^2.0.4"
+    pug-error "^1.3.3"
+    pug-runtime "^2.0.5"
     void-elements "^2.0.1"
     with "^5.0.0"
 
@@ -4209,73 +4268,87 @@ pug-error@^1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/pug-error/-/pug-error-1.3.2.tgz#53ae7d9d29bb03cf564493a026109f54c47f5f26"
 
-pug-filters@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/pug-filters/-/pug-filters-3.1.0.tgz#27165555bc04c236e4aa2b0366246dfa021b626e"
+pug-error@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.npm.taobao.org/pug-error/download/pug-error-1.3.3.tgz#f342fb008752d58034c185de03602dd9ffe15fa6"
+  integrity sha1-80L7AIdS1YA0wYXeA2At2f/hX6Y=
+
+pug-filters@^2.1.5:
+  version "2.1.5"
+  resolved "https://registry.npm.taobao.org/pug-filters/download/pug-filters-2.1.5.tgz#66bf6e80d97fbef829bab0aa35eddff33fc964f3"
+  integrity sha1-Zr9ugNl/vvgpurCqNe3f8z/JZPM=
   dependencies:
-    clean-css "^4.1.11"
+    clean-css "^3.3.0"
     constantinople "^3.0.1"
     jstransformer "1.0.0"
     pug-error "^1.3.2"
-    pug-walk "^1.1.7"
+    pug-walk "^1.1.5"
     resolve "^1.1.6"
     uglify-js "^2.6.1"
 
-pug-lexer@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/pug-lexer/-/pug-lexer-4.0.0.tgz#210c18457ef2e1760242740c5e647bd794cec278"
+pug-lexer@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.npm.taobao.org/pug-lexer/download/pug-lexer-3.1.0.tgz#fd087376d4a675b4f59f8fef422883434e9581a2"
+  integrity sha1-/QhzdtSmdbT1n4/vQiiDQ06VgaI=
   dependencies:
     character-parser "^2.1.1"
     is-expression "^3.0.0"
     pug-error "^1.3.2"
 
-pug-linker@^3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/pug-linker/-/pug-linker-3.0.5.tgz#9e9a7ae4005682d027deeb96b000f88eeb83a02f"
+pug-linker@^3.0.3:
+  version "3.0.6"
+  resolved "https://registry.npm.taobao.org/pug-linker/download/pug-linker-3.0.6.tgz#f5bf218b0efd65ce6670f7afc51658d0f82989fb"
+  integrity sha1-9b8hiw79Zc5mcPevxRZY0Pgpifs=
   dependencies:
-    pug-error "^1.3.2"
-    pug-walk "^1.1.7"
+    pug-error "^1.3.3"
+    pug-walk "^1.1.8"
 
-pug-load@^2.0.11:
-  version "2.0.11"
-  resolved "https://registry.yarnpkg.com/pug-load/-/pug-load-2.0.11.tgz#e648e57ed113fe2c1f45d57858ea2bad6bc01527"
+pug-load@^2.0.9:
+  version "2.0.12"
+  resolved "https://registry.npm.taobao.org/pug-load/download/pug-load-2.0.12.tgz?cache=0&sync_timestamp=1560878846895&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fpug-load%2Fdownload%2Fpug-load-2.0.12.tgz#d38c85eb85f6e2f704dea14dcca94144d35d3e7b"
+  integrity sha1-04yF64X24vcE3qFNzKlBRNNdPns=
   dependencies:
     object-assign "^4.1.0"
-    pug-walk "^1.1.7"
+    pug-walk "^1.1.8"
 
-pug-parser@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/pug-parser/-/pug-parser-5.0.0.tgz#e394ad9b3fca93123940aff885c06e44ab7e68e4"
+pug-parser@^4.0.0:
+  version "4.0.2"
+  resolved "https://registry.npm.taobao.org/pug-parser/download/pug-parser-4.0.2.tgz#7b2e3311b75821486706479477ab1d34f5f817df"
+  integrity sha1-ey4zEbdYIUhnBkeUd6sdNPX4F98=
   dependencies:
     pug-error "^1.3.2"
     token-stream "0.0.1"
 
-pug-runtime@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/pug-runtime/-/pug-runtime-2.0.4.tgz#e178e1bda68ab2e8c0acfc9bced2c54fd88ceb58"
+pug-runtime@^2.0.3, pug-runtime@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.npm.taobao.org/pug-runtime/download/pug-runtime-2.0.5.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fpug-runtime%2Fdownload%2Fpug-runtime-2.0.5.tgz#6da7976c36bf22f68e733c359240d8ae7a32953a"
+  integrity sha1-baeXbDa/IvaOczw1kkDYrnoylTo=
 
-pug-strip-comments@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/pug-strip-comments/-/pug-strip-comments-1.0.3.tgz#f1559592206edc6f85310dacf4afb48a025af59f"
+pug-strip-comments@^1.0.2:
+  version "1.0.4"
+  resolved "https://registry.npm.taobao.org/pug-strip-comments/download/pug-strip-comments-1.0.4.tgz?cache=0&sync_timestamp=1560878850332&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fpug-strip-comments%2Fdownload%2Fpug-strip-comments-1.0.4.tgz#cc1b6de1f6e8f5931cf02ec66cdffd3f50eaf8a8"
+  integrity sha1-zBtt4fbo9ZMc8C7GbN/9P1Dq+Kg=
   dependencies:
-    pug-error "^1.3.2"
+    pug-error "^1.3.3"
 
-pug-walk@^1.1.7:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/pug-walk/-/pug-walk-1.1.7.tgz#c00d5c5128bac5806bec15d2b7e7cdabe42531f3"
+pug-walk@^1.1.5, pug-walk@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.npm.taobao.org/pug-walk/download/pug-walk-1.1.8.tgz#b408f67f27912f8c21da2f45b7230c4bd2a5ea7a"
+  integrity sha1-tAj2fyeRL4wh2i9FtyMMS9Kl6no=
 
-pug@^2.0.0-rc.4:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/pug/-/pug-2.0.3.tgz#71cba82537c95a5eab7ed04696e4221f53aa878e"
+pug@2.0.0-rc.4:
+  version "2.0.0-rc.4"
+  resolved "https://registry.npm.taobao.org/pug/download/pug-2.0.0-rc.4.tgz#b7b08f6599bd5302568042b7436984fb28c80a13"
+  integrity sha1-t7CPZZm9UwJWgEK3Q2mE+yjIChM=
   dependencies:
-    pug-code-gen "^2.0.1"
-    pug-filters "^3.1.0"
-    pug-lexer "^4.0.0"
-    pug-linker "^3.0.5"
-    pug-load "^2.0.11"
-    pug-parser "^5.0.0"
-    pug-runtime "^2.0.4"
-    pug-strip-comments "^1.0.3"
+    pug-code-gen "^2.0.0"
+    pug-filters "^2.1.5"
+    pug-lexer "^3.1.0"
+    pug-linker "^3.0.3"
+    pug-load "^2.0.9"
+    pug-parser "^4.0.0"
+    pug-runtime "^2.0.3"
+    pug-strip-comments "^1.0.2"
 
 punycode@1.3.2:
   version "1.3.2"
@@ -4308,7 +4381,7 @@ querystring-es3@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
 
-querystring@0.2.0, querystring@^0.2.0:
+querystring@0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
 
@@ -4745,13 +4818,20 @@ source-map@0.1.x:
   dependencies:
     amdefine ">=0.0.4"
 
-source-map@0.5.x, source-map@^0.5.3, source-map@^0.5.6, source-map@^0.5.7, source-map@~0.5.1:
-  version "0.5.7"
-  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
+source-map@0.4.x:
+  version "0.4.4"
+  resolved "https://registry.npm.taobao.org/source-map/download/source-map-0.4.4.tgz#eba4f5da9c0dc999de68032d8b4f76173652036b"
+  integrity sha1-66T12pwNyZneaAMti092FzZSA2s=
+  dependencies:
+    amdefine ">=0.0.4"
 
 source-map@0.6.1, source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0, source-map@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
+
+source-map@^0.5.3, source-map@^0.5.6, source-map@^0.5.7, source-map@~0.5.1:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
 
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"
@@ -4891,9 +4971,10 @@ stylehacks@^4.0.0:
     postcss "^6.0.0"
     postcss-selector-parser "^3.0.0"
 
-stylus@^0.54.5:
+stylus@0.54.5:
   version "0.54.5"
-  resolved "https://registry.yarnpkg.com/stylus/-/stylus-0.54.5.tgz#42b9560931ca7090ce8515a798ba9e6aa3d6dc79"
+  resolved "https://registry.npm.taobao.org/stylus/download/stylus-0.54.5.tgz#42b9560931ca7090ce8515a798ba9e6aa3d6dc79"
+  integrity sha1-QrlWCTHKcJDOhRWnmLqeaqPW3Hk=
   dependencies:
     css-parse "1.7.x"
     debug "*"
@@ -5224,29 +5305,37 @@ void-elements@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
 
-vue-component-persist@^1.1.2:
+vue-component-persist@1.1.2:
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/vue-component-persist/-/vue-component-persist-1.1.2.tgz#51cf81c439e64edc97ebbbf754c0d560e3524719"
+  resolved "https://registry.npm.taobao.org/vue-component-persist/download/vue-component-persist-1.1.2.tgz#51cf81c439e64edc97ebbbf754c0d560e3524719"
+  integrity sha1-Uc+BxDnmTtyX67v3VMDVYONSRxk=
 
-vue-datetime@^1.0.0-beta.3:
-  version "1.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/vue-datetime/-/vue-datetime-1.0.0-beta.6.tgz#35f4ca08c12af486e7346cb09d8c905224dad495"
+vue-datetime@1.0.0-beta.3:
+  version "1.0.0-beta.3"
+  resolved "https://registry.npm.taobao.org/vue-datetime/download/vue-datetime-1.0.0-beta.3.tgz#26522e6589b29c5327726435b770e2bdc1f85b86"
+  integrity sha1-JlIuZYmynFMncmQ1t3DivcH4W4Y=
 
-vue-hot-reload-api@^2.3.0:
+vue-hot-reload-api@2.3.0:
   version "2.3.0"
-  resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.0.tgz#97976142405d13d8efae154749e88c4e358cf926"
+  resolved "https://registry.npm.taobao.org/vue-hot-reload-api/download/vue-hot-reload-api-2.3.0.tgz#97976142405d13d8efae154749e88c4e358cf926"
+  integrity sha1-l5dhQkBdE9jvrhVHSeiMTjWM+SY=
 
-vue-l-carousel@^1.0.1:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/vue-l-carousel/-/vue-l-carousel-1.1.0.tgz#dc6b189c297724a8f059ee57c48f07584c277285"
+vue-l-carousel@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npm.taobao.org/vue-l-carousel/download/vue-l-carousel-1.0.1.tgz#16eea209ed6d3eede7d77bbd89e93ab4f33c0981"
+  integrity sha1-Fu6iCe1tPu3n13u9iek6tPM8CYE=
+  dependencies:
+    vue "^2.1.8"
 
-vue-router@^2.6.0:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-2.8.1.tgz#9833c9ee57ac83beb0269056fefee71713f20695"
+vue-router@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-2.6.0.tgz#77b271f6e0ac6d57e8e556da58c6582fce0ab712"
+  integrity sha1-d7Jx9uCsbVfo5VbaWMZYL84KtxI=
 
-vue-template-compiler@^2.4.4:
-  version "2.5.16"
-  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.16.tgz#93b48570e56c720cdf3f051cc15287c26fbd04cb"
+vue-template-compiler@2.4.4:
+  version "2.4.4"
+  resolved "https://registry.npm.taobao.org/vue-template-compiler/download/vue-template-compiler-2.4.4.tgz#2cde3b704124985c27d50b5387c9691ba515fb57"
+  integrity sha1-LN47cEEkmFwn1QtTh8lpG6UV+1c=
   dependencies:
     de-indent "^1.0.2"
     he "^1.1.0"
@@ -5255,24 +5344,33 @@ vue-template-es2015-compiler@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
 
-vue-toasted@^1.1.24:
+vue-toasted@1.1.24:
   version "1.1.24"
-  resolved "https://registry.yarnpkg.com/vue-toasted/-/vue-toasted-1.1.24.tgz#715a371dfa490cc710ffedaaeae61fd8a8c4f7ad"
+  resolved "https://registry.npm.taobao.org/vue-toasted/download/vue-toasted-1.1.24.tgz#715a371dfa490cc710ffedaaeae61fd8a8c4f7ad"
+  integrity sha1-cVo3HfpJDMcQ/+2q6uYf2KjE960=
 
-vue@^2.4.4:
-  version "2.5.16"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
+vue@2.4.4:
+  version "2.4.4"
+  resolved "https://registry.npm.taobao.org/vue/download/vue-2.4.4.tgz#ea9550b96a71465fd2b8b17b61673b3561861789"
+  integrity sha1-6pVQuWpxRl/SuLF7YWc7NWGGF4k=
 
-vuex-persist@^2.0.0:
+vue@^2.1.8:
+  version "2.6.10"
+  resolved "https://registry.npm.taobao.org/vue/download/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
+  integrity sha1-pysaQqTYKnIepDjRtr9V5mGVxjc=
+
+vuex-persist@2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/vuex-persist/-/vuex-persist-2.0.0.tgz#5f1759e4c969f405bb23416e8c8c8b5c1dca535d"
+  resolved "https://registry.npm.taobao.org/vuex-persist/download/vuex-persist-2.0.0.tgz#5f1759e4c969f405bb23416e8c8c8b5c1dca535d"
+  integrity sha1-XxdZ5Mlp9AW7I0FujIyLXB3KU10=
   dependencies:
     circular-json "^0.5.5"
     lodash.merge "^4.6.1"
 
-vuex@>=2.5:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.0.tgz#634b81515cf0cfe976bd1ffe9601755e51f843b9"
+vuex@2.5:
+  version "2.5.0"
+  resolved "https://registry.npm.taobao.org/vuex/download/vuex-2.5.0.tgz#20f0265ade6c9a5ac6724a405d3ffdb4726c9741"
+  integrity sha1-IPAmWt5smlrGckpAXT/9tHJsl0E=
 
 wcwidth@^1.0.1:
   version "1.0.1"
@@ -5280,9 +5378,10 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-weekstart@^1.0.0:
+weekstart@1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/weekstart/-/weekstart-1.0.0.tgz#e0aee358d45ad99802254769d7b2a34c9380f539"
+  resolved "https://registry.npm.taobao.org/weekstart/download/weekstart-1.0.0.tgz#e0aee358d45ad99802254769d7b2a34c9380f539"
+  integrity sha1-4K7jWNRa2ZgCJUdp17KjTJOA9Tk=
 
 whet.extend@~0.9.9:
   version "0.9.9"
@@ -5442,9 +5541,10 @@ ws@^5.1.1:
   dependencies:
     async-limiter "~1.0.0"
 
-xhook@^1.4.9:
+xhook@1.4.9:
   version "1.4.9"
-  resolved "https://registry.yarnpkg.com/xhook/-/xhook-1.4.9.tgz#5ebca6c7f239003c311b746b889081a82e9d4e78"
+  resolved "https://registry.npm.taobao.org/xhook/download/xhook-1.4.9.tgz#5ebca6c7f239003c311b746b889081a82e9d4e78"
+  integrity sha1-Xrymx/I5ADwxG3RriJCBqC6dTng=
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.1"

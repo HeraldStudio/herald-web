@@ -25,6 +25,8 @@ import Activity from '@/pages/Activity'
 import Notice from '@/pages/Notice'
 import CET from '@/pages/CET'
 import Classroom from '@/pages/Classroom'
+import LostAndFoundList from '@/pages/lostAndFound/List'
+import LostAndFoundCreate from '@/pages/lostAndFound/CreateOrUpdate'
 
 Vue.use(Router)
 
@@ -168,6 +170,16 @@ export default new Router({
       path: '/cet',
       name: 'CET 查询',
       component: CET
+    },
+    {
+      path: '/lost-and-found',
+      name: '失物招领&寻物启事',
+      component: LostAndFoundList
+    },
+    {
+      path: '/lost-and-found/publish',
+      name: '发布',
+      component: LostAndFoundCreate
     },
     {
       path: '*',

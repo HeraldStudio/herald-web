@@ -9,7 +9,8 @@ import VuexPersistence from "vuex-persist";
 export default new Vue({
   data: {
     axios: axios.create({
-      baseURL: 'https://myseu.cn/ws3/',
+      //baseURL: 'https://myseu.cn/ws3/',
+      baseURL: 'http://localhost:3000/',
       headers: { 'Content-Type': 'application/json' },
       validateStatus: () => true
     })
