@@ -27,7 +27,7 @@ import CET from '@/pages/CET'
 import Classroom from '@/pages/Classroom'
 import LostAndFoundList from '@/pages/lostAndFound/List'
 import LostAndFoundCreate from '@/pages/lostAndFound/CreateOrUpdate'
-
+import LostAndFoundDetail from '@/pages/lostAndFound/Detail'
 Vue.use(Router)
 
 // 微信环境下，为隐藏前进后退按钮栏，设置 mode 为 abstract，实现完全不产生浏览器历史
@@ -178,8 +178,13 @@ export default new Router({
     },
     {
       path: '/lost-and-found/publish',
-      name: '发布',
+      name: '发布消息',
       component: LostAndFoundCreate
+    },
+    {
+      path: '/lost-and-found/detail/:id',
+      name: '查看详情',
+      component: LostAndFoundDetail
     },
     {
       path: '*',

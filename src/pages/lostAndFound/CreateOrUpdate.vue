@@ -23,6 +23,7 @@
         .field(v-if="type")
             .text 图片
             uploader(@change="imageChange" :image="imageUrl.split('|')")
+        button(v-if="type" @click='save' :disabled='loading' style="height:30px;") 点击提交
             
         
 
@@ -30,6 +31,7 @@
 
 <script>
 import Uploader from '../../components/Uploader'
+import api from '../../api'
 export default {
     components:{
         'uploader':Uploader
@@ -39,12 +41,35 @@ export default {
             type:'',
             title:'',
             describe:'',
-            imageUrl:''
+            imageUrl:'',
+            id:'',
+            loading:false
         }
     },
     methods:{
         imageChange(imageList){
             this.imageUrl = imageList.join('|')
+        },
+        async save(){
+            this.$toasted.info("正在发布，请稍候")
+            this.loading = true
+            if(this.id){
+                // 修改过程
+            } else {
+                // 保存过程
+                try{
+                    this.loading = true
+                    await api.post("/api/lostAndFound",{type:this.type, title:this.title, describe:this.describe, imageUrl:this.imageUrl})
+                    this.$toasted.clear()
+                    this.$toasted.show("发布成功！")
+                    this.$router.go(-1)
+                } catch(e) {
+                    this.$toasted.clear()
+                    this.$toasted.show(e.message)
+                } finally {
+                    this.loading = false
+                }
+            }
         }
     }
 }
@@ -66,7 +91,7 @@ export default {
             background: var(--color-tool-bg);
             border-radius: 4px;
             margin-top: 10px;
-            min-width: 120px;
+            width: 100%;
         }
         textarea{
             height: 100px;
