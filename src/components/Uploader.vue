@@ -4,7 +4,7 @@
     .img(v-for="(image, index) in p_images")
       img(:src="image")
       .del.delete-button(@click="delImage(index)")
-    .img.upload.add-icon(onclick="document.getElementById('file').click()")
+    .img.upload.add-icon(v-if="p_images.length < 3" onclick="document.getElementById('file').click()")
     input(id="file" type="file" accept="image/png, image/jpeg", @change="upload", style="display:none")
    
 </template>
@@ -52,7 +52,7 @@
         let config = {
           headers:{'Content-Type':'multipart/form-data'}
         }
-        let res = (await axios.post('https://up.qbox.me/', param, config)).data.url
+        let res = (await axios.post('https://upload.qiniup.com/', param, config)).data.url
         this.uploading = false
         this.p_images.push(res)
         console.log(res)
@@ -62,8 +62,12 @@
       },
       compressImage(image){
         return new Promise( (resolve,reject) => {
+          console.log(`压缩前大小L：${image.size}`)
           new ImageCompressor(image, {
-            convertSize:500000,
+            mimeType:"image/jpeg",
+            mode:'strict',
+            toWidth:480,
+            quality:0.8,
             success:(result) => {
               console.log(`压缩后大小：${result.size}`)
               resolve(result)

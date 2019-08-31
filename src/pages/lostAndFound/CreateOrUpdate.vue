@@ -16,13 +16,13 @@
             .hint 同时，为了保护你的信息安全，<strong>请不要</strong>在此留下你的联系方式等个人信息内容，如果有失主来认领物品，小猴将悄悄告诉你ta的联系方式。
         .field(v-if="type")
             .text 物品名称
-            input.input(placeholder="请直接填写物品的名称（例如：一卡通）")
+            input.input(v-model="title" placeholder="请直接填写物品的名称（例如：一卡通）")
         .field(v-if="type")
             .text 事件描述
-            textarea(placeholder='请尽量详细的在此处填写丢失/拾获物品的具体时间、地点，物品的特征等信息，便于其他拾获遗失物或者失主确认。')
+            textarea(v-model="describe" placeholder='请尽量详细的在此处填写丢失/拾获物品的具体时间、地点，物品的特征等信息，便于其他拾获遗失物或者失主确认。')
         .field(v-if="type")
             .text 图片
-            uploader
+            uploader(@change="imageChange" :image="imageUrl.split('|')")
             
         
 
@@ -37,6 +37,14 @@ export default {
     data(){
         return {
             type:'',
+            title:'',
+            describe:'',
+            imageUrl:''
+        }
+    },
+    methods:{
+        imageChange(imageList){
+            this.imageUrl = imageList.join('|')
         }
     }
 }
