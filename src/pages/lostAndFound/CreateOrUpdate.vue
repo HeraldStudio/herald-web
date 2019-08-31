@@ -22,7 +22,7 @@
             textarea(v-model="describe" placeholder='请尽量详细的在此处填写丢失/拾获物品的具体时间、地点，物品的特征等信息，便于其他拾获遗失物或者失主确认。')
         .field(v-if="type")
             .text 图片
-            uploader(@change="imageChange" :image="imageUrl.split('|')")
+            uploader(@change="imageChange")
         button(v-if="type" @click='save' :disabled='loading' style="height:30px;") 点击提交
             
         
@@ -54,7 +54,18 @@ export default {
             this.$toasted.info("正在发布，请稍候")
             this.loading = true
             if(this.id){
-                // 修改过程
+                try{
+                    this.loading = true
+                    await api.put("/api/lostAndFound",{id:this.id, title:this.title, describe:this.describe, imageUrl:this.imageUrl})
+                    this.$toasted.clear()
+                    this.$toasted.show("修改成功！")
+                    this.$router.go(-1)
+                } catch(e) {
+                    this.$toasted.clear()
+                    this.$toasted.show(e.message)
+                } finally {
+                    this.loading = false
+                }
             } else {
                 // 保存过程
                 try{
@@ -70,6 +81,15 @@ export default {
                     this.loading = false
                 }
             }
+        }
+    },
+    async created(){
+        this.id = this.$route.params.id
+        if(this.id){
+            let res = await api.get('/api/lostAndFound?id='+this.id)
+            this.type = res.type
+            this.title = res.title
+            this.describe = res.describe
         }
     }
 }

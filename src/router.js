@@ -177,7 +177,7 @@ export default new Router({
       component: LostAndFoundList
     },
     {
-      path: '/lost-and-found/publish',
+      path: '/lost-and-found/publish/:id?',
       name: '发布消息',
       component: LostAndFoundCreate
     },

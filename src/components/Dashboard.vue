@@ -27,7 +27,7 @@
         item(v-if='isUndergraduate' name='CET' route='/cet' value='›')
 
       .row(v-if='!tidyMode')
-        item(name='失物招领&寻物启事' route='/lost-and-found' value='1条新消息')
+        item(name='失物招领&寻物启事' route='/lost-and-found' :value='lostAndFoundMsg')
 
       .row(v-if='!tidyMode')
         item(name='校历' route='/schedule' value='›')
@@ -89,7 +89,8 @@
         iconLecture,
         iconSrtp,
         iconGrade,
-        tidyMode: false
+        tidyMode: false,
+        lostAndFoundMsg: '›'
       }
     },
     persist: {
@@ -116,6 +117,17 @@
         setInterval(() => {
           this.curNoticeIndex = this.filteredNotice.length ? (this.curNoticeIndex + 1) % this.filteredNotice.length : 0
         }, 5000)
+      })
+      api.get('/api/lostAndFound/message').then(res => {
+        let amount = 0
+        Object.keys(res).forEach(id => {
+          amount += res[id]
+        })
+        if(amount){
+          this.lostAndFoundMsg = amount + '条新消息'
+        } else {
+          this.lostAndFoundMsg = '›'
+        }
       })
     },
     methods: {
