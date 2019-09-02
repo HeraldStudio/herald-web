@@ -39,6 +39,7 @@
           this.$toasted.show("请等待图片上传完成")
           return
         }
+        this.$toasted.show("图片上传中，请稍候",{duration:0})
         let file = event.target.files[0]
         if (!file) return
         //myseu.cn/ws3/api/qiniu
@@ -60,6 +61,7 @@
           }
           let res = (await axios.post('https://upload.qiniup.com/', param, config)).data.url
           this.p_images.push(res)
+          this.$toasted.clear()
           this.$toasted.show("图片上传成功")
         } catch(e) {
           this.$toasted.show("图片上传失败，请检查格式、大小")

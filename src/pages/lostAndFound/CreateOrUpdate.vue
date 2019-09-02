@@ -59,7 +59,7 @@ export default {
                     await api.put("/api/lostAndFound",{id:this.id, title:this.title, describe:this.describe, imageUrl:this.imageUrl})
                     this.$toasted.clear()
                     this.$toasted.show("修改成功！")
-                    this.$router.go(-1)
+                    this.$router.replace('/lost-and-found')
                 } catch(e) {
                     this.$toasted.clear()
                     this.$toasted.show(e.message)
@@ -73,7 +73,7 @@ export default {
                     await api.post("/api/lostAndFound",{type:this.type, title:this.title, describe:this.describe, imageUrl:this.imageUrl})
                     this.$toasted.clear()
                     this.$toasted.show("发布成功！")
-                    this.$router.go(-1)
+                    this.$router.replace('/lost-and-found')
                 } catch(e) {
                     this.$toasted.clear()
                     this.$toasted.show(e.message)

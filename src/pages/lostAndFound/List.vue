@@ -95,7 +95,8 @@ export default {
       this.load();
     },
     publish() {
-      this.$router.push({ path: "/lost-and-found/publish" });
+      window.location = 'https://myseu.cn/app-support/#/lost-and-found/'+api.token
+      //this.$router.push({ path: "/lost-and-found/publish" });
     },
     detail(id) {
       this.$router.push({ path: `/lost-and-found/detail/${id}` });

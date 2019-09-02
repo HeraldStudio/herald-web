@@ -123,7 +123,8 @@ export default {
       }
     },
     edit() {
-      this.$router.push("/lost-and-found/publish/" + this.id);
+      window.location = 'https://myseu.cn/app-support/#/lost-and-found/'+api.token+'/'+this.id
+      //this.$router.push("/lost-and-found/publish/" + this.id);
     },
     async deleteItem() {
       try {
