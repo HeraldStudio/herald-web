@@ -28,6 +28,14 @@
           .bottom
             .left 首修 {{ predictSEUWithoutMakeup() }} / WES {{ predictWES() }}
 
+        li.info(v-if="!isGraduate")
+          .top 
+            .tag 均分
+            .left AVG {{ predictAVGWithMakeup() }} 
+            .right = {{ weighedScore().toFixed(2) }} ÷ {{ sumCredits() }}
+          .bottom
+            .left 首修 {{ predictAVGWithoutMakeup() }} 
+
         li.info(v-if="isGraduate")
           .top
             .left GPA {{ gpa.gpa || '暂无' }}
@@ -267,6 +275,11 @@
         return this.filterFirst(courses).map(k => k.credit).reduce((a, b) => a + b, 0)
       },
 
+      // 对于给定的课程列表，求出（学分*分数）的加权和。
+      weighedScore(courses = this.selected){
+        return courses.map(k => k.equivalentScore * k.credit).reduce(( a,b ) => a + b, 0) 
+      },
+
       // 对于给定的课程列表，求出 (学分*绩点) 的加权和，其中绩点用校内算法求
       weighedSEU(courses = this.selected) {
         return courses.map(k => this.gpaSEU(k) * k.credit).reduce((a, b) => a + b, 0)
@@ -352,8 +365,25 @@
       predictByDelta() {
         let credits = this.sumCredits(this.selected)
         return (credits && (this.weighedCoveredByJWC() + this.weighedNotCoveredByJWC()) / credits).toFixed(3)
+      },
+
+      // 对于给定的课程列表，计算加权平均分（百分制）
+      // 注意这个方法不会去重，去重需要用下面的另一个方法
+      calculateAVG(courses){
+        let credits = this.sumCredits(courses)
+        return (credits && this.weighedScore(courses) / credits).toFixed(2)
+      },
+
+      // 对于给定的课程列表，按照校内算法去重（最早成绩，通过有限），并按校内算法计算加权平均分（百分制）
+      predictAVGWithMakeup(courses = this.selected){
+        return this.calculateAVG(this.filterFirst(courses))
+      },
+
+      // 对于给定的课程列表，去除重修成绩，按照校内算法去重（最早成绩，通过有限），并按校内算法计算加权平均分（百分制）
+      predictAVGWithoutMakeup(courses = this.selected){
+        return this.predictAVGWithMakeup(this.filterBeforeMakeup(courses))
       }
-    },
+},
     computed: {
       // 简单判断是否研究生
       isGraduate() {
