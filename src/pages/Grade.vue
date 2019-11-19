@@ -6,9 +6,9 @@
         li.info(v-if="!isGraduate")
           .top
             .tag 教务
-            .left GPA {{ Number(gpa.gpa).toFixed(3) || '暂无' }}
+            .left GPA {{ Number(gpa.gpa).toFixed(3) == 0.000 ? "教务处未公开" : Number(gpa.gpa).toFixed(3) == 0.000|| '暂无' }}
           .bottom
-            .left 首修 {{ Number(gpa.gpaBeforeMakeup).toFixed(3) || '未计算' }} / 已获学分 {{ gpa.achievedCredits }}
+            .left 首修 {{ Number(gpa.gpaBeforeMakeup).toFixed(3) == 0.000 ? "暂无" : Number(gpa.gpaBeforeMakeup).toFixed(3)|| '未计算' }} / 已获学分 {{ gpa.achievedCredits }}
             .right 计算至 {{ lastCalculateSemester }}
 
         li.info(v-if="!isGraduate && shouldShowDelta")
@@ -32,16 +32,24 @@
           .top 
             .tag 均分
             .left AVG {{ predictAVGWithMakeup() }} 
-            .right = {{ weighedScore().toFixed(2) }} ÷ {{ sumCredits() }}
+            .right = {{ weighedScore().toFixed(2) }} ÷ {{ sumCredits() }}       
           .bottom
             .left 首修 {{ predictAVGWithoutMakeup() }} 
 
+        li.info(v-if="!isGraduate")
+          .top
+            .tag 留学
+            .left AVG {{ predictForeignAVGWithMakeup() }}
+            .right = {{ weighedForeignScore().toFixed(2) }} ÷ {{ sumCredits() }}
         li.info(v-if="isGraduate")
           .top
             .left GPA {{ gpa.gpa || '暂无' }}
           .bottom
             .left 规格化平均成绩 {{ gpa.score || '未计算' }} / 已获学分 {{ gpa.credits.total }} / 应修学分 {{ gpa.credits.required }}
             .right 教务处计算于 {{ formatTimeNatural(gpa.calculationTime) }}
+        li.info(v-if="!isGraduate")
+          .top 以上绩点为小猴偷米使用《大学生手册》所提供的算法估算得出，仅供个人参考，
+          .bottom 不能作为评奖评优以及其他用途的凭据，准确绩点以教务处为准
 
         .check-list(v-if="!isGraduate" v-for='item in gpa.detail')
           .tip.filtered(:class="{ visible: hasFilteredCourse(item.semester) }") 学期局部估算不包含被后续学期重修覆盖的课程。
@@ -280,6 +288,12 @@
         return courses.map(k => k.equivalentScore * k.credit).reduce(( a,b ) => a + b, 0) 
       },
 
+      // 对于给定的课程列表，求出（学分*出国分数）的加权和。（针对部分评级非百分制的课程
+
+      weighedForeignScore(courses = this.selected){
+        return courses.map(k => k.foreignScore * k.credit).reduce( (a,b) => a + b, 0)
+      },
+
       // 对于给定的课程列表，求出 (学分*绩点) 的加权和，其中绩点用校内算法求
       weighedSEU(courses = this.selected) {
         return courses.map(k => this.gpaSEU(k) * k.credit).reduce((a, b) => a + b, 0)
@@ -374,9 +388,18 @@
         return (credits && this.weighedScore(courses) / credits).toFixed(2)
       },
 
+      calculateForeignAVG(courses){
+        let credits = this.sumCredits(courses)
+        return (credits && this.weighedForeignScore(courses) / credits).toFixed(2)
+      },
+
       // 对于给定的课程列表，按照校内算法去重（最早成绩，通过有限），并按校内算法计算加权平均分（百分制）
       predictAVGWithMakeup(courses = this.selected){
         return this.calculateAVG(this.filterFirst(courses))
+      },
+
+      predictForeignAVGWithMakeup(courses = this.selected){
+        return this.calculateForeignAVG(this.filterFirst(courses))
       },
 
       // 对于给定的课程列表，去除重修成绩，按照校内算法去重（最早成绩，通过有限），并按校内算法计算加权平均分（百分制）
