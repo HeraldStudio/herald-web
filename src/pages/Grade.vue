@@ -79,152 +79,188 @@
 
 </template>
 <script>
+import api from "@/api";
+import formatter from "@/util/formatter";
 
-  import api from '@/api'
-  import formatter from '@/util/formatter'
+export default {
+  data() {
+    return {
+      gpa: null,
+      term: [],
+      selected: [],
+      shouldShowTip: false
+    };
+  },
+  persist: {
+    gpa: "herald-default-gpa-sorted",
+    selected: "herald-default-gpa-selected-new-new",
+    term: "herald-default-term"
+  },
+  async created() {
+    this.initSelection();
+    let gpa = await api.get("/api/gpa");
+    gpa.detail.map(k => {
+      // 由于同一课程可能有首修和多次重修，为防止判断出错，给所有课程里面加入学期
+      k.courses.map(c => Object.assign(c, { semester: k.semester }));
+      k.courses.sort((a, b) => b.equivalentScore - a.equivalentScore);
+    });
+    this.gpa = gpa;
+    this.initSelection();
+    this.term = await api.get("/api/term");
+  },
+  methods: {
+    ...formatter,
 
-  export default {
-    data() {
-      return {
-        gpa: null,
-        term: [],
-        selected: [],
-        shouldShowTip: false
+    // 初始化选中的课程列表
+    initSelection() {
+      if (this.gpa) {
+        // 如果之前没有选中课程，初始化
+        if (!this.selected.length) {
+          this.selected = (this.gpa.detail || [])
+            .map(k => k.courses)
+            .reduce((a, b) => a.concat(b), [])
+            // 默认选中所有非选修
+            .filter(k => !k.courseType);
+          this.shouldShowTip = true;
+        } else {
+          let courses = this.gpa.detail
+            .map(k => k.courses)
+            .reduce((a, b) => a.concat(b), []);
+
+          // 如果之前有选中的课程，需要清洗一遍，过滤掉 gpa 查询结果里面没有的
+          this.selected = this.selected.filter(k =>
+            courses.find(
+              course => k.cid === course.cid && k.semester === course.semester
+            )
+          );
+        }
       }
     },
-    persist: {
-      gpa: 'herald-default-gpa-sorted',
-      selected: 'herald-default-gpa-selected-new-new',
-      term: 'herald-default-term'
+
+    // 课程是否可选中，目前是非选修课程均可选
+    isSelectable(course) {
+      return !course.courseType;
     },
-    async created() {
-      this.initSelection()
-      let gpa = await api.get('/api/gpa')
-      gpa.detail.map(k => {
-        // 由于同一课程可能有首修和多次重修，为防止判断出错，给所有课程里面加入学期
-        k.courses.map(c => Object.assign(c, { semester: k.semester }))
-        k.courses.sort((a, b) => b.equivalentScore - a.equivalentScore)
-      })
-      this.gpa = gpa
-      this.initSelection()
-      this.term = await api.get('/api/term')
+
+    // 课程是否已选中
+    isSelected(course) {
+      let { cid, semester } = course;
+      return !!this.selected.find(
+        k => k.cid === cid && k.semester === semester
+      );
     },
-    methods: {
-      ...formatter,
 
-      // 初始化选中的课程列表
-      initSelection() {
-        if (this.gpa) {
-          // 如果之前没有选中课程，初始化
-          if (!this.selected.length) {
-            this.selected = (this.gpa.detail || [])
-              .map(k => k.courses)
-              .reduce((a, b) => a.concat(b), [])
-              // 默认选中所有非选修
-              .filter(k => !k.courseType)
-            this.shouldShowTip = true
-          } else {
-            let courses = this.gpa.detail
-              .map(k => k.courses)
-              .reduce((a, b) => a.concat(b), [])
+    // 选择课程
+    select(course) {
+      if (this.isSelectable(course) && !this.isSelected(course)) {
+        this.selected.push(course);
+      }
+    },
 
-            // 如果之前有选中的课程，需要清洗一遍，过滤掉 gpa 查询结果里面没有的
-            this.selected = this.selected.filter(k => 
-              courses.find(course => k.cid === course.cid && k.semester === course.semester)
-            )
-          }
-        }
-      },
+    // 取消选择课程
+    deselect(course) {
+      let { cid, semester } = course;
+      this.selected = this.selected.filter(
+        k => k.cid !== cid || k.semester !== semester
+      );
+      this.shouldShowTip = false;
+    },
 
-      // 课程是否可选中，目前是非选修课程均可选
-      isSelectable(course) {
-        return !course.courseType
-      },
+    // 切换课程选中态
+    toggle(course) {
+      if (this.isSelected(course)) {
+        this.deselect(course);
+      } else {
+        this.select(course);
+      }
+    },
 
-      // 课程是否已选中
-      isSelected(course) {
-        let { cid, semester } = course
-        return !!this.selected.find(k => k.cid === cid && k.semester === semester)
-      },
+    // 是否已经全选某学期
+    hasSelectAllInSemester(semester) {
+      let { courses } = semester;
+      return !courses.find(k => this.isSelectable(k) && !this.isSelected(k));
+    },
 
-      // 选择课程
-      select(course) {
-        if (this.isSelectable(course) && !this.isSelected(course)) {
-          this.selected.push(course)
-        }
-      },
-
-      // 取消选择课程
-      deselect(course) {
-        let { cid, semester } = course
-        this.selected = this.selected.filter(k => k.cid !== cid || k.semester !== semester)
-        this.shouldShowTip = false
-      },
-
-      // 切换课程选中态
-      toggle(course) {
-        if (this.isSelected(course)) {
-          this.deselect(course)
+    // 切换全选某学期
+    toggleSelectAllInSemester(semester) {
+      let { courses } = semester;
+      let hasSelect = this.hasSelectAllInSemester(semester);
+      for (let course of courses) {
+        if (hasSelect) {
+          this.deselect(course);
         } else {
-          this.select(course)
+          this.select(course);
         }
-      },
+      }
+    },
 
-      // 是否已经全选某学期
-      hasSelectAllInSemester(semester) {
-        let { courses } = semester
-        return !courses.find(k => this.isSelectable(k) && !this.isSelected(k))
-      },
+    // 计算单课程绩点（校内算法）
+    gpaSEU(course) {
+      let score = course.equivalentScore;
 
-      // 切换全选某学期
-      toggleSelectAllInSemester(semester) {
-        let { courses } = semester
-        let hasSelect = this.hasSelectAllInSemester(semester)
-        for (let course of courses) {
-          if (hasSelect) {
-            this.deselect(course)
-          } else {
-            this.select(course)
-          }
-        }
-      },
+      // 补考过了不再按 60 分计
+      // if (course.scoreType === '补考' && course.isPassed) {
+      //   return 1.0
+      // }
+      if (score >= 96) {
+        return 4.8;
+      }
+      if (score >= 93) {
+        return 4.5;
+      }
+      if (score >= 90) {
+        return 4.0;
+      }
+      if (score >= 86) {
+        return 3.8;
+      }
+      if (score >= 83) {
+        return 3.5;
+      }
+      if (score >= 80) {
+        return 3.0;
+      }
+      if (score >= 76) {
+        return 2.8;
+      }
+      if (score >= 73) {
+        return 2.5;
+      }
+      if (score >= 70) {
+        return 2.0;
+      }
+      if (score >= 66) {
+        return 1.8;
+      }
+      if (score >= 63) {
+        return 1.5;
+      }
+      if (score >= 60) {
+        return 1.0;
+      }
+      return 0;
+    },
 
-      // 计算单课程绩点（校内算法）
-      gpaSEU(course) {
-        let score = course.equivalentScore
+    // 计算单课程绩点（出国算法）
+    gpaWES(course) {
+      let score = course.equivalentScore;
+      if (score >= 85) {
+        return 4;
+      }
+      if (score >= 75) {
+        return 3;
+      }
+      if (score >= 60) {
+        return 2;
+      }
+      return 0;
+    },
 
-        // 补考过了不再按 60 分计
-        // if (course.scoreType === '补考' && course.isPassed) {
-        //   return 1.0
-        // }
-        if (score >= 96) { return 4.8 }
-        if (score >= 93) { return 4.5 }
-        if (score >= 90) { return 4.0 }
-        if (score >= 86) { return 3.8 }
-        if (score >= 83) { return 3.5 }
-        if (score >= 80) { return 3.0 }
-        if (score >= 76) { return 2.8 }
-        if (score >= 73) { return 2.5 }
-        if (score >= 70) { return 2.0 }
-        if (score >= 66) { return 1.8 }
-        if (score >= 63) { return 1.5 }
-        if (score >= 60) { return 1.0 }
-        return 0
-      },
-
-      // 计算单课程绩点（出国算法）
-      gpaWES(course) {
-        let score = course.equivalentScore
-        if (score >= 85) { return 4 }
-        if (score >= 75) { return 3 }
-        if (score >= 60) { return 2 }
-        return 0
-      },
-
-      // 给定课程列表，对于其中重复课程，按照特定的 reducer 来去重
-      // 对于重复的课程，reducer 每次接受两个，返回其中需要留下的一个
-      reduceDuplicateCourses(courses, reducer) {
-        return courses
+    // 给定课程列表，对于其中重复课程，按照特定的 reducer 来去重
+    // 对于重复的课程，reducer 每次接受两个，返回其中需要留下的一个
+    reduceDuplicateCourses(courses, reducer) {
+      return (
+        courses
           // 取课程号
           .map(k => k.cid)
           // 去重
@@ -233,356 +269,418 @@
           .map(cid => courses.filter(k => k.cid === cid))
           // 对每个课程号的反查结果列表执行 reduce 操作，留下其中之一
           .map(duplicates => duplicates.slice(1).reduce(reducer, duplicates[0]))
-      },
+      );
+    },
 
-      // 筛选特定学期的课程
-      filterSemester(courses, semester) {
-        return courses.filter(k => k.semester === semester)
-      },
+    // 筛选特定学期的课程
+    filterSemester(courses, semester) {
+      return courses.filter(k => k.semester === semester);
+    },
 
-      // 筛选通过的课程
-      filterPassed(courses) {
-        return courses.filter(k => k.isPassed)
-      },
+    // 筛选通过的课程
+    filterPassed(courses) {
+      return courses.filter(k => k.isPassed);
+    },
 
-      // 筛选最早的课程（通过的课程优先）
-      filterFirst(courses) {
-        return this.reduceDuplicateCourses(courses, (a, b) => {
-          // 如果有一次通过，另一次不通过，优先取通过的成绩
-          if (a.isPassed && !b.isPassed) return a
-          if (b.isPassed && !a.isPassed) return b
-          // 如果两次都通过或都不通过，优先取学期较早的成绩
-          return a.semester < b.semester ? a : b
+    // 筛选最早的课程（通过的课程优先）
+    filterFirst(courses) {
+      return this.reduceDuplicateCourses(courses, (a, b) => {
+        // 如果有一次通过，另一次不通过，优先取通过的成绩
+        if (a.isPassed && !b.isPassed) return a;
+        if (b.isPassed && !a.isPassed) return b;
+        // 如果两次都通过或都不通过，优先取学期较早的成绩
+        return a.semester < b.semester ? a : b;
+      });
+    },
+
+    // 筛选最高分数的课程
+    filterHighest(courses) {
+      return this.reduceDuplicateCourses(courses, (a, b) => {
+        return a.equivalentScore > b.equivalentScore ? a : b;
+      });
+    },
+
+    // 筛选计入首修成绩的课程
+    filterBeforeMakeup(courses) {
+      // 首修和补考都算做首修成绩
+      return courses.filter(k => k.scoreType !== "重修");
+    },
+
+    // 筛选已经被教务处计算的课程
+    filterCoveredByJWC(courses) {
+      return courses.filter(k => k.semester <= this.lastCalculateSemester);
+    },
+
+    // 筛选没被教务处计算的课程
+    filterNotCoveredByJWC(courses) {
+      return courses.filter(k => k.semester > this.lastCalculateSemester);
+    },
+
+    // 对于给定的课程列表，对学分求和
+    sumCredits(courses = this.selected) {
+      return this.filterFirst(courses)
+        .map(k => k.credit)
+        .reduce((a, b) => a + b, 0);
+    },
+
+    // 对于给定的课程列表，求出（学分*分数）的加权和。
+    weighedScore(courses = this.selected) {
+      return courses
+        .map(k => k.equivalentScore * k.credit)
+        .reduce((a, b) => a + b, 0);
+    },
+
+    // 对于给定的课程列表，求出（学分*出国分数）的加权和。（针对部分评级非百分制的课程
+
+    weighedForeignScore(courses = this.selected) {
+      console.log(courses
+        .map(k => {
+          return k.foreignScore * k.credit;
         })
-      },
-
-      // 筛选最高分数的课程
-      filterHighest(courses) {
-        return this.reduceDuplicateCourses(courses, (a, b) => {
-          return a.equivalentScore > b.equivalentScore ? a : b
+        .reduce((a, b) => a + b, 0))
+      return courses
+        .map(k => {
+          console.log(k.foreignScore)
+          console.log(k.credit)
+          return k.foreignScore * k.credit;
         })
-      },
+        .reduce((a, b) => a + b, 0);
+    },
 
-      // 筛选计入首修成绩的课程
-      filterBeforeMakeup(courses) {
-        // 首修和补考都算做首修成绩
-        return courses.filter(k => k.scoreType !== '重修')
-      },
+    // 对于给定的课程列表，求出 (学分*绩点) 的加权和，其中绩点用校内算法求
+    weighedSEU(courses = this.selected) {
+      return courses
+        .map(k => this.gpaSEU(k) * k.credit)
+        .reduce((a, b) => a + b, 0);
+    },
 
-      // 筛选已经被教务处计算的课程
-      filterCoveredByJWC(courses) {
-        return courses.filter(k => k.semester <= this.lastCalculateSemester)
-      },
+    // 对于给定的课程列表，求出 (学分*绩点) 的加权和，其中绩点用出国算法求
+    weighedWES(courses = this.selected) {
+      return courses
+        .map(k => this.gpaWES(k) * k.credit)
+        .reduce((a, b) => a + b, 0);
+    },
 
-      // 筛选没被教务处计算的课程
-      filterNotCoveredByJWC(courses) {
-        return courses.filter(k => k.semester > this.lastCalculateSemester)
-      },
+    // 对于给定的课程列表，计算加权平均绩点
+    // 注意这个方法不会去重，去重需要用下面的另一个方法
+    calculateSEU(courses) {
+      let credits = this.sumCredits(courses);
+      return (credits && this.weighedSEU(courses) / credits).toFixed(3);
+    },
 
-      // 对于给定的课程列表，对学分求和
-      sumCredits(courses = this.selected) {
-        return this.filterFirst(courses).map(k => k.credit).reduce((a, b) => a + b, 0)
-      },
+    // 对于给定的课程列表，计算加权平均绩点
+    // 注意这个方法不会去重，去重需要用下面的另一个方法
+    calculateWES(courses) {
+      let credits = this.sumCredits(courses);
+      return (credits && this.weighedWES(courses) / credits).toFixed(3);
+    },
 
-      // 对于给定的课程列表，求出（学分*分数）的加权和。
-      weighedScore(courses = this.selected){
-        return courses.map(k => k.equivalentScore * k.credit).reduce(( a,b ) => a + b, 0) 
-      },
+    // 对于给定的课程列表，按照校内算法去重（最早成绩，通过优先），并按校内算法计算加权平均绩点
+    predictSEUWithMakeup(courses = this.selected) {
+      return this.calculateSEU(this.filterFirst(courses));
+    },
 
-      // 对于给定的课程列表，求出（学分*出国分数）的加权和。（针对部分评级非百分制的课程
+    // 对于给定的课程列表，去除重修成绩，再按照校内算法去重（最早成绩，通过优先），并按校内算法计算加权平均绩点
+    predictSEUWithoutMakeup(courses = this.selected) {
+      return this.predictSEUWithMakeup(this.filterBeforeMakeup(courses));
+    },
 
-      weighedForeignScore(courses = this.selected){
-        return courses.map(k => k.foreignScore * k.credit).reduce( (a,b) => a + b, 0)
-      },
+    // 对于给定的课程列表，按照出国算法去重（最高一次成绩），并按出国算法计算加权平均成绩
+    predictWES(courses = this.selected) {
+      return this.calculateWES(this.filterHighest(courses));
+    },
 
-      // 对于给定的课程列表，求出 (学分*绩点) 的加权和，其中绩点用校内算法求
-      weighedSEU(courses = this.selected) {
-        return courses.map(k => this.gpaSEU(k) * k.credit).reduce((a, b) => a + b, 0)
-      },
+    // 取某学期已选中课程中已获得学分
+    creditsInSemester(semester) {
+      // 为了和总计算结果一致，这里需要首先全局去重
+      // 也就是说，如果本学期选中了某个课程，但该课程被以后某个学期已选中的重修课程覆盖，那么这个课程不计入。
+      return this.sumCredits(
+        this.filterSemester(this.filterFirst(this.selected), semester)
+      );
+    },
 
-      // 对于给定的课程列表，求出 (学分*绩点) 的加权和，其中绩点用出国算法求
-      weighedWES(courses = this.selected) {
-        return courses.map(k => this.gpaWES(k) * k.credit).reduce((a, b) => a + b, 0)
-      },
+    // 取某学期已选中课程中 (学分*绩点) 的加权和
+    // 由于学分和绩点都是至多一位小数，这里四舍五入到两位小数
+    weighedInSemester(semester) {
+      // 为了和总计算结果一致，这里需要首先全局去重
+      // 也就是说，如果本学期选中了某个课程，但该课程被以后某个学期已选中的重修课程覆盖，那么这个课程不计入。
+      return this.weighedSEU(
+        this.filterSemester(this.filterFirst(this.selected), semester)
+      ).toFixed(2);
+    },
 
-      // 对于给定的课程列表，计算加权平均绩点
-      // 注意这个方法不会去重，去重需要用下面的另一个方法
-      calculateSEU(courses) {
-        let credits = this.sumCredits(courses)
-        return (credits && this.weighedSEU(courses) / credits).toFixed(3)
-      },
+    // 反算某学期已选中课程的加权平均绩点
+    // 注意这里局部加权除会带来误差，这个计算结果仅供展示，不能用于二次计算
+    predictInSemester(semester) {
+      // 为了和总计算结果一致，这里需要首先全局去重
+      // 也就是说，如果本学期选中了某个课程，但该课程被以后某个学期已选中的重修课程覆盖，那么这个课程不计入。
+      return this.predictSEUWithMakeup(
+        this.filterSemester(this.filterFirst(this.selected), semester)
+      );
+    },
 
-      // 对于给定的课程列表，计算加权平均绩点
-      // 注意这个方法不会去重，去重需要用下面的另一个方法
-      calculateWES(courses) {
-        let credits = this.sumCredits(courses)
-        return (credits && this.weighedWES(courses) / credits).toFixed(3)
-      },
+    // 判断某学期是否有已选中课程被后续学期的重修覆盖
+    hasFilteredCourse(semester) {
+      return (
+        this.filterSemester(this.filterFirst(this.selected), semester)
+          .length !==
+        this.filterFirst(this.filterSemester(this.selected, semester)).length
+      );
+    },
 
-      // 对于给定的课程列表，按照校内算法去重（最早成绩，通过优先），并按校内算法计算加权平均绩点
-      predictSEUWithMakeup(courses = this.selected) {
-        return this.calculateSEU(this.filterFirst(courses))
-      },
+    // 根据已选中课程列表，用教务处已算绩点反推教务处已算范围内的绩点加权和，用于增量推算
+    // 在推算的过程中，误差先放大后缩小，精确度不变
+    // 如果用户已修课程很多（尤其高年级），而且用户自己不是十分清楚哪些已经算了绩点，这个结果会比全量估算更接近准确值。
+    weighedCoveredByJWC() {
+      return (
+        this.gpa.gpa *
+        this.sumCredits(
+          this.filterCoveredByJWC(this.filterFirst(this.selected))
+        )
+      );
+    },
 
-      // 对于给定的课程列表，去除重修成绩，再按照校内算法去重（最早成绩，通过优先），并按校内算法计算加权平均绩点
-      predictSEUWithoutMakeup(courses = this.selected) {
-        return this.predictSEUWithMakeup(this.filterBeforeMakeup(courses))
-      },
+    // 根据已选中课程列表，计算教务处未算范围内的绩点加权和，用于增量推算
+    weighedNotCoveredByJWC() {
+      return this.weighedSEU(
+        this.filterNotCoveredByJWC(this.filterFirst(this.selected))
+      );
+    },
 
-      // 对于给定的课程列表，按照出国算法去重（最高一次成绩），并按出国算法计算加权平均成绩
-      predictWES(courses = this.selected) {
-        return this.calculateWES(this.filterHighest(courses))
-      },
+    // 根据上述两部分的加权和，进行增量推算，得到新的总 GPA
+    // 这里有个比较神奇的特殊情况，如果教务处已算的里面包含挂科，而未算的里面包含对应的重修
+    // 这种情况下由于 sumCredits 依然是合并计算的，不会导致分母变大，而分子只多了个挂科 0，不会影响结果。
+    predictByDelta() {
+      let credits = this.sumCredits(this.selected);
+      return (
+        credits &&
+        (this.weighedCoveredByJWC() + this.weighedNotCoveredByJWC()) / credits
+      ).toFixed(3);
+    },
 
-      // 取某学期已选中课程中已获得学分
-      creditsInSemester(semester) {
-        // 为了和总计算结果一致，这里需要首先全局去重
-        // 也就是说，如果本学期选中了某个课程，但该课程被以后某个学期已选中的重修课程覆盖，那么这个课程不计入。
-        return this.sumCredits(this.filterSemester(this.filterFirst(this.selected), semester))
-      },
+    // 对于给定的课程列表，计算加权平均分（百分制）
+    // 注意这个方法不会去重，去重需要用下面的另一个方法
+    calculateAVG(courses) {
+      let credits = this.sumCredits(courses);
+      return (credits && this.weighedScore(courses) / credits).toFixed(2);
+    },
 
-      // 取某学期已选中课程中 (学分*绩点) 的加权和
-      // 由于学分和绩点都是至多一位小数，这里四舍五入到两位小数
-      weighedInSemester(semester) {
-        // 为了和总计算结果一致，这里需要首先全局去重
-        // 也就是说，如果本学期选中了某个课程，但该课程被以后某个学期已选中的重修课程覆盖，那么这个课程不计入。
-        return this.weighedSEU(this.filterSemester(this.filterFirst(this.selected), semester)).toFixed(2)
-      },
+    calculateForeignAVG(courses) {
+      let credits = this.sumCredits(courses);
+      return (credits && this.weighedForeignScore(courses) / credits).toFixed(
+        2
+      );
+    },
 
-      // 反算某学期已选中课程的加权平均绩点
-      // 注意这里局部加权除会带来误差，这个计算结果仅供展示，不能用于二次计算
-      predictInSemester(semester) {
-        // 为了和总计算结果一致，这里需要首先全局去重
-        // 也就是说，如果本学期选中了某个课程，但该课程被以后某个学期已选中的重修课程覆盖，那么这个课程不计入。
-        return this.predictSEUWithMakeup(this.filterSemester(this.filterFirst(this.selected), semester))
-      },
+    // 对于给定的课程列表，按照校内算法去重（最早成绩，通过有限），并按校内算法计算加权平均分（百分制）
+    predictAVGWithMakeup(courses = this.selected) {
+      return this.calculateAVG(this.filterFirst(courses));
+    },
 
-      // 判断某学期是否有已选中课程被后续学期的重修覆盖
-      hasFilteredCourse(semester) {
-        return this.filterSemester(this.filterFirst(this.selected), semester).length !== this.filterFirst(this.filterSemester(this.selected, semester)).length
-      },
+    predictForeignAVGWithMakeup(courses = this.selected) {
+      return this.calculateForeignAVG(this.filterFirst(courses));
+    },
 
-      // 根据已选中课程列表，用教务处已算绩点反推教务处已算范围内的绩点加权和，用于增量推算
-      // 在推算的过程中，误差先放大后缩小，精确度不变
-      // 如果用户已修课程很多（尤其高年级），而且用户自己不是十分清楚哪些已经算了绩点，这个结果会比全量估算更接近准确值。
-      weighedCoveredByJWC() {
-        return this.gpa.gpa * this.sumCredits(this.filterCoveredByJWC(this.filterFirst(this.selected)))
-      },
-
-      // 根据已选中课程列表，计算教务处未算范围内的绩点加权和，用于增量推算
-      weighedNotCoveredByJWC() {
-        return this.weighedSEU(this.filterNotCoveredByJWC(this.filterFirst(this.selected)))
-      },
-
-      // 根据上述两部分的加权和，进行增量推算，得到新的总 GPA
-      // 这里有个比较神奇的特殊情况，如果教务处已算的里面包含挂科，而未算的里面包含对应的重修
-      // 这种情况下由于 sumCredits 依然是合并计算的，不会导致分母变大，而分子只多了个挂科 0，不会影响结果。
-      predictByDelta() {
-        let credits = this.sumCredits(this.selected)
-        return (credits && (this.weighedCoveredByJWC() + this.weighedNotCoveredByJWC()) / credits).toFixed(3)
-      },
-
-      // 对于给定的课程列表，计算加权平均分（百分制）
-      // 注意这个方法不会去重，去重需要用下面的另一个方法
-      calculateAVG(courses){
-        let credits = this.sumCredits(courses)
-        return (credits && this.weighedScore(courses) / credits).toFixed(2)
-      },
-
-      calculateForeignAVG(courses){
-        let credits = this.sumCredits(courses)
-        return (credits && this.weighedForeignScore(courses) / credits).toFixed(2)
-      },
-
-      // 对于给定的课程列表，按照校内算法去重（最早成绩，通过有限），并按校内算法计算加权平均分（百分制）
-      predictAVGWithMakeup(courses = this.selected){
-        return this.calculateAVG(this.filterFirst(courses))
-      },
-
-      predictForeignAVGWithMakeup(courses = this.selected){
-        return this.calculateForeignAVG(this.filterFirst(courses))
-      },
-
-      // 对于给定的课程列表，去除重修成绩，按照校内算法去重（最早成绩，通过有限），并按校内算法计算加权平均分（百分制）
-      predictAVGWithoutMakeup(courses = this.selected){
-        return this.predictAVGWithMakeup(this.filterBeforeMakeup(courses))
+    // 对于给定的课程列表，去除重修成绩，按照校内算法去重（最早成绩，通过有限），并按校内算法计算加权平均分（百分制）
+    predictAVGWithoutMakeup(courses = this.selected) {
+      return this.predictAVGWithMakeup(this.filterBeforeMakeup(courses));
+    }
+  },
+  computed: {
+    // 简单判断是否研究生
+    isGraduate() {
+      return this.gpa && !!this.gpa.credits;
+    },
+    // 求用户最新选择的成绩在哪个学期
+    latestSemester() {
+      return this.selected
+        .map(k => k.semester)
+        .sort()
+        .slice(-1)[0];
+    },
+    // 已知教务处绩点计算时间，求教务处计算截止到哪个学期
+    lastCalculateSemester() {
+      if (!this.gpa.gpa) {
+        return;
       }
-},
-    computed: {
-      // 简单判断是否研究生
-      isGraduate() {
-        return this.gpa && !!this.gpa.credits
-      },
-      // 求用户最新选择的成绩在哪个学期
-      latestSemester() {
-        return this.selected.map(k => k.semester).sort().slice(-1)[0]
-      },
-      // 已知教务处绩点计算时间，求教务处计算截止到哪个学期
-      lastCalculateSemester() {
-        if (!this.gpa.gpa) {
-          return
-        }
-        // 如果还没拉到学期列表，先显示计算时间
-        if (!this.term) {
-          return formatter.formatTimeNatural(this.gpa.calculationTime)
-        }
-        
-        // 这里有两种情况，可能是在某个学期内计算的，也可能是在某个学期结束后的假期里计算的
-        // 这两种情况下都认为计算截止到那个学期
-        // 换句话说，计算时间跟计算截止学期之间的关系是不确定的，可能那个学期还没结束，但也可能结束了
-        // 但是计算时间跟下个学期的关系是确定的：下个学期肯定还没开始
-        // 所以我们首先根据计算时间，找到当时还没有开始的下个学期
-        let term = this.term.list
-          .sort((a, b) => a.endDate - b.endDate)
-          .find(k => k.startDate >= this.gpa.calculationTime)
-        if (term) {
-          // 如果找到了下个学期，反推上一个学期，作为计算截止学期
-          term = this.term.list[this.term.list.indexOf(term) - 1]
-        } else {
-          // 如果找不到这个“下个学期”，说明要找的就是最后一个学期，下个学期还没有收录
-          term = this.term.list.slice(-1)[0]
-        }
-        return term.name
-      },
-      // 是否需要显示增量推算结果
-      shouldShowDelta() {
-        // 如果教务处已经算到最新的绩点了，就不显示
-        if (this.lastCalculateSemester === this.latestSemester) {
-          return false
-        }
-        // 其余情况，高年级才显示
-        return this.gpa.detail.length > 6
+      // 如果还没拉到学期列表，先显示计算时间
+      if (!this.term) {
+        return formatter.formatTimeNatural(this.gpa.calculationTime);
       }
+
+      // 这里有两种情况，可能是在某个学期内计算的，也可能是在某个学期结束后的假期里计算的
+      // 这两种情况下都认为计算截止到那个学期
+      // 换句话说，计算时间跟计算截止学期之间的关系是不确定的，可能那个学期还没结束，但也可能结束了
+      // 但是计算时间跟下个学期的关系是确定的：下个学期肯定还没开始
+      // 所以我们首先根据计算时间，找到当时还没有开始的下个学期
+      let term = this.term.list
+        .sort((a, b) => a.endDate - b.endDate)
+        .find(k => k.startDate >= this.gpa.calculationTime);
+      if (term) {
+        // 如果找到了下个学期，反推上一个学期，作为计算截止学期
+        term = this.term.list[this.term.list.indexOf(term) - 1];
+      } else {
+        // 如果找不到这个“下个学期”，说明要找的就是最后一个学期，下个学期还没有收录
+        term = this.term.list.slice(-1)[0];
+      }
+      return term.name;
+    },
+    // 是否需要显示增量推算结果
+    shouldShowDelta() {
+      // 如果教务处已经算到最新的绩点了，就不显示
+      if (this.lastCalculateSemester === this.latestSemester) {
+        return false;
+      }
+      // 其余情况，高年级才显示
+      return this.gpa.detail.length > 6;
+    }
+  }
+};
+</script>
+<style lang="stylus" scoped>
+.tip {
+  background: #fff;
+  color: #555;
+  font-size: 13px;
+  line-height: 16px;
+  box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  position: relative;
+  transition: 0.3s;
+  opacity: 0;
+  height: 0;
+  box-sizing: border-box;
+  white-space: nowrap;
+
+  &.visible {
+    padding: 10px 15px;
+    height: 36px;
+    opacity: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    box-shadow: -3px 3px 5px 0 rgba(0, 0, 0, 0.1);
+    transform: rotate(-45deg);
+    bottom: -5px;
+    left: 15px;
+  }
+
+  &.selection {
+    &.visible {
+      margin-bottom: 10px;
     }
   }
 
-</script>
-<style lang="stylus" scoped>
+  &.filtered {
+    background: var(--color-warning-bg);
+    color: var(--color-warning-dark);
+    width: 100%;
 
-  .tip
-    background #fff
-    color #555
-    font-size 13px
-    line-height 16px
-    box-shadow 0 1px 7px 0 rgba(0, 0, 0, .15)
-    border-radius 5px
-    position relative
-    transition .3s
-    opacity 0
-    height 0
-    box-sizing border-box
-    white-space nowrap
+    &.visible {
+      margin-top: 15px;
+    }
 
-    &.visible
-      padding 10px 15px
-      height 36px
-      opacity 1
+    &::after {
+      background: var(--color-warning-bg);
+      left: unset;
+      right: 155px;
+    }
+  }
+}
 
-    &::after
-      content ''
-      position absolute
-      width 10px
-      height 10px
-      background #fff
-      box-shadow -3px 3px 5px 0 rgba(0, 0, 0, .1)
-      transform rotate(-45deg)
-      bottom -5px
-      left 15px
+.check-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 
-    &.selection
-      &.visible
-        margin-bottom 10px
+  .section {
+    width: 100%;
+    padding: 15px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
 
-    &.filtered
-      background var(--color-warning-bg)
-      color var(--color-warning-dark)
-      width 100%
+    .name {
+      font-size: 16px;
+      flex: 1 1 0;
+    }
 
-      &.visible
-        margin-top 15px
+    .grade {
+      margin-right: 7px;
+    }
 
-      &::after
-        background var(--color-warning-bg)
-        left unset
-        right 155px
+    .select-all {
+      background: #f7f7f7;
+      height: 16px;
+      line-height: 16px;
+      border-radius: 20px;
+      padding: 4px 8px;
+      color: var(--color-text-regular);
+      cursor: pointer;
+    }
+  }
 
-  .check-list
-    display flex
-    flex-direction row
-    flex-wrap wrap
+  .check-box {
+    background: var(--color-primary);
+    box-shadow: 0 5px 10px -5px var(--color-primary);
+    color: #fff;
+    margin-left: 0 !important;
+    margin-right: 7px;
+    margin-bottom: 7px;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    overflow: hidden;
+    position: relative;
 
-    .section
-      width 100%
-      padding 15px 0
-      display flex
-      flex-direction row
-      align-items baseline
+    &.required {
+      cursor: pointer;
+    }
 
-      .name
-        font-size 16px
-        flex 1 1 0
+    &.bad {
+      opacity: 0.6 !important;
+      background: var(--color-error);
+      border-color: var(--color-error);
+      box-shadow: 0 5px 10px -5px var(--color-error);
+    }
 
-      .grade
-        margin-right 7px
+    &.makeup {
+      background: var(--color-warning);
+      border-color: var(--color-warning);
+      box-shadow: 0 5px 10px -5px var(--color-warning);
+    }
 
-      .select-all
-        background #f7f7f7
-        height 16px
-        line-height 16px
-        border-radius 20px
-        padding 4px 8px
-        color var(--color-text-regular)
-        cursor pointer
+    &.disabled {
+      background: var(--color-tool-bg);
+      border-color: var(--color-tool-bg);
+      box-shadow: none;
+      color: var(--color-text-bold);
+      opacity: 1 !important;
+    }
 
-    .check-box
-      background var(--color-primary)
-      box-shadow 0 5px 10px -5px var(--color-primary)
-      color #fff
-      margin-left 0 !important
-      margin-right 7px
-      margin-bottom 7px
-      transition .3s
-      display flex
-      flex-direction row
-      align-items baseline
-      overflow hidden
-      position relative
+    .name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 0 0 1;
+      min-width: 0;
+      text-align: justify;
+    }
 
-      &.required
-        cursor pointer
-      
-      &.bad
-        opacity 0.6 !important
-        background var(--color-error)
-        border-color var(--color-error)
-        box-shadow 0 5px 10px -5px var(--color-error)
-      
-      &.makeup
-        background var(--color-warning)
-        border-color var(--color-warning)
-        box-shadow 0 5px 10px -5px var(--color-warning)
-
-      &.disabled
-        background var(--color-tool-bg)
-        border-color var(--color-tool-bg)
-        box-shadow none
-        color var(--color-text-bold)
-        opacity 1 !important
-
-      .name
-        white-space nowrap
-        overflow hidden
-        text-overflow ellipsis
-        flex 0 0 1
-        min-width 0
-        text-align justify
-
-      .grade
-        opacity .7
-        margin-left 5px
-        white-space nowrap
-        flex 1 1 auto
-        font-weight normal
-
+    .grade {
+      opacity: 0.7;
+      margin-left: 5px;
+      white-space: nowrap;
+      flex: 1 1 auto;
+      font-weight: normal;
+    }
+  }
+}
 </style>
 
