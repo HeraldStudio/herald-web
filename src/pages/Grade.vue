@@ -48,8 +48,7 @@
             .left 规格化平均成绩 {{ gpa.score || '未计算' }} / 已获学分 {{ gpa.credits.total }} / 应修学分 {{ gpa.credits.required }}
             .right 教务处计算于 {{ formatTimeNatural(gpa.calculationTime) }}
         li.info(v-if="!isGraduate")
-          .top 以上绩点为小猴偷米使用《大学生手册》所提供的算法估算得出，仅供个人参考，
-          .bottom 不能作为评奖评优以及其他用途的凭据，准确绩点以教务处为准
+          .top 以上绩点为小猴偷米使用《大学生手册》所提供的算法估算得出，仅供个人参考，不能作为评奖评优以及其他用途的凭据，准确绩点以教务处为准
 
         .check-list(v-if="!isGraduate" v-for='item in gpa.detail')
           .tip.filtered(:class="{ visible: hasFilteredCourse(item.semester) }") 学期局部估算不包含被后续学期重修覆盖的课程。
