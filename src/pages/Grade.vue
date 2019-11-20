@@ -6,9 +6,9 @@
         li.info(v-if="!isGraduate")
           .top
             .tag 教务
-            .left GPA {{ Number(gpa.gpa).toFixed(3) == 0.000 ? "教务处未公开" : Number(gpa.gpa).toFixed(3) == 0.000|| '暂无' }}
+            .left GPA {{ Number(gpa.gpa).toFixed(3) === 0.000 ? "教务处未公开" : Number(gpa.gpa).toFixed(3) || '暂无' }}
           .bottom
-            .left 首修 {{ Number(gpa.gpaBeforeMakeup).toFixed(3) == 0.000 ? "暂无" : Number(gpa.gpaBeforeMakeup).toFixed(3)|| '未计算' }} / 已获学分 {{ gpa.achievedCredits }}
+            .left 首修 {{ Number(gpa.gpaBeforeMakeup).toFixed(3) === 0.000 ? "暂无" : Number(gpa.gpaBeforeMakeup).toFixed(3) || '未计算' }} / 已获学分 {{ gpa.achievedCredits }}
             .right 计算至 {{ lastCalculateSemester }}
 
         li.info(v-if="!isGraduate && shouldShowDelta")
