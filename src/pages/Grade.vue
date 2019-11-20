@@ -333,6 +333,7 @@ export default {
     // 对于给定的课程列表，求出（学分*出国分数）的加权和。（针对部分评级非百分制的课程
 
     weighedForeignScore(courses = this.selected) {
+      console.log(courses)
       console.log(courses
         .map(k => {
           return k.foreignScore * k.credit;
@@ -340,6 +341,7 @@ export default {
         .reduce((a, b) => a + b, 0))
       return courses
         .map(k => {
+          console.log(k.courseName)
           console.log(k.foreignScore)
           console.log(k.credit)
           return k.foreignScore * k.credit;
