@@ -32,7 +32,8 @@
           .top 
             .tag 均分
             .left AVG {{ predictAVGWithMakeup() }} 
-            .right = {{ weighedScore().toFixed(2) }} ÷ {{ sumCredits() }}       
+            .right = {{ weighedScore().toFixed(2) }} ÷ {{ sumCredits() }}     
+            
           .bottom
             .left 首修 {{ predictAVGWithoutMakeup() }} 
 
@@ -41,13 +42,14 @@
             .tag 留学
             .left AVG {{ predictForeignAVGWithMakeup() }}
             .right = {{ weighedForeignScore().toFixed(2) }} ÷ {{ sumCredits() }}
+
         li.info(v-if="isGraduate")
           .top
             .left GPA {{ gpa.gpa || '暂无' }}
           .bottom
             .left 规格化平均成绩 {{ gpa.score || '未计算' }} / 已获学分 {{ gpa.credits.total }} / 应修学分 {{ gpa.credits.required }}
             .right 教务处计算于 {{ formatTimeNatural(gpa.calculationTime) }}
-        li.info(v-if="!isGraduate")
+        li.info
           .top 以上绩点为小猴偷米使用《大学生手册》所提供的算法估算得出，仅供个人参考，不能作为评奖评优以及其他用途的凭据，准确绩点以教务处为准
 
         .check-list(v-if="!isGraduate" v-for='item in gpa.detail')
