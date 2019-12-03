@@ -106,6 +106,7 @@ function render_d3(data,div) {
        .attr("d","M2,2 L10,6 L2,10 L6,6 L2,2")
        .attr("fill","#555");
 
+    // 绘制坐标轴
     svg.append("g")
        .append("line")
        .attr("x1",0).attr("x2",WIDTH)
@@ -114,6 +115,7 @@ function render_d3(data,div) {
        .attr("stroke-width",2)
        .attr("marker-end","url(#arrow)");
 
+    // 绘制代表班车时刻的圆点
     svg.append("g")
        .selectAll("dot")
        .data(time)
@@ -127,6 +129,7 @@ function render_d3(data,div) {
        .attr("fill","white")
        .attr("opacity",function(d){return ((x(d)>(WIDTH-50)||x(d)<50)?("0"):("1"))});
 
+    // 绘制班车时刻的文字
     svg.append("g")
        .selectAll("dot_text")
        .data(time)
@@ -139,12 +142,14 @@ function render_d3(data,div) {
        .attr("font-size",18)
        .attr("opacity",function(d){return ((x(d)>(WIDTH-50)||x(d)<50)?("0"):("1"))});
 
+    // 绘制代表当前时间的标记
     svg.append("g")
        .append("polygon")
        .attr("fill","#00a4ca")
        .attr("stroke-width",0)
        .attr("points",(WIDTH/2)+","+(HEIGHT/2)+" "+(WIDTH/2-10)+","+(HEIGHT/2+15)+" "+(WIDTH/2+10)+","+(HEIGHT/2+15));
 
+    // 绘制当前时间的文字
     svg.append("g")
        .append("text")
        .text(function(d){return Math.floor(current/60)+":"+("0"+current%60).slice(-2)})
