@@ -65,7 +65,7 @@ function render_d3(data,div) {
     }
   }
 
-  const WIDTH=500;
+  const WIDTH=250;
   const HEIGHT=80;
   const MARGIN={TOP:10,BOTTOM:10,LEFT:10,RIGHT:10};
 
@@ -80,8 +80,6 @@ function render_d3(data,div) {
 
     $(div).empty();
 
-    d3.select(div).style("width",WIDTH+MARGIN.LEFT+MARGIN.RIGHT);
-
     let svg=d3.select(div)
               .append("svg")
               .attr("width",WIDTH+MARGIN.LEFT+MARGIN.RIGHT)
@@ -90,7 +88,7 @@ function render_d3(data,div) {
               .attr("transform","translate("+MARGIN.LEFT+","+MARGIN.TOP+")");
 
     let x=d3.scaleLinear()
-            .domain([current-30,current+30])
+            .domain([current-15,current+15])
             .range([0,WIDTH]);
 
     svg.append("defs").append("marker")
