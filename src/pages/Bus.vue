@@ -6,16 +6,167 @@
     ul.detail-list(v-if="iswork")
       li.info(:class="{active: item.active}" v-for='item in workday')
         .top
-          .left.time {{item.start}}-{{item.end}}
+          .left.time
+            span {{item.start}}
+            span(v-if="item.start !== item.end") -{{item.end}}
           .right.tip {{item.interval}}
+      div.svg_container#d3_workday
     ul.detail-list(v-else)
       li.info(:class="{active: item.active}" v-for='item in holiday')
         .top
-          .left.time {{item.start}}-{{item.end}}
+          .left.time
+            span {{item.start}}
+            span(v-if="item.start !== item.end") -{{item.end}}
           .right.tip {{item.interval}}
+      div.svg_container#d3_holiday
 </template>
 <script>
 import api from "@/api";
+
+// 校车班次数据
+const DATA = {
+  WORKDAY:[
+    {from:{h:7,m:10},to:{h:7,m:40},density:10},
+    {from:{h:7,m:40},to:{h:8,m:40},density:5},
+    {from:{h:8,m:40},to:{h:10,m:0},density:5},
+    {from:{h:10,m:30},to:{h:11,m:30},density:30},
+    {from:{h:11,m:30},to:{h:13,m:30},density:10},
+    {from:{h:13,m:30},to:{h:13,m:30},density:0},
+    {from:{h:14,m:0},to:{h:14,m:0},density:0},
+    {from:{h:15,m:0},to:{h:16,m:0},density:10},
+    {from:{h:17,m:0},to:{h:18,m:30},density:10},
+    {from:{h:18,m:30},to:{h:20,m:0},density:30},
+    {from:{h:21,m:0},to:{h:22,m:0},density:30}
+  ],
+  HOLIDAY:[
+    {from:{h:8,m:0},to:{h:9,m:30},density:30},
+    {from:{h:10,m:30},to:{h:10,m:30},density:0},
+    {from:{h:11,m:30},to:{h:11,m:30},density:0},
+    {from:{h:12,m:0},to:{h:13,m:30},density:30},
+    {from:{h:13,m:30},to:{h:16,m:30},density:60},
+    {from:{h:16,m:30},to:{h:19,m:0},density:30},
+    {from:{h:19,m:0},to:{h:22,m:30},density:60}
+  ]
+}
+
+function render_d3(data,div) {
+
+  // 把每一天看作24*60分钟
+  let time=[]
+  for(let i=0;i<data.length;i++){
+    let d=data[i];
+    for(let v=(d.from.h*60+d.from.m);v<=(d.to.h*60+d.to.m);v+=d.density){
+      if(time.indexOf(v)<0){
+        time.push(v);
+      }
+      if(d.density<=0){
+        break;
+      }
+    }
+  }
+
+  const WIDTH=500;
+  const HEIGHT=80;
+  const MARGIN={TOP:10,BOTTOM:10,LEFT:10,RIGHT:10};
+
+  let current=0;
+  function render(){
+    let now=new Date();
+    let c=now.getHours()*60+now.getMinutes();
+    if(c<=current){
+      return;
+    }
+    current=c;
+
+    $(div).empty();
+
+    d3.select(div).style("width",WIDTH+MARGIN.LEFT+MARGIN.RIGHT);
+
+    let svg=d3.select(div)
+              .append("svg")
+              .attr("width",WIDTH+MARGIN.LEFT+MARGIN.RIGHT)
+              .attr("height",HEIGHT+MARGIN.TOP+MARGIN.BOTTOM)
+              .append("g")
+              .attr("transform","translate("+MARGIN.LEFT+","+MARGIN.TOP+")");
+
+    let x=d3.scaleLinear()
+            .domain([current-30,current+30])
+            .range([0,WIDTH]);
+
+    svg.append("defs").append("marker")
+       .attr("id","arrow")
+       .attr("markerUnits","strokeWidth")
+       .attr("markerWidth","12")
+       .attr("markerHeight","12")
+       .attr("viewBox","0 0 12 12")
+       .attr("refX","6")
+       .attr("refY","6")
+       .attr("orient","6")
+       .append("path")
+       .attr("d","M2,2 L10,6 L2,10 L6,6 L2,2")
+       .attr("fill","#555");
+
+    svg.append("g")
+       .append("line")
+       .attr("x1",0).attr("x2",WIDTH)
+       .attr("y1",HEIGHT/2).attr("y2",HEIGHT/2)
+       .attr("stroke","#555")
+       .attr("stroke-width",2)
+       .attr("marker-end","url(#arrow)");
+
+    svg.append("g")
+       .selectAll("dot")
+       .data(time)
+       .enter()
+       .append("circle")
+       .attr("cx",function(d){return x(d)})
+       .attr("cy",HEIGHT/2)
+       .attr("r",8)
+       .attr("stroke","#555")
+       .attr("stroke-width",3)
+       .attr("fill","white")
+       .attr("opacity",function(d){return ((x(d)>(WIDTH-50)||x(d)<50)?("0"):("1"))});
+
+    svg.append("g")
+       .selectAll("dot_text")
+       .data(time)
+       .enter()
+       .append("text")
+       .text(function(d){return Math.floor(d/60)+":"+("0"+d%60).slice(-2)})
+       .attr("x",function(d){return x(d)})
+       .attr("y",(HEIGHT/2)-15)
+       .attr("text-anchor","middle")
+       .attr("font-size",18)
+       .attr("opacity",function(d){return ((x(d)>(WIDTH-50)||x(d)<50)?("0"):("1"))});
+
+    svg.append("g")
+       .append("polygon")
+       .attr("fill","#00a4ca")
+       .attr("stroke-width",0)
+       .attr("points",(WIDTH/2)+","+(HEIGHT/2)+" "+(WIDTH/2-10)+","+(HEIGHT/2+15)+" "+(WIDTH/2+10)+","+(HEIGHT/2+15));
+
+    svg.append("g")
+       .append("text")
+       .text(function(d){return Math.floor(current/60)+":"+("0"+current%60).slice(-2)})
+       .attr("x",WIDTH/2)
+       .attr("y",(HEIGHT/2)+30)
+       .attr("text-anchor","middle")
+       .attr("font-size",18)
+  }
+
+  render();
+  setInterval(render,1*1000);
+}
+
+// 把新格式的校车班次数据适配为旧形式的校车班次数据以供界面渲染
+function bus_data_adapter(data) {
+  return data.map((d)=>({
+      active:false,
+      start:d.from.h+':'+('0'+d.from.m).slice(-2),
+      end:d.to.h+':'+('0'+d.to.m).slice(-2),
+      interval:(d.density>0)?('每 '+d.density+'min 一班'):('')
+    }))
+}
 
 export default {
   data() {
@@ -25,100 +176,8 @@ export default {
       today:null, // 当天的时间戳
       day:null, // 用来判断工作日/休息日
       current:false,
-      workday: [
-        {
-          active:false,
-          start:'7:10',
-          end:'7:40',
-          interval:'每 10min 一班'
-        },
-        {
-          active:false,
-          start:'7:40',
-          end:'8:40',
-          interval:'每 5min 一班'
-        },
-        {
-          active:false,
-          start:'8:40',
-          end:'10:00',
-          interval:'每 5min 一班'
-        },
-        {
-          active:false,
-          start:'10:30',
-          end:'11:30',
-          interval:'每 30min 一班'
-        },
-        {
-          active:false,
-          start:'11:30',
-          end:'13:30',
-          interval:'每 10min 一班'
-        },
-        {
-          active:false,
-          start:'13:30',
-          end:'15:00',
-          interval:'13:30，14:00'
-        },
-        {
-          active:false,
-          start:'15:00',
-          end:'16:00',
-          interval:'每 10min 一班'
-        },
-        {
-          active:false,
-          start:'17:00',
-          end:'18:30',
-          interval:'每 10min 一班',
-        },
-        {
-          active:false,
-          start:'18:30',
-          end:'22:04',
-          interval:'每 30min 一班(20:30 没有班车)',
-        }
-      ],
-      holiday:[
-        {
-          active:false,
-          start:'8:00',
-          end:'9:30',
-          interval:'每 30min 一班'
-        },
-        {
-          active:false,
-          start:'10:30',
-          end:'11:30',
-          interval:'10:30，11:30'
-        },
-        {
-          active:false,
-          start:'12:00',
-          end:'13:30',
-          interval:'每 30min 一班'
-        },
-        {
-          active:false,
-          start:'13:30',
-          end:'16:30',
-          interval:'每 1h 一班'
-        },
-        {
-          active:false,
-          start:'16:30',
-          end:'19:00',
-          interval:'每 30min 一班'
-        },
-        {
-          active:false,
-          start:'19:00',
-          end:'22:00',
-          interval:'每 1h 一班'
-        }
-      ]
+      workday: bus_data_adapter(DATA.WORKDAY),
+      holiday:bus_data_adapter(DATA.HOLIDAY)
     }
   },
   created () {
@@ -134,6 +193,11 @@ export default {
     //  判断当前时间,高亮有校车的时间段
     this.heightLight(this.workday)
     this.heightLight(this.holiday)
+  },
+  mounted () {
+    // 渲染由d3.js库绘制的数据可视化图形
+    render_d3(DATA.WORKDAY,"#d3_workday")
+    render_d3(DATA.HOLIDAY,"#d3_holiday")
   },
   methods: {
     switchDay(event){
@@ -179,4 +243,17 @@ export default {
       li.active
         .time
           font-weight bold
+
+  .svg_container
+    text-align center
+    margin auto
+    position relative
+
+  .tooltip
+    position absolute
+    opacity 0
+    background-color #fff
+    border #000 2px solid
+    border-radius 5px
+    padding 5px
 </style>
