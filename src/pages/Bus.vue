@@ -48,9 +48,12 @@ const DATA = {
   ]
 }
 
-let tick=setInterval(()=>{},1*1000);
-function render_d3(data,div="#d3") {
-  clearInterval(tick);
+function get_current_minut_of_day() {
+  let now=new Date();
+  return (now.getHours()*60+now.getMinutes());
+}
+
+function render_d3(data,current=get_current_minut_of_day(),div="#d3") {
 
   // 把每一天看作24*60分钟
   let time=[]
@@ -70,99 +73,85 @@ function render_d3(data,div="#d3") {
   const HEIGHT=80;
   const MARGIN={TOP:10,BOTTOM:10,LEFT:10,RIGHT:10};
 
-  let current=0;
-  function render(){
-    let now=new Date();
-    let c=now.getHours()*60+now.getMinutes();
-    if(c<=current){
-      return;
-    }
-    current=c;
+  $(div).empty();
 
-    $(div).empty();
+  let svg=d3.select(div)
+            .append("svg")
+            .attr("width",WIDTH+MARGIN.LEFT+MARGIN.RIGHT)
+            .attr("height",HEIGHT+MARGIN.TOP+MARGIN.BOTTOM)
+            .append("g")
+            .attr("transform","translate("+MARGIN.LEFT+","+MARGIN.TOP+")");
 
-    let svg=d3.select(div)
-              .append("svg")
-              .attr("width",WIDTH+MARGIN.LEFT+MARGIN.RIGHT)
-              .attr("height",HEIGHT+MARGIN.TOP+MARGIN.BOTTOM)
-              .append("g")
-              .attr("transform","translate("+MARGIN.LEFT+","+MARGIN.TOP+")");
+  let x=d3.scaleLinear()
+          .domain([current-15,current+15])
+          .range([0,WIDTH]);
 
-    let x=d3.scaleLinear()
-            .domain([current-15,current+15])
-            .range([0,WIDTH]);
+  svg.append("defs").append("marker")
+     .attr("id","arrow")
+     .attr("markerUnits","strokeWidth")
+     .attr("markerWidth","12")
+     .attr("markerHeight","12")
+     .attr("viewBox","0 0 12 12")
+     .attr("refX","6")
+     .attr("refY","6")
+     .attr("orient","6")
+     .append("path")
+     .attr("d","M2,2 L10,6 L2,10 L6,6 L2,2")
+     .attr("fill","#555");
 
-    svg.append("defs").append("marker")
-       .attr("id","arrow")
-       .attr("markerUnits","strokeWidth")
-       .attr("markerWidth","12")
-       .attr("markerHeight","12")
-       .attr("viewBox","0 0 12 12")
-       .attr("refX","6")
-       .attr("refY","6")
-       .attr("orient","6")
-       .append("path")
-       .attr("d","M2,2 L10,6 L2,10 L6,6 L2,2")
-       .attr("fill","#555");
+  // 绘制坐标轴
+  svg.append("g")
+     .append("line")
+     .attr("x1",0).attr("x2",WIDTH)
+     .attr("y1",HEIGHT/2).attr("y2",HEIGHT/2)
+     .attr("stroke","#555")
+     .attr("stroke-width",2)
+     .attr("marker-end","url(#arrow)");
 
-    // 绘制坐标轴
-    svg.append("g")
-       .append("line")
-       .attr("x1",0).attr("x2",WIDTH)
-       .attr("y1",HEIGHT/2).attr("y2",HEIGHT/2)
-       .attr("stroke","#555")
-       .attr("stroke-width",2)
-       .attr("marker-end","url(#arrow)");
+  const FADE_MARGIN=25;
 
-    const FADE_MARGIN=25;
+  // 绘制代表班车时刻的圆点
+  svg.append("g")
+     .selectAll("dot")
+     .data(time)
+     .enter()
+     .append("circle")
+     .attr("cx",function(d){return x(d)})
+     .attr("cy",HEIGHT/2)
+     .attr("r",8)
+     .attr("stroke","#555")
+     .attr("stroke-width",3)
+     .attr("fill","white")
+     .attr("opacity",function(d){return ((x(d)>(WIDTH-FADE_MARGIN)||x(d)<FADE_MARGIN)?("0"):("1"))});
 
-    // 绘制代表班车时刻的圆点
-    svg.append("g")
-       .selectAll("dot")
-       .data(time)
-       .enter()
-       .append("circle")
-       .attr("cx",function(d){return x(d)})
-       .attr("cy",HEIGHT/2)
-       .attr("r",8)
-       .attr("stroke","#555")
-       .attr("stroke-width",3)
-       .attr("fill","white")
-       .attr("opacity",function(d){return ((x(d)>(WIDTH-FADE_MARGIN)||x(d)<FADE_MARGIN)?("0"):("1"))});
+  // 绘制班车时刻的文字
+  svg.append("g")
+     .selectAll("dot_text")
+     .data(time)
+     .enter()
+     .append("text")
+     .text(function(d){return Math.floor(d/60)+":"+("0"+d%60).slice(-2)})
+     .attr("x",function(d){return x(d)})
+     .attr("y",(HEIGHT/2)-15)
+     .attr("text-anchor","middle")
+     .attr("font-size",18)
+     .attr("opacity",function(d){return ((x(d)>(WIDTH-FADE_MARGIN)||x(d)<FADE_MARGIN)?("0"):("1"))});
 
-    // 绘制班车时刻的文字
-    svg.append("g")
-       .selectAll("dot_text")
-       .data(time)
-       .enter()
-       .append("text")
-       .text(function(d){return Math.floor(d/60)+":"+("0"+d%60).slice(-2)})
-       .attr("x",function(d){return x(d)})
-       .attr("y",(HEIGHT/2)-15)
-       .attr("text-anchor","middle")
-       .attr("font-size",18)
-       .attr("opacity",function(d){return ((x(d)>(WIDTH-FADE_MARGIN)||x(d)<FADE_MARGIN)?("0"):("1"))});
+  // 绘制代表当前时间的标记
+  svg.append("g")
+     .append("polygon")
+     .attr("fill","#00a4ca")
+     .attr("stroke-width",0)
+     .attr("points",(WIDTH/2)+","+(HEIGHT/2)+" "+(WIDTH/2-10)+","+(HEIGHT/2+15)+" "+(WIDTH/2+10)+","+(HEIGHT/2+15));
 
-    // 绘制代表当前时间的标记
-    svg.append("g")
-       .append("polygon")
-       .attr("fill","#00a4ca")
-       .attr("stroke-width",0)
-       .attr("points",(WIDTH/2)+","+(HEIGHT/2)+" "+(WIDTH/2-10)+","+(HEIGHT/2+15)+" "+(WIDTH/2+10)+","+(HEIGHT/2+15));
-
-    // 绘制当前时间的文字
-    svg.append("g")
-       .append("text")
-       .text(function(d){return Math.floor(current/60)+":"+("0"+current%60).slice(-2)})
-       .attr("x",WIDTH/2)
-       .attr("y",(HEIGHT/2)+30)
-       .attr("text-anchor","middle")
-       .attr("font-size",18)
-  }
-
-  render();
-
-  tick=setInterval(render,1*1000);
+  // 绘制当前时间的文字
+  svg.append("g")
+     .append("text")
+     .text(function(d){return Math.floor(current/60)+":"+("0"+current%60).slice(-2)})
+     .attr("x",WIDTH/2)
+     .attr("y",(HEIGHT/2)+30)
+     .attr("text-anchor","middle")
+     .attr("font-size",18);
 }
 
 // 把新格式的校车班次数据适配为旧形式的校车班次数据以供界面渲染
@@ -203,19 +192,20 @@ export default {
   },
   mounted () {
     // 渲染由d3.js库绘制的数据可视化图形
-    if(this.iswork){
-      render_d3(DATA.WORKDAY)
-    }else{
-      render_d3(DATA.HOLIDAY)
-    }
+    render_d3((this.iswork)?(DATA.WORKDAY):(DATA.HOLIDAY));
+    // 随时间刷新
+    let last=get_current_minut_of_day();
+    setInterval(()=>{
+      let current=get_current_minut_of_day();
+      if(current!=last){
+        last=current;
+        render_d3((this.iswork)?(DATA.WORKDAY):(DATA.HOLIDAY));
+      }
+    },1*1000);
   },
   watch:{
     iswork(is) {
-      if(is){
-        render_d3(DATA.WORKDAY)
-      }else{
-        render_d3(DATA.HOLIDAY)
-      }
+      render_d3((is)?(DATA.WORKDAY):(DATA.HOLIDAY))
     }
   },
   methods: {
