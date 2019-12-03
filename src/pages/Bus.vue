@@ -10,7 +10,6 @@
             span {{item.start}}
             span(v-if="item.start !== item.end") -{{item.end}}
           .right.tip {{item.interval}}
-      div.svg_container#d3_workday
     ul.detail-list(v-else)
       li.info(:class="{active: item.active}" v-for='item in holiday')
         .top
@@ -18,7 +17,7 @@
             span {{item.start}}
             span(v-if="item.start !== item.end") -{{item.end}}
           .right.tip {{item.interval}}
-      div.svg_container#d3_holiday
+    div.svg_container#d3
 </template>
 <script>
 import api from "@/api";
@@ -49,7 +48,9 @@ const DATA = {
   ]
 }
 
-function render_d3(data,div) {
+let tick=setInterval(()=>{},1*1000);
+function render_d3(data,div="#d3") {
+  clearInterval(tick);
 
   // 把每一天看作24*60分钟
   let time=[]
@@ -65,7 +66,7 @@ function render_d3(data,div) {
     }
   }
 
-  const WIDTH=250;
+  const WIDTH=300;
   const HEIGHT=80;
   const MARGIN={TOP:10,BOTTOM:10,LEFT:10,RIGHT:10};
 
@@ -113,6 +114,8 @@ function render_d3(data,div) {
        .attr("stroke-width",2)
        .attr("marker-end","url(#arrow)");
 
+    const FADE_MARGIN=25;
+
     // 绘制代表班车时刻的圆点
     svg.append("g")
        .selectAll("dot")
@@ -125,7 +128,7 @@ function render_d3(data,div) {
        .attr("stroke","#555")
        .attr("stroke-width",3)
        .attr("fill","white")
-       .attr("opacity",function(d){return ((x(d)>(WIDTH-50)||x(d)<50)?("0"):("1"))});
+       .attr("opacity",function(d){return ((x(d)>(WIDTH-FADE_MARGIN)||x(d)<FADE_MARGIN)?("0"):("1"))});
 
     // 绘制班车时刻的文字
     svg.append("g")
@@ -138,7 +141,7 @@ function render_d3(data,div) {
        .attr("y",(HEIGHT/2)-15)
        .attr("text-anchor","middle")
        .attr("font-size",18)
-       .attr("opacity",function(d){return ((x(d)>(WIDTH-50)||x(d)<50)?("0"):("1"))});
+       .attr("opacity",function(d){return ((x(d)>(WIDTH-FADE_MARGIN)||x(d)<FADE_MARGIN)?("0"):("1"))});
 
     // 绘制代表当前时间的标记
     svg.append("g")
@@ -158,7 +161,8 @@ function render_d3(data,div) {
   }
 
   render();
-  setInterval(render,1*1000);
+
+  tick=setInterval(render,1*1000);
 }
 
 // 把新格式的校车班次数据适配为旧形式的校车班次数据以供界面渲染
@@ -199,8 +203,20 @@ export default {
   },
   mounted () {
     // 渲染由d3.js库绘制的数据可视化图形
-    render_d3(DATA.WORKDAY,"#d3_workday")
-    render_d3(DATA.HOLIDAY,"#d3_holiday")
+    if(this.iswork){
+      render_d3(DATA.WORKDAY)
+    }else{
+      render_d3(DATA.HOLIDAY)
+    }
+  },
+  watch:{
+    iswork(is) {
+      if(is){
+        render_d3(DATA.WORKDAY)
+      }else{
+        render_d3(DATA.HOLIDAY)
+      }
+    }
   },
   methods: {
     switchDay(event){
@@ -249,8 +265,6 @@ export default {
 
   .svg_container
     text-align center
-    margin auto
-    position relative
 
   .tooltip
     position absolute
