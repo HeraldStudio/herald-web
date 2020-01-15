@@ -14,6 +14,7 @@
     button.primary.disabled(v-if='loading') 正在登录…
     button.primary(v-else, @click='login()') 登录
     .tips 小猴偷米使用业界公认标准加密你的所有隐私数据，使用只有你知道的统一身份认证密码和只有你的设备保存的会话标识符 (token) 作为数据解密的密钥。
+    .Qtips 小猴偷米客服QQ：210784021。
 
 </template>
 <script>
@@ -74,6 +75,8 @@
           // 执行到此处，/auth请求返回，判断是成功还是验证码
           if(authResult.verifyUrl){
             // 有验证码的情况
+            this.$toasted.show('此次登陆需要验证码,正在跳转...')
+            
             window.location.href = authResult.verifyUrl
             // 跳转到ids认证页面
           } else {
@@ -161,6 +164,12 @@
       color #ccc
       margin-top 40px
 
+    .Qtips
+      text-align justify
+      width 260px
+      color #ccc
+      margin-top 40px
+      text-align center
     .graduate-tip
       text-align justify
       width 260px
