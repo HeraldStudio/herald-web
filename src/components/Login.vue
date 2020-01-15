@@ -165,21 +165,18 @@
       color #ccc
       margin-top 40px
 
-<<<<<<< HEAD
     .Qtips
       text-align justify
       width 260px
       color #ccc
       margin-top 40px
       text-align center
-=======
     .tips-law
       text-align center
       width 260px
       color #ccc
       margin-top 60px
       
->>>>>>> 26ecd7d0350d53a5d9c6e7090d17c07e55ad507a
     .graduate-tip
       text-align justify
       width 260px
