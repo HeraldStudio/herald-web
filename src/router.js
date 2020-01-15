@@ -28,6 +28,9 @@ import Classroom from '@/pages/Classroom'
 import LostAndFoundList from '@/pages/lostAndFound/List'
 import LostAndFoundCreate from '@/pages/lostAndFound/CreateOrUpdate'
 import LostAndFoundDetail from '@/pages/lostAndFound/Detail'
+import TeamList from '@/pages/team/List'
+import TeamPublish from '@/pages/team/Publish'
+import CustomExam from '@/pages/CustomExam'
 Vue.use(Router)
 
 // 微信环境下，为隐藏前进后退按钮栏，设置 mode 为 abstract，实现完全不产生浏览器历史
@@ -185,6 +188,21 @@ export default new Router({
       path: '/lost-and-found/detail/:id',
       name: '查看详情',
       component: LostAndFoundDetail
+    },
+    {
+      path: '/team',
+      name: '竞赛组队',
+      component: TeamList
+    },
+    {
+      path: '/team/publish',
+      name: '发布竞赛组队信息',
+      component: TeamPublish
+    },
+    {
+      path: '/custom-exam',
+      name: '自定义考试提醒',
+      component: CustomExam
     },
     {
       path: '*',

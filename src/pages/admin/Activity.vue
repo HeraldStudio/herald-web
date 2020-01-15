@@ -29,7 +29,7 @@
             td.click(rowspan='2') {{ activity.clicks }}
             td.operations(rowspan='2')
               button.save(v-if='activity.pic && activity.title && activity.content && activity.startTime && activity.endTime' @click='saveActivity(activity)') 保存
-              confirm-button.remove(@click='removeActivity(activity.aid)' confirm-text='确定') 删除
+              confirm-button.remove(@click='removeActivity(activity._id)' confirm-text='确定') 删除
           tr.activity
             td(colspan='4')
               textarea.content(v-model='activity.content')
@@ -88,7 +88,7 @@
         if (nextPage.length < 10) {
           this.ended = true
         }
-        nextPage = nextPage.filter(k => this.activities.find(j => j.aid !== k.aid))
+        nextPage = nextPage.filter(k => this.activities.find(j => j._id !== k._id))
         this.activities = this.activities.concat(nextPage)
         this.page++
       },
@@ -124,8 +124,8 @@
         await api.put('/api/admin/activity', { activity })
         this.activities = await api.get('/api/admin/activity')
       },
-      async removeActivity(aid) {
-        await api.delete('/api/admin/activity', { aid })
+      async removeActivity(_id) {
+        await api.delete('/api/admin/activity', { _id })
         this.activities = await api.get('/api/admin/activity')
       }
     }
