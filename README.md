@@ -31,6 +31,7 @@ npm run build
 3. `package.json` 中 `babel` 的 `module-resolver` 插件可以代替 `webpack` 中的 `alias` 功能，其中设置了 `@` 代表 `src` 文件夹，`static` 代表 `static` 文件夹；之所以在那里配置 `"vue": "vue/dist/vue"` 是因为 `vue` 的 `package.json` 会默认指向 `vue/dist/vue-common`，导致运行时错误。
 
 4. `static` 文件夹并不是真的静态，其中的图片或其他资源需要 import，之后将会变成生成后的路径字符串，可以插入图片的 `src` 中使用，这一点与 React 中的使用方式类似。
+5. 当前因为部分依赖的版本支持不足， 经实验node版本只能为v10.18.0，在其余版本上不确保正常运行。
 
 ## 开发规范
 
