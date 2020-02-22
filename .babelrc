@@ -3,6 +3,7 @@
   "plugins": [
     [
       "module-resolver",
+      "transform-runtime",
       {
         "root": "./",
         "alias": {
