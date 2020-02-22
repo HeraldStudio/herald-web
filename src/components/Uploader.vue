@@ -11,7 +11,7 @@
 <script>
   import api from '../api'
   import axios from 'axios'
-  import ImageCompressor from 'image-compressor.js'
+  import ImageCompressor from 'compressorjs'
   export default {
     props: {
       images: Array

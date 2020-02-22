@@ -1,0 +1,16 @@
+{
+  "presets": ["@babel/preset-react"],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": "./",
+        "alias": {
+          "@": "./src",
+          "static": "./static",
+          "vue": "vue/dist/vue.common"
+        }
+      }
+    ]
+  ]
+}
