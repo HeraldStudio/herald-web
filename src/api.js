@@ -9,7 +9,7 @@ import VuexPersistence from "vuex-persist";
 export default new Vue({
   data: {
     axios: axios.create({
-      baseURL: 'https://myseu.cn/ws3/',
+      baseURL: 'https://tommy.seu.edu.cn/ws4/',
       headers: { 'Content-Type': 'application/json' },
       validateStatus: () => true
     })
@@ -73,7 +73,7 @@ export default new Vue({
       }
     },
     updateHeaders(){
-      this.axios.defaults.headers.token = this.token
+      this.axios.defaults.headers["x-api-token"] = this.token
     }
   }
 })

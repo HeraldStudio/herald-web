@@ -33,11 +33,15 @@ Vue.use(Vuex);
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage
 });
-const storeAxios = axios.create({
-  baseURL: "https://myseu.cn/ws3/",
-  headers: { "Content-Type": "application/json" },
-  validateStatus: () => true
-});
+// const storeAxios = axios.create({
+//   baseURL: "https://tommy.seu.edu.cn/ws4/",
+//   headers: 
+//   { 
+//     "Content-Type": "application/json",
+//     "x-api-token": this.$store.state.token
+//   },
+//   validateStatus: () => true
+// });
 const store = new Vuex.Store({
   state: {
     token: "",
@@ -74,9 +78,9 @@ import seuLogin from "./components/SeuLogin.vue";
 import scrollView from "./components/ScrollView.vue";
 import home from "./pages/Home.vue";
 import login from "@/components/Login.vue";
-
 import logoImg from "static/images/logo.png";
 import downloadImg from "static/images/download.png";
+import qs from 'querystring'
 
 function getOffsetTop(obj) {
   let tmp = obj.offsetTop - obj.scrollTop;
@@ -158,6 +162,7 @@ export default {
         (timeout = setTimeout(() => (this.isLoading = false), 1000));
     });
 
+
     // 套壳用，通过 URL 参数导入 token
     if (/importToken=([0-9a-fA-F]+)/.test(location.search)) {
       api.token = RegExp.$1;
@@ -169,7 +174,28 @@ export default {
       user.admin = await api.get("/api/admin/admin");
       this.$store.commit('setUser', user)
       // 进入登录成功状态
-    } else {
+    } else if(window.location.search){
+      // URL 中存在参数,进行解析
+      let ticket = qs.parse(window.location.search.replace('?','')).ticket
+      if(ticket){
+        // ticket 存在
+        console.log(ticket)
+        let res = await api.post('/auth', { 
+          ticket,
+          service: 'https://tommy.seu.edu.cn',
+          platform: 'web'
+        })
+        if(res.data.success){
+          // 获取到token
+          window.store.commit('setToken', token)
+          // 重新获取到用户信息
+          let user = await api.get("/api/user");
+          console.log(user)
+        }
+        console.log(res)
+      }
+    }
+    else {
       let token = window.store.state.token // 先从 Vuex 读取 token
       if( !token ) {
         // 如果 Vuex 中没有 token 则 尝试从 cookie 中获取
@@ -195,6 +221,7 @@ export default {
         }
       }
       // 更新 token 以及失效时间
+      console.log(token)
       cookie.set('herald-default-token', token || '', { expires: 60 })
     }
   },
