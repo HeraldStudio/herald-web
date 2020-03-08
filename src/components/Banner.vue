@@ -36,8 +36,9 @@
     methods: {
       async reload() {
         this.banner = await api.get('/api/banner')
+        console.log(this.banner)
       },
-      async click({ hasUrl, bid }) {
+      async click({ hasUrl, id }) {
         if (hasUrl) {
 
           // iOS WebApp 端，需要用 location.href 赋值才能在 Safari 中打开，否则将会在 WebApp 中打开，导致无法返回
@@ -51,7 +52,7 @@
           // https://blog.csdn.net/wgrzhuaq/article/details/7821725
           else {
             let win = window.open('about:blank', '_blank')
-            let url = await api.put('/api/banner', { bid })
+            let url = await api.put('/api/banner', { id })
 
             // 由于 interceptor.js 的 hook，window.open 可能返回 null（小程序情况）
             // 此时，直接调用 window.open 来触发 hook 中的复制链接
