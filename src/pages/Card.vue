@@ -18,28 +18,37 @@
           .right {{ formatTimeNatural(item.time) }}
       li.empty(v-if='!card.detail.length') 暂无消费数据
       li.prev-day
-        .hint {{ formatDateNatural(oldestDate) }}至今 总支出 {{ totalPayments.toFixed(2) }}
-        button(@click='loadPrevDay()' :class='{ loading: loading }') {{ loading ? '...' : '加载前一天' }}
+        .hint {{ formatDateNatural(oldestDate) }} 总支出 {{ totalPayments.toFixed(2) }}
+        button(@click='loadPrevDay()' :class='{ loading: loading }') {{ loading ? '...' : '查询前一天' }}
+        timestamp.time(v-model='oldestDate' :useType='useType' :showType='showType' )
+        button(@click='loadOneDay()' :class='{ loading: loading }') {{ loading ? '...' : '查询' }}
 
 </template>
 <script>
 
   import api from '@/api'
   import formatter from '@/util/formatter'
+  import timestamp from '@/components/TimestampPicker.vue'
+  import moment from "moment";
 
   export default {
+    components: {
+      timestamp
+    },
     data() {
       return {
         card: null,
         oldestDate: null,
-        loading: false
+        loading: false,
+        useType: 'date',
+        showType: 'date',
       }
     },
     persist: {
       card: 'herald-default-card'
     },
     created() {
-      this.oldestDate = new Date().getTime()
+      this.oldestDate = +moment()
       this.reload()
     },
     computed: {
@@ -59,13 +68,24 @@
         this.loading = true
         try {
           let prevDayTimestamp = this.oldestDate - 1000 * 60 * 60 * 24
-          let prevDay = new Date(prevDayTimestamp)
-          let prevDayName = `${prevDay.getFullYear()}-${(prevDay.getMonth() + 1) < 10 ? '0'+ (prevDay.getMonth() + 1) : (prevDay.getMonth() + 1)}-${prevDay.getDate() < 10 ? '0' + prevDay.getDate(): prevDay.getDate()}`
-          console.log(prevDayName)
+          let prevDayName = moment(prevDayTimestamp).format('YYYY-MM-DD')
           let res = await api.get('/api/card', { date: prevDayName })
           if (res) {
-            this.card.detail = this.card.detail.concat(res.detail)
+            this.card.detail = res.detail
             this.oldestDate = prevDayTimestamp
+          }
+        } finally {
+          this.loading = false
+        }
+      },
+      async loadOneDay() {
+        console.log('查法')
+        this.loading = true
+        try {
+          let oneDayName = moment(this.oldestDate).format('YYYY-MM-DD')
+          let res = await api.get('/api/card', { date: oneDayName })
+          if (res) {
+            this.card.detail = res.detail
           }
         } finally {
           this.loading = false
@@ -79,6 +99,8 @@
 
 </script>
 <style lang="stylus" scoped>
+  .times
+    padding-top 0px !important
 
   ul.detail-list li.prev-day
     display flex
@@ -95,8 +117,11 @@
 
     button
       cursor pointer
+      padding-top 6px
+      padding-bottom 6px
 
       &.loading
         pointer-events none
+    
 
 </style>

@@ -1,6 +1,6 @@
 <template>
   <datetime v-model='date' @input='change()'
-    :format='format' type='datetime'
+    :format='format' :type='useType'
     :phrases='{ ok: "确定", cancel: "取消" }'
     :minute-step='5' :auto='true'/>
 </template>
@@ -15,12 +15,45 @@
       datetime: () => import('vue-datetime').then(k => k.Datetime)
     },
     props: {
-      value: Number
+      value: Number,
+      // 选择类型
+      // date 日期 ; datetime 日期时间 ; time 时间 => 原生属性
+      useType: {
+        type: String,
+        default: 'datetime'
+      },
+      // 显示类型
+      // date 日期 ; datetime 日期时间 ; time 时间
+      showType: {
+        type: String,
+        default: 'datetime'
+      }
     },
     data () {
       return {
         date: new Date().toString(),
-        format: {
+        format: {}
+      }
+    },
+    created () {
+      if (this.value) {
+        this.date = new Date(this.value).toISOString()
+      }
+      //  根据显示类型定义 format
+      if (this.showType === 'date'){
+        this.format = {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+        }
+      }else if (this.showType === 'time'){
+        this.format = {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: false
+        }
+      }else{
+         this.format = {
           year: 'numeric',
           month: 'numeric',
           day: 'numeric',
@@ -28,11 +61,6 @@
           minute: '2-digit',
           hour12: false
         }
-      }
-    },
-    created () {
-      if (this.value) {
-        this.date = new Date(this.value).toISOString()
       }
     },
     watch: {
