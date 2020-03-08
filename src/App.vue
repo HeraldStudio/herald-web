@@ -6,7 +6,7 @@
         seuLogin
         scrollView(v-if='isLogin')
           home(:user='user')
-        login(v-else)
+        login(v-else :loging='loging')
 
       //- overlay-page 为手机版上层栈，桌面版右侧栏
       .overlay-page(v-if='isLogin' :class='{ home: isHome }' ref='page')
@@ -33,15 +33,6 @@ Vue.use(Vuex);
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage
 });
-// const storeAxios = axios.create({
-//   baseURL: "https://tommy.seu.edu.cn/ws4/",
-//   headers: 
-//   { 
-//     "Content-Type": "application/json",
-//     "x-api-token": this.$store.state.token
-//   },
-//   validateStatus: () => true
-// });
 const store = new Vuex.Store({
   state: {
     token: "",
@@ -129,6 +120,7 @@ export default {
     return {
       env: window.__herald_env,
       isLoading: false,
+      loging: false,
       title: "",
       isHome: true,
       mouseX: 0,
@@ -179,23 +171,29 @@ export default {
       let ticket = qs.parse(window.location.search.replace('?','')).ticket
       if(ticket){
         // ticket 存在
-        console.log(ticket)
+        this.isLoading = true
+        this.loging = true
         let res = await api.post('/auth', { 
           ticket,
           service: 'https://tommy.seu.edu.cn',
           platform: 'web'
         })
-        if(res.data.success){
+        if(res){
           // 获取到token
-          window.store.commit('setToken', token)
+          window.store.commit('setToken', res)
           // 重新获取到用户信息
           let user = await api.get("/api/user");
-          console.log(user)
+          user.admin = await api.get("/api/admin/admin");
+          // 更新缓存
+          let key = 'herald-cached-user-' + this.$store.state.token;
+          localStorage.setItem(key, JSON.stringify(user));
+          this.$store.commit('setUser', user);
+          // 清除url中 ticket
+          window.location.search = '' 
         }
-        console.log(res)
+        
       }
-    }
-    else {
+    } else {
       let token = window.store.state.token // 先从 Vuex 读取 token
       if( !token ) {
         // 如果 Vuex 中没有 token 则 尝试从 cookie 中获取
@@ -217,11 +215,10 @@ export default {
           this.$store.commit('setUser', user);
         } catch (e) {
           this.$toasted.show('登录态检查失败，请重新登录');
-          this.$store.commit('logout', user);
+          this.$store.commit('logout');
         }
       }
       // 更新 token 以及失效时间
-      console.log(token)
       cookie.set('herald-default-token', token || '', { expires: 60 })
     }
   },

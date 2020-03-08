@@ -138,6 +138,7 @@ export default {
   methods: {
     logout() {
       this.$store.commit("logout");
+       window.location = `https://newids.seu.edu.cn/authserver/logout?goto=https://tommy.seu.edu.cn`
     }
   },
   computed: {

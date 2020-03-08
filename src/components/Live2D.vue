@@ -16,7 +16,7 @@
 <script>
 
   import api from '../api'
-  import live2dImg from 'static/images/live2d.png'
+  import live2dImg from 'static/images/live2d-new.png'
 
   const timeout = (t) => new Promise(r => setTimeout(r, t))
 
