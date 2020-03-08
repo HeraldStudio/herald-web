@@ -60,7 +60,8 @@
         try {
           let prevDayTimestamp = this.oldestDate - 1000 * 60 * 60 * 24
           let prevDay = new Date(prevDayTimestamp)
-          let prevDayName = `${prevDay.getFullYear()}-${prevDay.getMonth() + 1}-${prevDay.getDate()}`
+          let prevDayName = `${prevDay.getFullYear()}-${(prevDay.getMonth() + 1) < 10 ? '0'+ (prevDay.getMonth() + 1) : (prevDay.getMonth() + 1)}-${prevDay.getDate() < 10 ? '0' + prevDay.getDate(): prevDay.getDate()}`
+          console.log(prevDayName)
           let res = await api.get('/api/card', { date: prevDayName })
           if (res) {
             this.card.detail = this.card.detail.concat(res.detail)
