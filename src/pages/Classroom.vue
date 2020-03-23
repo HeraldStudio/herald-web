@@ -6,18 +6,18 @@
         .picker
           //- 校区切换器
           .prev ‹
-          .cur {{ campus[displayCampus].name }}
+          .cur {{campus[displayCampus].name}}
           .next ›
 
           //- 教学楼切换器
           .prev(@click='prevBuilding()') ‹
-          .cur {{ building[displayBuilding].name }}
+          .cur {{building[displayBuilding].name}}
           .next(@click='nextBuilding()') ›
       li
         .picker
           //- 学期切换器
           .prev(@click='prevTerm()') ‹
-          .cur(title='点击回到本学期' @click='displayTerm = currentTerm') {{ term[displayTerm].name }} 
+          .cur(title='点击回到本学期' @click='displayTerm = currentTerm') {{term[displayTerm].name}}
           .next(@click='nextTerm()') ›    
       li
         .picker
@@ -50,7 +50,7 @@
         .top
           .left {{ item.name }}
           .right 座位数：{{ item.seatCount }}
-      li.empty(v-if='isInit') 
+      li.empty(v-if='isInit') 点击按钮查询空教室哦～
       li.empty(v-else-if='!classroom.length') 该时间段这栋楼没有空教室……
       
 
@@ -58,13 +58,31 @@
 <script>
 
   import api from '@/api'
-  import formatter from '@/util/formatter'
-
+  import moment from "moment";
   export default {
     data() {
       return {
         // 是否初次进入该页面，决定ul为空时的placeholder
         isInit: true,
+
+        timelist:[
+          { start:8, end:8 + 45/60 },            //第一节课
+          { start:8 + 45/60, end:9 + 35/60 },    //第二节课
+          { start:9 + 35/60, end:10 + 35/60 },   //第三节课
+          { start:10 + 35/60, end:11 + 25/60 },  //第四节课
+          { start:11 + 25/60, end:12 + 15/60 },  //第五节课
+
+          { start:12 + 15/60, end:14 + 45/60 },  //第六节课
+          { start:14 + 45/60, end:15 + 35/60 },  //第七节课
+          { start:15 + 35/60, end:16 + 35/60 },  //第八节课
+          { start:16 + 35/60, end:17 + 25/60 },  //第九节课
+          { start:17 + 25/60, end:18 + 15/60 },  //第十节课
+
+          { start:18 + 15/60, end:19 + 15/60 },  //第十一节课
+          { start:19 + 15/60, end:20 + 5/60 },  //第十二节课
+          { start:20 + 5/60, end:20 + 55/60 },  //第十三节课
+
+        ],
 
         classroom: [],
         campus: [],
@@ -87,19 +105,28 @@
       }
     },
     async created() {
-      let now = new Date()
+      let now = moment()
+      let nowhour = now.hour()
+      let nowMinute = now.minute()
       // 目前没有别的校区，直接初始化九龙湖的
       this.campus = [{id: 22, name: '九龙湖'}] // await api.get('api/classroom/campus')
       this.building = await api.get('api/classroom/building')
       // 查询到的学期数据里面，“2018-19暑假”的起始时间错误，暂时删除这一项
-      this.term = (await api.get('api/classroom/term')).reverse().slice(1)
+      this.term = (await api.get('api/classroom/term')).reverse()
+      
+      
+      this.displayTerm = this.currentTerm = this.term.findIndex(k => {
+        return k.endDate.time > +now && k.startDate.time < +now
+      })
+      this.displayWeek = this.currentWeek = Math.ceil((+now - this.term[this.currentTerm].startDate.time) / (1000 * 60 * 60 * 24 * 7))
+      this.displayDay = this.currentDay = (now.day() + 6) % 7 + 1
+      this.startSequence = this.endSequence = this.timelist.findIndex(k => {
+        return k.start < nowhour + nowMinute/60 && k.end > nowhour + nowMinute/60
+      }) + 1
 
-      this.displayTerm = this.currentTerm = this.term.findIndex(k => k.endDate.time > now.getTime() && k.startDate.time < now)
-      this.displayWeek = this.currentWeek = Math.ceil((now.getTime() - this.term[this.currentTerm].startDate.time) / (1000 * 60 * 60 * 24 * 7))
-      this.displayDay = this.currentDay = (now.getDay() + 6) % 7 + 1
+      
     },
     methods: {
-      ...formatter,
       prevBuilding() {
         if (this.displayBuilding > 0) {
           this.displayBuilding -= 1

@@ -36,7 +36,6 @@
     methods: {
       async reload() {
         this.banner = await api.get('/api/banner')
-        console.log(this.banner)
       },
       async click({ hasUrl, id }) {
         if (hasUrl) {

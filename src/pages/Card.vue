@@ -5,9 +5,6 @@
       button.info
         .title 卡余额
         .content {{ card.info.balance }}
-      button.info
-        .title 电子钱包余额
-        .content {{ card.info.eacc }}
       button.charge(@click="navigateToCharge()") 充值
     ul.detail-list
       li(v-for='item in card.detail')
