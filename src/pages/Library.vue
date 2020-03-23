@@ -8,8 +8,6 @@
           .right 应还：{{ formatDateNatural(item.returnDate) }}
         .bottom
           .left {{ item.author }}
-          button.right(v-if='!item.renewCount' @click='renew(item.bookId)') 续借
-          .right(v-else) 已续借
       li.empty(v-if='!books || !books.length') 暂无已借图书
 
 </template>
@@ -26,6 +24,7 @@
     },
     async created() {
       this.books = await api.get('/api/library')
+      
     },
     persist: {
       books: 'herald-default-library'
