@@ -171,7 +171,7 @@ export default new Router({
     },
     {
       path: '/cet',
-      name: 'CET 查询',
+      name: 'CET 助手',
       component: CET
     },
     {

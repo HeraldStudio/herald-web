@@ -24,7 +24,7 @@
       .row(v-if='!tidyMode')
         item(v-if='isUndergraduate' name='跑操' :value='pe && pe.count' :is-stale='pe && pe.isStale' route='/pe')
         item(name='借书' :value='library && library.length' :is-stale='library && library.isStale' route='/library')
-        item(v-if='isUndergraduate' name='CET' route='/cet' value='›')
+        item(v-if='isUndergraduate' name='CET 助手' route='/cet' value='›')
 
       .row(v-if='!tidyMode')
         item(name='失物招领&寻物启事' route='/lost-and-found' :value='lostAndFoundMsg')

@@ -51,7 +51,7 @@
           .left {{ item.name }}
           .right 座位数：{{ item.seatCount }}
       li.empty(v-if='isInit') 点击按钮查询空教室哦～
-      li.empty(v-else-if='!classroom.length') 该时间段这栋楼没有空教室……
+      li.empty(v-if='!classroom.length && !isInit') 该时间段这栋楼没有空教室……
       
 
 </template>
@@ -66,7 +66,7 @@
         isInit: true,
 
         timelist:[
-          { start:8, end:8 + 45/60 },            //第一节课
+          { start:0, end:8 + 45/60 },            //第一节课
           { start:8 + 45/60, end:9 + 35/60 },    //第二节课
           { start:9 + 35/60, end:10 + 35/60 },   //第三节课
           { start:10 + 35/60, end:11 + 25/60 },  //第四节课
@@ -80,7 +80,7 @@
 
           { start:18 + 15/60, end:19 + 15/60 },  //第十一节课
           { start:19 + 15/60, end:20 + 5/60 },  //第十二节课
-          { start:20 + 5/60, end:20 + 55/60 },  //第十三节课
+          { start:20 + 5/60, end:24 },  //第十三节课
 
         ],
 
@@ -191,15 +191,16 @@
       },
       async search() {
         this.classroom = await api.get('api/classroom', {
-            campusId: this.campus[this.displayCampus].id,
-            buildingId: this.building[this.displayBuilding].id,
-            termId: this.term[this.displayTerm].id,
-            startWeek: this.displayWeek,
-            endWeek: this.displayWeek,
-            dayOfWeek: this.displayDay,
-            startSequence: this.startSequence,
-            endSequence: this.endSequence
-          })
+          campusId: this.campus[this.displayCampus].id,
+          buildingId: this.building[this.displayBuilding].id,
+          termId: this.term[this.displayTerm].id,
+          startWeek: this.displayWeek,
+          endWeek: this.displayWeek,
+          dayOfWeek: this.displayDay,
+          startSequence: this.startSequence,
+          endSequence: this.endSequence
+        })
+        this.isInit = false
       }
     }
   }
