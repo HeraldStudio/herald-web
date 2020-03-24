@@ -4,13 +4,13 @@
     a.hintTip 妈妈再也不会担心我忘记准考证啦～φ(≧ω≦*)♪
     div.crad
       a.subtitle 准考证号:
-      input(v-model='cetform.examCode')
+      input(v-model="cetform.examCode" placeholder='请输入准考证号')
     div.location
       a.subtitle 考试地点:
-      input(v-model='cetform.location')
+      input(v-model="cetform.location" placeholder='请输入考试地点')
     div.time
       a.subtitle 时间:
-      timestamp.timestamp(v-model='cetform.examTime' :useType='useType' :showType='showType')
+      timestamp.timestamp(v-model="cetform.examTime" :useType="useType" :showType="showType")
       a.ddlTip(v-if='cetform.examTime') {{ displayTip }}
     a.display
     button(@click='save()') {{this.loading ? '...' : '保存'}}
@@ -34,22 +34,44 @@
         cetform:{
           examCode:'',
           location:'',
-          examTime:''
+          examTime:0
         }
       }
     },
+    // 👇这个用用法很高级，但是我不会
     persist: {
       cet: 'herald-default-cet'
     },
     async created() {
+      let cacheCET = JSON.parse(localStorage.getItem('herald-default-cet'))
+      
+      // 先去取一下缓存
+      if(cacheCET){
+        // 如果缓存存在则显示
+        this.cetform = cacheCET
+      }
+      
+      // 再从后端获取与一下
       const res = await api.get('/api/cet')
-      this.cetform = res 
+      if(res !== '暂无记录'){
+        this.cetform = res
+        // 缓存 CET 查询结果
+        localStorage.setItem('herald-default-cet',JSON.stringify(this.cetform))
+      }else{
+        // 没有记录的提醒
+      }
     },
     methods:{
       ...formatter,
       async save(){
         this.loading = true
-        await api.post('api/cet',this.cetform);
+        try{
+          await api.post('api/cet',this.cetform);
+          // 如果保存成功就缓存到本地
+          localStorage.setItem('herald-default-cet',JSON.stringify(this.cetform))
+        }catch(err){
+          console.log(err)
+        }
         this.loading = false
       }
     },
