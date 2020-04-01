@@ -6,18 +6,18 @@
         .picker
           //- 校区切换器
           .prev ‹
-          .cur {{campus[displayCampus].name}}
+          .cur {{campus[displayCampus].name?campus[displayCampus].name:"---"}}
           .next ›
 
           //- 教学楼切换器
           .prev(@click='prevBuilding()') ‹
-          .cur {{building[displayBuilding].name}}
+          .cur {{building[displayBuilding].name?building[displayBuilding].name:"---"}}
           .next(@click='nextBuilding()') ›
       li
         .picker
           //- 学期切换器
           .prev(@click='prevTerm()') ‹
-          .cur(title='点击回到本学期' @click='displayTerm = currentTerm') {{term[displayTerm].name}}
+          .cur(title='点击回到本学期' @click='displayTerm = currentTerm') {{term[displayTerm].name?term[displayTerm].name:"---"}}
           .next(@click='nextTerm()') ›    
       li
         .picker

@@ -91,17 +91,17 @@ export default new Router({
     },
     {
       path: '/notice/url/:url',
-      name: '通知公告',
+      name: '公告',
       component: NoticeView
     },
     {
       path: '/notice/:nid',
-      name: '通知公告',
+      name: '公告',
       component: NoticeView
     },
     {
       path: '/notice/competition/:srtpId',
-      name: '通知公告',
+      name: '公告',
       component: NoticeView
     },
     {
@@ -121,7 +121,7 @@ export default new Router({
     },
     {
       path: '/admin/notice',
-      name: '通知公告',
+      name: '公告',
       component: AdminNotice
     },
     {
@@ -166,7 +166,7 @@ export default new Router({
     },
     {
       path: '/notice',
-      name: '通知公告',
+      name: '公告',
       component: Notice
     },
     {

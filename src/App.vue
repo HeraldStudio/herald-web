@@ -38,7 +38,8 @@ const store = new Vuex.Store({
     token: "",
     pending: false,
     user: {},
-    isLogin: false
+    isLogin: false,
+    appUrl:""
   },
   plugins: [vuexLocal.plugin],
   mutations: {
@@ -126,7 +127,8 @@ export default {
       mouseX: 0,
       mouseY: 0,
       logoImg,
-      downloadImg
+      downloadImg,
+    appUrl:"heraldapp://tommy.seu.edu.cn",
     };
   },
   computed:{
@@ -140,7 +142,7 @@ export default {
   async created() {
     this.title = this.$route.name;
     this.isHome = this.$route.path === "/";
-
+    this.$store.state.appUrl =this.appUrl;
     // 请求计数，有请求正在处理则显示加载态
     // 注意根据 Xhook 要求，before handler 参数个数必须是 1，after handler 参数个数必须是 2，不能省略
     let requests = 0,
@@ -267,6 +269,7 @@ export default {
     --color-error          #ed3f1f
     --color-error-light    #fa8070
     --color-error-bg       #ffe2de
+    --color-purple         #9B51E0
     -webkit-tap-highlight-color transparent
     font-size 13px
     color var(--color-text-regular)

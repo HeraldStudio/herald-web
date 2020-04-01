@@ -3,13 +3,15 @@
   .page
     div(v-if='gpa')
       ul.detail-list
-        li.info(v-if="!isGraduate")
-          .top
-            .tag 教务
-            .left GPA {{ Number(gpa.gpa).toFixed(3) === 0.000 ? "教务处未公开" : Number(gpa.gpa).toFixed(3) || '暂无' }}
-          .bottom
-            .left 首修 {{ Number(gpa.gpaBeforeMakeup).toFixed(3) === 0.000 ? "暂无" : Number(gpa.gpaBeforeMakeup).toFixed(3) || '未计算' }} / 已获学分 {{ gpa.achievedCredits }}
-            .right 计算至 {{ lastCalculateSemester }}
+        li.info
+          .warning-tip 以下数据均由小猴偷米提供,仅供参考，与教务处无关,不具备法律效应，不能作为评奖评优、推免等参考依据。所有成绩相关数据以教务处网站查询结果为准。
+        //- li.info(v-if="!isGraduate")
+        //-   .top
+        //-     .tag 教务
+        //-     .left GPA {{ Number(gpa.gpa).toFixed(3) === 0.000 ? "教务处未公开" : Number(gpa.gpa).toFixed(3) || '暂无' }}
+        //-   .bottom
+        //-     .left 首修 {{ Number(gpa.gpaBeforeMakeup).toFixed(3) === 0.000 ? "暂无" : Number(gpa.gpaBeforeMakeup).toFixed(3) || '未计算' }} / 已获学分 {{ gpa.achievedCredits }}
+        //-     .right 计算至 {{ lastCalculateSemester }}
 
         li.info(v-if="!isGraduate && shouldShowDelta")
           .top
@@ -33,15 +35,14 @@
             .tag 均分
             .left AVG {{ predictAVGWithMakeup() }} 
             .right = {{ weighedScore().toFixed(2) }} ÷ {{ sumCredits() }}     
-            
           .bottom
             .left 首修 {{ predictAVGWithoutMakeup() }} 
 
-        li.info(v-if="!isGraduate")
-          .top
-            .tag 留学
-            .left AVG {{ predictForeignAVGWithMakeup() }}
-            .right = {{ weighedForeignScore().toFixed(2) }} ÷ {{ sumCredits() }}
+        //- li.info(v-if="!isGraduate")
+        //-   .top
+        //-     .tag 留学
+        //-     .left AVG {{ predictForeignAVGWithMakeup() }}
+        //-     .right = {{ weighedForeignScore().toFixed(2) }} ÷ {{ sumCredits() }}
 
         li.info(v-if="isGraduate")
           .top
@@ -50,8 +51,9 @@
             .left 规格化平均成绩 {{ gpa.score || '未计算' }} / 已获学分 {{ gpa.credits.total }} / 应修学分 {{ gpa.credits.required }}
             .right 教务处计算于 {{ formatTimeNatural(gpa.calculationTime) }}
         li.info
-          .top 以上绩点为小猴偷米使用《大学生手册》所提供的算法估算得出，仅供个人参考，不能作为评奖评优以及其他用途的凭据，准确绩点以教务处为准
-
+          .top 
+            span 自定义课程成绩请前往
+            a(:href="appUrl") 小猴偷米 App
         .check-list(v-if="!isGraduate" v-for='item in gpa.detail')
           .tip.filtered(:class="{ visible: hasFilteredCourse(item.semester) }") 学期局部估算不包含被后续学期重修覆盖的课程。
           .section
@@ -60,14 +62,14 @@
             .select-all(@click='toggleSelectAllInSemester(item)') {{ hasSelectAllInSemester(item) ? '全不选' : '全选' }}
           
           //- 先放非选修，可以选择
-          button.check-box.required(v-for='k in item.courses' v-if='!k.courseType' :class='{ disabled: !isSelected(k), bad: !k.isPassed, makeup: k.scoreType !== "首修" }' :style='{ opacity: k.equivalentScore / 100 }' @click='toggle(k)')
+          button.check-box.required(v-for='k in item.courses' v-if='k.courseType=="必修"' :class='{ disabled: !isSelected(k), bad: !k.isPassed, makeup: k.scoreType !== "首修" }' :style='{ opacity: k.score / 100 }' @click='toggle(k)')
             .name {{ k.courseName }}{{ k.scoreType !== '首修' ? ' (' + k.scoreType + ')' : '' }}
-            .grade {{ k.equivalentScore }}{{ k.score != k.equivalentScore ? ' (' + k.score + ')' : '' }} × {{ k.credit }}
+            .grade {{ k.score }} × {{ k.credit }}
 
           //- 然后放选修
-          button.check-box.optional(v-for='k in item.courses' v-if='k.courseType' :class='{ disabled: true, bad: !k.isPassed, makeup: k.scoreType !== "首修" }')
+          button.check-box.optional(v-for='k in item.courses' v-if='k.courseType!="必修"' :class='{ disabled: !isSelected(k), bad: !k.isPassed, makeup: k.scoreType !== "首修" }' :style='{ opacity: k.score / 100 }' @click='toggle(k)')
             .name {{ k.courseName }}{{ k.scoreType !== '首修' ? '(' + k.scoreType + ')' : '' }}
-            .grade {{ k.equivalentScore }} ({{ k.courseType }} {{ k.credit }} 学分)
+            .grade {{ k.score }} ({{ k.courseType }} {{ k.credit }} 学分)
 
       ul.detail-list(v-if="isGraduate" v-for='item in gpa.detail')
         .section 第 {{ item.semester }} 学期
@@ -75,7 +77,7 @@
           .info
             .name {{ k.courseName }}
             .grade {{ k.score }} ({{ k.scoreType + k.credit + '学分' }})
-          .tube(:style='"width: " + k.equivalentScore + "%"')
+          .tube(:style='"width: " + k.score + "%"')
 
 </template>
 <script>
@@ -99,10 +101,12 @@ export default {
   async created() {
     this.initSelection();
     let gpa = await api.get("/api/gpa");
+    //后端返回的学期顺序为升序，需要先倒转
+    gpa.detail.reverse()
     gpa.detail.map(k => {
       // 由于同一课程可能有首修和多次重修，为防止判断出错，给所有课程里面加入学期
       k.courses.map(c => Object.assign(c, { semester: k.semester }));
-      k.courses.sort((a, b) => b.equivalentScore - a.equivalentScore);
+      k.courses.sort((a, b) => b.score - a.score);
     });
     this.gpa = gpa;
     this.initSelection();
@@ -116,11 +120,12 @@ export default {
       if (this.gpa) {
         // 如果之前没有选中课程，初始化
         if (!this.selected.length) {
-          this.selected = (this.gpa.detail || [])
-            .map(k => k.courses)
-            .reduce((a, b) => a.concat(b), [])
-            // 默认选中所有非选修
-            .filter(k => !k.courseType);
+          this.selected = []
+          // (this.gpa.detail || [])
+          //   .map(k => k.courses)
+          //   .reduce((a, b) => a.concat(b), [])
+          //   // 默认选中所有非选修
+          //   .filter(k => !k.courseType);
           this.shouldShowTip = true;
         } else {
           let courses = this.gpa.detail
@@ -130,23 +135,23 @@ export default {
           // 如果之前有选中的课程，需要清洗一遍，过滤掉 gpa 查询结果里面没有的
           this.selected = this.selected.filter(k =>
             courses.find(
-              course => k.cid === course.cid && k.semester === course.semester
+              course => (!k._id&&k.cid === course.cid )||(k._id&&k._id === course._id)
             )
           );
         }
       }
     },
-
-    // 课程是否可选中，目前是非选修课程均可选
+    
+    // 课程是否可选中，目前是均可选
     isSelectable(course) {
-      return !course.courseType;
+      return true;
     },
 
     // 课程是否已选中
     isSelected(course) {
       let { cid, semester } = course;
-      return !!this.selected.find(
-        k => k.cid === cid && k.semester === semester
+      return this.selected.find(
+        k => (!k._id&&k.cid === course.cid )||(k._id&&k._id === course._id)
       );
     },
 
@@ -161,7 +166,7 @@ export default {
     deselect(course) {
       let { cid, semester } = course;
       this.selected = this.selected.filter(
-        k => k.cid !== cid || k.semester !== semester
+        k => !((!k._id&&k.cid === course.cid )||(k._id&&k._id === course._id))
       );
       this.shouldShowTip = false;
     },
@@ -196,7 +201,7 @@ export default {
 
     // 计算单课程绩点（校内算法）
     gpaSEU(course) {
-      let score = course.equivalentScore;
+      let score = course.score;
 
       // 补考过了不再按 60 分计
       // if (course.scoreType === '补考' && course.isPassed) {
@@ -243,7 +248,7 @@ export default {
 
     // 计算单课程绩点（出国算法）
     gpaWES(course) {
-      let score = course.equivalentScore;
+      let score = course.score;
       if (score >= 85) {
         return 4;
       }
@@ -258,17 +263,18 @@ export default {
 
     // 给定课程列表，对于其中重复课程，按照特定的 reducer 来去重
     // 对于重复的课程，reducer 每次接受两个，返回其中需要留下的一个
+    //当前放开选择权限给用户，不去重
     reduceDuplicateCourses(courses, reducer) {
       return (
         courses
-          // 取课程号
-          .map(k => k.cid)
-          // 去重
-          .filter((k, i, a) => a.indexOf(k) === i)
-          // 根据课程号反查对应的课程
-          .map(cid => courses.filter(k => k.cid === cid))
-          // 对每个课程号的反查结果列表执行 reduce 操作，留下其中之一
-          .map(duplicates => duplicates.slice(1).reduce(reducer, duplicates[0]))
+          // // 取课程号
+          // .map(k => k.cid)
+          // // 去重
+          // .filter((k, i, a) => a.indexOf(k) === i)
+          // // 根据课程号反查对应的课程
+          // .map(cid => courses.filter(k => k.cid === cid))
+          // // 对每个课程号的反查结果列表执行 reduce 操作，留下其中之一
+          // .map(duplicates => duplicates.slice(1).reduce(reducer, duplicates[0]))
       );
     },
 
@@ -296,7 +302,7 @@ export default {
     // 筛选最高分数的课程
     filterHighest(courses) {
       return this.reduceDuplicateCourses(courses, (a, b) => {
-        return a.equivalentScore > b.equivalentScore ? a : b;
+        return a.score > b.score ? a : b;
       });
     },
 
@@ -326,7 +332,7 @@ export default {
     // 对于给定的课程列表，求出（学分*分数）的加权和。
     weighedScore(courses = this.selected) {
       return courses
-        .map(k => k.equivalentScore * k.credit)
+        .map(k => k.score * k.credit)
         .reduce((a, b) => a + b, 0);
     },
 
@@ -478,6 +484,10 @@ export default {
     }
   },
   computed: {
+    //返回App开启路径
+    appUrl(){
+      return this.$store.state.appUrl
+    },
     // 简单判断是否研究生
     isGraduate() {
       return this.gpa && !!this.gpa.credits;
@@ -583,7 +593,12 @@ export default {
     }
   }
 }
-
+.warning-tip{
+  display: flex;
+  flex-direction: row;
+   font-size: 13px;
+  color: var(--color-warning);
+}
 .check-list {
   display: flex;
   flex-direction: row;

@@ -15,7 +15,7 @@
       .line(v-if="column === 'myself'" style="margin-top:15px;")
       button(v-if="column === 'myself'" class="selected" @click='publish' style="height:30px; margin-top:15px;margin-bottom:0px;box-shadow:none; border-radius:4px;") 我要发布
       .lf-list(v-if="list.length > 0")
-        .lf-item(v-for="item in list" key="item._id" @click="detail(item._id)")
+        .lf-item(v-for="item in list" :key="item._id" @click="detail(item._id)")
           .line
           .lf-title
             .lf-type(:class="{ 'lf-type-lost':item.type==='lost', 'lf-type-found':item.type==='found'}") {{item.type === 'found' ? '失物招领' : '寻物启事'}} 
