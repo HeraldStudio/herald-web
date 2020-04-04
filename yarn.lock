@@ -5979,6 +5979,11 @@ void-elements@^2.0.1:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
+vue-calendar-component@^2.8.2:
+  version "2.8.2"
+  resolved "https://registry.npm.taobao.org/vue-calendar-component/download/vue-calendar-component-2.8.2.tgz#8f60c05a72c8aacbdd224016f4e1a96664abd8aa"
+  integrity sha1-j2DAWnLIqsvdIkAW9OGpZmSr2Ko=
+
 vue-component-persist@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/vue-component-persist/-/vue-component-persist-1.1.4.tgz#841beca030755ee509a5dbf26bdfa561e376d810"

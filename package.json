@@ -23,6 +23,7 @@
     "moment": "^2.24.0",
     "querystring": "^0.2.0",
     "vue": "^2.6.11",
+    "vue-calendar-component": "^2.8.2",
     "vue-component-persist": "^1.1.4",
     "vue-datetime": "1.0.0-beta.11",
     "vue-l-carousel": "^1.1.0",
