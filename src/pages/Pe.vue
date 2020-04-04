@@ -18,6 +18,7 @@
         :sundayStart="true"
         :textTop="['日','一','二','三','四','五','六']"
         :markDateMore="RestDays"
+        v-on:changeMonth="changeDate"
         )
     ul.detail-list
       li(v-for='item in pe.health')
@@ -109,8 +110,8 @@ export default {
     nextWeek() {
       this.curDate += 1000 * 60 * 60 * 24 * 7;
     },
-    getRestDay() {
-      let now = new Date();
+    getRestDay(date) {
+      let now = new Date(date);
       let daysNumber = new Date(
         now.getFullYear(),
         now.getMonth() + 1,
@@ -128,6 +129,9 @@ export default {
         }
       }
       return RestDay;
+    },
+    changeDate(date) {
+      this.RestDays = this.getRestDay(date);
     }
   }
 };
@@ -196,11 +200,6 @@ ul.pe-list {
     color: #211d48;
   }
 
-  .wh_container >>> .wh_item_date:hover {
-    background-color: white;
-    color: #211D48;
-  }
-
   .wh_container >>> .wh_other_dayhide {
     color: #cccccc;
   }
@@ -237,12 +236,6 @@ ul.pe-list {
     border-right: 2px solid #162947;
   }
 
-  .wh_container >>> .wh_content_item>.wh_isMark {
-    cursor: default;
-    background-color: #00A4CA;
-    color: white;
-  }
-
   .wh_container >>> .wh_content_item .wh_isToday {
     cursor: default;
     background-color: white;
@@ -255,10 +248,21 @@ ul.pe-list {
     color: #211D48;
   }
 
+  .wh_container >>> .wh_item_date:hover {
+    background-color: white;
+    color: #211D48;
+  }
+
   .wh_container >>> .wh_content_item .restDay {
     cursor: default;
     background-color: white;
     color: #cccccc;
+  }
+
+  .wh_container >>> .wh_content_item>.wh_isMark {
+    cursor: default;
+    background-color: #00A4CA;
+    color: white;
   }
 }
 </style>
