@@ -31,6 +31,8 @@ import LostAndFoundDetail from '@/pages/lostAndFound/Detail'
 import TeamList from '@/pages/team/List'
 import TeamPublish from '@/pages/team/Publish'
 import CustomExam from '@/pages/CustomExam'
+import Notification from '@/pages/Notification'
+import NotificationView from '@/pages/NotificationView'
 Vue.use(Router)
 
 // 微信环境下，为隐藏前进后退按钮栏，设置 mode 为 abstract，实现完全不产生浏览器历史
@@ -203,6 +205,16 @@ export default new Router({
       path: '/custom-exam',
       name: '自定义考试提醒',
       component: CustomExam
+    },
+    {
+      path: '/notification',
+      name: '通知',
+      component: Notification
+    },
+    {
+      path: '/notification-view/:id',
+      name: '通知详情',
+      component: NotificationView
     },
     {
       path: '*',

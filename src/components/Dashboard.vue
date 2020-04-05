@@ -19,7 +19,7 @@
 
       .row
         item(v-if='isUndergraduate' :icon='iconSrtp' name='SRTP' :value='srtp && srtp.info.points' :is-stale='srtp && srtp.isStale' route='/srtp')
-        item(v-if='isStudent' :icon='iconGrade' :name='(isGraduate ? "成绩" : "绩点估算")'  :is-stale='true' route='/grade' :is-graduate='isGraduate')
+        item(v-if='isStudent' :icon='iconGrade' :name='(isGraduate ? "成绩" : "绩点估算")'   route='/grade' :is-graduate='isGraduate')
 
       .row(v-if='!tidyMode')
         item(v-if='isUndergraduate' name='跑操' :value='pe && pe.count' :is-stale='pe && pe.isStale' route='/pe')
@@ -47,7 +47,8 @@
       .row(v-if='!tidyMode && user.admin && user.admin.publicity')
         item(name='轮播管理' route='/admin/banner' value='›')
         item(name='活动管理' route='/admin/activity' value='›')
-      
+      .row
+        item(name='通知' route='/notification'   )
       .row
         item(name='公告' route='/notice' :value='curNotice && curNotice.title || "暂无公告"')
 
