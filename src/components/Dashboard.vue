@@ -84,6 +84,7 @@ export default {
       library: null,
       notice: null,
       activities: null,
+      notification:null,
       curNoticeIndex: 0,
       downloadImg,
       logoutImg,
@@ -115,6 +116,7 @@ export default {
     api.get("/api/srtp").then(res => (this.srtp = res));
     api.get("/api/lecture").then(res => (this.lecture = res));
     api.get("/api/library").then(res => (this.library = res));
+    api.get("/api/notification").then(res => (this.notification = res));
     api.get("/api/activity?pagesize=20").then(res => (this.activities = res));
     api.get("/api/notice").then(res => {
       this.notice = res;

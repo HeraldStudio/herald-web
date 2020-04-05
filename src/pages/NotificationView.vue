@@ -2,7 +2,9 @@
 
 .page.notificationview(v-if="data.title")
     .title 
-        .title-text {{data.title}}
+        .title-row 
+            .title-text {{data.title}}
+            button.title-read(@click="markRead()" v-if="!data.isRead") 我知道啦
         .status
             .role {{`来自 ${data.role} ${data.publisher}`}}
             .time 发布于{{formatDateNatural(data.publishTime)}}
@@ -31,20 +33,35 @@ export default {
   },
   methods: {
     ...formatter,
+    async markRead() {
+      if (this.data.isRead) {
+        // return;
+      }
+      let res = await api.post("/api/notification/read", {
+        id: this.$route.params.id
+      });
+    },
     async load() {
       this.data = await api.get(
         `/api/notification?id=${this.$route.params.id}`
       );
-      console.log(this.data);
     }
   }
 };
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
 .title {
-    .title-text {
-        font-size: 20px;
-        font-weight: bold;
+    .title-row {
+        display: flex;
+        justify-content: space-between;
+
+        .title-text {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .title-read {
+        }
     }
 
     .status {
@@ -88,8 +105,8 @@ export default {
 }
 
 .content {
-    margin-top:20px;
-    padding:10px;
+    margin-top: 20px;
+    padding: 10px;
     background-color: var(--color-divider);
     border-radius: 10px;
 }
