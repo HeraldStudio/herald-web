@@ -40,6 +40,8 @@ export default {
       let res = await api.post("/api/notification/read", {
         id: this.$route.params.id
       });
+
+      this.load();
     },
     async load() {
       this.data = await api.get(
