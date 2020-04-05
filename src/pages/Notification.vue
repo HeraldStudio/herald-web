@@ -38,7 +38,7 @@ export default {
       displayUnread: false,
       pageSize: 10,
       page: 1,
-      hasMore: true
+      hasMore: false
     };
   },
   persist: {
