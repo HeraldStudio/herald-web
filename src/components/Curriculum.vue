@@ -5,7 +5,7 @@
       .tab(:class='{ selected: type === "week" }' @click='type = "week"') 周视图
       .tab(:class='{ selected: type === "timeline" }' @click='type = "timeline"') 时间轴
       .tab(:class='{ selected: type === "outline" }' @click='type = "outline"') 课程概览
-      router-link.tab(to='/course-stat') 课表预测
+      //- router-link.tab(to='/course-stat') 课表预测
  
     //- 周视图/概览视图：学期和星期切换
     .week-picker(v-if='type === "week" || type === "outline"')
