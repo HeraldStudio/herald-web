@@ -33,6 +33,7 @@ import TeamPublish from '@/pages/team/Publish'
 import CustomExam from '@/pages/CustomExam'
 import Notification from '@/pages/Notification'
 import NotificationView from '@/pages/NotificationView'
+import Curriculum from '@/pages/Curriculum'
 Vue.use(Router)
 
 // 微信环境下，为隐藏前进后退按钮栏，设置 mode 为 abstract，实现完全不产生浏览器历史
@@ -210,6 +211,11 @@ export default new Router({
       path: '/notification',
       name: '通知',
       component: Notification
+    },
+    {
+      path: '/curriculum',
+      name: '课表',
+      component: Curriculum
     },
     {
       path: '/notification-view/:id',
