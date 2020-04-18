@@ -63,13 +63,13 @@
           
           //- 先放非选修，可以选择
           button.check-box.required(v-for='k in item.courses' v-if='k.courseType=="必修"' :class='{ disabled: !isSelected(k), bad: !k.isPassed, makeup: k.scoreType !== "首修" }' :style='{ opacity: k.score / 100 }' @click='toggle(k)')
-            .name {{ k.courseName }}{{ k.scoreType !== '首修' ? ' (' + k.scoreType + ')' : '' }}
+            .name {{ k.courseName }}{{ k.scoreType !== '首修' ? ' (' + k.scoreType?k.scoreType:"未知" + ')' : '' }}
             .grade {{ k.score }} × {{ k.credit }}
 
           //- 然后放选修
           button.check-box.optional(v-for='k in item.courses' v-if='k.courseType!="必修"' :class='{ disabled: !isSelected(k), bad: !k.isPassed, makeup: k.scoreType !== "首修" }' :style='{ opacity: k.score / 100 }' @click='toggle(k)')
-            .name {{ k.courseName }}{{ k.scoreType !== '首修' ? '(' + k.scoreType + ')' : '' }}
-            .grade {{ k.score }} ({{ k.courseType }} {{ k.credit }} 学分)
+            .name {{ k.courseName }}{{ k.scoreType !== '首修' ? '(' + k.scoreType?k.scoreType:"未知" + ')' : '' }}
+            .grade {{ k.score }} ({{ k.courseType?k.courseType:"" }} {{ k.credit }} 学分)
 
       ul.detail-list(v-if="isGraduate" v-for='item in gpa.detail')
         .section 第 {{ item.semester }} 学期
