@@ -95,7 +95,7 @@ export default {
       this.load();
     },
     publish() {
-      window.location = 'https://myseu.cn/app-support/#/lost-and-found/'+api.token
+      window.location = 'https://tommy.seu.edu.cn/app-support/#/lost-and-found/'+api.token
       //this.$router.push({ path: "/lost-and-found/publish" });
     },
     detail(id) {
