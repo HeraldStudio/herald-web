@@ -1,6 +1,6 @@
 <template lang='pug'>
   .page
-    .hint 小猴偷米新 App 已经发布上线，请尽快更新
+    .hint 小猴偷米新版 App 已经发布上线，请尽快更新
     img.qr(:src='qrcodeImg')
     .buttons
       p 下载 App：
