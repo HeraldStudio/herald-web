@@ -123,7 +123,7 @@ export default {
       }
     },
     edit() {
-      window.location = 'https://myseu.cn/app-support/#/lost-and-found/'+api.token+'/'+this.id
+      window.location = 'https://tommy.seu.edu.cn/app-support/#/lost-and-found/'+api.token+'/'+this.id
       //this.$router.push("/lost-and-found/publish/" + this.id);
     },
     async deleteItem() {
