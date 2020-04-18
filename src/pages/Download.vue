@@ -1,12 +1,13 @@
 <template lang='pug'>
   .page
     .hint 小猴偷米新版 App 已经发布上线，请尽快更新
+    .hint iOS 用户请前往 App Store 下载 
     img.qr(:src='qrcodeImg')
     .buttons
       p 下载 App：
       a(href='https://hybrid.myseu.cn/herald-new-app-10.apk' target='_blank')
         button 新版本 Android
-    .hint 新版 iOS 请前往 App Store 下载 
+    
         
 </template>
 <script>
