@@ -18,6 +18,7 @@ export default new Vue({
   },
   computed: {
     isLogin() {
+
       return window.store.getters.isLogin
     },
     token() {
@@ -63,6 +64,7 @@ export default new Vue({
             Vue.toasted.show('登录已失效，请重新登录')
           }
           window.store.commit('logout')
+         
         } else {
           //Vue.toasted.show('请求失败：' + reason)
           throw new Error(reason)

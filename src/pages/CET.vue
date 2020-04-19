@@ -43,7 +43,7 @@
       cet: 'herald-default-cet'
     },
     async created() {
-      let cacheCET = JSON.parse(localStorage.getItem('herald-default-cet'))
+      let cacheCET = this.$store.state.cetForm
       
       // 先去取一下缓存
       if(cacheCET){
@@ -56,7 +56,7 @@
       if(res !== '暂无记录'){
         this.cetform = res
         // 缓存 CET 查询结果
-        localStorage.setItem('herald-default-cet',JSON.stringify(this.cetform))
+        this.$store.commit("setCet",this.cetform)
       }else{
         // 没有记录的提醒
       }
@@ -68,7 +68,7 @@
         try{
           await api.post('api/cet',this.cetform);
           // 如果保存成功就缓存到本地
-          localStorage.setItem('herald-default-cet',JSON.stringify(this.cetform))
+          this.$store.commit("setCet",this.cetform)
         }catch(err){
           console.log(err)
         }
