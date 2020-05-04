@@ -111,7 +111,7 @@ export default {
     text-align: justify;
     width: 260px;
     position: absolute;
-    bottom: 10px;
+    bottom: 20px;
     color: #ccc;
     text-align: center;
   }
