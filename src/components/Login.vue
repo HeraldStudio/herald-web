@@ -55,6 +55,8 @@ export default {
 .widget.login {
   align-items: center;
   position: absolute;
+  margin:0;
+  padding:0;
   width: 100%;
   min-height: 100%;
   display: flex;
