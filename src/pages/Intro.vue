@@ -8,11 +8,15 @@
           .right {{ user.cardnum }}
       li
         .top
+          .left 校区
+          .right {{ dorm.campus }}
+      li
+        .top
           .left 宿舍
-          .right(v-if='dorm && dorm.building') {{ dorm.campus }} {{ dorm.building }} {{ dorm.room }} {{ dorm.bed }}号床
+          .right(v-if='dorm') {{ dorm.SSFJH }} 
           .right(v-else) 暂未分配宿舍
         .bottom
-          .left(v-if='dorm && dorm.building') 可到<a href='http://map.seu.edu.cn/#/home'>校园地图服务系统</a>查看宿舍楼所在位置。
+          .left(v-if='dorm') 可到<a href='http://map.seu.edu.cn/#/home'>校园地图服务系统</a>查看宿舍楼所在位置。
           .left(v-else) 待分配宿舍中，请留意班级群通知
 
 </template>
