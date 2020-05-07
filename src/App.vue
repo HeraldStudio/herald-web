@@ -1,6 +1,6 @@
 <template lang='pug'>
   #app(:class='env', :is-loading='isLoading')
-    .app-container
+    .app-container(v-if="!isShowTip")
       //- base-page 为手机版底部界面，桌面版左侧栏
       .base-page
         seuLogin
@@ -18,6 +18,7 @@
         scrollView.overlay-router(:scrollToTopKey='$route.path' :style='"--mouse-x: " + mouseX + "px; --mouse-y: " + mouseY + "px"')
           transition(name='page')
             router-view(:user='user')
+    .hint(v-if="isShowTip") 请使用 PWA 或者最新版 App
 </template>
 
 <script>
@@ -124,6 +125,7 @@ export default {
   data() {
     return {
       env: window.__herald_env,
+      isShowTip: fasle,
       isLoading: false,
       title: "",
       isHome: true,
@@ -142,6 +144,11 @@ export default {
     }
   },
   async created() {
+    if(window.__wxjs_environment === 'miniprogram') {
+      this.isShowTip = true
+    }else{
+      window.location = "https://tommy.seu.edu.cn"
+    }
     this.title = this.$route.name;
     this.isHome = this.$route.path === "/";
 
