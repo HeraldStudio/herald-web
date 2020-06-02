@@ -38,6 +38,17 @@ if (window.navigator.standalone) {
 }
 
 Vue.config.productionTip = false
+window.__global__ = {
+  store,
+  router
+}
+// 支持跨用户调试
+window.auth = (token) => {
+  store.commit("logout");
+  store.commit('setToken', token)
+  window.location.reload()
+  return '身份已切换！'
+}
 
 Vue.use(Toasted, {
   duration: 5000,
