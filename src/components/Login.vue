@@ -45,6 +45,7 @@ export default {
         params: this.$route.params,
         fullPath: this.$route.fullPath
       });
+      window.location = `https://newids.seu.edu.cn/authserver/logout?goto=https://tommy.seu.edu.cn`
       this.loading = true;
       window.location = `https://newids.seu.edu.cn/authserver/login?goto=https://tommy.seu.edu.cn`;
     }

@@ -25,8 +25,6 @@ export default {
     toutiao
   },
   created() {
-    console.log(this.$store.state.hasUnfinishedRoute)
-    console.log(this.$store.state.unfinishedRoute)
     if (this.$store.state.hasUnfinishedRoute) {
       this.$router.push({
         path: this.$store.state.unfinishedRoute.fullPath,
