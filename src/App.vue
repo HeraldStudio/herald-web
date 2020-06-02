@@ -199,20 +199,21 @@ export default {
         }
       }
     }
-    // else {
-    //   let token = window.store.state.token; // 先从 Vuex 读取 token
-    //   if (token) {
-    //     // 更新 user 信息，同时用于检查登录态，若检查失败，应立即退出，允许用户重新登录
-    //     try {
-    //       user = await api.get("/api/user");
-    //       user.admin = await api.get("/api/admin/admin");
-    //       this.$store.commit("setUser", user);
-    //     } catch (e) {
-    //       // this.$toasted.show("登录过期，请重新登录");
-    //       // this.$store.commit("logout");
-    //     }
-    //   }
-    // }
+    else {
+      let token = window.store.state.token; // 先从 Vuex 读取 token
+      if (token) {
+        // 更新 user 信息，同时用于检查登录态，若检查失败，应立即退出，允许用户重新登录
+        try {
+          let user = await api.get("/api/user");
+          user.admin = await api.get("/api/admin/admin");
+          this.$store.commit("setUser", user);
+        } catch (e) {
+          console.log(e.message);
+          this.$toasted.show("登录过期，请重新登录");
+          this.$store.commit("logout");
+        }
+      }
+    }
   },
   mounted() {
     let el = this.$refs.page;

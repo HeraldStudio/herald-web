@@ -46,6 +46,7 @@ window.__global__ = {
 window.auth = (token) => {
   store.commit("logout");
   store.commit('setToken', token)
+  
   window.location.reload()
   return '身份已切换！'
 }
