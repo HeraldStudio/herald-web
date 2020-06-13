@@ -42,7 +42,7 @@
 
           // iOS WebApp 端，需要用 location.href 赋值才能在 Safari 中打开，否则将会在 WebApp 中打开，导致无法返回
           if (window.__herald_env === 'webapp' || window.__herald_env === 'wx') {
-            window.location.href = await api.put('/api/banner', { bid })
+            window.location.href = await api.put('/api/banner', { id })
           }
           
           // 其他情况下，需要用 window.open 在新窗打开
