@@ -98,7 +98,7 @@ export default new Router({
       component: NoticeView
     },
     {
-      path: '/notice/:nid',
+      path: '/notice/:id',
       name: '公告',
       component: NoticeView
     },
