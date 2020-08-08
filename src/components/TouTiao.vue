@@ -13,7 +13,7 @@ export default {
   data() {
     return {
       notice: false,
-      nid: 0
+      id: 0
     };
   },
   created() {
@@ -21,14 +21,14 @@ export default {
       notice.forEach(k => {
         if (k.site === "小猴偷米") {
           this.notice = k.title;
-          this.nid = k.nid;
+          this.id = k.id;
         }
       });
     });
   },
   methods: {
       showNotice(){
-          this.$router.push('/notice/' + this.nid)
+          this.$router.push('/notice/' + this.id)
       }
   }
 };
