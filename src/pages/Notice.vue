@@ -92,7 +92,7 @@
           return '#/notice/competition/' + notice.srtpId
         }
         if (notice.nid != null) {
-          return '#/notice/' + notice.nid
+          return '#/notice/' + notice.id
         }
         return '#/notice/url/' + encodeURIComponent(notice.url)
       }
