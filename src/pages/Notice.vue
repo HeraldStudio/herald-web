@@ -41,8 +41,8 @@
     },
     created() {
       this.reload()
-      if (/[?&]nid=(\d+)/.test(window.location.search)) {
-        this.loadMarkdown({ nid: RegExp.$1 })
+      if (/[?&]id=(\d+)/.test(window.location.search)) {
+        this.loadMarkdown({ id: RegExp.$1 })
       }
     },
     watch: {
@@ -91,8 +91,8 @@
         if (notice.site === 'SRTP') {
           return '#/notice/competition/' + notice.srtpId
         }
-        if (notice.nid != null) {
-          return '#/notice/' + notice.nid
+        if (notice.id != null) {
+          return '#/notice/' + notice.id
         }
         return '#/notice/url/' + encodeURIComponent(notice.url)
       }
