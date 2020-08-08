@@ -2,7 +2,7 @@
 
   .widget.login
     .live2d-container
-      //- 仿 B 站，输密码闭眼睛
+      //live2d注入
       live2d(:force-state='false')
     .tips 小猴偷米对接东南大学统一身份认证服务和网络与信息中心共享数据库，为您提供准确有效的数据查询服务与校园生活相关特色服务。
     button.primary.disabled(v-if='loging') 正在登录…
