@@ -13,7 +13,7 @@
             textarea.content(v-model='notice.content')
           .operations
             button.save(v-if='notice.title && notice.content' @click='saveNotice(notice)') 保存
-            confirm-button.remove(@click='removeNotice(notice.nid)' confirm-text='确定') 删除
+            confirm-button.remove(@click='removeNotice(notice.id)' confirm-text='确定') 删除
         .notice.add
           .id
           .middle
@@ -60,8 +60,8 @@
         await api.put('/api/admin/notice', { notice })
         this.notices = await api.get('/api/admin/notice')
       },
-      async removeNotice(nid) {
-        await api.delete('/api/admin/notice', { nid })
+      async removeNotice(id) {
+        await api.delete('/api/admin/notice', { id })
         this.notices = await api.get('/api/admin/notice')
       }
     }

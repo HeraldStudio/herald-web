@@ -31,11 +31,11 @@
         if (this.$route.params.srtpId) {
           this.loadCompetition(this.$route.params.srtpId)
         } else {
-          let { nid, url } = this.$route.params
+          let { id, url } = this.$route.params
           if (url) {
             url = decodeURIComponent(url)
           }
-          this.loadOther({ nid, url })
+          this.loadOther({ id, url })
         }
       },
       async loadOther(notice) {

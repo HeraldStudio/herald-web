@@ -5,7 +5,7 @@
     input.input(placeholder="输入标题搜索已加载通知" v-model="searchKey")
   .empty-hint(v-if="filteredNotification.length === 0") 列表空空如也~
   .notification-list(v-if="filteredNotification.length > 0")
-    .notification-item(v-for="item in filteredNotification" :key="item.notificationId" @click="detail(item.notificationId)")
+    .notification-item(v-for="item in filteredNotification" :key="item.notificatioid" @click="detail(item.notificatioid)")
       .notification-title
         .notification-title-text {{item.title}}
         .notification-title-time {{formatDateNatural(item.publishTime)}}
