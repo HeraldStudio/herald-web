@@ -91,7 +91,7 @@
         if (notice.site === 'SRTP') {
           return '#/notice/competition/' + notice.srtpId
         }
-        if (notice.nid != null) {
+        if (notice.id != null) {
           return '#/notice/' + notice.id
         }
         return '#/notice/url/' + encodeURIComponent(notice.url)
