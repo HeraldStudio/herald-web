@@ -5,7 +5,7 @@
     img.qr(:src='qrcodeImg')
     .buttons
       p 下载 App：
-      a(href='https://hybrid.myseu.cn/herald-new-app-4.apk' target='_blank' v-if='url')
+      a(:href='url' target='_blank' v-if='url')
         button 新版本 Android
       button(v-else) 稍等片刻~
         
@@ -19,7 +19,7 @@ export default {
   },
   async created() {
     let res = await api.get("/api/version");
-    this.url = res.data.downloadUrl;
+    this.url = res.downloadUrl;
   }
 };
 </script>
