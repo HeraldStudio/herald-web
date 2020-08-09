@@ -5,7 +5,7 @@
     img.qr(:src='qrcodeImg')
     .buttons
       p 下载 App：
-      a(href='https://hybrid.myseu.cn/herald-new-app-10.apk' target='_blank')
+      a(href='https://hybrid.myseu.cn/herald-new-app-4.apk' target='_blank')
         button 新版本 Android
     
         
