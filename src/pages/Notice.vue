@@ -41,8 +41,8 @@
     },
     created() {
       this.reload()
-      if (/[?&]nid=(\d+)/.test(window.location.search)) {
-        this.loadMarkdown({ nid: RegExp.$1 })
+      if (/[?&]id=(\d+)/.test(window.location.search)) {
+        this.loadMarkdown({ id: RegExp.$1 })
       }
     },
     watch: {
