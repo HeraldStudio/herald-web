@@ -18,6 +18,7 @@
       return { qrcodeImg,url:"" }
     },
     async created() {
+      console.log("get version")
       let res =  await api.get("/api/version");
       this.url = res.data.downloadUrl;
     }
