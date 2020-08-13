@@ -19,7 +19,7 @@ export default {
   created() {
     api.get("/api/notice").then(notice => {
       notice.forEach(k => {
-        if (k.site === "小猴偷米") {
+        if (k.site === "小猴偷米"&&k.isRead) {
           this.notice = k.title;
           this.id = k.id;
         }
