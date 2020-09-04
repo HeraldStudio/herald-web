@@ -19,7 +19,7 @@
     "less": "^3.10.3",
     "luxon": "1.3.2",
     "markdown-it": "8.4.2",
-    "marked": "0.6.0",
+    "marked": "0.7.0",
     "moment": "2.23.0",
     "querystring": "0.2.0",
     "vue": "2.4.4",
