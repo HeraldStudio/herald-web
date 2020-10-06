@@ -40,13 +40,13 @@
         //- item(name='App' route='/download' value='›')
 
       .row(v-if='!tidyMode && user.admin && user.admin.maintenance')
-        item(name='系统概况' route='/admin/monitor' value='›')
-        item(name='权限管理' route='/admin/privilege' value='›')
+        //- item(name='系统概况' route='/admin/monitor' value='›')
+        //- item(name='权限管理' route='/admin/privilege' value='›')
         item(name='通知管理' route='/admin/notice' value='›')
 
       .row(v-if='!tidyMode && user.admin && user.admin.publicity')
         item(name='轮播管理' route='/admin/banner' value='›')
-        item(name='活动管理' route='/admin/activity' value='›')
+        //- item(name='活动管理' route='/admin/activity' value='›')
       .row
         item(name='通知' route='/notification'   )
       .row

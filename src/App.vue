@@ -1,22 +1,25 @@
 <template lang='pug'>
-  #app(:class='env', :is-loading='isLoading')
-    .app-container
-      //- base-page 为手机版底部界面，桌面版左侧栏
-      .base-page
-        scrollView(v-if='isLogin')
-          home(:user='user')
-        login(v-else :loging='loging')
+#app(:class="env", :is-loading="isLoading")
+  .app-container
+    //- base-page 为手机版底部界面，桌面版左侧栏
+    .base-page
+      scrollView(v-if="isLogin")
+        home(:user="user")
+      login(v-else, :loging="loging")
 
-      //- overlay-page 为手机版上层栈，桌面版右侧栏
-      .overlay-page(v-if='isLogin' :class='{ home: isHome }' ref='page')
-        .overlay-header
-          transition(name='slide')
-            .title-bar(v-if='!isHome')
-              .back(@click='$router.go(-1)') ‹ 
-              .current {{ title }}
-        scrollView.overlay-router(:scrollToTopKey='$route.path' :style='"--mouse-x: " + mouseX + "px; --mouse-y: " + mouseY + "px"')
-          transition(name='page')
-             router-view(:user='user')
+    //- overlay-page 为手机版上层栈，桌面版右侧栏
+    .overlay-page(v-if="isLogin", :class="{ home: isHome }", ref="page")
+      .overlay-header
+        transition(name="slide")
+          .title-bar(v-if="!isHome")
+            .back(@click="$router.go(-1)") ‹
+            .current {{ title }}
+      scrollView.overlay-router(
+        :scrollToTopKey="$route.path",
+        :style="'--mouse-x: ' + mouseX + 'px; --mouse-y: ' + mouseY + 'px'"
+      )
+        transition(name="page")
+          router-view(:user="user")
 </template>
 
 <script>
@@ -30,7 +33,7 @@ import cookie from "js-cookie";
 Vue.use(Vuex);
 // Vuex 和 VuexPersist
 const vuexLocal = new VuexPersistence({
-  storage: window.localStorage
+  storage: window.localStorage,
 });
 const store = new Vuex.Store({
   state: {
@@ -41,7 +44,7 @@ const store = new Vuex.Store({
     appUrl: "",
     hasUnfinishedRoute: false,
     unfinishedRoute: {},
-    cetForm: {}
+    cetForm: {},
   },
   plugins: [vuexLocal.plugin],
   mutations: {
@@ -63,9 +66,10 @@ const store = new Vuex.Store({
     },
     setUser(state, user) {
       state.user = user;
+      console.log(user);
       state.isLogin = true;
-    }
-  }
+    },
+  },
 });
 
 window.store = store;
@@ -79,6 +83,7 @@ import login from "@/components/Login.vue";
 import logoImg from "static/images/logo.png";
 import downloadImg from "static/images/download.png";
 import qs from "querystring";
+import { use } from "vue/types/umd";
 
 function getOffsetTop(obj) {
   let tmp = obj.offsetTop - obj.scrollTop;
@@ -106,8 +111,8 @@ if ("serviceWorker" in navigator) {
     // 隔开字符串防止被 parcel 探测
     //navigator.serviceWorker.register("/" + "sw.js");
     // 卸载service-worker
-    navigator.serviceWorker.getRegistrations().then(rs => {
-      rs.forEach(k => k.unregister());
+    navigator.serviceWorker.getRegistrations().then((rs) => {
+      rs.forEach((k) => k.unregister());
     });
   });
 }
@@ -119,7 +124,7 @@ export default {
     login,
     live2d,
     scrollView,
-    home
+    home,
   },
   store,
   data() {
@@ -133,7 +138,7 @@ export default {
       mouseY: 0,
       logoImg,
       downloadImg,
-      appUrl: "heraldapp://tommy.seu.edu.cn"
+      appUrl: "heraldapp://tommy.seu.edu.cn",
     };
   },
   computed: {
@@ -142,7 +147,7 @@ export default {
     },
     isLogin() {
       return this.$store.state.isLogin;
-    }
+    },
   },
   async created() {
     this.title = this.$route.name;
@@ -152,7 +157,7 @@ export default {
     // 注意根据 Xhook 要求，before handler 参数个数必须是 1，after handler 参数个数必须是 2，不能省略
     let requests = 0,
       timeout = null;
-    xhook.before(req => {
+    xhook.before((req) => {
       requests++ ||
         ((this.isLoading = true) && timeout && clearTimeout(timeout));
     });
@@ -182,7 +187,7 @@ export default {
         let res = await api.post("/auth", {
           ticket,
           service: "https://tommy.seu.edu.cn",
-          platform: "web"
+          platform: "web",
         });
         if (res) {
           // 获取到token
@@ -195,11 +200,9 @@ export default {
 
           // 更新缓存
           this.$store.commit("setUser", user);
-          
         }
       }
-    }
-    else {
+    } else {
       let token = window.store.state.token; // 先从 Vuex 读取 token
       if (token) {
         // 更新 user 信息，同时用于检查登录态，若检查失败，应立即退出，允许用户重新登录
@@ -217,8 +220,8 @@ export default {
   },
   mounted() {
     let el = this.$refs.page;
-    ["touchstart", "mouseup"].map(k =>
-      document.addEventListener(k, ev => {
+    ["touchstart", "mouseup"].map((k) =>
+      document.addEventListener(k, (ev) => {
         this.mouseX =
           (ev.clientX || (ev.touches && ev.touches[0].clientX)) -
           getOffsetLeft(el);
@@ -232,8 +235,8 @@ export default {
     $route(to, from) {
       this.title = to.name;
       this.isHome = to.path === "/";
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -634,7 +637,7 @@ img:not([src]), img[src=''] {
       }
 
       .spacing {
-        flex: 1 1 0;
+        flex: 1 1 0%;
       }
 
       img.download {
@@ -662,7 +665,7 @@ img:not([src]), img[src=''] {
     }
 
     .overlay-page {
-      flex: 1 1 0;
+      flex: 1 1 0%;
       overflow: hidden;
       margin-left: -15px;
       background: var(--color-divider);
@@ -706,7 +709,7 @@ img:not([src]), img[src=''] {
         display: flex;
         flex-direction: row;
         align-items: center;
-        flex: 1 1 0;
+        flex: 1 1 0%;
 
         .back {
           display: block;
@@ -724,7 +727,7 @@ img:not([src]), img[src=''] {
         }
 
         .current {
-          flex: 1 1 0;
+          flex: 1 1 0%;
           font-size: 15px;
           font-weight: bold;
           color: var(--color-text-bold);
@@ -735,7 +738,7 @@ img:not([src]), img[src=''] {
       }
 
       .overlay-router {
-        flex: 1 1 0;
+        flex: 1 1 0%;
         position: relative;
 
         .scroll-content > * {
