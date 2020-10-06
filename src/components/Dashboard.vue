@@ -1,57 +1,102 @@
 <template lang='pug'>
+transition-group.widget.dashboard(name="fade")
+  .info-container(key="info")
+    .name {{ user ? user.name : '加载中' }}
+    .identity {{ user ? user.identity : '…' }}
+      router-link(v-if="user.isNewbie", to="/intro") 新生指引 ＞
+    img.icon.grayscale(
+      @click="tidyMode = !tidyMode",
+      :src="tidyMode ? expandImg : collapseImg"
+    )
+    router-link(to="/download")
+      img.icon(:src="downloadImg")
+    img.icon(@click="logout()", :src="logoutImg")
+  banner(key="banner", v-show="!tidyMode")
 
-  transition-group(name='fade').widget.dashboard
-    .info-container(key='info')
-      .name {{ user ? user.name : '加载中' }}
-      .identity {{ user ? user.identity : '…' }}
-        router-link(v-if='user.isNewbie' to='/intro') 新生指引 ＞
-      img.icon.grayscale(@click='tidyMode = !tidyMode' :src='tidyMode ? expandImg : collapseImg')
-      router-link(to='/download')
-        img.icon(:src='downloadImg')
-      img.icon(@click='logout()' :src='logoutImg')
-    banner(key='banner' v-show='!tidyMode')
+  .dashboard-container.border-top(key="dashboard", v-if="user")
+    .row
+      item(
+        :icon="iconCard",
+        name="余额",
+        :value="card && card.info && card.info.balance",
+        :is-stale="card && card.isStale",
+        route="/card"
+      )
+      item(
+        v-if="isUndergraduate",
+        :icon="iconLecture",
+        name="人文讲座",
+        :value="lecture && lecture.length",
+        :is-stale="lecture && lecture.isStale",
+        route="/lecture"
+      )
 
-    .dashboard-container.border-top(key='dashboard' v-if='user')
+    .row
+      item(
+        v-if="isUndergraduate",
+        :icon="iconSrtp",
+        name="SRTP",
+        :value="srtp && srtp.info.points",
+        :is-stale="srtp && srtp.isStale",
+        route="/srtp"
+      )
+      item(
+        v-if="isStudent",
+        :icon="iconGrade",
+        :name="isGraduate ? '成绩' : '绩点估算'",
+        route="/grade",
+        :is-graduate="isGraduate"
+      )
 
-      .row
-        item(:icon='iconCard' name='余额' :value='card && card.info && card.info.balance' :is-stale='card && card.isStale' route='/card')
-        item(v-if='isUndergraduate' :icon='iconLecture' name='人文讲座' :value='lecture && lecture.length' :is-stale='lecture && lecture.isStale' route='/lecture')
+    .row(v-if="!tidyMode")
+      item(
+        v-if="isUndergraduate",
+        name="跑操",
+        :value="pe && pe.count",
+        :is-stale="pe && pe.isStale",
+        route="/pe"
+      )
+      item(
+        name="借书",
+        :value="library && library.length",
+        :is-stale="library && library.isStale",
+        route="/library"
+      )
+      item(v-if="isUndergraduate", name="CET 助手", route="/cet", value="›")
 
-      .row
-        item(v-if='isUndergraduate' :icon='iconSrtp' name='SRTP' :value='srtp && srtp.info.points' :is-stale='srtp && srtp.isStale' route='/srtp')
-        item(v-if='isStudent' :icon='iconGrade' :name='(isGraduate ? "成绩" : "绩点估算")'   route='/grade' :is-graduate='isGraduate')
+    .row(v-if="!tidyMode")
+      item(name="失物招领&寻物启事", route="/lost-and-found", :value="lostAndFoundMsg")
 
-      .row(v-if='!tidyMode')
-        item(v-if='isUndergraduate' name='跑操' :value='pe && pe.count' :is-stale='pe && pe.isStale' route='/pe')
-        item(name='借书' :value='library && library.length' :is-stale='library && library.isStale' route='/library')
-        item(v-if='isUndergraduate' name='CET 助手' route='/cet' value='›')
+    //- .row(v-if='!tidyMode')
+    //-   item(name='自定义考试提醒' route='/custom-exam' value='›')
 
-      .row(v-if='!tidyMode')
-        item(name='失物招领&寻物启事' route='/lost-and-found' :value='lostAndFoundMsg')
+    .row(v-if="!tidyMode")
+      item(name="校历", route="/schedule", value="›")
+      item(name="校车", route="/bus", value="›")
+      item(name="空教室", route="/classroom", value="›")
+      //- item(name='洗衣房' route='/laundry' value='›')
+      //- item(name='App' route='/download' value='›')
 
-      //- .row(v-if='!tidyMode')
-      //-   item(name='自定义考试提醒' route='/custom-exam' value='›')
-    
-      .row(v-if='!tidyMode')
-        item(name='校历' route='/schedule' value='›')
-        item(name='校车' route='/bus' value='›')
-        item(name='空教室' route='/classroom' value='›')
-        //- item(name='洗衣房' route='/laundry' value='›')
-        //- item(name='App' route='/download' value='›')
+    .row(
+      v-if="!tidyMode && user.admin && user.admin.indexOf('maintenance') !== -1"
+    )
+      //- item(name='系统概况' route='/admin/monitor' value='›')
+      //- item(name='权限管理' route='/admin/privilege' value='›')
+      item(name="通知管理", route="/admin/notice", value="›")
 
-      .row(v-if='!tidyMode && user.admin && user.admin.maintenance')
-        //- item(name='系统概况' route='/admin/monitor' value='›')
-        //- item(name='权限管理' route='/admin/privilege' value='›')
-        item(name='通知管理' route='/admin/notice' value='›')
-
-      .row(v-if='!tidyMode && user.admin && user.admin.publicity')
-        item(name='轮播管理' route='/admin/banner' value='›')
-        //- item(name='活动管理' route='/admin/activity' value='›')
-      .row
-        item(name='通知' route='/notification'   )
-      .row
-        item(name='公告' route='/notice' :value='curNotice && curNotice.title || "暂无公告"')
-
+    .row(
+      v-if="!tidyMode && user.admin && user.admin.indexOf('publicity') !== -1"
+    )
+      item(name="轮播管理", route="/admin/banner", value="›")
+      //- item(name='活动管理' route='/admin/activity' value='›')
+    .row
+      item(name="通知", route="/notification")
+    .row
+      item(
+        name="公告",
+        route="/notice",
+        :value="(curNotice && curNotice.title) || '暂无公告'"
+      )
 </template>
 
 <script>
@@ -72,7 +117,7 @@ export default {
   props: ["user"],
   components: {
     item,
-    banner
+    banner,
   },
   data() {
     return {
@@ -84,7 +129,7 @@ export default {
       library: null,
       notice: null,
       activities: null,
-      notification:null,
+      notification: null,
       curNoticeIndex: 0,
       downloadImg,
       logoutImg,
@@ -106,19 +151,19 @@ export default {
     lecture: "herald-default-lecture",
     library: "herald-default-library",
     notice: "herald-default-notice",
-    activities: "herald-default-activities"
+    activities: "herald-default-activities",
   },
   async created() {
     // 下列不能用 await，否则前面的语句会阻塞后面的语句，前面的异常会阻止后面的语句
-    api.get("/api/pe").then(res => (this.pe = res));
-    api.get("/api/gpa").then(res => (this.gpa = res));
-    api.get("/api/card").then(res => (this.card = res));
-    api.get("/api/srtp").then(res => (this.srtp = res));
-    api.get("/api/lecture").then(res => (this.lecture = res));
-    api.get("/api/library").then(res => (this.library = res));
-    api.get("/api/notification").then(res => (this.notification = res));
-    api.get("/api/activity?pagesize=20").then(res => (this.activities = res));
-    api.get("/api/notice").then(res => {
+    api.get("/api/pe").then((res) => (this.pe = res));
+    api.get("/api/gpa").then((res) => (this.gpa = res));
+    api.get("/api/card").then((res) => (this.card = res));
+    api.get("/api/srtp").then((res) => (this.srtp = res));
+    api.get("/api/lecture").then((res) => (this.lecture = res));
+    api.get("/api/library").then((res) => (this.library = res));
+    api.get("/api/notification").then((res) => (this.notification = res));
+    api.get("/api/activity?pagesize=20").then((res) => (this.activities = res));
+    api.get("/api/notice").then((res) => {
       this.notice = res;
       setInterval(() => {
         this.curNoticeIndex = this.filteredNotice.length
@@ -126,9 +171,9 @@ export default {
           : 0;
       }, 5000);
     });
-    api.get("/api/lostAndFound/message").then(res => {
+    api.get("/api/lostAndFound/message").then((res) => {
       let amount = 0;
-      Object.keys(res).forEach(id => {
+      Object.keys(res).forEach((id) => {
         amount += res[id];
       });
       if (amount) {
@@ -141,8 +186,7 @@ export default {
   methods: {
     logout() {
       this.$store.commit("logout");
-      
-    }
+    },
   },
   computed: {
     isStudent() {
@@ -158,20 +202,15 @@ export default {
       // 这里过滤两天内的最近通知
       return (
         this.notice &&
-        this.notice.filter(k => {
-          return (
-            k.time >=
-            +moment()
-              .startOf("day")
-              .subtract(1, "day")
-          );
+        this.notice.filter((k) => {
+          return k.time >= +moment().startOf("day").subtract(1, "day");
         })
       );
     },
     curNotice() {
       return this.filteredNotice && this.filteredNotice[this.curNoticeIndex];
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -210,7 +249,7 @@ export default {
 
     .identity {
       font-size: 12px;
-      flex: 1 1 0;
+      flex: 1 1 0%;
       white-space: nowrap;
       color: var(--color-text-secondary);
 
@@ -252,7 +291,7 @@ export default {
       flex-direction: row;
 
       > * {
-        flex: 1 1 0;
+        flex: 1 1 0%;
       }
     }
   }
@@ -267,7 +306,7 @@ export default {
     .subtitle {
       font-size: 12px;
       color: var(--color-text-secondary);
-      flex: 1 1 0;
+      flex: 1 1 0%;
     }
 
     .function {
