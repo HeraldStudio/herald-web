@@ -83,7 +83,6 @@ import login from "@/components/Login.vue";
 import logoImg from "static/images/logo.png";
 import downloadImg from "static/images/download.png";
 import qs from "querystring";
-import { use } from "vue/types/umd";
 
 function getOffsetTop(obj) {
   let tmp = obj.offsetTop - obj.scrollTop;
