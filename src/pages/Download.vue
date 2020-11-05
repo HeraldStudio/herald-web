@@ -1,7 +1,9 @@
 <template lang='pug'>
   .page
-    .hint 小猴偷米新版 App 已经发布上线，请尽快更新
+    
     img.app(:src='appImg')
+    .hint 小猴偷米新版 App 已经发布上线，请尽快更新
+    .hint 大量全新功能，虎踞龙蟠，花果山服务，竞赛组队等都可 App 内享受哦～ 
     .buttons
       a(:href='url' target='_blank' v-if='url')
         button 点击前往下载（iOS、Andriod通用）
