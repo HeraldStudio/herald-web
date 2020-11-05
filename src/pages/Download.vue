@@ -1,25 +1,25 @@
 <template lang='pug'>
   .page
     .hint 小猴偷米新版 App 已经发布上线，请尽快更新
-    .hint iOS 用户请前往 App Store 下载 
-    img.qr(:src='qrcodeImg')
+    img.app(:src='appImg')
     .buttons
-      p 下载 App：
       a(:href='url' target='_blank' v-if='url')
-        button 新版本 Android
+        button 点击前往下载（iOS、Andriod通用）
       button(v-else) 稍等片刻~
+    //- .hint iOS 用户请前往 App Store 下载 
+    img.qr(:src='qrcodeImg')
+   
         
 </template>
 <script>
 import qrcodeImg from "static/images/qrcode.jpg";
+import appImg from 'static/images/App2.png'
 import api from "@/api";
 export default {
   data() {
-    return { qrcodeImg, url: "" };
+    return {appImg, qrcodeImg, url: "https://tommy.seu.edu.cn/ws4/app-download" };
   },
   async created() {
-    let res = await api.get("/api/version");
-    this.url = res.downloadUrl;
   }
 };
 </script>
@@ -65,8 +65,15 @@ export default {
     width: 100%;
     height: auto;
     filter: hue-rotate(-15deg);
-    max-width: 500px;
-    margin: 0 auto;
+    max-width: 300px;
+    margin: 50px auto;
+  }
+  img.app {
+    width: 100%;
+    height: auto;
+    filter: hue-rotate(-15deg);
+    max-width: 400px;
+    margin: 20px auto;
   }
 }
 </style>

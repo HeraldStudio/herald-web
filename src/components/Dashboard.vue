@@ -14,6 +14,12 @@ transition-group.widget.dashboard(name="fade")
   banner(key="banner", v-show="!tidyMode")
 
   .dashboard-container.border-top(key="dashboard", v-if="user")
+    .row(
+      v-if="!tidyMode"
+    )
+      //- item(name='系统概况' route='/admin/monitor' value='›')
+      //- item(name='权限管理' route='/admin/privilege' value='›')
+      item(name="还没拥有新版小猴 App ？快来尝试下吧～", route="/download", value="›")
     .row
       item(
         :icon="iconCard",
