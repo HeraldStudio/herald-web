@@ -17,6 +17,7 @@ import AdminNotice from '@/pages/admin/Notice'
 import AdminPrivilege from '@/pages/admin/Privilege'
 import AdminBanner from '@/pages/admin/Banner'
 import AdminActivity from '@/pages/admin/Activity'
+import AdminLecture from '@/pages/admin/Lecture'
 import Laundry from '@/pages/Laundry'
 import Download from '@/pages/Download'
 import Bus from '@/pages/Bus'
@@ -131,6 +132,11 @@ export default new Router({
       path: '/admin/privilege',
       name: '权限管理',
       component: AdminPrivilege
+    },
+    {
+      path: '/admin/lecture',
+      name: '讲座管理',
+      component: AdminLecture
     },
     {
       path: '/admin/banner',

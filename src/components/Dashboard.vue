@@ -83,6 +83,9 @@ transition-group.widget.dashboard(name="fade")
       //- item(name='洗衣房' route='/laundry' value='›')
       //- item(name='App' route='/download' value='›')
 
+    .row
+      item(name="讲座管理", route="/admin/lecture", value="›")
+
     .row(
       v-if="!tidyMode && user.admin && user.admin.indexOf('maintenance') !== -1"
     )
