@@ -10,7 +10,7 @@
         th.operations 操作
       tr.lecture.add
         td
-          input.name(placeholder="新增", v-model="newLecture.name")
+          input.name(placeholder="新增" v-model="newLecture.name")
         td
           input.location(v-model="newLecture.location")
         td
@@ -29,9 +29,9 @@
 
       tr.lecture(v-for="(lecture, index) in lectures")
         td
-          input.name(v-model="lecture.name")
+          input.name(v-model="lecture.name" readonly="readonly")
         td
-          input.location(v-model="lecture.location")
+          input.location(v-model="lecture.location" readonly="readonly")
         td
           timestamp.dateStr(
             v-model="lecture.date",
@@ -39,7 +39,7 @@
             showType="date"
           )
         td
-          input.url(v-model="lecture.url")
+          input.url(v-model="lecture.url" readonly="readonly")
         td.operations
           button.save(v-if="lecture.name") 上传数据
           confirm-button.remove(@click='removeLecture(lecture.id)' confirm-text='确定') 删除
