@@ -1,5 +1,5 @@
 <template lang="pug">
-#notice.admin-page
+.admin-page
   .subcontainer
     table.list
       tr.lecture-header
@@ -17,7 +17,7 @@
           timestamp.dateStr(
             v-model="newLecture.date",
             useType="date",
-            showType="date"
+            showType="date",
           )
         td
           input.url(v-model="newLecture.url")
@@ -33,15 +33,11 @@
         td
           input.location(v-model="lecture.location" readonly="readonly")
         td
-          timestamp.dateStr(
-            v-model="lecture.date",
-            useType="date",
-            showType="date"
-          )
+          input.dateStr(v-model="lecture.dateStrFront" readonly="readonly")
         td
           input.url(v-model="lecture.url" readonly="readonly")
         td.operations
-          button.save(v-if="lecture.name") 上传数据
+          button.record-data(v-if="lecture.name" @click='$router.push({ path: `/admin/lecture/detail/${lecture.id}` });') 打卡数据
           confirm-button.remove(@click='removeLecture(lecture.id)' confirm-text='确定') 删除
     page-bar(
       :current="pagination.current",
@@ -56,6 +52,7 @@ import api from "@/api";
 import confirmButton from "@/components/ConfirmButton.vue";
 import timestamp from "@/components/TimestampPicker.vue";
 import pageBar from "@/components/Pagination.vue";
+import moment from 'moment'
 // import confirmButton from '@/components/ConfirmButton.vue'
 
 export default {
@@ -81,9 +78,10 @@ export default {
   },
   methods: {
     async reloadData() {
-      this.originLectures = (await api.get("/api/lectureManage")).map(item => ({
+      this.originLectures = (await api.get("/api/lecture/admin")).map(item => ({
         ...item,
-        date: new Date(item.dateStr).getTime()
+        date: new Date(item.dateStr).getTime(),
+        dateStrFront: moment(item.dateStr).format("YYYY/M/D")
       })).sort((item1, item2) => item2.date - item1.date);
       this.initNewLecture();
       this.changePage({
@@ -92,10 +90,10 @@ export default {
       });
     },
     initNewLecture() {
-      this.newBanner = {
+      this.newLecture = {
         id: null,
         name: "",
-        date: null,
+        date: new Date().getTime(),
         url: "",
         location: ""
       };
@@ -108,20 +106,20 @@ export default {
       );
     },
     async addLecture() {
-      const date = new Date(this.newLecture.date)
-      this.newLecture.dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-      await api.post('/api/lectureManage', this.newLecture)
+      const date = moment(this.newLecture.date)
+      this.newLecture.dateStr = `${date.format('YYYY-MM-DD')}`
+      await api.post('/api/lecture/admin', this.newLecture)
       this.reloadData()
     },
     async removeLecture(id) {
-      await api.delete('/api/lectureManage?id=' + id)
+      await api.delete('/api/lecture/admin?id=' + id)
       this.reloadData()
     }
   }
 };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .list {
   .location {
     width: 150px;

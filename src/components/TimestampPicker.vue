@@ -2,7 +2,7 @@
   <datetime v-model='date' @input='change()'
     :format='format' :type='useType'
     :phrases='{ ok: "确定", cancel: "取消" }'
-    :minute-step='5' :auto='true'/>
+    :minute-step='5' :auto='true' value-zone='local'/>
 </template>
 <script>
   import 'vue-datetime/dist/vue-datetime.css'
