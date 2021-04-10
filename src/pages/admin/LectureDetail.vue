@@ -9,6 +9,23 @@
         th.location 地点
         th.time 时间
         th.operations 操作
+      tr.record.add
+        td
+          input.cardnum(v-model="newRecord.cardnum")
+        td
+          input.name(v-model="newRecord.name")
+        td
+          input.location(v-model="newRecord.location")
+        td
+          timestamp.timestamp(
+            v-model="newRecord.timestamp",
+            useType="datetime",
+            showType="datetimesecond",
+          )
+        td.operations
+          //- confirm-button.remove(@click='removeRecord(record.id)' confirm-text='确定') 删除
+          confirm-button.add-record(v-if="newRecord.cardnum && newRecord.name && newRecord.location && newRecord.timestamp" @click='addRecord' ) 打卡数据
+
       tr.record(v-for="(record, index) in cardRecords")
         td
           input.cardnum(v-model="record.cardnum" readonly="readonly")
@@ -18,6 +35,8 @@
           input.location(v-model="record.location" readonly="readonly")
         td
           input.timestamp(v-model="record.timeStr" readonly="readonly")
+        td.operations
+          confirm-button.remove(@click='removeRecord(record.id)' confirm-text='确定') 删除
     page-bar(
       :current="pagination.current",
       :pageSize="pagination.pageSize",
@@ -31,10 +50,11 @@ import api from "@/api";
 import timestamp from "@/components/TimestampPicker.vue";
 import pageBar from "@/components/Pagination.vue";
 import moment from 'moment';
+import confirmButton from "@/components/ConfirmButton.vue";
 
 export default {
   components: {
-    timestamp, pageBar
+    timestamp, pageBar, confirmButton
   },
   data() {
     return {
@@ -45,11 +65,16 @@ export default {
         current: 1,
         pageSize: 20,
         total: 0
-      }
+      },
+      newRecord: {}
     };
   },
   methods: {
-    async loadData() {
+    async removeRecord(id) {
+      await api.delete('api/lecture/admin/cardRecord?id=' + id)
+      this.reloadData()
+    },
+    async reloadData() {
       const id = this.$route.params.id
       this.lecture = {
         id: "{FC2D081E-FF21-4D3E-9ADC-F24BC917679B}",
@@ -78,9 +103,13 @@ export default {
         (pagination.current - 1) * pagination.pageSize + 1 + pagination.pageSize
       );
     },
+    async addRecord() {
+      await api.post("/api/lecture/admin/cardRecord", [this.newRecord])
+      this.reloadData()
+    }
   },
   created() {
-    this.loadData()
+    this.reloadData()
   },
 };
 </script>

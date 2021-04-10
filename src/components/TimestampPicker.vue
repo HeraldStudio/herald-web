@@ -52,6 +52,8 @@
           minute: '2-digit',
           hour12: false
         }
+      } else if (this.showType === 'datetimesecond') {
+        this.format = "yyyy/MM/dd HH:mm:ss"
       }else{
          this.format = {
           year: 'numeric',
