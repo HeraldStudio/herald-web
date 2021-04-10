@@ -1,10 +1,29 @@
 <template lang="pug">
   .page-bar
     .page-line
+    //- .page-btns
+    //-   .page-btn(:class='{ disabled: !hasLast}' @click="jump(current - 1)") 上一页
+    //-   .page-divider
+    //-   span 
+    //-   .page-divider
+    //-   .page-btn(:class='{ disabled: !hasNext }' @click='jump(current + 1)') 下一页
     .page-btns
-      .page-btn(:class='{ disabled: !hasLast}' @click="jump(current - 1)") 上一页
-      .page-divider
-      .page-btn(:class='{ disabled: !hasNext }' @click='jump(current + 1)') 下一页
+      .page-total 共 {{ total }} 条
+
+      .page-btn(v-if="current != 1" @click='jump(current - 1)') &lt;
+      .page-btn.disabled(v-else) &lt;
+
+      .page-btn(v-if="current >= 3" @click='jump(1)') 1
+      .page-btn(v-if="current >= 4") ...
+      .page-btn(v-if="current != 1" @click='jump(current - 1)') {{ current - 1 }}
+      .page-btn.active {{ current }}
+      .page-btn(v-if="current != totalPage && totalPage > 1" @click='jump(current + 1)') {{ current + 1 }}
+      .page-btn(v-if="current <= totalPage - 3") ...
+      .page-btn(v-if="current <= totalPage - 2" @click='jump(totalPage)') {{ totalPage }}
+
+      .page-btn(v-if="current != totalPage" @click='jump(totalPage)') &gt;
+      .page-btn.disabled(v-else) &gt;
+
     .page-line
 </template>
 
@@ -59,29 +78,25 @@ export default {
     border-top: solid 1px #f0f0f0
   
   .page-btns
-    display: flex 
-    justify-content: space-around
+    display: flex
+    float: right
 
+    .page-total
+      color: #606266
+      margin-right: 20px
+      line-height: 28px
+    
     .page-btn
-      height: 40px
-      line-height: 40px
-      font-size: 16px
-      color: var(--color-primary)
-      text-align: center
-      padding: 0 20px
+      height: 28px
+      min-width: 36px
+      line-height: 28px
       cursor: pointer
 
-      &:active
-        background: #f6f6f6
+      &:hover, &.active
+        color: #409eff;
 
-      &.disabled
-        background: none
-        color: grey 
+      .disabled
         cursor: default
-
-    .page-divider
-      hegith: 80%
-      border-left: solid 1px #f0f0f0
-      margin: 8px 0
+        color: grey 
 
 </style>

@@ -157,18 +157,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
-.list {
-  .location {
-    width: 150px;
-  }
-
-  .timestamp {
-    width: 160px;
-  }
-
-  .operation {
-    width: 60px;
-  }
+.operation {
+  width: 60px;
 }
 </style>
