@@ -3,7 +3,7 @@
   input#uploadInput(type='file' accept='.csv' style="display: none" @change="uploadRecords")
   .subcontainer
     .summary-p 讲座：{{ lecture.name }}
-      a(style="float:right; cursor: pointer" href='../../../static/examples/lectureRecords.csv' download="cardRecords.csv") 下载样例
+      a(style="float:right; cursor: pointer" :href='examplePath' download="cardRecords.csv") 下载样例
       a(style="float: right; cursor: pointer; margin-right: 10px" @click="document.getElementById('uploadInput').click()") 点此导入...
       
     table.list
@@ -74,7 +74,7 @@ export default {
       },
       newRecord: {},
       document: document,
-      basePath: process.env.BASE_URL
+      examplePath: require('../../../static/examples/lectureRecords.csv')
     };
   },
   methods: {
