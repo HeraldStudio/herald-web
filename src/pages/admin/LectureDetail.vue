@@ -3,7 +3,9 @@
   input#uploadInput(type='file' accept='.csv' style="display: none" @change="uploadRecords")
   .subcontainer
     .summary-p 讲座：{{ lecture.name }}
-      a(style="float: right; cursor: pointer" @click="document.getElementById('uploadInput').click()") 点此导入...
+      a(style="float:right; cursor: pointer" href='../../../static/examples/lectureRecords.csv' download="cardRecords.csv") 下载样例
+      a(style="float: right; cursor: pointer; margin-right: 10px" @click="document.getElementById('uploadInput').click()") 点此导入...
+      
     table.list
       tr.record-header
         th.cardnum 一卡通号
@@ -71,7 +73,8 @@ export default {
         total: 0
       },
       newRecord: {},
-      document: document
+      document: document,
+      basePath: process.env.BASE_URL
     };
   },
   methods: {
@@ -108,7 +111,7 @@ export default {
       const id = this.$route.params.id;
       api
         .get("/api/lecture/admin/detail?id=" + id)
-        .then(result => (this.lecture = result));
+        .then(result => (this.lecture = result[0]));
       this.originCardRecords = (
         await api.get("/api/lecture/admin/cardRecord?lectureID=" + id)
       )
