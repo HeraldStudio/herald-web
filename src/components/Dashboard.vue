@@ -84,6 +84,11 @@ transition-group.widget.dashboard(name="fade")
       //- item(name='App' route='/download' value='›')
 
     .row(
+      v-if="!tidyMode && user.admin && user.admin.indexOf('lecturerecord') !== -1"
+    )
+      item(name="讲座管理", route="/admin/lecture", value="›")
+
+    .row(
       v-if="!tidyMode && user.admin && user.admin.indexOf('maintenance') !== -1"
     )
       //- item(name='系统概况' route='/admin/monitor' value='›')

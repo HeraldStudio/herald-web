@@ -17,6 +17,8 @@ import AdminNotice from '@/pages/admin/Notice'
 import AdminPrivilege from '@/pages/admin/Privilege'
 import AdminBanner from '@/pages/admin/Banner'
 import AdminActivity from '@/pages/admin/Activity'
+import AdminLecture from '@/pages/admin/Lecture'
+import AdminLectureDetail from '@/pages/admin/LectureDetail'
 import Laundry from '@/pages/Laundry'
 import Download from '@/pages/Download'
 import Bus from '@/pages/Bus'
@@ -34,6 +36,7 @@ import CustomExam from '@/pages/CustomExam'
 import Notification from '@/pages/Notification'
 import NotificationView from '@/pages/NotificationView'
 import Curriculum from '@/pages/Curriculum'
+
 Vue.use(Router)
 
 // 微信环境下，为隐藏前进后退按钮栏，设置 mode 为 abstract，实现完全不产生浏览器历史
@@ -131,6 +134,16 @@ export default new Router({
       path: '/admin/privilege',
       name: '权限管理',
       component: AdminPrivilege
+    },
+    {
+      path: '/admin/lecture',
+      name: '讲座管理',
+      component: AdminLecture
+    },
+    {
+      path: '/admin/lecture/detail/:id',
+      name: '讲座打卡管理',
+      component: AdminLectureDetail
     },
     {
       path: '/admin/banner',
