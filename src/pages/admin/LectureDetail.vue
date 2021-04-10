@@ -2,29 +2,29 @@
 .admin-page
   .subcontainer
     .summary-p 讲座：{{ lecture.name }}
+    span 导入
     table.list
       tr.record-header
         th.cardnum 一卡通号
         th.name 姓名
         th.location 地点
         th.time 时间
-        th.operations 操作
+        th.operation 操作
       tr.record.add
         td
           input.cardnum(v-model="newRecord.cardnum")
         td
           input.name(v-model="newRecord.name")
         td
-          input.location(v-model="newRecord.location")
+          input.location(v-model="lecture.location" readonly="readonly")
         td
           timestamp.timestamp(
             v-model="newRecord.timestamp",
             useType="datetime",
             showType="datetimesecond",
           )
-        td.operations
-          //- confirm-button.remove(@click='removeRecord(record.id)' confirm-text='确定') 删除
-          confirm-button.add-record(v-if="newRecord.cardnum && newRecord.name && newRecord.location && newRecord.timestamp" @click='addRecord' ) 打卡数据
+        td.operation
+          confirm-button.add-record(v-if="newRecord.cardnum && newRecord.name && lecture.location && newRecord.timestamp" @click='addRecord()' confirm-text='确定') 添加
 
       tr.record(v-for="(record, index) in cardRecords")
         td
@@ -32,10 +32,10 @@
         td
           input.name(v-model="record.name" readonly="readonly")
         td
-          input.location(v-model="record.location" readonly="readonly")
+          input.location(v-model="lecture.location" readonly="readonly")
         td
           input.timestamp(v-model="record.timeStr" readonly="readonly")
-        td.operations
+        td.operation
           confirm-button.remove(@click='removeRecord(record.id)' confirm-text='确定') 删除
     page-bar(
       :current="pagination.current",
@@ -76,21 +76,16 @@ export default {
     },
     async reloadData() {
       const id = this.$route.params.id
-      this.lecture = {
-        id: "{FC2D081E-FF21-4D3E-9ADC-F24BC917679B}",
-        name: "“工程伦理学”系列三讲：原理、案例及应用",
-        dateStr: "2014-03-03",
-        location: "教学3号楼团委报告厅",
-        url: null
-      };
+      api.get("/api/lecture/admin/detail?id=" + id).then(result => this.lecture = result)
       this.originCardRecords = (await api.get("/api/lecture/admin/cardRecord?lectureID=" + id)).map(
         item => (
           {
             ...item,
-            timeStr: moment(item.timestamp).format("YYYY/M/D HH:MM:SS")
+            timeStr: moment(item.timestamp).format("YYYY/MM/DD HH:MM:SS")
           }
         )
-      )
+      ).sort((item1, item2) => item2.timestamp - item1.timestamp);
+      this.initNewRecord();
       this.changePage({
         ...this.pagination,
         total: this.originCardRecords.length
@@ -99,14 +94,27 @@ export default {
     changePage(pagination) {
       this.pagination = pagination;
       this.cardRecords = this.originCardRecords.slice(
-        (pagination.current - 1) * pagination.pageSize + 1,
-        (pagination.current - 1) * pagination.pageSize + 1 + pagination.pageSize
-      );
+        (pagination.current - 1) * pagination.pageSize,
+        (pagination.current - 1) * pagination.pageSize + pagination.pageSize
+      )
     },
     async addRecord() {
-      await api.post("/api/lecture/admin/cardRecord", [this.newRecord])
+      await api.post("/api/lecture/admin/cardRecord", {
+        recordArray: [{
+          ...this.newRecord,
+          dateStr: this.lecture.dateStr,
+          location: this.lecture.location
+        }]
+      })
       this.reloadData()
-    }
+    },
+    initNewRecord() {
+      this.newRecord = {
+        cardnum: "",
+        name: "",
+        timestamp: this.newRecord.timestamp
+      };
+    },
   },
   created() {
     this.reloadData()
@@ -123,6 +131,10 @@ export default {
 
   .timestamp {
     width: 160px;
+  }
+
+  .operation {
+    width: 60px;
   }
 }
 

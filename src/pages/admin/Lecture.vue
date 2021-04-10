@@ -101,8 +101,8 @@ export default {
     changePage(pagination) {
       this.pagination = pagination;
       this.lectures = this.originLectures.slice(
-        (pagination.current - 1) * pagination.pageSize + 1,
-        (pagination.current - 1) * pagination.pageSize + 1 + pagination.pageSize
+        (pagination.current - 1) * pagination.pageSize,
+        (pagination.current - 1) * pagination.pageSize + pagination.pageSize
       );
     },
     async addLecture() {
