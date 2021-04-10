@@ -111,7 +111,7 @@ export default {
       const id = this.$route.params.id;
       api
         .get("/api/lecture/admin/detail?id=" + id)
-        .then(result => (this.lecture = result[0]));
+        .then(result => (this.lecture = result));
       this.originCardRecords = (
         await api.get("/api/lecture/admin/cardRecord?lectureID=" + id)
       )
