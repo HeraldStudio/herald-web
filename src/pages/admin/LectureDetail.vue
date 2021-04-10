@@ -1,8 +1,9 @@
 <template lang="pug">
 .admin-page
+  input#uploadInput(type='file' accept='.csv' style="display: none" @change="uploadRecords")
   .subcontainer
     .summary-p 讲座：{{ lecture.name }}
-    span 导入
+      a(style="float: right; cursor: pointer" @click="document.getElementById('uploadInput').click()") 点此导入...
     table.list
       tr.record-header
         th.cardnum 一卡通号
@@ -49,12 +50,15 @@
 import api from "@/api";
 import timestamp from "@/components/TimestampPicker.vue";
 import pageBar from "@/components/Pagination.vue";
-import moment from 'moment';
+import moment from "moment";
 import confirmButton from "@/components/ConfirmButton.vue";
+import parseCSV from "neat-csv";
 
 export default {
   components: {
-    timestamp, pageBar, confirmButton
+    timestamp,
+    pageBar,
+    confirmButton
   },
   data() {
     return {
@@ -66,25 +70,53 @@ export default {
         pageSize: 20,
         total: 0
       },
-      newRecord: {}
+      newRecord: {},
+      document: document
     };
   },
   methods: {
+    async uploadRecords() {
+      const file = document.getElementById("uploadInput").files[0];
+      const content = await new Promise(resolve => {
+        const fileReader = new FileReader();
+        fileReader.readAsText(file);
+        fileReader.onload = e => resolve(e.target.result);
+      });
+      const result = await parseCSV(content);
+      console.log(result);
+      await api.post("/api/lecture/admin/cardRecord", {
+        recordArray: result
+          .filter(item => item.cardnum && item.name && item.time)
+          .map(item => ({
+            cardnum: item.cardnum,
+            name: item.name,
+            timestamp:
+              Number(item.time) + "" !== NaN + ""
+                ? +moment(Number(item.time))
+                : +moment(item.time),
+            dateStr: this.lecture.dateStr,
+            location: this.lecture.location
+          }))
+      });
+      this.reloadData();
+    },
     async removeRecord(id) {
-      await api.delete('api/lecture/admin/cardRecord?id=' + id)
-      this.reloadData()
+      await api.delete("api/lecture/admin/cardRecord?id=" + id);
+      this.reloadData();
     },
     async reloadData() {
-      const id = this.$route.params.id
-      api.get("/api/lecture/admin/detail?id=" + id).then(result => this.lecture = result)
-      this.originCardRecords = (await api.get("/api/lecture/admin/cardRecord?lectureID=" + id)).map(
-        item => (
-          {
-            ...item,
-            timeStr: moment(item.timestamp).format("YYYY/MM/DD HH:MM:SS")
-          }
-        )
-      ).sort((item1, item2) => item2.timestamp - item1.timestamp);
+      const id = this.$route.params.id;
+      api
+        .get("/api/lecture/admin/detail?id=" + id)
+        .then(result => (this.lecture = result));
+      this.originCardRecords = (
+        await api.get("/api/lecture/admin/cardRecord?lectureID=" + id)
+      )
+        .map(item => ({
+          ...item,
+          timeStr: moment(item.timestamp).format("YYYY/MM/DD HH:MM:SS")
+        }))
+        .sort((item1, item2) => item2.timestamp - item1.timestamp);
       this.initNewRecord();
       this.changePage({
         ...this.pagination,
@@ -96,17 +128,19 @@ export default {
       this.cardRecords = this.originCardRecords.slice(
         (pagination.current - 1) * pagination.pageSize,
         (pagination.current - 1) * pagination.pageSize + pagination.pageSize
-      )
+      );
     },
     async addRecord() {
       await api.post("/api/lecture/admin/cardRecord", {
-        recordArray: [{
-          ...this.newRecord,
-          dateStr: this.lecture.dateStr,
-          location: this.lecture.location
-        }]
-      })
-      this.reloadData()
+        recordArray: [
+          {
+            ...this.newRecord,
+            dateStr: this.lecture.dateStr,
+            location: this.lecture.location
+          }
+        ]
+      });
+      this.reloadData();
     },
     initNewRecord() {
       this.newRecord = {
@@ -114,11 +148,11 @@ export default {
         name: "",
         timestamp: this.newRecord.timestamp
       };
-    },
+    }
   },
   created() {
-    this.reloadData()
-  },
+    this.reloadData();
+  }
 };
 </script>
 
@@ -137,5 +171,4 @@ export default {
     width: 60px;
   }
 }
-
 </style>
