@@ -55,6 +55,7 @@ import pageBar from "@/components/Pagination.vue";
 import moment from "moment";
 import confirmButton from "@/components/ConfirmButton.vue";
 import parseCSV from "neat-csv";
+import jschardet from 'jschardet'
 
 export default {
   components: {
@@ -80,9 +81,16 @@ export default {
   methods: {
     async uploadRecords() {
       const file = document.getElementById("uploadInput").files[0];
-      const content = await new Promise(resolve => {
+      let content = await new Promise(resolve => {
         const fileReader = new FileReader();
-        fileReader.readAsText(file);
+        fileReader.readAsBinaryString(file);
+        fileReader.onload = e => resolve(e.target.result);
+      });
+      const charset = jschardet.detect(content);
+      console.log(charset)
+      content = await new Promise(resolve => {
+        const fileReader = new FileReader();
+        fileReader.readAsText(file, charset.encoding);
         fileReader.onload = e => resolve(e.target.result);
       });
       const result = await parseCSV(content);
