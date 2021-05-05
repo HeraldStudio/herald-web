@@ -86,7 +86,9 @@ transition-group.widget.dashboard(name="fade")
     .row(
       v-if="!tidyMode && user.admin && user.admin.indexOf('lecturerecord') !== -1"
     )
-      item(name="讲座管理", route="/admin/lecture", value="›")
+      .dashboard-item(@click="window.open('https://tommy.seu.edu.cn/lecture-manage/?token=' + $store.state.token)")
+        .name 讲座管理
+        .value ›
 
     .row(
       v-if="!tidyMode && user.admin && user.admin.indexOf('maintenance') !== -1"
